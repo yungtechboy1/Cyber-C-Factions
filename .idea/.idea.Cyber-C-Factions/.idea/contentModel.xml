@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\CJ\Cyber-C-Factions" t="IncludeFlat">
+      <e p="CFactions" t="IncludeRecursive">
+        <e p="AbstractClass.cs" t="Include" />
+        <e p="ActiveMission.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="CFactions.csproj" t="IncludeRecursive" />
+        <e p="Commands" t="Include">
+          <e p="Accept.cs" t="Include" />
+          <e p="Admin.cs" t="Include" />
+          <e p="AllyChat.cs" t="Include" />
+          <e p="Balance.cs" t="Include" />
+          <e p="Chat.cs" t="Include" />
+          <e p="Claim.cs" t="Include" />
+          <e p="Commands.cs" t="Include" />
+          <e p="Create.cs" t="Include" />
+          <e p="Delete.cs" t="Include" />
+          <e p="Demote.cs" t="Include" />
+          <e p="Deny.cs" t="Include" />
+          <e p="Deposit.cs" t="Include" />
+          <e p="Desc.cs" t="Include" />
+          <e p="Help.cs" t="Include" />
+          <e p="Home.cs" t="Include" />
+          <e p="Info.cs" t="Include" />
+          <e p="Invite.cs" t="Include" />
+          <e p="Join.cs" t="Include" />
+          <e p="Kick.cs" t="Include" />
+          <e p="Kits.cs" t="Include" />
+          <e p="Leader.cs" t="Include" />
+          <e p="Leave.cs" t="Include" />
+          <e p="List.cs" t="Include" />
+          <e p="Map.cs" t="Include" />
+          <e p="MissionCmd.cs" t="Include" />
+          <e p="Motd.cs" t="Include" />
+          <e p="OverClaim.cs" t="Include" />
+          <e p="PerkCmd.cs" t="Include" />
+          <e p="Power.cs" t="Include" />
+          <e p="Privacy.cs" t="Include" />
+          <e p="Promote.cs" t="Include" />
+          <e p="Rich.cs" t="Include" />
+          <e p="Sethome.cs" t="Include" />
+          <e p="Top.cs" t="Include" />
+          <e p="Unclaim.cs" t="Include" />
+          <e p="War.cs" t="Include" />
+          <e p="Wartp.cs" t="Include" />
+          <e p="Withdraw.cs" t="Include" />
+        </e>
+        <e p="CyberChat.cs" t="Include" />
+        <e p="DBConnection.cs" t="Include" />
+        <e p="Econ" t="Include">
+          <e p="EconData.cs" t="Include" />
+          <e p="EconMain.cs" t="Include" />
+        </e>
+        <e p="EnchantingManager.cs" t="Include" />
+        <e p="Faction.cs" t="Include" />
+        <e p="FactionEvent.cs" t="Include" />
+        <e p="FactionFactory.cs" t="Include" />
+        <e p="FactionMain.cs" t="Include" />
+        <e p="FactionsListener.cs" t="Include" />
+        <e p="Mission.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="CFactions.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="RelativeDateParser.cs" t="Include" />
+        <e p="Utils" t="Include">
+          <e p="CommandSender.cs" t="Include" />
+          <e p="CyberPlayer.cs" t="Include" />
+          <e p="CyberPlayerFactory.cs" t="Include" />
+          <e p="CyberTechServer.cs" t="Include" />
+          <e p="CyberTechServerManager.cs" t="Include" />
+          <e p="Perk.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Cyber-C-Factions.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+    <e p="C:\Users\Dirashi Mygashi\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Dirashi Mygashi\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Cyber-C-Factions.1264782752.00" t="ExcludeRecursive" />
+  </component>
+</project>

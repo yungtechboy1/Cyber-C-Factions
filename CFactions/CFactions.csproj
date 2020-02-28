@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="C:\CJ\openapi\OpenAPI.csproj" />
+
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="MySql.Data" Version="8.0.19"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="fNbt, Version=1.0.22.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\openapi\build\debug\fNbt.dll</HintPath>
+      </Reference>
+      <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a">
+        <HintPath>..\..\openapi\build\debug\log4net.dll</HintPath>
+      </Reference>
+      <Reference Include="MiNET, Version=1.0.2070.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\openapi\build\debug\MiNET.dll</HintPath>
+      </Reference>
+      <Reference Include="Mono.Cecil, Version=0.11.2.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e">
+        <HintPath>..\..\openapi\build\debug\Mono.Cecil.dll</HintPath>
+      </Reference>
+      <Reference Include="OpenAPI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\openapi\build\debug\OpenAPI.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+    
+</Project>
