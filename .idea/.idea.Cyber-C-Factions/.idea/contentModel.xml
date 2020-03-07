@@ -100,11 +100,14 @@
         </e>
         <e p="Utils" t="Include">
           <e p="ConfigSection.cs" t="Include" />
+          <e p="CustomConfigSection.cs" t="Include" />
           <e p="SqlManager.cs" t="Include" />
         </e>
       </e>
       <e p="packages" t="ExcludeRecursive" />
     </e>
+    <e p="C:\Users\Dirashi Mygashi\.Rider2019.3\config\consoles\db" t="IncludeRecursive" />
+    <e p="C:\Users\Dirashi Mygashi\.Rider2019.3\config\extensions" t="IncludeRecursive" />
     <e p="C:\Users\Dirashi Mygashi\.Rider2019.3\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\Dirashi Mygashi\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Cyber-C-Factions.1264782752.00" t="ExcludeRecursive" />
   </component>

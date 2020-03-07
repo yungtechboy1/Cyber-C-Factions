@@ -131,7 +131,7 @@ namespace CyberCore.Manager.Factions
             }
 
             String f = getFactionFromPlot(x, z);
-            if (!f.Equals(faction,StringComparison.InvariantCultureIgnoreCase))
+            if (!f.Equals(faction,StringComparison.OrdinalIgnoreCase))
             {
                 Log.Info("Error! tring to delete plot! E799");
                 return false;
