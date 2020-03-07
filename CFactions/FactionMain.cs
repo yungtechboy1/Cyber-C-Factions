@@ -24,7 +24,7 @@ namespace Factions2
 {
     // [Plugin(PluginName = "Factions", Description = "", PluginVersion = "1.0", Author = "MiNET Team")]
     [OpenPluginInfo(Name = "Factions", Description = "UnlimtedMC Factions Plugin", Author = "Yungtechboy1", Version = "1.0", Website = "https://unlimitedmc.net")]
-    public class Faction_main : Plugin , IStartup
+    public class Faction_main : Plugin , IStartup 
     {
         public MiNetServer Server { get; private set; }
         public static readonly ILog Log = LogManager.GetLogger(typeof (Faction_main));
@@ -192,6 +192,8 @@ namespace Factions2
 //                Username, Database, Password);
 //            Conn = new MySqlConnection(connStr);
 //        }
+
+
 
 
         public Faction GetPlayerFaction(string p)

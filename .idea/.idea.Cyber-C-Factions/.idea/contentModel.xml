@@ -78,6 +78,29 @@
         </e>
       </e>
       <e p="Cyber-C-Factions.sln" t="IncludeFlat" />
+      <e p="CyberCore" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="CyberCore.csproj" t="IncludeRecursive" />
+        <e p="CyberCoreMain.cs" t="Include" />
+        <e p="Manager" t="Include">
+          <e p="Factions" t="Include">
+            <e p="FactionFactory.cs" t="Include" />
+            <e p="FactionsMain.cs" t="Include" />
+            <e p="PlotManager.cs" t="Include" />
+          </e>
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="CyberCore.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Utils" t="Include">
+          <e p="ConfigSection.cs" t="Include" />
+          <e p="SqlManager.cs" t="Include" />
+        </e>
+      </e>
       <e p="packages" t="ExcludeRecursive" />
     </e>
     <e p="C:\Users\Dirashi Mygashi\.Rider2019.3\system\extResources" t="IncludeRecursive" />

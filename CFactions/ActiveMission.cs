@@ -48,7 +48,7 @@ namespace Faction2
             KillCount++;
         }
 
-        public Boolean CheckBreak()
+        public bool CheckBreak()
         {
             foreach (KeyValuePair<string, int> property in Break)
             {
@@ -66,7 +66,7 @@ namespace Faction2
             return true;
         }
 
-        public Boolean CheckPlace()
+        public bool CheckPlace()
         {
             foreach (KeyValuePair<string, int> property in Place)
             {
@@ -345,7 +345,7 @@ namespace Faction2
                     }
                 }
             }
-            Boolean fail = false;
+            bool fail = false;
             foreach (Item c in ItemReq)
             {
                 String key = c.Id + "|" + c.Metadata;
@@ -369,7 +369,7 @@ namespace Faction2
             return CheckCompletion(false);
         }
 
-        public int CheckCompletion(Boolean checkitems)
+        public int CheckCompletion(bool checkitems)
         {
             if (checkitems && CheckPlayerItems() != null)
             {

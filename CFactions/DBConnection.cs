@@ -11,7 +11,7 @@ namespace Faction2
 {
     public class DBConnection
     {
-        private MySqlConnection connection;
+        private MySqlConnection MySqlConnection;
         private string server;
         private string database;
         private string uid;
@@ -34,15 +34,15 @@ namespace Faction2
             connectionString = "SERVER=" + server + ";" + "DATABASE=" +
                                database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
 
-            connection = new MySqlConnection(connectionString);
+            MySqlConnection = new MySqlConnection(connectionString);
         }
 
-        //open connection to database
+        //open MySqlConnection to database
         private bool OpenConnection()
         {
             try
             {
-                connection.Open();
+                MySqlConnection.Open();
                 return true;
             }
             catch (MySqlException ex)
@@ -66,12 +66,12 @@ namespace Faction2
             }
         }
 
-        //Close connection
+        //Close MySqlConnection
         private bool CloseConnection()
         {
             try
             {
-                connection.Close();
+                MySqlConnection.Close();
                 return true;
             }
             catch (MySqlException ex)
@@ -85,16 +85,16 @@ namespace Faction2
         //Insert statement
         public void Insert(String query)
         {
-            //open connection
+            //open MySqlConnection
             if (OpenConnection() == true)
             {
-                //create command and assign the query and connection from the constructor
-                MySqlCommand cmd = new MySqlCommand(query, connection);
+                //create command and assign the query and MySqlConnection from the constructor
+                MySqlCommand cmd = new MySqlCommand(query, MySqlConnection);
         
                 //Execute command
                 cmd.ExecuteNonQuery();
 
-                //close connection
+                //close MySqlConnection
                 this.CloseConnection();
             }
         }
@@ -102,20 +102,20 @@ namespace Faction2
         //Update statement
         public void Update(String query)
         {
-            //Open connection
+            //Open MySqlConnection
             if (this.OpenConnection() == true)
             {
                 //create mysql command
                 MySqlCommand cmd = new MySqlCommand();
                 //Assign the query using CommandText
                 cmd.CommandText = query;
-                //Assign the connection using Connection
-                cmd.Connection = connection;
+                //Assign the MySqlConnection using MySqlConnection
+                cmd.MySqlConnection = MySqlConnection;
 
                 //Execute query
                 cmd.ExecuteNonQuery();
 
-                //close connection
+                //close MySqlConnection
                 this.CloseConnection();
             }
         }
@@ -125,7 +125,7 @@ namespace Faction2
         {
             if (this.OpenConnection() == true)
             {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlCommand cmd = new MySqlCommand(query, MySqlConnection);
                 cmd.ExecuteNonQuery();
                 this.CloseConnection();
             }
@@ -140,11 +140,11 @@ namespace Faction2
             //Create a list to store the result
            ArrayList list = new ArrayList();
 
-            //Open connection
+            //Open MySqlConnection
             if (this.OpenConnection() == true)
             {
                 //Create Command
-                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlCommand cmd = new MySqlCommand(query, MySqlConnection);
                 //Create a data reader and Execute the command
                 MySqlDataReader dataReader = cmd.ExecuteReader();
         
@@ -162,7 +162,7 @@ namespace Faction2
                 //close Data Reader
                 dataReader.Close();
 
-                //close Connection
+                //close MySqlConnection
                 CloseConnection();
 
                 //return list to be displayed
@@ -179,16 +179,16 @@ namespace Faction2
         {
             int Count = -1;
 
-            //Open Connection
+            //Open MySqlConnection
             if (this.OpenConnection() == true)
             {
                 //Create Mysql Command
-                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlCommand cmd = new MySqlCommand(query, MySqlConnection);
 
                 //ExecuteScalar will return one value
                 Count = int.Parse(cmd.ExecuteScalar()+"");
         
-                //close Connection
+                //close MySqlConnection
                 this.CloseConnection();
 
                 return Count;

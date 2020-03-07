@@ -16,7 +16,7 @@ namespace Faction2
         public String name;
         public String desc;
         public int id;
-        public Boolean enabled;
+        public bool enabled;
         public Dictionary<String, int> Break = new Dictionary<String, int>();
         public Dictionary<String, int> Place = new Dictionary<String, int>();
         public Item[] ItemReq = new Item[] { };
@@ -61,7 +61,7 @@ namespace Faction2
             desc = (String) config.GetValue("desc");
             id = (int) config.GetValue("id");
             ItemRewardType = (int) config.GetValue("irt");
-            enabled = (Boolean) config.GetValue("enabled");
+            enabled = (bool) config.GetValue("enabled");
             JObject requirement = (JObject) config.GetValue("requirement");
             JObject reward = (JObject) config.GetValue("reward");
             if (requirement != null)

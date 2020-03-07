@@ -43,7 +43,7 @@ public class Unclaim : Commands {
             //amount = (100) * Main.prefs["PlotPrice"];
 
 
-            if(!Main.FF.PlotsList.containsKey(x+"|"+z)){
+            if(!Main.FF.PlotsList.ContainsKey(x+"|"+z)){
                 Sender.SendMessage(Faction_main.NAME+ChatColors.Red+"Chunk Not Claimed!");
                 return;
             }
@@ -59,7 +59,7 @@ public class Unclaim : Commands {
     }
 
     private void UnClaimLand(int x,int z){
-        if(!Main.FF.PlotsList.containsKey(x+"|"+z)){
+        if(!Main.FF.PlotsList.ContainsKey(x+"|"+z)){
             Sender.SendMessage(Faction_main.NAME+ChatColors.Red+"Chunk Not Claimed!");
             return;
             //Sender.SendMessage(ChatColors.Red+"That Chunk at X:"+x+" Z:"+z+" is already Claimed by"+Main.FF.PlotsList.get(x+"|"+z)+"'s Faction!!");

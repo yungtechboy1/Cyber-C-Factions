@@ -680,7 +680,7 @@ string key = plot.split("\\|")[0] + "|" + plot.split("\\|")[1];
 //        {
 //            Map<string, Object> cd = __main.CD.getAll();
 //            int time = (int) (Calendar.getInstance().getTime().getTime()/1000);
-//            if (cd.containsKey(Username))
+//            if (cd.ContainsKey(Username))
 //            {
 //                if (time >= (int) cd.get(Username))
 //                {
