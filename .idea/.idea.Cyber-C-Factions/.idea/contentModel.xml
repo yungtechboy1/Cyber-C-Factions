@@ -84,7 +84,9 @@
         <e p="CyberCoreMain.cs" t="Include" />
         <e p="Manager" t="Include">
           <e p="Factions" t="Include">
+            <e p="Faction.cs" t="Include" />
             <e p="FactionFactory.cs" t="Include" />
+            <e p="FactionRank.cs" t="Include" />
             <e p="FactionsMain.cs" t="Include" />
             <e p="PlotManager.cs" t="Include" />
           </e>

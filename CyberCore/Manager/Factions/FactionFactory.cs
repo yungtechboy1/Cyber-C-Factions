@@ -121,14 +121,14 @@ namespace CyberCore.Manager.Factions
 
     public MySqlConnection getMySqlConnection() {
 
-//        System.out.println("WOR ==============================HOWEEEE");
-        if(Main == null)System.out.println("WOR HOWEEEE");
+//        Console.WriteLine("WOR ==============================HOWEEEE");
+        if(Main == null)Console.WriteLine("WOR HOWEEEE");
         if(Main.FactionData == null){
-            System.out.println("WOR 2222222222222HOWEEEE");
+            Console.WriteLine("WOR 2222222222222HOWEEEE");
             Main.FactionData = new FactionSQL(CyberCoreMain.getInstance());
         }
         MySqlConnection c=  Main.FactionData.connectToDb();
-        if(c == null)System.out.println("NOOO WHYYYY U NULL BBYY##217");
+        if(c == null)Console.WriteLine("NOOO WHYYYY U NULL BBYY##217");
         return c;
     }
 
@@ -303,7 +303,7 @@ namespace CyberCore.Manager.Factions
 //                    }
                     //stmt2.executeUpdate(String.format("DELETE FROM `home` WHERE `faction` LIKE '%s';",name));
                     //stmt2.executeUpdate(String.format("INSERT INTO `home` VALUES ('"+name+"',%s,%s,%s) ;",home.getX(),home.getY(),home.getZ()));
-//                    System.out.println(String.format("INSERT INTO `Master` VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');"
+//                    Console.WriteLine(String.format("INSERT INTO `Master` VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');"
 //                            , name, maxplayers, powerbonus, motd, displayName, desc, perms, privacy, power, money, point, xp, lvl, CMID, am, rich));
 //                    CyberCoreMain.getInstance().getLogger().error(String.format("INSERT INTO `Master` VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');"
 //                            , name, maxplayers, powerbonus, motd, displayName, desc, perms, privacy, power, money, point, xp, lvl, CMID, am, rich));
@@ -334,7 +334,7 @@ namespace CyberCore.Manager.Factions
 //                        stmt.executeUpdate(String.format("INSERT INTO `Master`(`player`,`faction`,`rank`) VALUES ('%s','%s','%s');", member, name, "General"));
 //                    }
 //                    //for(String member: fac.GetGenerals())stmt2.executeUpdate(String.format("INSERT OR IGNORE INTO `Master`(`player`,`faction`,`rank`) VALUES ('%s','%s','%s');",member,name,"General"));
-//                    System.out.println(fac.getName() + " > " + fac.GetLeader());
+//                    Console.WriteLine(fac.getName() + " > " + fac.GetLeader());
 //                    stmt.executeUpdate(String.format("DELETE FROM `Master` WHERE `player` = '%s';", fac.GetLeader()));
 //                    stmt.executeUpdate(String.format("INSERT INTO `Master`(`player`,`faction`,`rank`) VALUES ('%s','%s','%s');", fac.GetLeader(), name, "Leader"));
 //                    //stmt2.executeUpdate(String.format("INSERT INTO `Master`(`player`,`faction`,`rank`) VALUES (''%s'',''%s'',''%s'');",fac.GetLeader(),name,"Leader"));
@@ -373,7 +373,7 @@ namespace CyberCore.Manager.Factions
 
             MySqlConnection c = this.getMySqlConnection();
             if(c == null){
-                System.out.println("WOW ERROR WITH MySqlConnection E3324332!!! ");
+                Console.WriteLine("WOW ERROR WITH MySqlConnection E3324332!!! ");
                 return null;
             }
             Statement stmt = c.createStatement();
@@ -547,7 +547,7 @@ namespace CyberCore.Manager.Factions
         try {
             ResultSet r = this.ExecuteQuerySQL("select * from `Settings`");
             if (r == null) {
-                System.out.println("WTF THIS IS NULL TOOOOOOO E33746!");
+                Console.WriteLine("WTF THIS IS NULL TOOOOOOO E33746!");
                 return null;
             }
             while (r.next()) {
@@ -676,7 +676,7 @@ namespace CyberCore.Manager.Factions
 
 
         Faction fac = new Faction(Main, name,p);
-        System.out.println(fac + " <<<<<< FFFFFFFFFFFFFFFF");
+        Console.WriteLine(fac + " <<<<<< FFFFFFFFFFFFFFFF");
         LocalFactionCache.put(name.toLowerCase(), fac);
         fac.addPlayerToGlobalList(p,name);
         fac.getSettings().setPower(2,true);
@@ -738,14 +738,14 @@ namespace CyberCore.Manager.Factions
         String f = null;
         if (FacList.ContainsKey(p.getName().toLowerCase())) f = FacList.get(p.getName().toLowerCase());
         if (f == null) f = GetFactionFromMember(p.getName());
-        System.out.println("FACCCCC >>>>>>> " + f);
+        Console.WriteLine("FACCCCC >>>>>>> " + f);
         if (f == null || f.length() == 0) return null;
         return getFaction(f);
     }
 
     public String GetFactionFromMember(String faction) {
         try {
-            System.out.println(String.format("select * from `Master` where `player` LIKE '%s'", faction));
+            Console.WriteLine(String.format("select * from `Master` where `player` LIKE '%s'", faction));
             ResultSet r = this.ExecuteQuerySQL(String.format("select * from `Master` where `player` LIKE '%s'", faction));
             if (r == null) return null;
             while (r.next()) {
@@ -772,7 +772,7 @@ namespace CyberCore.Manager.Factions
             //getServer().getLogger().debug("In Cache");
             return LocalFactionCache.get(name.toLowerCase());
         } else if (factionExistsInDB(name)) {
-            System.out.println("In DB11111111111111111111111111111");
+            Console.WriteLine("In DB11111111111111111111111111111");
             getServer().getLogger().info("In DB11111111111111111111111111111");
             //if (List.ContainsKey(name.toLowerCase())) return List.get(name.toLowerCase());
             //No leader == No Faction!

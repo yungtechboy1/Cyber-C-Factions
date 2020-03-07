@@ -14,7 +14,7 @@ namespace CyberCore
     [OpenPluginInfo(Name = "CyberCore", Description = "CyberTech++ Core Plugin", Author = "YungTechBoy1", Version = "1.0.0.0-PA", Website = "CyberTechpp.com")]
     public class CyberCoreMain : OpenPlugin
     {
-    private static readonly ILog Log = LogManager.GetLogger(typeof(CyberCoreMain));
+    public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(CyberCoreMain));
     private static CyberCoreMain instance { get; set; }
     public ConfigSection MasterConfig { get; }
     public FactionsMain FM { get; private set; }

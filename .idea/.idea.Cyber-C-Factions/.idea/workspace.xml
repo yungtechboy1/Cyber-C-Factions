@@ -2,19 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/PlotManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Utils/ConfigSection.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionRank.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/ActiveMission.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/ActiveMission.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/DBConnection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/DBConnection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/FactionMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/FactionMain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/Mission.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/Mission.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/obj/Debug/netcoreapp3.1/CFactions.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/obj/Debug/netcoreapp3.1/CFactions.csprojAssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cyber-C-Factions.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Cyber-C-Factions.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,30 +38,35 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1C998C91-6729-4AF5-B147-9544EB72A2E0/52/6ec26383/MySqlCommand.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/CFactions/Mission.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F5619BA5-7468-445C-8ECD-7DF2876332AC/83/af26f18f/Item.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/CyberCore/Utils/ConfigSection.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/CFactions/DBConnection.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/CFactions/FactionFactory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/CFactions/CyberChat.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/3e/0a5fb5dc/Config.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/B16D78DA-268A-40BA-951E-52055D07F662/0/ConnectionState.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/CFactions/FactionMain.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionRank.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/Commands/MissionCmd.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/fc/881484da/ChatColors.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F5619BA5-7468-445C-8ECD-7DF2876332AC/d9/d1834601/Config.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Roaming/NuGet/NuGet.Config" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/BBB3B884-123D-47EA-9CD1-5BED540D02AE/CE/StringComparer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/PlotManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1C998C91-6729-4AF5-B147-9544EB72A2E0/52/6ec26383/MySqlCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CFactions/Mission.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Utils/ConfigSection.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CFactions/DBConnection.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CFactions/FactionFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CFactions/CyberChat.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CFactions/FactionMain.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CFactions/AbstractClass.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F5619BA5-7468-445C-8ECD-7DF2876332AC/4b/faa8005b/McpeInventoryTransaction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/ActiveMission.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Roaming/NuGet/NuGet.Config" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/Faction.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/BBB3B884-123D-47EA-9CD1-5BED540D02AE/CE/StringComparer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/Commands/Admin.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F5619BA5-7468-445C-8ECD-7DF2876332AC/d6/82c016b0/Transaction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/PlotManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A8585F79-75D3-4675-9AF8-7A57243E6E17/bd/ceb54357/OpenPluginInfo.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -81,11 +80,13 @@
         <option value="$PROJECT_DIR$/CyberCore/CyberCore.csproj" />
         <option value="$PROJECT_DIR$/CFactions/FactionMain.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/ConfigSection.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/PlotManager.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionRank.cs" />
       </list>
     </option>
   </component>
@@ -118,7 +119,7 @@
       <workItem from="1582863865172" duration="345000" />
       <workItem from="1582865454816" duration="718000" />
       <workItem from="1582866995520" duration="1520000" />
-      <workItem from="1583548689483" duration="7344000" />
+      <workItem from="1583548689483" duration="9297000" />
     </task>
     <servers />
   </component>
@@ -160,10 +161,10 @@
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583555034043" />
-    <state x="-1854" y="155" width="738" height="804" key="find.popup" timestamp="1583556048510">
+    <state x="-1854" y="155" width="738" height="804" key="find.popup" timestamp="1583556858981">
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
-    <state x="-1854" y="155" width="738" height="804" key="find.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583556048510" />
+    <state x="-1854" y="155" width="738" height="804" key="find.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583556858981" />
     <state x="-1873" y="244" width="672" height="678" key="search.everywhere.popup" timestamp="1583550982693">
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>

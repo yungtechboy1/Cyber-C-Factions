@@ -23,7 +23,7 @@ namespace CyberCore.Manager.Factions
             bool peace = false;
             bool wilderness = false;
         for (String fn : FFactory.GetAllFactionsNames()) {
-            System.out.println("Loading Faction " + fn);
+            Console.WriteLine("Loading Faction " + fn);
             Faction f = FFactory.getFaction(fn);
             if (f == null) {
                 continue;
