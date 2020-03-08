@@ -86,8 +86,16 @@
           <e p="Factions" t="Include">
             <e p="Faction.cs" t="Include" />
             <e p="FactionFactory.cs" t="Include" />
+            <e p="FactionPermSettings.cs" t="Include" />
             <e p="FactionRank.cs" t="Include" />
+            <e p="FactionSettings.cs" t="Include" />
             <e p="FactionsMain.cs" t="Include" />
+            <e p="Missions" t="Include">
+              <e p="ActiveMission.cs" t="Include" />
+              <e p="Mission.cs" t="Include" />
+              <e p="MissionData.cs" t="Include" />
+              <e p="MissionTask.cs" t="Include" />
+            </e>
             <e p="PlotManager.cs" t="Include" />
           </e>
         </e>
@@ -101,6 +109,7 @@
         <e p="Utils" t="Include">
           <e p="ConfigSection.cs" t="Include" />
           <e p="CustomConfigSection.cs" t="Include" />
+          <e p="DataHolder.cs" t="Include" />
           <e p="SqlManager.cs" t="Include" />
         </e>
       </e>

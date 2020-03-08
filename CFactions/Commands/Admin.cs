@@ -339,7 +339,7 @@ namespace Faction2.Commands
 
         public void SendHelp(int page)
         {
-            ArrayList a = new ArrayList();
+            List a = new List();
             a.Add("/f admin reload");
             a.Add("/f admin test");
             a.Add("/f admin test2s");

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using CyberCore.Manager.Factions.Missions;
 using CyberCore.Utils;
 using Google.Protobuf.WellKnownTypes;
 using MiNET;
@@ -18,10 +19,10 @@ namespace CyberCore.Manager.Factions
 ////@TODO Make this so I can Call a Faction Class....
 public class Faction {
 //    public String Leader;
-    //    public ArrayList<String> Recruits = new ArrayList<>();
-//    public ArrayList<String> Members = new ArrayList<>();
-//    public ArrayList<String> Officers = new ArrayList<>();
-//    public ArrayList<String> Generals = new ArrayList<>();
+    //    public List<String> Recruits = new List<>();
+//    public List<String> Members = new List<>();
+//    public List<String> Officers = new List<>();
+//    public List<String> Generals = new List<>();
 //   Needs Updating
 
 
@@ -29,10 +30,10 @@ public class Faction {
     [NonVolatile]
     public Dictionary<String, FactionRank> PlayerRanks = new Dictionary<>();
     public ActiveMission AM = null;
-    public ArrayList<AllyRequest> AR = new ArrayList<>();
-    public Dictionary<String, Object> SC_Map = new Dictionary<>();
+    public List<AllyRequest> AR = new List<AllyRequest>();
+    public Dictionary<String, Object> SC_Map = new Dictionary<String, Object>();
     public FactionSettings Settings;
-    public ArrayList<String> Neededfromsettings = new ArrayList() {{
+    public List<String> Neededfromsettings = new List() {{
         add("DisplayName");
         add("Name");
         add("MaxPlayers");
@@ -53,7 +54,7 @@ public class Faction {
 //        add("CompletedMissions");
     }};
     //Keeping Everyting Synced
-    protected boolean Clean = true;
+    protected bool Clean = true;
     protected int Global_Cache_Lastupload = 0;
     protected int Home_Cache_Lastupload = 0;
     //Not needed to be updated
@@ -77,18 +78,18 @@ public class Faction {
     private FactionLocalCache LC = new FactionLocalCache(this);
     private String War = null;
     private Map<String, Invitation> Invites = new Dictionary<>();
-    //    private Integer MaxPlayers = 15;
+    //    private int MaxPlayers = 15;
 //    private Double PowerBonus = 1d;
-//    private Integer Privacy = 0;
-//    private Integer Perms = 0;
-//    private Integer Power = 0;
-//    private Integer Rich = 0;
+//    private int Privacy = 0;
+//    private int Perms = 0;
+//    private int Power = 0;
+//    private int Rich = 0;
 //    private int Points = 0;
-//    private Integer XP = 0;
-//    private Integer Level = 0;
+//    private int XP = 0;
+//    private int Level = 0;
     //todo Save faction PermSettings
-    private ArrayList<Integer> CompletedMissionIDs = new ArrayList<>();
-    //    private Integer Money = 0;
+    private List<int> CompletedMissionIDs = new List<>();
+    //    private int Money = 0;
 //    private Vector3 Home = new Vector3(0, 0, 0);
 //    private int Global_Cache_UpdateEverySecs = 60 * 15;
 //    private int Settings_Cache_UpdateEverySecs = 60 * 15;
@@ -101,7 +102,7 @@ public class Faction {
         addPlayer(cp,FactionRank.Leader,null);
     }
 
-    public Faction(FactionsMain main, String name, boolean newfac) {
+    public Faction(FactionsMain main, String name, bool newfac) {
         Main = main;
         Name = name;
         Settings = new FactionSettings(this, true);
@@ -115,7 +116,7 @@ public class Faction {
         this(main, name, displayname, true);
     }
 
-    public Faction(FactionsMain main, String name, String displayname, boolean newfac) {
+    public Faction(FactionsMain main, String name, String displayname, bool newfac) {
         Main = main;
         Name = name;
         Settings = new FactionSettings(this, false);
@@ -126,7 +127,7 @@ public class Faction {
             loadFromDB();
     }
 
-//    public Faction(FactionsMain main, String name, String displayname, String leader, ArrayList<String> members, ArrayList<String> generals, ArrayList<String> officers, ArrayList<String> recruits) {
+//    public Faction(FactionsMain main, String name, String displayname, String leader, List<String> members, List<String> generals, List<String> officers, List<String> recruits) {
 //        Main = main;
 //        Name = name;
 //        getSettings().setDisplayName(displayname);
@@ -170,7 +171,7 @@ public class Faction {
 
     //CJ LOOK HERE
     //TODO ALSO FIX PROMOTE AND DEMOTE TO SEND DIRECTLY TO SERVER
-    public void reloadPlayerRanks(boolean force) {
+    public void reloadPlayerRanks(bool force) {
         if (!PlayerRanksCC.needsUpdate() && !force) return;
         if(Main == null)Console.WriteLine("Error 1111111111111111111111111111111111111111");
         if(Main.FFactory == null)Console.WriteLine("Error 1111111111111111111111111111111111111111222222222222222222222222222");
@@ -216,7 +217,7 @@ public class Faction {
         }
     }
 
-    public Dictionary<String, Object> GetAllSettings(boolean forceupdate) {
+    public Dictionary<String, Object> GetAllSettings(bool forceupdate) {
         if (forceupdate) {
             SC_Map = null;
         }
@@ -287,7 +288,7 @@ public class Faction {
         return UpdateEverySecs *20;
     }
 
-public boolean onTick(int tick){
+public bool onTick(int tick){
 
     reloadPlayerRanks(true);
     return true;
@@ -306,7 +307,7 @@ public boolean onTick(int tick){
         PromotePlayer(pp, false);
     }
 
-    public void PromotePlayer(Player pp, boolean leaderConfirm) {
+    public void PromotePlayer(Player pp, bool leaderConfirm) {
         FactionRank cr = getPlayerRank(pp);
         String pn = pp.getName().toLowerCase();
         switch (cr) {
@@ -377,7 +378,7 @@ public boolean onTick(int tick){
         String found = null;
         name = name.toLowerCase();
         int delta = 2147483647;
-        ArrayList<String> var1 = LC.getAllies();
+        List<String> var1 = LC.getAllies();
         Iterator<String> var4 = var1.iterator();
 
         while (var4.hasNext()) {
@@ -448,11 +449,11 @@ public boolean onTick(int tick){
         return getName();
     }
 
-    public ArrayList<String> GetPlots() {
+    public List<String> GetPlots() {
         return FactionsMain.getInstance().FFactory.PM.getFactionPlots(getName());
     }
 
-    public boolean AddPlots(int chunkx, int chunkz, CorePlayer player) {
+    public bool AddPlots(int chunkx, int chunkz, CorePlayer player) {
         if (!FactionsMain.getInstance().FFactory.PM.addPlot(chunkx, chunkz, getName())) {
             player.sendMessage("Error! That plot is claimed E:33421");
             return false;
@@ -461,11 +462,11 @@ public boolean onTick(int tick){
         return true;
     }
 
-    public boolean DelPlots(int chunkx, int chunkz, CorePlayer playe) {
+    public bool DelPlots(int chunkx, int chunkz, CorePlayer playe) {
         return DelPlots(chunkx, chunkz, playe, false);
     }
 
-    public boolean DelPlots(int chunkx, int chunkz, CorePlayer player, boolean overclaim) {
+    public bool DelPlots(int chunkx, int chunkz, CorePlayer player, bool overclaim) {
         if (!FactionsMain.getInstance().FFactory.PM.delPlot(chunkx, chunkz, getName(), overclaim)) {
             player.sendMessage("Error deleting Plot E339211");
             return false;
@@ -473,11 +474,11 @@ public boolean onTick(int tick){
         return true;
     }
 
-//    public void SetMaxPlayers(Integer value) {
+//    public void SetMaxPlayers(int value) {
 //        MaxPlayers = value;
 //    }
 //
-//    public Integer GetMaxPlayers() {
+//    public int GetMaxPlayers() {
 //        return MaxPlayers;
 //    }
 //
@@ -489,21 +490,21 @@ public boolean onTick(int tick){
 //        return PowerBonus;
 //    }
 
-    public Integer CalculateMaxPower() {
-        Integer TP = GetNumberOfPlayers();
+    public int CalculateMaxPower() {
+        int TP = GetNumberOfPlayers();
         return TP * 10;
         //Lets do 20 Instead of 10
     }
 
-    public Integer GetNumberOfPlayers() {
+    public int GetNumberOfPlayers() {
         return getPlayerCount();
     }
 
-//    public void SetPrivacy(Integer value) {
+//    public void SetPrivacy(int value) {
 //        Privacy = value;
 //    }
 //
-//    public Integer GetPrivacy() {
+//    public int GetPrivacy() {
 //        return Privacy;
 //    }
 
@@ -517,48 +518,48 @@ public boolean onTick(int tick){
         return getPermSettings();
     }
 
-//    public Integer GetPerm(Integer key) {
+//    public int GetPerm(int key) {
 //        try {
-//            return Integer.parseInt(Perms.toString().substring(key));
+//            return int.parseInt(Perms.toString().substring(key));
 //        } catch (Exception ignore) {
 //            return null;
 //        }
 //    }
 
-//    public void SetPoints(Integer value) {
+//    public void SetPoints(int value) {
 //        if (value == null) value = 0;
 //        Points = value;
 //    }
 //
-//    public Integer GetPoints() {
+//    public int GetPoints() {
 //        return Points;
 //    }
 
-//    public void AddPoints(Integer pts) {
+//    public void AddPoints(int pts) {
 //        SetPoints(GetPoints() + Math.abs(pts));
 //    }
 //
-//    public void TakePoints(Integer pts) {
-//        Integer a = GetPoints() - pts;
+//    public void TakePoints(int pts) {
+//        int a = GetPoints() - pts;
 //        if (a < 0) SetPoints(0);
 //        SetPoints(a);
 //    }
 
-//    public void SetLevel(Integer value) {
+//    public void SetLevel(int value) {
 //        Level = value;
 //        UpdateBossBar();
 //    }
 //
-//    public Integer GetLevel() {
+//    public int GetLevel() {
 //        return Level;
 //    }
 
-//    public void AddLevel(Integer lvl) {
+//    public void AddLevel(int lvl) {
 //        SetLevel(GetLevel() + Math.abs(lvl));
 //    }
 //
-//    public void TakeLevel(Integer lvl) {
-//        Integer a = GetLevel() - lvl;
+//    public void TakeLevel(int lvl) {
+//        int a = GetLevel() - lvl;
 //        if (a < 0) SetLevel(0);
 //        SetLevel(a);
 //    }
@@ -586,11 +587,11 @@ public boolean onTick(int tick){
         if (id == null || id.equalsIgnoreCase("")) {
             SetActiveMission();
         } else {
-            SetActiveMission(Integer.parseInt(id));
+            SetActiveMission(int.parseInt(id));
         }
     }
 
-    public void AcceptNewMission(Integer id, CommandSender Sender) {
+    public void AcceptNewMission(int id, CommandSender Sender) {
         if (GetActiveMission() != null) {
             Sender.sendMessage(FactionsMain.NAME + TextFormat.RED + "Error you already have a mission!!");
             return;
@@ -602,7 +603,7 @@ public boolean onTick(int tick){
         SetActiveMission(id);
     }
 
-    public void SetActiveMission(Integer id) {
+    public void SetActiveMission(int id) {
 //        for(Mission mission: Main.Missions){
 //            if(mission.id.equals(id)) {
 //                SetActiveMission(new ActiveMission(Main,this,mission));
@@ -615,11 +616,11 @@ public boolean onTick(int tick){
         if (id == null || id.equalsIgnoreCase("")) {
             SetActiveMission();
         } else {
-            RetrieveActiveMission(Integer.parseInt(id));
+            RetrieveActiveMission(int.parseInt(id));
         }
     }
 
-    public void RetrieveActiveMission(Integer id) {
+    public void RetrieveActiveMission(int id) {
 //        if(Main.AM.exists(getName())){
 //            for(Mission mission: Main.Missions){
 //                if(mission.id.equals(id)){
@@ -661,19 +662,19 @@ public boolean onTick(int tick){
         AM = null;
     }
 
-    public void SetCompletedMissisons(ArrayList<Integer> value) {
+    public void SetCompletedMissisons(List<int> value) {
         CompletedMissionIDs = value;
     }
 
-    public ArrayList<Integer> GetCompletedMissions() {
+    public List<int> GetCompletedMissions() {
         return CompletedMissionIDs;
     }
 
-    public void AddCompletedMission(Integer mission) {
+    public void AddCompletedMission(int mission) {
         CompletedMissionIDs.add(mission);
     }
 //
-//    public void SetMoney(Integer value) {
+//    public void SetMoney(int value) {
 ////        Money = value;
 //        Connection c = CyberCoreMain.getInstance().FM.FFactory.getMySqlConnection();
 //        try {
@@ -690,14 +691,14 @@ public boolean onTick(int tick){
 //    /**
 //     * @return null | Int
 //     */
-//    public Integer GetMoney() {
+//    public int GetMoney() {
 //        Connection c = CyberCoreMain.getInstance().FM.FFactory.getMySqlConnection();
 //        try {
 //            Statement s = c.createStatement();
 //            ResultSet r = s.executeQuery("SELECT Money FROM Settings WHERE Name LIKE '" + getName() + "'");
-//            ArrayList<AllyRequest> list = new ArrayList<>();
+//            List<AllyRequest> list = new List<>();
 //            if (r.next()) {
-//                Integer m = r.getInt("Money");
+//                int m = r.getInt("Money");
 //                c.close();
 //                return m;
 //            }
@@ -708,21 +709,21 @@ public boolean onTick(int tick){
 //        return null;
 //    }
 //
-//    public void AddMoney(Integer money) {
+//    public void AddMoney(int money) {
 //        SetMoney(GetMoney() + Math.abs(money));
 //    }
 //
-//    public void TakeMoney(Integer money) {
-//        Integer a = GetMoney() - money;
+//    public void TakeMoney(int money) {
+//        int a = GetMoney() - money;
 //        if (a < 0) SetMoney(0);
 //        SetMoney(a);
 //    }
 
-//    public Integer GetRich() {
+//    public int GetRich() {
 //        return Rich + GetMoney();
 //    }
 //
-//    public void SetRich(Integer rich) {
+//    public void SetRich(int rich) {
 //        Rich = rich;
 //    }
 
@@ -730,12 +731,12 @@ public boolean onTick(int tick){
         //Level lvl = Main.getServer().getLevelByName("world");
 
         //Main.getServer().getScheduler().scheduleAsyncTask(new FactionRichAsyncSingle(Main,lvl,this));
-        /*Integer value = 0;
+        /*int value = 0;
         if(lvl == null)return value;
         for(String plot: GetPlots()){
         String key = plot.split("\\|")[0] + "|" + plot.split("\\|")[1];
-            int sx = Integer.parseInt(plot.split("\\|")[0]) << 4;
-            int sz = Integer.parseInt(plot.split("\\|")[1]) << 4;
+            int sx = int.parseInt(plot.split("\\|")[0]) << 4;
+            int sz = int.parseInt(plot.split("\\|")[1]) << 4;
             for (int x = 0; x < 64; x++) {
                 for (int y = 0; y < 128; y++) {
                     for (int z = 0; z < 64; z++) {
@@ -748,7 +749,7 @@ public boolean onTick(int tick){
                         }else{
                             kkey = b.getId()+"";
                         }
-                        if(Main.BV.exists(kkey))value += (Integer) Main.BV.get(kkey);
+                        if(Main.BV.exists(kkey))value += (int) Main.BV.get(kkey);
                     }
                 }
             }
@@ -756,12 +757,12 @@ public boolean onTick(int tick){
         //return value;
     }
 
-    public Integer GetMaxPower() {
+    public int GetMaxPower() {
         return CalculateMaxPower();
     }
 
-//    public void SetPower(Integer value) {
-//        Integer dif = value - GetPower();
+//    public void SetPower(int value) {
+//        int dif = value - GetPower();
 //        String t = "";
 //        if (dif > 0) {
 //            t = TextFormat.GREEN + "Gained +" + dif;
@@ -772,12 +773,12 @@ public boolean onTick(int tick){
 //        Power = value;
 //    }
 //
-//    public Integer GetPower() {
+//    public int GetPower() {
 //        return Power;
 //    }
 
-//    public void AddPower(Integer power) {
-//        Integer t = GetPower() + Math.abs(power);
+//    public void AddPower(int power) {
+//        int t = GetPower() + Math.abs(power);
 //        if (t > CalculateMaxPower()) {
 //            SetPower(CalculateMaxPower());
 //        } else {
@@ -785,8 +786,8 @@ public boolean onTick(int tick){
 //        }
 //    }
 //
-//    public void TakePower(Integer power) {
-//        Integer a = GetPower() - power;
+//    public void TakePower(int power) {
+//        int a = GetPower() - power;
 //        if (a < 0) {
 //            SetPower(0);
 //        } else {
@@ -807,7 +808,7 @@ public boolean onTick(int tick){
                 Statement s = c.createStatement();
                 ResultSet r = s.executeQuery("SELECT * FROM `Homes` WHERE `faction` LIKE '" + getName() + "'");
                 while (r.next()) {
-                    Integer hid = r.getInt("homeid");
+                    int hid = r.getInt("homeid");
                     String name = r.getString("name");
                     String lvln = r.getString("level");
                     String faction = r.getString("faction");
@@ -855,9 +856,9 @@ public boolean onTick(int tick){
                 String[] h1 = aa.split("\\|");
                 if (h1.length == 5) {
                     try {
-                        int x = Integer.parseInt(h1[0]);
-                        int y = Integer.parseInt(h1[1]);
-                        int z = Integer.parseInt(h1[2]);
+                        int x = int.parseInt(h1[0]);
+                        int y = int.parseInt(h1[1]);
+                        int z = int.parseInt(h1[2]);
                         String lvl = h1[3];
                         cn.nukkit.level.Level l = Server.getInstance().getLevelByName(lvl);
                         if (l == null) {
@@ -877,9 +878,9 @@ public boolean onTick(int tick){
             String[] hhh = h.split("\\|");
             if (hhh.length == 5) {
                 try {
-                    int x = Integer.parseInt(hhh[0]);
-                    int y = Integer.parseInt(hhh[1]);
-                    int z = Integer.parseInt(hhh[2]);
+                    int x = int.parseInt(hhh[0]);
+                    int y = int.parseInt(hhh[1]);
+                    int z = int.parseInt(hhh[2]);
                     String lvl = hhh[3];
                     cn.nukkit.level.Level l = Server.getInstance().getLevelByName(lvl);
                     if (l == null) {
@@ -899,7 +900,7 @@ public boolean onTick(int tick){
         return f;
     }
 
-    public boolean DelHome(int h) {
+    public bool DelHome(int h) {
         Connection c = CyberCoreMain.getInstance().FM.FFactory.getMySqlConnection();
         try {
             Statement s = c.createStatement();
@@ -913,7 +914,7 @@ public boolean onTick(int tick){
         return true;
     }
 
-    public boolean addHome(HomeData h) {
+    public bool addHome(HomeData h) {
 
         if (!h.isValid()) {
             Console.WriteLine("H NOT VALIDDDDDDDDDD!!!!!!!!!!!!!!!!!!!!!!!!!!!!! E3323109");
@@ -951,11 +952,11 @@ public boolean onTick(int tick){
         return null;
     }
 
-    public Boolean AtWar() {
+    public bool AtWar() {
         return War != null;
     }
 
-    public Boolean AtWar(String fac) {
+    public bool AtWar(String fac) {
         if (War != null) {
             return ((ConfigSection) Main.War.get(War)).getString("defenders").equalsIgnoreCase(fac);
         }
@@ -976,12 +977,12 @@ public boolean onTick(int tick){
     }
 
 
-//    public void AddCooldown(Integer secs){
+//    public void AddCooldown(int secs){
 //        Map<String, Object> cd = Main.CD.getAll();
 //        int time = (int)(Calendar.getInstance().getTime().getTime()/1000);
 //        cd.put(getName(),time+secs);
 //    }
-//    public boolean HasWarCooldown(){
+//    public bool HasWarCooldown(){
 //        Map<String, Object> cd = Main.CD.getAll();
 //        int time = (int)(Calendar.getInstance().getTime().getTime()/1000);
 //        if (cd.containsKey(getName())){
@@ -1008,15 +1009,15 @@ public boolean onTick(int tick){
         BroadcastMessage(fac.getSettings().getDisplayName() + " is no longer set as an Enemy of your faction by " + p.getDisplayName());
     }
 
-    public ArrayList<String> GetEnemies() {
+    public List<String> GetEnemies() {
         return FactionsMain.getInstance().FFactory.RM.getFactionEnemy(getName());
     }
 
-    public Boolean isEnemy(String fac) {
+    public bool isEnemy(String fac) {
         return FactionsMain.getInstance().FFactory.RM.isEnemy(getName(), fac);
     }
 
-    public boolean AddAlly(String fac) {
+    public bool AddAlly(String fac) {
         return FactionsMain.getInstance().FFactory.RM.addAllyRelationship(getName(), fac);
     }
 
@@ -1025,44 +1026,44 @@ public boolean onTick(int tick){
         RemoveAlly(fac.getName());
     }
 
-    public boolean RemoveAlly(String fac) {
+    public bool RemoveAlly(String fac) {
         return FactionsMain.getInstance().FFactory.RM.removeAllyRelationship(getName(), fac);
     }
 
-    public ArrayList<String> GetAllies() {
+    public List<String> GetAllies() {
         return FactionsMain.getInstance().FFactory.RM.getFactionAllies(getName());
     }
 
     //Can Attack Nuetral but can not Attack Allys!
-    public Boolean isNeutral(CorePlayer player) {
+    public bool isNeutral(CorePlayer player) {
         Faction f = player.getFaction();
         if (f != null) return isNeutral(f);
         return true;
     }
 
-    public Boolean isNeutral(String name) {
+    public bool isNeutral(String name) {
         return !isAllied(name) && !isEnemy(name);
     }
 
-    public Boolean isNeutral(Faction fac) {
+    public bool isNeutral(Faction fac) {
         return isNeutral(fac.getName());
     }
 
-    public Boolean isAllied(CorePlayer player) {
+    public bool isAllied(CorePlayer player) {
         Faction f = player.getFaction();
         if (f != null) return isAllied(f);
         return false;
     }
 
-    public Boolean isAllied(Faction fac) {
+    public bool isAllied(Faction fac) {
         return isAllied(fac.getName());
     }
 
-    public Boolean isAllied(String fac) {
+    public bool isAllied(String fac) {
         return FactionsMain.getInstance().FFactory.RM.isAllys(getName(), fac);
     }
 
-    public void AddInvite(CorePlayer player, Integer value, CorePlayer sender, FactionRank fr) {
+    public void AddInvite(CorePlayer player, int value, CorePlayer sender, FactionRank fr) {
 
         if (!addRequest(RequestType.Faction_Invite, null, player, value, sender)) {
             player.sendMessage("Error sending Faction Invite Request! Please report Error 'E332FI' to an admin");
@@ -1084,11 +1085,11 @@ public boolean onTick(int tick){
 
     }
 
-//    public void SetInvite(Map<String, Integer> Invs) {
+//    public void SetInvite(Map<String, int> Invs) {
 //        Invites = Invs;
 //    }
 
-//    public Map<String, Integer> GetInvite() {
+//    public Map<String, int> GetInvite() {
 //        return Invites;
 //    }
 
@@ -1104,7 +1105,7 @@ public boolean onTick(int tick){
         Invites.remove(name);
     }
 
-    public Boolean AcceptInvite(CorePlayer p) {
+    public bool AcceptInvite(CorePlayer p) {
         String name = p.getName();
         Invitation i = HasInvite(name);
         if (i == null) {
@@ -1194,15 +1195,15 @@ public boolean onTick(int tick){
         PlayerRanks.remove(p.getName());
     }
 
-    public boolean addPlayer(CorePlayer p, FactionRank r, String invitedby) {
+    public bool addPlayer(CorePlayer p, FactionRank r, String invitedby) {
         return addPlayer(p.getName(), r, invitedby);
     }
 
-    public boolean addPlayer(Player p, FactionRank r, String invitedby) {
+    public bool addPlayer(Player p, FactionRank r, String invitedby) {
         return addPlayer(p.getName(), r, invitedby);
     }
 
-    public boolean addPlayer(String p, FactionRank r, String invitedby) {
+    public bool addPlayer(String p, FactionRank r, String invitedby) {
         if(invitedby != null){
             invitedby = "'"+invitedby+"'";
         }else invitedby = "null";
@@ -1226,47 +1227,47 @@ public boolean onTick(int tick){
         return true;
     }
 
-    public boolean IsMember(Player p) {
+    public bool IsMember(Player p) {
         return IsMember(p.getName());
     }
 
-    public boolean IsOfficer(Player p) {
+    public bool IsOfficer(Player p) {
         return IsOfficer(p.getName());
     }
 
-    public boolean IsGeneral(Player p) {
+    public bool IsGeneral(Player p) {
         return IsGeneral(p.getName());
     }
 
-    public boolean IsRecruit(Player p) {
+    public bool IsRecruit(Player p) {
         return IsRecruit(p.getName());
     }
 
-    public boolean IsRecruit(String n) {
+    public bool IsRecruit(String n) {
         if (PlayerRanks.containsKey(n)) return PlayerRanks.get(n).hasPerm(FactionRank.Recruit);
         return false;
     }
 
-    public boolean IsMember(String n) {
+    public bool IsMember(String n) {
         if (PlayerRanks.containsKey(n)) return PlayerRanks.get(n).hasPerm(FactionRank.Member);
         return false;
     }
 
-    public boolean IsOfficer(String n) {
+    public bool IsOfficer(String n) {
         if (PlayerRanks.containsKey(n)) return PlayerRanks.get(n).hasPerm(FactionRank.Officer);
         return false;
     }
 
-    public boolean IsGeneral(String n) {
+    public bool IsGeneral(String n) {
         if (PlayerRanks.containsKey(n)) return PlayerRanks.get(n).hasPerm(FactionRank.General);
         return false;
     }
 
-    public boolean IsInFaction(Player player) {
+    public bool IsInFaction(Player player) {
         return IsInFaction(player.getName());
     }
 
-    public boolean IsInFaction(String n) {
+    public bool IsInFaction(String n) {
         for (String m : PlayerRanks.keySet()) if (n.equalsIgnoreCase(m)) return true;
         return false;
     }
@@ -1358,13 +1359,13 @@ public boolean onTick(int tick){
         }
     }
 
-    public Integer GetPlayerPerm(String name) {
+    public int GetPlayerPerm(String name) {
         FactionRank fr = getPlayerRank(name);
         return fr.getPower();
     }
 
-    public ArrayList<Player> GetOnlinePlayers() {
-        ArrayList<Player> aa = new ArrayList();
+    public List<Player> GetOnlinePlayers() {
+        List<Player> aa = new List();
         for (Map.Entry<String, FactionRank> a : PlayerRanks.entrySet()) {
             Player p = Main.getServer().getPlayerExact(a.getKey());
             if (p == null) continue;
@@ -1394,11 +1395,11 @@ public boolean onTick(int tick){
     }
 
 
-//    public ArrayList<String> getFChat() {
+//    public List<String> getFChat() {
 //        return FChat;
 //    }
 //
-//    public void setFChat(ArrayList<String> FChat) {
+//    public void setFChat(List<String> FChat) {
 //        this.FChat = FChat;
 //    }
 
@@ -1414,15 +1415,15 @@ public boolean onTick(int tick){
         AddAllyRequest(fac, cp, -1);
     }
 
-    public ArrayList<AllyRequest> getAllyRequests() {
+    public List<AllyRequest> getAllyRequests() {
         Connection c = CyberCoreMain.getInstance().FM.FFactory.getMySqlConnection();
         try {
             Statement s = c.createStatement();
 
             ResultSet r = s.executeQuery("SELECT * FROM Requestes WHERE type LIKE '" + RequestType.Ally.getKey() + "' AND target = '" + getName() + "'");
 
-            ArrayList<Integer> dellist = new ArrayList<>();
-            ArrayList<AllyRequest> list = new ArrayList<>();
+            List<int> dellist = new List<>();
+            List<AllyRequest> list = new List<>();
             while (r.next()) {
                 String fn = r.getString("faction");
                 Faction f = FactionsMain.getInstance().FFactory.getFaction(fn);
@@ -1441,7 +1442,7 @@ public boolean onTick(int tick){
         }
     }
 
-    public boolean addRequest(RequestType rt, Faction fac, CorePlayer player, int timeout, CorePlayer sender) {
+    public bool addRequest(RequestType rt, Faction fac, CorePlayer player, int timeout, CorePlayer sender) {
         Connection c = CyberCoreMain.getInstance().FM.FFactory.getMySqlConnection();
         String sn = null;
         String pn = null;
@@ -1613,7 +1614,7 @@ public boolean onTick(int tick){
         return getSettings().getPrivacy();
     }
 
-    public Integer GetMaxPlayers() {
+    public int GetMaxPlayers() {
         return getSettings().getMaxPlayers();
     }
 
@@ -1628,7 +1629,7 @@ public boolean onTick(int tick){
         private int HomeID = -1;
         private String faction = null;
 
-        public HomeData(int x, int y, int z, cn.nukkit.level.Level l, String name, String fac, Integer hid) {
+        public HomeData(int x, int y, int z, cn.nukkit.level.Level l, String name, String fac, int hid) {
             HomeID = hid;
             this.x = x;
             this.y = y;
@@ -1638,7 +1639,7 @@ public boolean onTick(int tick){
             this.name = name;
         }
 
-        public HomeData(int x, int y, int z, String ln, String name, String fac, Integer hid) {
+        public HomeData(int x, int y, int z, String ln, String name, String fac, int hid) {
             HomeID = hid;
             this.x = x;
             this.y = y;
@@ -1688,7 +1689,7 @@ public boolean onTick(int tick){
             return name;
         }
 
-        public boolean isValid() {
+        public bool isValid() {
             return (getL() != null);
         }
     }
@@ -1730,4 +1731,5 @@ public boolean onTick(int tick){
     public class NonVolatileAttribute : Attribute
     {
     }
+
 

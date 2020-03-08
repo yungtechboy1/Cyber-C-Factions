@@ -7,7 +7,7 @@ import cn.nukkit.utils.ChatColors;
 import main.java.CyberFactions.Faction;
 import main.java.CyberFactions.Faction_main;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by carlt_000 on 7/9/2016.

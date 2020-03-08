@@ -22,7 +22,7 @@ namespace CyberCore.Manager.Factions
             
             bool peace = false;
             bool wilderness = false;
-        for (String fn : FFactory.GetAllFactionsNames()) {
+        foreach (String fn in FFactory.GetAllFactionsNames()) {
             Console.WriteLine("Loading Faction " + fn);
             Faction f = FFactory.getFaction(fn);
             if (f == null) {
@@ -42,8 +42,8 @@ namespace CyberCore.Manager.Factions
                     getServer().getLogger().info( ex.getClass().getName() + ":9 " + ex.getMessage()+" > "+ex.getStackTrace()[0].getLineNumber()+" ? "+ex.getCause());
                 }*/
             } else {
-                FFactory.Top.put(f.getName(), f.getSettings().getMoney());
-                FFactory.Rich.put(f.getName(), f.getSettings().getRich());
+                FFactory.Top.Add(f.getName(), f.getSettings().getMoney());
+                FFactory.Rich.Add(f.getName(), f.getSettings().getRich());
             }
             if (fn.equalsIgnoreCase("peace")) {
                 peace = true;

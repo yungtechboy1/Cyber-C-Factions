@@ -133,12 +133,12 @@ namespace Faction2
         }
 
         //Select statement
-        public ArrayList Select()
+        public List Select()
         {
             string query = "SELECT * FROM tableinfo";
 
             //Create a list to store the result
-           ArrayList list = new ArrayList();
+           List list = new List();
 
             //Open MySqlConnection
             if (this.OpenConnection() == true)
@@ -151,7 +151,7 @@ namespace Faction2
                 //Read the data and store them in the list
                 while (dataReader.Read())
                 {
-                    ArrayList al = new ArrayList();
+                    List al = new List();
                     foreach (var v in dataReader)
                     {
                         al.Add(v);

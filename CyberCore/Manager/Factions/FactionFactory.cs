@@ -40,11 +40,11 @@ namespace CyberCore.Manager.Factions
         
     public void addFactionInvite(FactionInviteData fid) {
         if (InvList.ContainsKey(fid.getPlayerName())) {
-            ArrayList<FactionInviteData> fidl = InvList.get(fid.getPlayerName());
+            List<FactionInviteData> fidl = InvList.get(fid.getPlayerName());
             fidl.add(fid);
             InvList.put(fid.getPlayerName(), fidl);
         } else {
-            ArrayList<FactionInviteData> fidl = new ArrayList<>();
+            List<FactionInviteData> fidl = new List<>();
             fidl.add(fid);
             InvList.put(fid.getPlayerName(), fidl);
         }
@@ -53,7 +53,7 @@ namespace CyberCore.Manager.Factions
     public void updatePlayerFactionInvites(String cpn) {
         if (InvList.ContainsKey(cpn)) {
 
-            ArrayList<FactionInviteData> fidl = InvList.get(cpn);
+            List<FactionInviteData> fidl = InvList.get(cpn);
             bool clean = false;
             while (!clean) {
                 clean = true;
@@ -79,11 +79,11 @@ namespace CyberCore.Manager.Factions
         updatePlayerFactionInvites(cp.getName());
     }
 
-    public ArrayList<String> getFactionsPlayerIsInvitedTo(String cpn) {
+    public List<String> getFactionsPlayerIsInvitedTo(String cpn) {
         updatePlayerFactionInvites(cpn);
-        ArrayList<String> data = new ArrayList<>();
+        List<String> data = new List<>();
         if (InvList.ContainsKey(cpn)) {
-            ArrayList<FactionInviteData> fidl = InvList.get(cpn);
+            List<FactionInviteData> fidl = InvList.get(cpn);
             for (FactionInviteData fid : fidl) {
                 if (fid.isValid()) data.add(fid.getFaction());
             }
@@ -92,11 +92,11 @@ namespace CyberCore.Manager.Factions
             return null;
     }
 
-    public ArrayList<String> getFactionsPlayerIsInvitedTo(Player p) {
+    public List<String> getFactionsPlayerIsInvitedTo(Player p) {
         return getFactionsPlayerIsInvitedTo(p.getName());
     }
 
-    public ArrayList<String> getFactionsPlayerIsInvitedTo(CorePlayer cp) {
+    public List<String> getFactionsPlayerIsInvitedTo(CorePlayer cp) {
         return getFactionsPlayerIsInvitedTo(cp.getName());
     }
 
@@ -115,7 +115,7 @@ namespace CyberCore.Manager.Factions
      * @return String of Faction that ownes the plot
      */
     @Deprecated
-    public String getPlotOwner(Integer x, Integer z) {
+    public String getPlotOwner(int x, int z) {
         return PM.getFactionFromPlot(x,z);
     }
 
@@ -163,7 +163,7 @@ namespace CyberCore.Manager.Factions
                     " faction           VARCHAR    NOT NULL, " +
                     " rank            VARCHAR     NOT NULL)";
             String sql1 = "CREATE TABLE IF NOT EXISTS \"allies\" (  " +
-                    "                        `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,  " +
+                    "                        `id` int NOT NULL PRIMARY KEY AUTOINCREMENT,  " +
                     "                        `factiona` VARCHAR NOT NULL,  " +
                     "                        `factionb` varchar NOT NULL,  " +
                     "                        `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP  " +
@@ -171,8 +171,8 @@ namespace CyberCore.Manager.Factions
             String sql2 = "CREATE TABLE IF NOT EXISTS \"confirm\" (" +
                     "`player`TEXT NOT NULL," +
                     "`faction`TEXT NOT NULL," +
-                    "`timestamp`INTEGER," +
-                    "`id`INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT" +
+                    "`timestamp`int," +
+                    "`id`int NOT NULL PRIMARY KEY AUTOINCREMENT" +
                     ")";
             String sql3 = "CREATE TABLE  IF NOT EXISTS \"home\" (" +
                     "                     `faction` varchar NOT NULL UNIQUE, " +
@@ -182,7 +182,7 @@ namespace CyberCore.Manager.Factions
                     "                     PRIMARY KEY(faction) " +
                     "                    );";
             String sql4 = "CREATE TABLE IF NOT EXISTS \"plots\" (  " +
-                    "            `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,  " +
+                    "            `id` int NOT NULL PRIMARY KEY AUTOINCREMENT,  " +
                     "            `faction` varchar(250) NOT NULL,  " +
                     "            `x` int(250) NOT NULL,  " +
                     "            `z` int(250) NOT NULL  " +
@@ -194,10 +194,10 @@ namespace CyberCore.Manager.Factions
                     "`MOTD`varchar(1000) NOT NULL," +
                     "`displayname`varchar(1000) NOT NULL," +
                     "`desc`varchar(1000) NOT NULL," +
-                    "`prem`INTEGER NOT NULL," +
+                    "`prem`int NOT NULL," +
                     "`privacy`int(11) NOT NULL," +
-                    "`power`INTEGER NOT NULL," +
-                    "`money`INTEGER NOT NULL," +
+                    "`power`int NOT NULL," +
+                    "`money`int NOT NULL," +
                     "PRIMARY KEY(faction)" +
                     ")";
             //String sql7 = "CREATE TABLE IF NOT EXISTS war ( attacker varchar(250) NOT NULL PRIMARY KEY, defender varchar(250) NOT NULL, start int(250) NOT NULL)";
@@ -215,26 +215,26 @@ namespace CyberCore.Manager.Factions
                 try {
                     Faction fac = e.getValue();
                     String name = e.getKey();
-//                    ArrayList<String> allies = fac.GetAllies();
-//                    ArrayList<String> enemies = fac.GetEnemies();
-//                    ArrayList<String> plots = fac.GetPlots();
-////                    Map<String, Integer> invites = fac.GetInvite();
+//                    List<String> allies = fac.GetAllies();
+//                    List<String> enemies = fac.GetEnemies();
+//                    List<String> plots = fac.GetPlots();
+////                    Map<String, int> invites = fac.GetInvite();
 //                    Vector3 home = fac.GetHome();
 //                    String motd = fac.GetMOTD();
 //                    String displayName = fac.getDisplayName();
 //                    String desc = fac.GetDesc();
 //                    FactionPermSettings perms = fac.GetPerm();
-//                    Integer powerbonus = fac.GetPowerBonus();
-//                    Integer privacy = fac.GetPrivacy();
-//                    Integer maxplayers = fac.GetMaxPlayers();
-//                    Integer power = fac.GetPower();
-//                    Integer money = fac.GetMoney();
+//                    int powerbonus = fac.GetPowerBonus();
+//                    int privacy = fac.GetPrivacy();
+//                    int maxplayers = fac.GetMaxPlayers();
+//                    int power = fac.GetPower();
+//                    int money = fac.GetMoney();
 //
 //                    //@TODO
-//                    Integer point = fac.GetPoints();
-//                    Integer xp = fac.GetXP();
-//                    Integer lvl = fac.GetLevel();
-//                    Integer rich = fac.GetRich();
+//                    int point = fac.GetPoints();
+//                    int xp = fac.GetXP();
+//                    int lvl = fac.GetLevel();
+//                    int rich = fac.GetRich();
                     String am = "";
 //                    if (fac.GetActiveMission() != null) {
 //                        am = fac.GetActiveMission().id + "";
@@ -258,11 +258,11 @@ namespace CyberCore.Manager.Factions
 //                    }
                     fac.save();
 
-                    ArrayList<Integer> CMID1 = fac.GetCompletedMissions();
+                    List<int> CMID1 = fac.GetCompletedMissions();
                     String CMID = "";
                     if (CMID1.size() > 1) {
                         bool f = true;
-                        for (Integer aa : CMID1) {
+                        for (int aa : CMID1) {
                             if (!f) {
                                 CMID = CMID + ",";
                             } else {
@@ -271,7 +271,7 @@ namespace CyberCore.Manager.Factions
                             CMID = CMID + aa;
                         }
                     } else if (CMID1.size() != 0) {
-                        for (Integer aa : CMID1) {
+                        for (int aa : CMID1) {
                             CMID = CMID + aa;
                         }
                     }
@@ -292,7 +292,7 @@ namespace CyberCore.Manager.Factions
 //                        stmt.executeUpdate(String.format("INSERT INTO `plots` VALUES (null,'%s','%s','%s');", name, p[0], p[1]));
 //                    }
 //                    stmt.executeUpdate("DELETE FROM `confirm` WHERE `faction` LIKE '" + name + "';");
-//                    for (Map.Entry<String, Integer> ee : invites.entrySet()) {
+//                    for (Map.Entry<String, int> ee : invites.entrySet()) {
 //                        stmt.executeUpdate(String.format("INSERT INTO `confirm` VALUES ('%s','%s','%s',null);", ee.getKey(), name, ee.getValue()));
 //                    }
 //
@@ -441,9 +441,9 @@ namespace CyberCore.Manager.Factions
         }
     }
 
-    public ArrayList<String> GetRecruits(String faction) {
+    public List<String> GetRecruits(String faction) {
         try {
-            ArrayList<String> result = new ArrayList<>();
+            List<String> result = new List<>();
             ResultSet r = this.ExecuteQuerySQL(String.format("select * from `Master` where `faction` LIKE '%s' AND `rank` LIKE '%s'", faction, "recruit"));
             if (r == null) return null;
             while (r.next()) {
@@ -456,9 +456,9 @@ namespace CyberCore.Manager.Factions
         }
     }
 
-    public ArrayList<String> GetMemebrs(String faction) {
+    public List<String> GetMemebrs(String faction) {
         try {
-            ArrayList<String> result = new ArrayList<>();
+            List<String> result = new List<>();
             ResultSet r = this.ExecuteQuerySQL(String.format("select * from `Master` where `faction` LIKE '%s' AND `rank` LIKE '%s'", faction, "Member"));
             if (r == null) return null;
             while (r.next()) {
@@ -471,9 +471,9 @@ namespace CyberCore.Manager.Factions
         }
     }
 
-    public ArrayList<String> GetOfficers(String faction) {
+    public List<String> GetOfficers(String faction) {
         try {
-            ArrayList<String> result = new ArrayList<>();
+            List<String> result = new List<>();
             ResultSet r = this.ExecuteQuerySQL(String.format("select * from `Master` where `faction` LIKE '%s' AND `rank` LIKE '%s'", faction, "Officer"));
             if (r == null) return null;
             while (r.next()) {
@@ -486,9 +486,9 @@ namespace CyberCore.Manager.Factions
         }
     }
 
-    public ArrayList<String> GetGenerals(String faction) {
+    public List<String> GetGenerals(String faction) {
         try {
-            ArrayList<String> result = new ArrayList<>();
+            List<String> result = new List<>();
             ResultSet r = this.ExecuteQuerySQL(String.format("select * from `Master` where `faction` LIKE '%s' AND `rank` LIKE '%s'", faction, "General"));
             if (r == null) return null;
             while (r.next()) {
@@ -501,9 +501,9 @@ namespace CyberCore.Manager.Factions
         }
     }
 
-//    public ArrayList<String> GetPlots(String faction) {
+//    public List<String> GetPlots(String faction) {
 //        try {
-//            ArrayList<String> results = new ArrayList<>();
+//            List<String> results = new List<>();
 //            ResultSet r = this.ExecuteQuerySQL(String.format("select * from `plots` where `faction` LIKE '%s'", faction));
 //            if (r == null) return null;
 //            while (r.next()) {
@@ -541,9 +541,9 @@ namespace CyberCore.Manager.Factions
         }
     }
 
-    public ArrayList<String> GetAllFactionsNames() {
+    public List<String> GetAllFactionsNames() {
         Main.plugin.getLogger().info("GETTINGALL FACS");
-        ArrayList<String> results = new ArrayList<>();
+        List<String> results = new List<>();
         try {
             ResultSet r = this.ExecuteQuerySQL("select * from `Settings`");
             if (r == null) {
@@ -565,9 +565,9 @@ namespace CyberCore.Manager.Factions
         }
     }
 
-    public ArrayList<String> GetAllies(String faction) {
+    public List<String> GetAllies(String faction) {
         try {
-            ArrayList<String> results = new ArrayList<>();
+            List<String> results = new List<>();
             ResultSet r = this.ExecuteQuerySQL(String.format("select * from `relationships` where `factiona` LIKE '%s' OR `factionb` LIKE '%s'", faction, faction));
             if (r == null) return null;
             while (r.next()) {
@@ -580,9 +580,9 @@ namespace CyberCore.Manager.Factions
         }
     }
 
-    public ArrayList<String> GetEnemies(String faction) {
+    public List<String> GetEnemies(String faction) {
         try {
-            ArrayList<String> results = new ArrayList<>();
+            List<String> results = new List<>();
             ResultSet r = this.ExecuteQuerySQL(String.format("select * from `enemies` where `factiona` LIKE '%s' OR `factionb` LIKE '%s'", faction, faction));
             if (r == null) return null;
             while (r.next()) {
@@ -606,9 +606,9 @@ namespace CyberCore.Manager.Factions
         return null;
     }
 
-    public Map<String, Integer> GetInvites(String faction) {
+    public Map<String, int> GetInvites(String faction) {
         try {
-            Map<String, Integer> result = new HashMap<>();
+            Map<String, int> result = new Dictionary<>();
             ResultSet r = this.ExecuteQuerySQL(String.format("select * from `confirm` where `faction` LIKE '%s'", faction));
             if (r == null) return null;
             while (r.next()) {
@@ -623,16 +623,16 @@ namespace CyberCore.Manager.Factions
         }
     }
 
-    public ArrayList<Integer> GetCompletedMissions(String faction) {
-        ArrayList<Integer> a = new ArrayList<>();
+    public List<int> GetCompletedMissions(String faction) {
+        List<int> a = new List<>();
         String cmid = (String) GetFromSettings("cmid", faction);
         if (cmid == null || cmid.equalsIgnoreCase("")) return a;
         if (cmid.contains(",")) {
             for (String b : cmid.split(",")) {
-                a.add(Integer.parseInt(b));
+                a.add(int.parseInt(b));
             }
         } else {
-            a.add(Integer.parseInt(cmid));
+            a.add(int.parseInt(cmid));
         }
         return a;
     }
@@ -783,24 +783,24 @@ namespace CyberCore.Manager.Factions
 //            Faction fac = new Faction(Main, name, (String) GetFromSettings("displayname", name), GetLeader(name), GetMemebrs(name), GetOfficers(name), GetGenerals(name), GetRecruits(name));
             Faction fac = new Faction(Main, name, false);
 //            fac.SetPlots(GetPlots(name));
-//            fac.SetMaxPlayers((Integer) GetFromSettings("MaxPlayers", name));
-////            fac.SetPowerBonus((Integer) GetFromSettings("powerbonus", name));
+//            fac.SetMaxPlayers((int) GetFromSettings("MaxPlayers", name));
+////            fac.SetPowerBonus((int) GetFromSettings("powerbonus", name));
 //            fac.SetMOTD((String) GetFromSettings("MOTD", name));
 //            fac.SetDesc((String) GetFromSettings("Description", name));
-//            fac.SetPrivacy((Integer) GetFromSettings("Privacy", name));
+//            fac.SetPrivacy((int) GetFromSettings("Privacy", name));
 //            fac.SetPerm((String) GetFromSettings("Perm", name));
 //            fac.SetHome(GetHome(name));
 ////            fac.SetAllies(GetAllies(name));
 ////            fac.SetEnemies(GetEnemies(name));
 ////            fac.SetInvite(GetInvites(name));
 //            fac.SetDisplayName(GetDisplayName(name));
-//            fac.SetPower((Integer) GetFromSettings("Power", name));
-//            fac.SetMoney((Integer) GetFromSettings("Money", name));
-//            fac.SetPoints((Integer) GetFromSettings("Points", name));
-//            fac.SetXP((Integer) GetFromSettings("XP", name));
-//            fac.SetLevel((Integer) GetFromSettings("Level", name));
+//            fac.SetPower((int) GetFromSettings("Power", name));
+//            fac.SetMoney((int) GetFromSettings("Money", name));
+//            fac.SetPoints((int) GetFromSettings("Points", name));
+//            fac.SetXP((int) GetFromSettings("XP", name));
+//            fac.SetLevel((int) GetFromSettings("Level", name));
 //            fac.RetrieveActiveMission((String) GetFromSettings("ActivevMission", name));
-//            fac.SetRich((Integer) GetFromSettings("Rich", name));
+//            fac.SetRich((int) GetFromSettings("Rich", name));
 //            fac.SetCompletedMissisons(GetCompletedMissions(name));
             LocalFactionCache.put(fac.getName().toLowerCase(), fac);
             return fac;
@@ -810,8 +810,8 @@ namespace CyberCore.Manager.Factions
     }
 
 
-    public ArrayList<Faction> GetAllOpenFactions() {
-        ArrayList<Faction> found = new ArrayList<>();
+    public List<Faction> GetAllOpenFactions() {
+        List<Faction> found = new List<>();
         try {
             ResultSet r = this.ExecuteQuerySQL("select * from `Settings` where `privacy`= '1'");
             if (r == null) return null;
@@ -826,8 +826,8 @@ namespace CyberCore.Manager.Factions
         return found;
     }
 
-    public ArrayList<Faction> GetAllOpenFactions(String name) {
-        ArrayList<Faction> found = new ArrayList<>();
+    public List<Faction> GetAllOpenFactions(String name) {
+        List<Faction> found = new List<>();
         try {
             ResultSet r = this.ExecuteQuerySQL("select * from `Settings` where `privacy`= '1' and `faction` LIKE '" + name + "'");
             if (r == null) return null;

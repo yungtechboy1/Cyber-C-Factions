@@ -41,9 +41,9 @@ public class Rich : Commands {
 
     }
 
-    private HashMap<int,String> GetTopFacs(int i){
-        HashMap<int,String> map = new HashMap<>();
-        HashMap<String,int> Top = new HashMap<>();
+    private Dictionary<int,String> GetTopFacs(int i){
+        Dictionary<int,String> map = new Dictionary<>();
+        Dictionary<String,int> Top = new Dictionary<>();
         for(java.util.Map.Entry<String,int> a : Main.FF.Rich.entrySet()){
             Top.put(a.getKey(),a.getValue());
         }

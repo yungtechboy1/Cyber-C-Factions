@@ -35,7 +35,7 @@ namespace Faction2.Commands
 {
     public class Create : Commands
     {
-        private ArrayList Bannednames = new ArrayList();
+        private List Bannednames = new List();
 
 
         public Create(CommandSender s, String[] a, Faction_main m) : base(s, a, "/f create <Name>", m)

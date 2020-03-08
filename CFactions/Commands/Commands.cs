@@ -28,7 +28,7 @@ public class Commands {
     public Faction fac;
 
     public Commands(CommandSender s, string[] a, string usage, Faction_main main){
-        ArrayList ta = new ArrayList();
+        List ta = new List();
         foreach (string aa in Args)ta.Add(aa.ToLower());
         Args = (string[])ta.ToArray();
         Sender = s;

@@ -151,8 +151,8 @@ namespace Faction2
 
         public Faction CreateFaction(string name, Player p)
         {
-            Faction fac = new Faction(_main, name, name, p.Username.ToLower(), new ArrayList(), new ArrayList(),
-                new ArrayList(), new ArrayList());
+            Faction fac = new Faction(_main, name, name, p.Username.ToLower(), new List(), new List(),
+                new List(), new List());
             List.Add(name.ToLower(), fac);
             FacList.Add(p.Username.ToLower(), name);
             fac.SetPower(2);

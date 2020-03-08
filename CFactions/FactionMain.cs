@@ -31,15 +31,15 @@ namespace Factions2
         public static JObject config;
         public string Basepath = null;
 //        public MySqlConnection Conn = null;
-        public ArrayList Perks;
+        public List Perks;
         public CyberChat CC = null;
         public string fp = ChatColors.LightPurple + "[CyberFactions]" + ChatColors.White;
         public Dictionary<string, BossBar> BossBarList = new Dictionary<string, BossBar>();
         public Dictionary<string, ActiveMission> AM = new Dictionary<string, ActiveMission>();
-        public ArrayList War = new ArrayList();
+        public List War = new List();
         public FactionFactory FF;
         public Mission[] Missions = new Mission[] { };
-        public ArrayList PlayerList = new ArrayList();
+        public List PlayerList = new List();
         //public DBConnection DB;
         public EconMain Econ;
         public static string NAME = "CyberFaction";
@@ -161,7 +161,7 @@ namespace Factions2
             PlayerInventory inv = p.Inventory;
 //            JObject maindata = new JObject();
             JArray data = new JArray();
-            ArrayList four = new ArrayList();
+            List four = new List();
             four.Add(inv.Helmet);
             four.Add(inv.Chest);
             four.Add(inv.Leggings);

@@ -11,7 +11,7 @@ import main.java.CyberFactions.Faction_main;
 
 import javax.naming.InsufficientResourcesException;
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -52,7 +52,7 @@ public class Wartp : Commands {
         int x = null;
         int z = null;
         Random rand = new Random();
-        ArrayList<Player> op = fac.GetOnlinePlayers();
+        List<Player> op = fac.GetOnlinePlayers();
 
         if (fac.GetPlots().size() != 0) {
             int a = rand.nextInt(fac.GetPlots().size() - 1);

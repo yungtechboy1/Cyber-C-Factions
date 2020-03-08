@@ -19,7 +19,7 @@ public class Help : Commands {
 
     
     public new void RunCommand() {
-        ArrayList a = new ArrayList();
+        List a = new List();
         a.Add("/f accept - Accept Faction Invite");
         a.Add("/f admin - OP Only");
         a.Add("/f balance - Faction Balance");

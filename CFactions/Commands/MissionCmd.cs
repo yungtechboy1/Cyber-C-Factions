@@ -108,7 +108,7 @@ public class MissionCmd : Commands
 
     public void SendList(int p)
     {
-        ArrayList a = new ArrayList();
+        List a = new List();
         foreach (Mission mission in Main.Missions){
             if (fac.GetCompletedMissions().Contains(mission.id))
             {

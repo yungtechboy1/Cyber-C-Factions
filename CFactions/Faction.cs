@@ -28,17 +28,17 @@ namespace Faction2
         public string _name { get; private set; }
         public string _displayName { get; private set; }
         public string Leader { get; private set; }
-        public ArrayList _recruits { get; private set; }
-        public ArrayList _members { get; private set; }
-        public ArrayList _officers { get; private set; }
-        public ArrayList _generals { get; private set; }
+        public List _recruits { get; private set; }
+        public List _members { get; private set; }
+        public List _officers { get; private set; }
+        public List _generals { get; private set; }
         public string _motd { get; private set; }
         public string _desc { get; private set; }
-        public ArrayList _fChat { get; private set; } = new ArrayList();
-        public ArrayList _fAlly { get; private set; } = new ArrayList();
-        public ArrayList _plots { get; private set; } = new ArrayList();
-        public ArrayList _allies { get; private set; } = new ArrayList();
-        public ArrayList _enemies { get; private set; } = new ArrayList();
+        public List _fChat { get; private set; } = new List();
+        public List _fAlly { get; private set; } = new List();
+        public List _plots { get; private set; } = new List();
+        public List _allies { get; private set; } = new List();
+        public List _enemies { get; private set; } = new List();
         public string _war { get; private set; } = null;
         public IDictionary<string, long> _invites { get; private set; } = new Dictionary<string, long>();
         public int _maxPlayers { get; private set; } = 15;
@@ -55,15 +55,15 @@ namespace Faction2
         public int XP { get; private set; } = 0;
         public int Level { get; private set; } = 0;
 
-        public ArrayList _completedMissionIDs { get; private set; } = new ArrayList();
+        public List _completedMissionIDs { get; private set; } = new List();
 
         public ActiveMission AM { get; private set; } = null;
 
         public int _money { get; private set; } = 0;
         public PlayerLocation Home { get; private set; } = new PlayerLocation(0, 0, 0);
 
-        public Faction(Faction_main main, string name, string displayname, string leader, ArrayList members,
-            ArrayList generals, ArrayList officers, ArrayList recruits)
+        public Faction(Faction_main main, string name, string displayname, string leader, List members,
+            List generals, List officers, List recruits)
         {
             _main = main;
             _name = name;
@@ -124,12 +124,12 @@ namespace Faction2
             return this;
         }
 
-        public void SetPlots(ArrayList value)
+        public void SetPlots(List value)
         {
             _plots = value;
         }
 
-        public ArrayList GetPlots()
+        public List GetPlots()
         {
             return _plots;
         }
@@ -484,12 +484,12 @@ namespace Faction2
             AM = null;
         }
 
-        public void SetCompletedMissisons(ArrayList value)
+        public void SetCompletedMissisons(List value)
         {
             _completedMissionIDs = value;
         }
 
-        public ArrayList GetCompletedMissions()
+        public List GetCompletedMissions()
         {
             return _completedMissionIDs;
         }
@@ -692,7 +692,7 @@ string key = plot.split("\\|")[0] + "|" + plot.split("\\|")[1];
 //            return false;
 //        }
 
-        public void SetEnemies(ArrayList list)
+        public void SetEnemies(List list)
         {
             _enemies = list;
         }
@@ -707,7 +707,7 @@ string key = plot.split("\\|")[0] + "|" + plot.split("\\|")[1];
             _enemies.Remove(fac);
         }
 
-        public ArrayList GetEnemies()
+        public List GetEnemies()
         {
             return _enemies;
         }
@@ -718,7 +718,7 @@ string key = plot.split("\\|")[0] + "|" + plot.split("\\|")[1];
             return false;
         }
 
-        public void SetAllies(ArrayList list)
+        public void SetAllies(List list)
         {
             _allies = list;
         }
@@ -733,7 +733,7 @@ string key = plot.split("\\|")[0] + "|" + plot.split("\\|")[1];
             _allies.Remove(fac);
         }
 
-        public ArrayList GetAllies()
+        public List GetAllies()
         {
             return _allies;
         }
@@ -790,22 +790,22 @@ string key = plot.split("\\|")[0] + "|" + plot.split("\\|")[1];
             return _invites.ContainsKey(name);
         }
 
-        public void SetMembers(ArrayList members)
+        public void SetMembers(List members)
         {
             _members = members;
         }
 
-        public void SetOfficers(ArrayList members)
+        public void SetOfficers(List members)
         {
             _officers = members;
         }
 
-        public void SetGenerals(ArrayList members)
+        public void SetGenerals(List members)
         {
             _generals = members;
         }
 
-        public void SetRecruits(ArrayList members)
+        public void SetRecruits(List members)
         {
             _recruits = members;
         }
@@ -815,22 +815,22 @@ string key = plot.split("\\|")[0] + "|" + plot.split("\\|")[1];
             Leader = leader;
         }
 
-        public ArrayList GetMembers()
+        public List GetMembers()
         {
             return _members;
         }
 
-        public ArrayList GetOfficers()
+        public List GetOfficers()
         {
             return _officers;
         }
 
-        public ArrayList GetGenerals()
+        public List GetGenerals()
         {
             return _generals;
         }
 
-        public ArrayList GetRecruits()
+        public List GetRecruits()
         {
             return _recruits;
         }
@@ -1124,10 +1124,10 @@ string key = plot.split("\\|")[0] + "|" + plot.split("\\|")[1];
             return 0;
         }
 
-        public ArrayList GetOnlinePlayers()
+        public List GetOnlinePlayers()
         {
             Player p;
-            ArrayList a = new ArrayList();
+            List a = new List();
             foreach (string m in _members)
             {
                 p = _main.Server.LevelManager.FindPlayer(m);
@@ -1172,22 +1172,22 @@ string key = plot.split("\\|")[0] + "|" + plot.split("\\|")[1];
             }
         }
 
-        public ArrayList getFAlly()
+        public List getFAlly()
         {
             return _fAlly;
         }
 
-        public ArrayList getFChat()
+        public List getFChat()
         {
             return _fChat;
         }
 
-        public void setFAlly(ArrayList FAlly)
+        public void setFAlly(List FAlly)
         {
             this._fAlly = FAlly;
         }
 
-        public void setFChat(ArrayList FChat)
+        public void setFChat(List FChat)
         {
             this._fChat = FChat;
         }

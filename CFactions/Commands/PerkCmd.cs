@@ -150,7 +150,7 @@ public class PerkCmd : Commands {
     }
 
     public void SendList(int p){
-        ArrayList<String> a = new ArrayList<>();
+        List<String> a = new List<>();
         for(Map.Entry<String, Object> c: Main.Perks.getAll().entrySet()){
             ConfigSection b = (ConfigSection) c.getValue();
             String iidd = ((int)b.get("id"))+"";
