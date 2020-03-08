@@ -2,32 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Missions/ActiveMission.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Missions/Mission.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Missions/MissionData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Missions/MissionTask.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Utils/DataHolder.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionLocalCache.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Invitation.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyberCore/Utils/CacheChecker.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/Commands/Admin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/Commands/Admin.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/Commands/Commands.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/Commands/Commands.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/Commands/Create.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/Commands/Create.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/Commands/Help.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/Commands/Help.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/Commands/MissionCmd.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/Commands/MissionCmd.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/Commands/PerkCmd.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/Commands/PerkCmd.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/Commands/Rich.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/Commands/Rich.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/Commands/Top.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/Commands/Top.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/Commands/Wartp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/Commands/Wartp.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/Commands/Withdraw.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/Commands/Withdraw.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/DBConnection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/DBConnection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/Faction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/Faction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/FactionFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/FactionFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFactions/FactionMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/FactionMain.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CFactions/obj/Debug/netcoreapp3.1/CFactions.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/CFactions/obj/Debug/netcoreapp3.1/CFactions.csprojAssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionPermSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionPermSettings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionRank.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionRank.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionSettings.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CustomConfigSection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CustomConfigSection.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +43,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1C998C91-6729-4AF5-B147-9544EB72A2E0/bf/c2e8cce2/MySqlDataReader.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F5619BA5-7468-445C-8ECD-7DF2876332AC/83/af26f18f/Item.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" root0="FORCE_HIGHLIGHTING" />
@@ -68,10 +55,14 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F5619BA5-7468-445C-8ECD-7DF2876332AC/d9/d1834601/Config.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Invitation.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionLocalCache.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/BBB3B884-123D-47EA-9CD1-5BED540D02AE/2A5/FieldInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Roaming/NuGet/NuGet.Config" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/BBB3B884-123D-47EA-9CD1-5BED540D02AE/CE/StringComparer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/DataHolder.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Utils/CacheChecker.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/PlotManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/BBB3B884-123D-47EA-9CD1-5BED540D02AE/87/773f2f97/ICollection`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1C998C91-6729-4AF5-B147-9544EB72A2E0/52/6ec26383/MySqlCommand.cs" root0="SKIP_HIGHLIGHTING" />
@@ -84,13 +75,14 @@
     <setting file="file://$PROJECT_DIR$/CFactions/DBConnection.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/FactionFactory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/CyberChat.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///C# Console" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/61/628d2a33/ItemFactory.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/FactionMain.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Missions/MissionData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/AbstractClass.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionSettings.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F5619BA5-7468-445C-8ECD-7DF2876332AC/4b/faa8005b/McpeInventoryTransaction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/ActiveMission.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionPermSettings.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/Faction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/Commands/Admin.cs" root0="FORCE_HIGHLIGHTING" />
@@ -114,17 +106,23 @@
         <option value="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionRank.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CustomCofigSection.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/PlotManager.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CustomConfigSection.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/DataHolder.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Mission/ActiveMission.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Missions/ActiveMission.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Missions/MissionTask.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Missions/MissionData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Missions/Mission.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionRank.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionPermSettings.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionSettings.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Utils/CacheChecker.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionLocalCache.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Invitation.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" />
       </list>
     </option>
@@ -160,7 +158,8 @@
       <workItem from="1582866995520" duration="1520000" />
       <workItem from="1583548689483" duration="9666000" />
       <workItem from="1583598121887" duration="1588000" />
-      <workItem from="1583625037725" duration="3952000" />
+      <workItem from="1583625037725" duration="4602000" />
+      <workItem from="1583637451887" duration="2366000" />
     </task>
     <servers />
   </component>
@@ -183,6 +182,10 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
+    <state x="-1943" y="216" key="#Inspection_severity" timestamp="1583639226381">
+      <screen x="-2560" y="1" width="2048" height="1112" />
+    </state>
+    <state x="-1943" y="216" key="#Inspection_severity/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583639226381" />
     <state x="-1943" y="216" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583555720485">
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
@@ -200,18 +203,19 @@
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
     <state x="-2027" y="200" key="SettingsEditor/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583551206878" />
-    <state width="498" height="446" key="SwitcherDM" timestamp="1583555034043">
+    <state width="498" height="446" key="SwitcherDM" timestamp="1583637631126">
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
-    <state width="498" height="446" key="SwitcherDM/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583555034043" />
-    <state x="-7" y="-7" width="1038" height="1126" key="dock-window-1" timestamp="1583626910049">
+    <state width="498" height="446" key="SwitcherDM/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583637631126" />
+    <state x="-6" y="1" width="1037" height="1118" key="dock-window-1" timestamp="1583637491522">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="-7" y="-7" width="1038" height="1126" key="dock-window-1/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583626910049" />
-    <state x="0" y="84" width="1127" height="765" key="dock-window-2" timestamp="1583628503811">
+    <state x="-6" y="1" width="1037" height="1118" key="dock-window-1/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583637491522" />
+    <state x="-6" y="0" width="1037" height="1118" key="dock-window-1/0.0.2048.1112@0.0.2048.1112" timestamp="1583635438152" />
+    <state x="0" y="84" width="1127" height="765" key="dock-window-2" timestamp="1583637491522">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="0" y="84" width="1127" height="765" key="dock-window-2/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583628503811" />
+    <state x="0" y="84" width="1127" height="765" key="dock-window-2/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583637491522" />
     <state x="-1854" y="155" width="738" height="804" key="find.popup" timestamp="1583628225984">
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>

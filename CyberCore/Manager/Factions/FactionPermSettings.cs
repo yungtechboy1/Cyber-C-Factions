@@ -26,44 +26,44 @@ namespace CyberCore.Manager.Factions
     public FactionPermSettings(String i) {
         String[] ii = i.Split("\\|");
         if (ii.Length != 11) {
-            System.out.println("Error importing factions settings! Expected length 10, got " + ii.length);
+            Console.WriteLine("Error importing factions settings! Expected length 10, got " + ii.Length);
             return;
         }
-        FactionRank avi = FactionRank.getRankFromString(ii[0]);
+        FactionRank avi = FactionRankMethods.getRankFromString(ii[0]);
         if (avi != null) AllowedToViewInbox = avi;
 
-        FactionRank aaa = FactionRank.getRankFromString(ii[1]);
+        FactionRank aaa = FactionRankMethods.getRankFromString(ii[1]);
         if (aaa != null) AllowedToAcceptAlly = avi;
 
-        FactionRank aes = FactionRank.getRankFromString(ii[2]);
+        FactionRank aes = FactionRankMethods.getRankFromString(ii[2]);
         if (aes != null) AllowedToEditSettings = aes;
 
-        FactionRank ap = FactionRank.getRankFromString(ii[3]);
+        FactionRank ap = FactionRankMethods.getRankFromString(ii[3]);
         if (ap != null) AllowedToPromote = ap;
 
-        FactionRank atk = FactionRank.getRankFromString(ii[4]);
+        FactionRank atk = FactionRankMethods.getRankFromString(ii[4]);
         if (atk != null) AllowedToKick = avi;
 
-        FactionRank ati = FactionRank.getRankFromString(ii[5]);
+        FactionRank ati = FactionRankMethods.getRankFromString(ii[5]);
         if (ati != null) AllowedToInvite = ati;
 
-        FactionRank djr = FactionRank.getRankFromString(ii[6]);
+        FactionRank djr = FactionRankMethods.getRankFromString(ii[6]);
         if (djr != null) DefaultJoinRank = djr;
 
-        FactionRank atc = FactionRank.getRankFromString(ii[7]);
+        FactionRank atc = FactionRankMethods.getRankFromString(ii[7]);
         if (atc != null) AllowedToClaim = atc;
 
-        FactionRank atw = FactionRank.getRankFromString(ii[8]);
+        FactionRank atw = FactionRankMethods.getRankFromString(ii[8]);
         if (atw != null) AllowedToWinthdraw = atw;
 
-        FactionRank ash = FactionRank.getRankFromString(ii[9]);
+        FactionRank ash = FactionRankMethods.getRankFromString(ii[9]);
         if (avi != null) AllowedToViewInbox = ash;
 
         try {
-            int iii = Integer.parseInt(ii[10]);
+            int iii = int.Parse(ii[10]);
             WeeklyFactionTax = iii;
         } catch (Exception e) {
-            System.out.println("Error parseing WeeklyFactionTax! from " + ii[10]);
+            Console.WriteLine("Error parseing WeeklyFactionTax! from " + ii[10]);
         }
 
 
@@ -71,16 +71,16 @@ namespace CyberCore.Manager.Factions
 
     public String export() {
         String e = "";
-        e += AllowedToViewInbox.getPower() + "|";
-        e += AllowedToAcceptAlly.getPower() + "|";
-        e += AllowedToEditSettings.getPower() + "|";
-        e += AllowedToPromote.getPower() + "|";
-        e += AllowedToKick.getPower() + "|";
-        e += AllowedToInvite.getPower() + "|";
-        e += DefaultJoinRank.getPower() + "|";
-        e += AllowedToClaim.getPower() + "|";
-        e += AllowedToWinthdraw.getPower() + "|";
-        e += AllowedToSetHome.getPower() + "|";
+        e += FactionRankMethods.getRankFromString(AllowedToViewInbox) + "|";
+        e += FactionRankMethods.getRankFromString(AllowedToAcceptAlly) + "|";
+        e += FactionRankMethods.getRankFromString(AllowedToEditSettings) + "|";
+        e += FactionRankMethods.getRankFromString(AllowedToPromote) + "|";
+        e += FactionRankMethods.getRankFromString(AllowedToKick) + "|";
+        e += FactionRankMethods.getRankFromString(AllowedToInvite) + "|";
+        e += FactionRankMethods.getRankFromString(DefaultJoinRank) + "|";
+        e += FactionRankMethods.getRankFromString(AllowedToClaim) + "|";
+        e += FactionRankMethods.getRankFromString(AllowedToWinthdraw) + "|";
+        e += FactionRankMethods.getRankFromString(AllowedToSetHome) + "|";
         e += getWeeklyFactionTax() + "|";
         return e;
     }

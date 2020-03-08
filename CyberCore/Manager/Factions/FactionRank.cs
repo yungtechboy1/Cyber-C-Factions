@@ -38,6 +38,25 @@ namespace CyberCore.Manager.Factions
                 return FactionRank.Recruit;
             }
         }
+        public static FactionRank getRankFromString(FactionRank a)
+        {
+            try
+            {
+                int i = (int)(a);
+                foreach (FactionRank f in Enum.GetValues(typeof(FactionRank)))
+                {
+                    if ((int) f == i) return f;
+                }
+
+                CyberCoreMain.Log.Error("Error Parsing ");
+                return FactionRank.Recruit;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error attempting to parse Rank String to Int to Rank");
+                return FactionRank.Recruit;
+            }
+        }
 
         public static FactionRank getRankFromForm(int a)
         {

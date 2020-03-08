@@ -10,7 +10,7 @@ namespace CyberCore.Manager.Factions
         public FactionFactory FFactory;
 
         
-        private readonly CyberCoreMain CCM;
+        public CyberCoreMain CCM { get; private set; }
 
         private static FactionsMain instance { get; set; }
 
