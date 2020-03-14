@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using MiNET.Utils;
+using Org.BouncyCastle.Crypto.Digests;
 
 namespace CyberCore.Manager.Factions
 {
@@ -87,7 +89,7 @@ namespace CyberCore.Manager.Factions
         public int GetXPPercent()
         {
             Double d = ((XP / (double) calculateRequireExperience(getLevel())) * 100);
-            return (int)d;
+            return (int) d;
         }
 
         public int GetXP()
@@ -154,21 +156,25 @@ namespace CyberCore.Manager.Factions
             Dictionary<String, Object> a = new Dictionary<String, Object>();
             try
             {
-                ResultSet r = FactionsMain.getInstance().FFactory
-                    .ExecuteQuerySQL(String.format("select * from `Settings` where Name = '%s'", getFaction()));
-                if (r == null)
+                var r = F.Main.CCM.SQL.Query($"select * from `Settings` where Name = '{getFaction()}'");
+                if (r == null) return null;
+                if (r.Read())
                 {
-                    return null;
-                }
-
-                if (r.next())
-                {
-                    for (String k :
-                    getF().Neededfromsettings) {
-                        Object v = r.getObject(k);
-                        if (v != null) a.put(k, v);
+                    foreach (var s in getF().NeededfromsettingsString)
+                    {
+                        a.Add(s, r.GetString(s));
                     }
-//                    SC_Map = (Dictionary<String, Object>) a.clone();
+
+                    foreach (var s in getF().NeededfromsettingsInt)
+                    {
+                        a.Add(s, r.GetInt32(s));
+                    }
+
+                    foreach (var s in getF().NeededfromsettingsDouble)
+                    {
+                        a.Add(s, r.GetDouble(s));
+                    }
+
                     return a;
                 }
 
@@ -186,53 +192,49 @@ namespace CyberCore.Manager.Factions
         {
             Dictionary<String, Object> a = GetAllSettings();
             if (a == null) return;
-            setDisplayName((String) a.get("DisplayName"));
-            setMaxPlayers((int) a.get("MaxPlayers"));
-            Object p = a.get("PowerBonus");
-            CyberCoreMain.getInstance().getLogger().error("POWERBONUS VALUE" + p + " | TYPE: " + p.getClass());
+            setDisplayName((String) a["DisplayName"]);
+            setMaxPlayers((int) a["MaxPlayers"]);
+            Object p = a["PowerBonus"];
+            CyberCoreMain.Log.Error("POWERBONUS VALUE" + p + " | TYPE: " + p.GetType());
             setPowerBonus((Double) p);
-            setMOTD((String) a.get("MOTD"));
-            setDescription((String) a.get("Description"));
-            setPrivacy((int) a.get("Privacy"));
-            setPermSettings((String) a.get("Perm"));
-            setMoney((int) a.get("Money"));
-            setPower((int) a.get("Power"));
-            setRich((int) a.get("Rich"));
-            setXP((int) a.get("XP"));
-            setLevel((int) a.get("Level"));
-            setPoints((int) a.get("Points"));
+            setMOTD((String) a["MOTD"]);
+            setDescription((String) a["Description"]);
+            setPrivacy((int) a["Privacy"]);
+            setPermSettings((String) a["Perm"]);
+            setMoney((int) a["Money"]);
+            setPower((int) a["Power"]);
+            setRich((int) a["Rich"]);
+            setXP((int) a["XP"]);
+            setLevel((int) a["Level"]);
+            setPoints((int) a["Points"]);
         }
 
         public void upload()
         {
-            String q = String.format(
-                "INSERT INTO `Settings` VALUES('%s','%s'," + getMaxPlayers() + "," + getPowerBonus() + ",'%s','%s'," +
-                getPrivacy() + ",'%s'," + getPower() + "," + getMoney() + "," + getRich() + "," + getXP() + "," +
-                getLevel() + "," + getPoints() + ")", getFaction(), getDisplayName(), getMOTD(), getDescription(),
-                getPermSettings().export());
+            String q =
+                $"INSERT INTO `Settings` VALUES('{getFaction()}','{getDisplayName()}', {getMaxPlayers()} ," +
+                $" {getPowerBonus()} ,' {getMOTD()}','{getDescription()}',{getPrivacy()} ,'{getPermSettings().export()}'" +
+                $", {getPower()} , {getMoney()} , {getRich()} , {getXP()} , {getLevel()} , {getPoints()} )";
             try
             {
                 //Update PermSettings
-                FactionsMain.getInstance().FFactory.getMySqlConnection().createStatement()
-                    .executeUpdate("DELETE FROM `Settings` WHERE `Name` LIKE '" + getFaction() + "'");
-                FactionsMain.getInstance().FFactory.getMySqlConnection().createStatement().executeUpdate(q);
-                return;
+                getF().Main.CCM.SQL.Insert("DELETE FROM `Settings` WHERE `Name` LIKE '" + getFaction() + "'");
+                getF().Main.CCM.SQL.Insert(q);
             }
             catch (Exception e)
             {
-                CyberCoreMain.getInstance().getLogger()
-                    .error("Error with Faction Settings Upload Process E3922! \n\n " + q, e);
+                CyberCoreMain.Log.Error("Error with Faction Settings Upload Process E3922! \n\n " + q, e);
 //            CyberCoreMain.getInstance().getLogger().error("Error with Faction PermSettings Cache E39942!AAA", e);
                 return;
             }
         }
 
-        public net.yungtechboy1.CyberCore.Manager.Factions.Faction getF()
+        public Faction getF()
         {
             return F;
         }
 
-        public void setF(net.yungtechboy1.CyberCore.Manager.Factions.Faction f)
+        public void setF(Faction f)
         {
             F = f;
         }
@@ -267,15 +269,14 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                FactionsMain.getInstance().FFactory.getMySqlConnection().createStatement().executeUpdate(
-                    "UPDATE `Settings` SET " + key + " = " + val + " WHERE `Name` LIKE '" + getFaction() + "'");
-                CyberCoreMain.getInstance().getLogger().error("Error with Faction PermSettings Cache E39942!BBBssBBB");
+                getF().Main.CCM.SQL.Insert("UPDATE `Settings` SET " + key + " = " + val + " WHERE `Name` LIKE '" +
+                                           getFaction() + "'");
+                CyberCoreMain.Log.Info("SUCCESS with Faction PermSettings Cache E39942!BBwwwwwwwwwBssBBB");
                 return;
             }
             catch (Exception e)
             {
-                CyberCoreMain.getInstance().getLogger()
-                    .error("Error with FacSett USVI KEY:" + key + " | Val: " + val, e);
+                CyberCoreMain.Log.Error("Error with FacSett USVI KEY:" + key + " | Val: " + val, e);
                 return;
             }
         }
@@ -284,16 +285,14 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                FactionsMain.getInstance().FFactory.getMySqlConnection().createStatement().executeUpdate(
-                    "UPDATE `Settings` SET " + key + " = '" + val + "' WHERE `Name` LIKE '" + getFaction() + "'");
-                CyberCoreMain.getInstance().getLogger()
-                    .error("Error with Faction PermSettings Cache E39942!BBBqzxcccBBB");
+                getF().Main.CCM.SQL.Insert("UPDATE `Settings` SET " + key + " = " + val + " WHERE `Name` LIKE '" +
+                                           getFaction() + "'");
+                CyberCoreMain.Log.Info("SUCCESSSSSSSSSSS with Faction PermSettings Cache E39942!BBBqzxcccBBB");
                 return;
             }
             catch (Exception e)
             {
-                CyberCoreMain.getInstance().getLogger()
-                    .error("Error with FacSett USVS KEY:" + key + " | Val: " + val, e);
+                CyberCoreMain.Log.Error("Error with FacSett USVS KEY:" + key + " | Val: " + val, e);
                 return;
             }
         }
@@ -379,14 +378,14 @@ namespace CyberCore.Manager.Factions
             String t = "";
             if (dif > 0)
             {
-                t = TextFormat.GREEN + "Gained +" + dif;
+                t = ChatColors.Green + "Gained +" + dif;
             }
             else
             {
-                t = TextFormat.RED + "Lost -" + Math.abs(dif);
+                t = ChatColors.Red + "Lost -" + Math.Abs(dif);
             }
 
-            getF().BroadcastPopUp(TextFormat.GRAY + "Faction now has " + TextFormat.GREEN + power + TextFormat.GRAY +
+            getF().BroadcastPopUp(ChatColors.Gray + "Faction now has " + ChatColors.Green + power + ChatColors.Gray +
                                   " PowerAbstract!" + t);
 //        Power = value;
             if (update) UpdateSettingsValue("Power", power);
@@ -394,7 +393,7 @@ namespace CyberCore.Manager.Factions
 
         public void AddPower(int power)
         {
-            int t = getPower() + Math.abs(power);
+            int t = getPower() + Math.Abs(power);
             if (t > CalculateMaxPower())
             {
                 setPower(CalculateMaxPower());

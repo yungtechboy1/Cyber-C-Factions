@@ -18,14 +18,14 @@ namespace CyberCore.Manager.Factions
 //        Rank = r;
 //    }
 //
-//    public Invitation(Faction f, CorePlayer sender, int value, FactionRank r) {
+//    public Invitation(Faction f, OpenPlayer sender, int value, FactionRank r) {
 //        fac = f.getName();
 //        PlayerName = sender.getName();
 //        Timeout = value;
 //        Rank = r;
 //    }
 //
-//    public Invitation(String f, CorePlayer sender, int value, FactionRank r) {
+//    public Invitation(String f, OpenPlayer sender, int value, FactionRank r) {
 //        fac = f;
 //        PlayerName = sender.getName();
 //        Timeout = value;

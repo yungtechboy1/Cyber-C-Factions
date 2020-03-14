@@ -8,6 +8,7 @@ using Google.Protobuf.WellKnownTypes;
 using MiNET;
 using MySql.Data.MySqlClient;
 using OpenAPI.Events.Block;
+using OpenAPI.Player;
 using Type = System.Type;
 
 namespace CyberCore.Manager.Factions
@@ -40,11 +41,27 @@ namespace CyberCore.Manager.Factions
             typeof(int), typeof(int), typeof(int), typeof(decimal), typeof(int), typeof(int)
         };
 
-        public List<String> Neededfromsettings = new List<String>()
+        public List<String> NeededfromsettingsString = new List<String>()
         {
-            ("DisplayName"), ("Name"), ("MaxPlayers"), ("MOTD"), ("Description"), ("Privacy"), ("Perm"), ("Power"),
-            ("Money"), ("Points"), ("XP"), ("PowerBonus"), ("Level"), "Rich"
+            ("DisplayName"), ("Name"), ("MOTD"), ("Description"), ("Perm")
         };
+
+        public List<String> NeededfromsettingsInt = new List<String>()
+        {
+            ("MaxPlayers"), ("Power"),
+            ("Money"), ("Points"), ("XP"),"Level", "Points"
+        };
+
+        public List<String> NeededfromsettingsDouble = new List<String>()
+        {
+            ("PowerBonus")
+        };
+
+        // public List<String> Neededfromsettings = new List<String>()
+        // {
+        //     ("DisplayName"), ("Name"), ("MaxPlayers"), ("MOTD"), ("Description"), ("Privacy"), ("Perm"),,
+        //     ("Level"), "Rich"
+        // };
 
         //Keeping Everyting Synced
         protected bool Clean = true;
@@ -73,7 +90,7 @@ namespace CyberCore.Manager.Factions
 //    private String MOTD;
 //    @NonVolatile
 //    private String Desc;
-        private FactionsMain Main;
+        public FactionsMain Main { get; private set; }
         private FactionLocalCache LC;
         private String War = null;
 
@@ -99,8 +116,9 @@ namespace CyberCore.Manager.Factions
 //    private int Settings_Cache_Lastupload = 0;
         private int UpdateEverySecs = 60 * 5;
 
-        public Faction(FactionsMain main, String name, CorePlayer cp)
+        public Faction(FactionsMain main, String name, OpenPlayer cp)
         {
+            Player
             LC = new FactionLocalCache(this);
             this(main, name, true);
             addPlayer(cp, FactionRank.Leader, null);
@@ -139,21 +157,21 @@ namespace CyberCore.Manager.Factions
 //            PlayerRanks.put(m, FactionRank.Member);
 //            Player p = Main.getServer().getPlayerExact(m);
 //            if (p != null) {
-//                Main.FFactory.FacList.put(p.getName().toLowerCase(), Name);
+//                Main.FFactory.FacList.put(p.getName().ToLower(), Name);
 //            }
 //        }
 //        for (String m : officers) {
 //            PlayerRanks.put(m, FactionRank.Officer);
 //            Player p = Main.getServer().getPlayerExact(m);
 //            if (p != null) {
-//                Main.FFactory.FacList.put(p.getName().toLowerCase(), Name);
+//                Main.FFactory.FacList.put(p.getName().ToLower(), Name);
 //            }
 //        }
 //        for (String m : generals) {
 //            PlayerRanks.put(m, FactionRank.General);
 //            Player p = Main.getServer().getPlayerExact(m);
 //            if (p != null) {
-//                Main.FFactory.FacList.put(p.getName().toLowerCase(), Name);
+//                Main.FFactory.FacList.put(p.getName().ToLower(), Name);
 //            }
 //        }
 //
@@ -161,11 +179,11 @@ namespace CyberCore.Manager.Factions
 //            PlayerRanks.put(m, FactionRank.Recruit);
 //            Player p = Main.getServer().getPlayerExact(m);
 //            if (p != null) {
-//                Main.FFactory.FacList.put(p.getName().toLowerCase(), Name);
+//                Main.FFactory.FacList.put(p.getName().ToLower(), Name);
 //            }
 //        }
 //        Player p = Main.getServer().getPlayerExact(Leader);
-//        if (p != null) Main.FFactory.FacList.put(p.getName().toLowerCase(), Name);
+//        if (p != null) Main.FFactory.FacList.put(p.getName().ToLower(), Name);
 //        onCreation();
 //    }
 
@@ -318,7 +336,7 @@ namespace CyberCore.Manager.Factions
         }
 
         //TODO
-        @TODO
+        // @TODO
 
         private void onCreation()
         {
@@ -326,23 +344,22 @@ namespace CyberCore.Manager.Factions
             try
             {
                 //Update PermSettings
-                FactionsMain.getInstance().FFactory.getMySqlConnection().createStatement().executeUpdate(
-                    String.format(
-                        "INSERT INTO `Settings` VALUES('%s','%s'," + getSettings().getMaxPlayers() + "," +
-                        getSettings().getPowerBonus() + ",'%s','%s'," + getSettings().getPrivacy() + ",'%s'," +
-                        getSettings().getPower() + "," + getSettings().getMoney() + "," + getSettings().getRich() +
-                        "," + getSettings().getXP() + "," + getSettings().getLevel() + "," +
-                        getSettings().getPoints() + ")", getName(), getSettings().getDisplayName(),
-                        getSettings().getMOTD(), getSettings().getDescription(), getPermSettings().export()));
-                CyberCoreMain.getInstance().getLogger()
-                    .error(
-                        "Error with Faction PermSettings Cache E39942!BBgfggggwww122222222222222222222222222222222222222222222222222gBBBB");
+                CyberCoreMain.GetInstance().SQL.Query(
+                    $"INSERT INTO `Settings` VALUES('{getName()}','{getSettings().getDisplayName()}'," +
+                    getSettings().getMaxPlayers() + "," +
+                    getSettings().getPowerBonus() +
+                    $",'{getSettings().getMOTD()}','{getSettings().getDescription()}'," + getSettings().getPrivacy() +
+                    $",'{getPermSettings().export()}'," +
+                    getSettings().getPower() + "," + getSettings().getMoney() + "," + getSettings().getRich() +
+                    "," + getSettings().getXP() + "," + getSettings().getLevel() + "," +
+                    getSettings().getPoints() + ")");
+                CyberCoreMain.Log.Error(
+                    "Error with Faction PermSettings Cache E39942!BBgfggggwww122222222222222222222222222222222222222222222222222gBBBB");
                 return;
             }
             catch (Exception e)
             {
-                CyberCoreMain.getInstance().getLogger()
-                    .error("Error with Faction PermSettings Cache E399dddddddaaaaaaaaaa42!AAA", e);
+                CyberCoreMain.Log.Error("Error with Faction PermSettings Cache E399dddddddaaaaaaaaaa42!AAA", e);
                 return;
             }
         }
@@ -383,7 +400,7 @@ namespace CyberCore.Manager.Factions
         public void PromotePlayer(Player pp, bool leaderConfirm)
         {
             FactionRank cr = getPlayerRank(pp);
-            String pn = pp.getName().toLowerCase();
+            String pn = pp.Username.ToLower();
             switch (cr)
             {
                 case Recruit:
@@ -413,7 +430,7 @@ namespace CyberCore.Manager.Factions
         public void DemotePlayer(Player pp)
         {
             FactionRank cr = getPlayerRank(pp);
-            String pn = pp.getName().toLowerCase();
+            String pn = pp.Username.ToLower();
             switch (cr)
             {
                 case Member:
@@ -433,12 +450,12 @@ namespace CyberCore.Manager.Factions
 
         public void updatePlayerRankinDB(Player p, FactionRank r)
         {
-            updatePlayerRankinDB(p.getName(), r);
+            updatePlayerRankinDB(p.Username, r);
         }
 
-        public void updatePlayerRankinDB(CorePlayer p, FactionRank r)
+        public void updatePlayerRankinDB(OpenPlayer p, FactionRank r)
         {
-            updatePlayerRankinDB(p.getName(), r);
+            updatePlayerRankinDB(p.UserName, r);
         }
 
         public void updatePlayerRankinDB(String n, FactionRank rr)
@@ -462,7 +479,7 @@ namespace CyberCore.Manager.Factions
         public Faction GetAllyFromName(String name)
         {
             String found = null;
-            name = name.toLowerCase();
+            name = name.ToLower();
             int delta = 2147483647;
             List<String> var1 = LC.getAllies();
             Iterator<String> var4 = var1.iterator();
@@ -470,7 +487,7 @@ namespace CyberCore.Manager.Factions
             while (var4.hasNext())
             {
                 String fn = var4.next();
-                if (fn.toLowerCase().startsWith(name) || fn.toLowerCase().contains(name))
+                if (fn.ToLower().startsWith(name) || fn.ToLower().contains(name))
                 {
                     int curDelta = fn.length() - name.length();
                     if (curDelta < delta)
@@ -524,12 +541,12 @@ namespace CyberCore.Manager.Factions
             getSettings().TakePower(2);
         }
 
-        public void SendFactionChatWindow(CorePlayer cp)
+        public void SendFactionChatWindow(OpenPlayer cp)
         {
             cp.showFormWindow(new FactionChatFactionWindow((LinkedList<String>) LastFactionChat.clone()));
         }
 
-        public void HandleFactionChatWindow(FormResponseCustom frc, CorePlayer cp)
+        public void HandleFactionChatWindow(FormResponseCustom frc, OpenPlayer cp)
         {
             if (frc == null)
             {
@@ -560,7 +577,7 @@ namespace CyberCore.Manager.Factions
             return FactionsMain.getInstance().FFactory.PM.getFactionPlots(getName());
         }
 
-        public bool AddPlots(int chunkx, int chunkz, CorePlayer player)
+        public bool AddPlots(int chunkx, int chunkz, OpenPlayer player)
         {
             if (!FactionsMain.getInstance().FFactory.PM.addPlot(chunkx, chunkz, getName()))
             {
@@ -571,12 +588,12 @@ namespace CyberCore.Manager.Factions
             return true;
         }
 
-        public bool DelPlots(int chunkx, int chunkz, CorePlayer playe)
+        public bool DelPlots(int chunkx, int chunkz, OpenPlayer playe)
         {
             return DelPlots(chunkx, chunkz, playe, false);
         }
 
-        public bool DelPlots(int chunkx, int chunkz, CorePlayer player, bool overclaim)
+        public bool DelPlots(int chunkx, int chunkz, OpenPlayer player, bool overclaim)
         {
             if (!FactionsMain.getInstance().FFactory.PM.delPlot(chunkx, chunkz, getName(), overclaim))
             {
@@ -838,7 +855,7 @@ namespace CyberCore.Manager.Factions
 //        Connection c = CyberCoreMain.getInstance().FM.FFactory.getMySqlConnection();
 //        try {
 //            Statement s = c.createStatement();
-//            ResultSet r = s.executeQuery("SELECT Money FROM Settings WHERE Name LIKE '" + getName() + "'");
+//            MySqlDataReader r = s.executeQuery("SELECT Money FROM Settings WHERE Name LIKE '" + getName() + "'");
 //            List<AllyRequest> list = new List<>();
 //            if (r.next()) {
 //                int m = r.getInt("Money");
@@ -955,13 +972,13 @@ namespace CyberCore.Manager.Factions
                 try
                 {
                     Statement s = c.createStatement();
-                    ResultSet r = s.executeQuery("SELECT * FROM `Homes` WHERE `faction` LIKE '" + getName() + "'");
+                    MySqlDataReader r = s.executeQuery("SELECT * FROM `Homes` WHERE `faction` LIKE '" + getName() + "'");
                     while (r.next())
                     {
                         int hid = r.getInt("homeid");
-                        String name = r.getString("name");
-                        String lvln = r.getString("level");
-                        String faction = r.getString("faction");
+                        String name = r.GetString("name");
+                        String lvln = r.GetString("level");
+                        String faction = r.GetString("faction");
                         int xx = r.getInt("x");
                         int yy = r.getInt("y");
                         int zz = r.getInt("z");
@@ -1168,7 +1185,7 @@ namespace CyberCore.Manager.Factions
         {
             if (War != null)
             {
-                return ((ConfigSection) Main.War.get(War)).getString("defenders").equalsIgnoreCase(fac);
+                return ((ConfigSection) Main.War.get(War)).GetString("defenders").equalsIgnoreCase(fac);
             }
 
             return false;
@@ -1178,7 +1195,7 @@ namespace CyberCore.Manager.Factions
      * @param fac    Faction to be added as enemy
      * @param player Player who added the Faction as an Emeney
      */
-        public void AddEnemy(Faction fac, CorePlayer player)
+        public void AddEnemy(Faction fac, OpenPlayer player)
         {
             if (!FactionsMain.getInstance().FFactory.RM.addEnemyRelationship(getName(), fac.getName()))
             {
@@ -1214,7 +1231,7 @@ namespace CyberCore.Manager.Factions
      * @param fac Faction to be removed as an enemy
      * @param p   Player who Removes faction as enemy
      */
-        public void RemoveEnemy(Faction fac, CorePlayer p)
+        public void RemoveEnemy(Faction fac, OpenPlayer p)
         {
             if (!FactionsMain.getInstance().FFactory.RM.removeEnemyRelationship(getName(), fac.getName()))
             {
@@ -1259,7 +1276,7 @@ namespace CyberCore.Manager.Factions
         }
 
         //Can Attack Nuetral but can not Attack Allys!
-        public bool isNeutral(CorePlayer player)
+        public bool isNeutral(OpenPlayer player)
         {
             Faction f = player.getFaction();
             if (f != null) return isNeutral(f);
@@ -1276,7 +1293,7 @@ namespace CyberCore.Manager.Factions
             return isNeutral(fac.getName());
         }
 
-        public bool isAllied(CorePlayer player)
+        public bool isAllied(OpenPlayer player)
         {
             Faction f = player.getFaction();
             if (f != null) return isAllied(f);
@@ -1293,7 +1310,7 @@ namespace CyberCore.Manager.Factions
             return FactionsMain.getInstance().FFactory.RM.isAllys(getName(), fac);
         }
 
-        public void AddInvite(CorePlayer player, int value, CorePlayer sender, FactionRank fr)
+        public void AddInvite(OpenPlayer player, int value, OpenPlayer sender, FactionRank fr)
         {
             if (!addRequest(RequestType.Faction_Invite, null, player, value, sender))
             {
@@ -1302,7 +1319,7 @@ namespace CyberCore.Manager.Factions
                 return;
             }
 
-            Invites.put(player.getName().toLowerCase(),
+            Invites.put(player.getName().ToLower(),
                 new Invitation(getName(), player.getName(), sender.getName(), value, fr));
 
             Connection c = CyberCoreMain.getInstance().FM.FFactory.getMySqlConnection();
@@ -1318,7 +1335,9 @@ namespace CyberCore.Manager.Factions
             catch (Exception e)
             {
                 e.printStackTrace();
-                throw new RuntimeException(e);
+                
+                CyberCoreMain.Log.Error(e);
+                return null;
             }
         }
 
@@ -1343,13 +1362,15 @@ namespace CyberCore.Manager.Factions
             catch (Exception e)
             {
                 e.printStackTrace();
-                throw new RuntimeException(e);
+                
+                CyberCoreMain.Log.Error(e);
+                return null;
             }
 
             Invites.remove(name);
         }
 
-        public bool AcceptInvite(CorePlayer p)
+        public bool AcceptInvite(OpenPlayer p)
         {
             String name = p.getName();
             Invitation i = HasInvite(name);
@@ -1396,7 +1417,7 @@ namespace CyberCore.Manager.Factions
             DelInvite(name);
         }
 
-        public Invitation HasInvite(CorePlayer name)
+        public Invitation HasInvite(OpenPlayer name)
         {
             return HasInvite(name.getName());
         }
@@ -1407,14 +1428,14 @@ namespace CyberCore.Manager.Factions
             try
             {
                 Statement stmt = c.createStatement();
-                ResultSet r = stmt.executeQuery("select * from `Requests` where `faction` LIKE '" + getName() +
+                MySqlDataReader r = stmt.executeQuery("select * from `Requests` where `faction` LIKE '" + getName() +
                                                 "' AND `player` LIKE '" + name + "' AND `TYPE` =  " +
                                                 RequestType.Faction_Invite.getKey() + ";");
                 if (r == null) return null;
                 if (r.next())
                 {
-                    return new Invitation(getName(), name, r.getString("player"), r.getInt("expires"),
-                        FactionRank.getRankFromString(r.getString("data")));
+                    return new Invitation(getName(), name, r.GetString("player"), r.getInt("expires"),
+                        FactionRank.getRankFromString(r.GetString("data")));
                 }
                 else
                 {
@@ -1424,10 +1445,12 @@ namespace CyberCore.Manager.Factions
             catch (Exception e)
             {
                 e.printStackTrace();
-                throw new RuntimeException(e);
+                
+                CyberCoreMain.Log.Error(e);
+                return null;
             }
 
-//        return Invites.containsKey(name.toLowerCase());
+//        return Invites.containsKey(name.ToLower());
         }
 
         public String GetLeader()
@@ -1445,7 +1468,7 @@ namespace CyberCore.Manager.Factions
 //        Leader = leader;
 //    }
 
-        public void removePlayer(CorePlayer p)
+        public void removePlayer(OpenPlayer p)
         {
             Connection c = CyberCoreMain.getInstance().FM.FFactory.getMySqlConnection();
             try
@@ -1464,7 +1487,7 @@ namespace CyberCore.Manager.Factions
             PlayerRanks.remove(p.getName());
         }
 
-        public bool addPlayer(CorePlayer p, FactionRank r, String invitedby)
+        public bool addPlayer(OpenPlayer p, FactionRank r, String invitedby)
         {
             return addPlayer(p.getName(), r, invitedby);
         }
@@ -1604,10 +1627,10 @@ namespace CyberCore.Manager.Factions
             try
             {
                 Statement s = c.createStatement();
-                ResultSet r = s.executeQuery("SELECT  * FROM Master WHERE player LIKE '" + p + "'");
+                MySqlDataReader r = s.executeQuery("SELECT  * FROM Master WHERE player LIKE '" + p + "'");
                 if (r.next())
                 {
-                    FactionRank fr = FactionRank.getRankFromString(r.getString("rank"));
+                    FactionRank fr = FactionRank.getRankFromString(r.GetString("rank"));
                     return fr;
                 }
                 else
@@ -1634,10 +1657,10 @@ namespace CyberCore.Manager.Factions
 
         public FactionRank getPlayerRank(Player p)
         {
-            return getPlayerRank(p.getName().toLowerCase());
+            return getPlayerRank(p.getName().ToLower());
         }
 
-        public FactionRank getPlayerRank(CorePlayer p)
+        public FactionRank getPlayerRank(OpenPlayer p)
         {
             return getPlayerRank((Player) p);
         }
@@ -1738,7 +1761,7 @@ namespace CyberCore.Manager.Factions
             AddAllyRequest(fac, null, -1);
         }
 
-        public void AddAllyRequest(Faction fac, CorePlayer cp)
+        public void AddAllyRequest(Faction fac, OpenPlayer cp)
         {
             AddAllyRequest(fac, cp, -1);
         }
@@ -1750,14 +1773,14 @@ namespace CyberCore.Manager.Factions
             {
                 Statement s = c.createStatement();
 
-                ResultSet r = s.executeQuery("SELECT * FROM Requestes WHERE type LIKE '" +
+                MySqlDataReader r = s.executeQuery("SELECT * FROM Requestes WHERE type LIKE '" +
                                              RequestType.Ally.getKey() + "' AND target = '" + getName() + "'");
 
                 List<int> dellist = new List<>();
                 List<AllyRequest> list = new List<>();
                 while (r.next())
                 {
-                    String fn = r.getString("faction");
+                    String fn = r.GetString("faction");
                     Faction f = FactionsMain.getInstance().FFactory.getFaction(fn);
                     if (f == null)
                     {
@@ -1778,7 +1801,7 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public bool addRequest(RequestType rt, Faction fac, CorePlayer player, int timeout, CorePlayer sender)
+        public bool addRequest(RequestType rt, Faction fac, OpenPlayer player, int timeout, OpenPlayer sender)
         {
             Connection c = CyberCoreMain.getInstance().FM.FFactory.getMySqlConnection();
             String sn = null;
@@ -1827,7 +1850,7 @@ namespace CyberCore.Manager.Factions
      * @param player  The Player who snet the Invite
      * @param timeout DateTimem to String when request expires
      */
-        public void AddAllyRequest(Faction fac, CorePlayer player, int timeout)
+        public void AddAllyRequest(Faction fac, OpenPlayer player, int timeout)
         {
             if (!addRequest(RequestType.Ally, fac, null, timeout, player))
             {
@@ -1894,7 +1917,7 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public void AddFactionChatMessage(String message, CorePlayer p)
+        public void AddFactionChatMessage(String message, OpenPlayer p)
         {
             FactionRank r = getPlayerRank(p);
             message = TextFormat.GRAY + "[" + r.GetChatPrefix() + TextFormat.GRAY + "] - " + r.getChatColor() +
@@ -1907,7 +1930,7 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public void AddAllyChatMessage(String message, CorePlayer p)
+        public void AddAllyChatMessage(String message, OpenPlayer p)
         {
             FactionRank r = getPlayerRank(p);
             message = TextFormat.GRAY + "[" + r.GetChatPrefix() + TextFormat.GRAY + "] - " + r.getChatColor() +
@@ -2004,9 +2027,9 @@ namespace CyberCore.Manager.Factions
             return getSettings().getMaxPlayers();
         }
 
-        public void addPlayerToGlobalList(CorePlayer p, String name)
+        public void addPlayerToGlobalList(OpenPlayer p, String name)
         {
-            FactionsMain.getInstance().FFactory.FacList.put(p.getName().toLowerCase(), name);
+            FactionsMain.getInstance().FFactory.FacList.put(p.getName().ToLower(), name);
         }
 
         public class HomeData

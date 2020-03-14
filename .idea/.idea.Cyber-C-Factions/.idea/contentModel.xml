@@ -12,6 +12,9 @@
         <e p="CyberCoreMain.cs" t="Include" />
         <e p="Manager" t="Include">
           <e p="Factions" t="Include">
+            <e p="Data" t="Include">
+              <e p="FactionInviteData.cs" t="Include" />
+            </e>
             <e p="Faction.cs" t="Include" />
             <e p="FactionFactory.cs" t="Include" />
             <e p="FactionLocalCache.cs" t="Include" />
@@ -40,8 +43,10 @@
           <e p="CacheChecker.cs" t="Include" />
           <e p="ConfigSection.cs" t="Include" />
           <e p="CustomConfigSection.cs" t="Include" />
+          <e p="CyberTexts.cs" t="Include" />
           <e p="CyberUtils.cs" t="Include" />
-          <e p="DataHolder.cs" t="Include" />
+          <e p="CyberUtilsExtender.cs" t="Include" />
+          <e p="FactionErrorString.cs" t="Include" />
           <e p="SqlManager.cs" t="Include" />
         </e>
       </e>

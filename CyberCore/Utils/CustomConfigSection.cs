@@ -131,7 +131,7 @@ namespace CyberCore.Utils
                     else if (field.getType() == double.class || field.getType() == Double.class)
                     field.set(this, CFG.getDouble(path, field.getDouble(this)));
                     else if (field.getType() == String.class)
-                        field.set(this, CFG.getString(path, (String) field.get(this)));
+                        field.set(this, CFG.GetString(path, (String) field.get(this)));
                     else if (field.getType() == ConfigSection.class)
                         field.set(this, CFG.getSection(path));
                     else if (field.getType() == List.class)
