@@ -111,12 +111,12 @@ namespace CyberCore.Manager.Factions
             return null;
         }
 
-        public List<String> getFactionsPlayerIsInvitedTo(Player p)
+        public List<String> getFactionsPlayerIsInvitedTo(OpenPlayer p)
         {
             return getFactionsPlayerIsInvitedTo(p.Username);
         }
 
-        public List<String> getFactionsPlayerIsInvitedTo(OpenPlayer cp)
+        public List<String> getFactionsPlayerIsInvitedTo(Player cp)
         {
             return getFactionsPlayerIsInvitedTo(cp.Username);
         }
@@ -809,7 +809,7 @@ namespace CyberCore.Manager.Factions
             return null;
         }
 
-        public Faction CreateFaction(String name, OpenPlayer p)
+        public Faction CreateFaction(String name, Player p)
         {
             return CreateFaction(name, p, "Just a CyberTech Faction", false);
         }
@@ -846,12 +846,12 @@ namespace CyberCore.Manager.Factions
             return null;
         }
 
-        public Faction CreateFaction(String name, OpenPlayer p, String motd, bool privacy)
+        public Faction CreateFaction(String name, Player p, String motd, bool privacy)
         {
             return CreateFaction(name, p, CyberTexts.Default_Faction_MOTD, motd, privacy);
         }
 
-        public Faction CreateFaction(String name, OpenPlayer p, String desc, String motd, bool privacy)
+        public Faction CreateFaction(String name, Player p, String desc, String motd, bool privacy)
         {
             if (p.getFaction() != null)
             {
@@ -1073,7 +1073,7 @@ namespace CyberCore.Manager.Factions
             return null;
         }
 
-        public bool isPlayerInFaction(OpenPlayer p)
+        public bool isPlayerInFaction(Player p)
         {
             return isPlayerInFaction(p.getName());
         }

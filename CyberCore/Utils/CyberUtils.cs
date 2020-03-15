@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
 using MiNET;
 using MiNET.Plugins;
 using MiNET.Utils;
@@ -10,11 +13,39 @@ namespace CyberCore.Utils
 {
     public class CyberUtils
     {
+        public static Dictionary<String, ExtraPlayerData> epd = new Dictionary<string, ExtraPlayerData>();
+
         public static readonly String NAME = ChatColors.DarkAqua + "Cyber" + ChatColors.Gold + "Tech" +
                                              ChatColors.Green + "++";
 
-        
-        
+        [CanBeNull]
+        public static ExtraPlayerData getExtraPlayerData(Player p)
+        {
+            if (epd.ContainsKey(p.getName().ToLower())) return epd[p.getName().ToLower()];
+            else
+            {
+                var e = new ExtraPlayerData();
+                epd.Add(p.getName().ToLower(),e);
+                return e;
+            }
+        }
+
+        public static void updateExtraPlayerData(Player p, ExtraPlayerData e)
+        {
+            epd.Add(p.getName().ToLower(), e);
+        }
+
+        public static void removeExtraPlayerData(Player p)
+        {
+            epd.Remove(p.getName().ToLower());
+        }
+
+        [CanBeNull]
+        public static Player getPlayer(String name)
+        {
+            return CyberCoreMain.GetInstance().getAPI().PlayerManager.getPlayer(name);
+        }
+
         public static String toStringCode(String[] a)
         {
             String f = "";

@@ -116,7 +116,7 @@ namespace CyberCore.Manager.Factions
 //    private int Settings_Cache_Lastupload = 0;
         private int UpdateEverySecs = 60 * 5;
 
-        public Faction(FactionsMain main, String name, OpenPlayer cp)
+        public Faction(FactionsMain main, String name, Player cp)
         {
             Player
             LC = new FactionLocalCache(this);
@@ -453,7 +453,7 @@ namespace CyberCore.Manager.Factions
             updatePlayerRankinDB(p.Username, r);
         }
 
-        public void updatePlayerRankinDB(OpenPlayer p, FactionRank r)
+        public void updatePlayerRankinDB(Player p, FactionRank r)
         {
             updatePlayerRankinDB(p.UserName, r);
         }
@@ -541,12 +541,12 @@ namespace CyberCore.Manager.Factions
             getSettings().TakePower(2);
         }
 
-        public void SendFactionChatWindow(OpenPlayer cp)
+        public void SendFactionChatWindow(Player cp)
         {
             cp.showFormWindow(new FactionChatFactionWindow((LinkedList<String>) LastFactionChat.clone()));
         }
 
-        public void HandleFactionChatWindow(FormResponseCustom frc, OpenPlayer cp)
+        public void HandleFactionChatWindow(FormResponseCustom frc, Player cp)
         {
             if (frc == null)
             {
@@ -577,7 +577,7 @@ namespace CyberCore.Manager.Factions
             return FactionsMain.getInstance().FFactory.PM.getFactionPlots(getName());
         }
 
-        public bool AddPlots(int chunkx, int chunkz, OpenPlayer player)
+        public bool AddPlots(int chunkx, int chunkz, Player player)
         {
             if (!FactionsMain.getInstance().FFactory.PM.addPlot(chunkx, chunkz, getName()))
             {
@@ -588,12 +588,12 @@ namespace CyberCore.Manager.Factions
             return true;
         }
 
-        public bool DelPlots(int chunkx, int chunkz, OpenPlayer playe)
+        public bool DelPlots(int chunkx, int chunkz, Player playe)
         {
             return DelPlots(chunkx, chunkz, playe, false);
         }
 
-        public bool DelPlots(int chunkx, int chunkz, OpenPlayer player, bool overclaim)
+        public bool DelPlots(int chunkx, int chunkz, Player player, bool overclaim)
         {
             if (!FactionsMain.getInstance().FFactory.PM.delPlot(chunkx, chunkz, getName(), overclaim))
             {
@@ -1195,7 +1195,7 @@ namespace CyberCore.Manager.Factions
      * @param fac    Faction to be added as enemy
      * @param player Player who added the Faction as an Emeney
      */
-        public void AddEnemy(Faction fac, OpenPlayer player)
+        public void AddEnemy(Faction fac, Player player)
         {
             if (!FactionsMain.getInstance().FFactory.RM.addEnemyRelationship(getName(), fac.getName()))
             {
@@ -1231,7 +1231,7 @@ namespace CyberCore.Manager.Factions
      * @param fac Faction to be removed as an enemy
      * @param p   Player who Removes faction as enemy
      */
-        public void RemoveEnemy(Faction fac, OpenPlayer p)
+        public void RemoveEnemy(Faction fac, Player p)
         {
             if (!FactionsMain.getInstance().FFactory.RM.removeEnemyRelationship(getName(), fac.getName()))
             {
@@ -1276,7 +1276,7 @@ namespace CyberCore.Manager.Factions
         }
 
         //Can Attack Nuetral but can not Attack Allys!
-        public bool isNeutral(OpenPlayer player)
+        public bool isNeutral(Player player)
         {
             Faction f = player.getFaction();
             if (f != null) return isNeutral(f);
@@ -1293,7 +1293,7 @@ namespace CyberCore.Manager.Factions
             return isNeutral(fac.getName());
         }
 
-        public bool isAllied(OpenPlayer player)
+        public bool isAllied(Player player)
         {
             Faction f = player.getFaction();
             if (f != null) return isAllied(f);
@@ -1310,7 +1310,7 @@ namespace CyberCore.Manager.Factions
             return FactionsMain.getInstance().FFactory.RM.isAllys(getName(), fac);
         }
 
-        public void AddInvite(OpenPlayer player, int value, OpenPlayer sender, FactionRank fr)
+        public void AddInvite(Player player, int value, Player sender, FactionRank fr)
         {
             if (!addRequest(RequestType.Faction_Invite, null, player, value, sender))
             {
@@ -1370,7 +1370,7 @@ namespace CyberCore.Manager.Factions
             Invites.remove(name);
         }
 
-        public bool AcceptInvite(OpenPlayer p)
+        public bool AcceptInvite(Player p)
         {
             String name = p.getName();
             Invitation i = HasInvite(name);
@@ -1417,7 +1417,7 @@ namespace CyberCore.Manager.Factions
             DelInvite(name);
         }
 
-        public Invitation HasInvite(OpenPlayer name)
+        public Invitation HasInvite(Player name)
         {
             return HasInvite(name.getName());
         }
@@ -1468,7 +1468,7 @@ namespace CyberCore.Manager.Factions
 //        Leader = leader;
 //    }
 
-        public void removePlayer(OpenPlayer p)
+        public void removePlayer(Player p)
         {
             Connection c = CyberCoreMain.getInstance().FM.FFactory.getMySqlConnection();
             try
@@ -1487,7 +1487,7 @@ namespace CyberCore.Manager.Factions
             PlayerRanks.remove(p.getName());
         }
 
-        public bool addPlayer(OpenPlayer p, FactionRank r, String invitedby)
+        public bool addPlayer(Player p, FactionRank r, String invitedby)
         {
             return addPlayer(p.getName(), r, invitedby);
         }
@@ -1660,7 +1660,7 @@ namespace CyberCore.Manager.Factions
             return getPlayerRank(p.getName().ToLower());
         }
 
-        public FactionRank getPlayerRank(OpenPlayer p)
+        public FactionRank getPlayerRank(Player p)
         {
             return getPlayerRank((Player) p);
         }
@@ -1761,7 +1761,7 @@ namespace CyberCore.Manager.Factions
             AddAllyRequest(fac, null, -1);
         }
 
-        public void AddAllyRequest(Faction fac, OpenPlayer cp)
+        public void AddAllyRequest(Faction fac, Player cp)
         {
             AddAllyRequest(fac, cp, -1);
         }
@@ -1801,7 +1801,7 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public bool addRequest(RequestType rt, Faction fac, OpenPlayer player, int timeout, OpenPlayer sender)
+        public bool addRequest(RequestType rt, Faction fac, Player player, int timeout, Player sender)
         {
             Connection c = CyberCoreMain.getInstance().FM.FFactory.getMySqlConnection();
             String sn = null;
@@ -1850,7 +1850,7 @@ namespace CyberCore.Manager.Factions
      * @param player  The Player who snet the Invite
      * @param timeout DateTimem to String when request expires
      */
-        public void AddAllyRequest(Faction fac, OpenPlayer player, int timeout)
+        public void AddAllyRequest(Faction fac, Player player, int timeout)
         {
             if (!addRequest(RequestType.Ally, fac, null, timeout, player))
             {
@@ -1917,7 +1917,7 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public void AddFactionChatMessage(String message, OpenPlayer p)
+        public void AddFactionChatMessage(String message, Player p)
         {
             FactionRank r = getPlayerRank(p);
             message = TextFormat.GRAY + "[" + r.GetChatPrefix() + TextFormat.GRAY + "] - " + r.getChatColor() +
@@ -1930,7 +1930,7 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public void AddAllyChatMessage(String message, OpenPlayer p)
+        public void AddAllyChatMessage(String message, Player p)
         {
             FactionRank r = getPlayerRank(p);
             message = TextFormat.GRAY + "[" + r.GetChatPrefix() + TextFormat.GRAY + "] - " + r.getChatColor() +
@@ -2027,7 +2027,7 @@ namespace CyberCore.Manager.Factions
             return getSettings().getMaxPlayers();
         }
 
-        public void addPlayerToGlobalList(OpenPlayer p, String name)
+        public void addPlayerToGlobalList(Player p, String name)
         {
             FactionsMain.getInstance().FFactory.FacList.put(p.getName().ToLower(), name);
         }

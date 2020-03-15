@@ -1,4 +1,5 @@
 ﻿using System;
+using CyberCore.Manager.Factions.Data;
 using CyberCore.Utils;
 using MiNET;
 using MiNET.Blocks;
@@ -86,9 +87,9 @@ namespace CyberCore.Manager.Factions
             return instance;
         }
 
-        public bool isInFaction(OpenPlayer player)
+        public bool isInFaction(Player player)
         {
-            return player != null && isInFaction( player);
+            return player != null && isInFaction(player);
         }
 
         public bool isInFaction(Player player)
@@ -98,7 +99,7 @@ namespace CyberCore.Manager.Factions
 
         public bool isInFaction(String name)
         {
-            return isInFaction(OpenServer.(name));
+            return isInFaction(CCM.getAPI().PlayerManager.getPlayer(name));
         }
 
         /**
@@ -127,10 +128,10 @@ namespace CyberCore.Manager.Factions
 
         public bool isLeader(String player)
         {
-            if (FFactory.FacList.containsKey(player.toLowerCase()))
+            if (FFactory.FacList.ContainsKey(player.ToLower()))
             {
-                Faction fac = FFactory.getFaction(FFactory.FacList.get(player.toLowerCase()));
-                if (fac != null) return fac.GetLeader().toLowerCase().equalsIgnoreCase(player);
+                Faction fac = FFactory.getFaction(FFactory.FacList[player.ToLower()]);
+                if (fac != null) return fac.GetLeader().ToLower().equalsIgnoreCase(player);
             }
 
             return false;
@@ -156,31 +157,29 @@ namespace CyberCore.Manager.Factions
         {
             if (invited == null)
             {
-                CyberCoreMain.getInstance().getLogger()
-                    .warning("WARNING!!! TRING TO INVITE NULL PLAYER to FAC: " + fac.getSettings().getDisplayName());
+                CyberCoreMain.Log.Warn("WARNING!!! TRING TO INVITE NULL PLAYER to FAC: " +
+                                       fac.getSettings().getDisplayName());
                 return;
             }
 
             fac.BroadcastMessage(Sender.getName() + " has invited " + invited.getName() + " to the faction as a " +
                                  fr.getChatColor() + fr.getName());
-            Sender.sendMessage(FactionsMain.NAME + TextFormat.GREEN + "You successfully invited " + invited.getName() +
+            Sender.SendMessage(FactionsMain.NAME + ChatColors.Green + "You successfully invited " + invited.getName() +
                                " to your faction as a " + fr.getChatColor() + fr.getName() + " !");
-            invited.sendMessage(FactionsMain.NAME + TextFormat.YELLOW + "You have been invited to join " +
+            invited.SendMessage(FactionsMain.NAME + ChatColors.Yellow + "You have been invited to join " +
                                 fac.getSettings().getDisplayName() + " by " + Sender.getName() + "\n" +
-                                TextFormat.GREEN + "Type '/f accept' or '/f deny' into chat to accept or deny!");
+                                ChatColors.Green + "Type '/f accept' or '/f deny' into chat to accept or deny!");
 
-            Integer time = GetIntTime() + 60 * 5; //5 Mins
+            int time = CyberUtils.getIntTime() + 60 * 5; //5 Mins
             fac.AddInvite(invited, time, Sender, fr);
 
-            invited.FactionInvite = fac.getName();
-            invited.FactionInviteTimeout = time;
+            var fid = new FactionInviteData(invited.getName(), fac.getName(), time, Sender.getName(),
+                fr);
 
-//        FFactory.InvList.put(invited.getName().toLowerCase(), fac.getName());
-
-            FFactory.addFactionInvite(new FactionInviteData(invited.getName(), time, fac.getName(), fr));
-
-
-//        invited.
+            ExtraPlayerData epd = CyberUtils.getExtraPlayerData(invited);
+            epd.fid = fid;
+            CyberUtils.updateExtraPlayerData(invited, epd);
+            FFactory.addFactionInvite(fid);
             if (!invited.InternalPlayerSettings.isAllowFactionRequestPopUps()) return;
             invited.showFormWindow(new FactionInvited(invited.getDisplayName(), fac.getSettings().getDisplayName()));
         }
