@@ -31,15 +31,19 @@
               <e p="MissionTask.cs" t="Include" />
             </e>
             <e p="PlotManager.cs" t="Include" />
+            <e p="Windows" t="Include">
+              <e p="FactionChatFactionWindow.cs" t="Include" />
+              <e p="FactionInvited.cs" t="Include" />
+            </e>
           </e>
           <e p="Forms" t="Include">
-            <e p="CyberForm.cs" t="Include" />
             <e p="CyberFormCustom.cs" t="Include" />
             <e p="CyberFormModal.cs" t="Include" />
             <e p="CyberFormSimple.cs" t="Include" />
             <e p="FormType.cs" t="Include" />
           </e>
         </e>
+        <e p="MasterListener.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp3.1" t="Include">

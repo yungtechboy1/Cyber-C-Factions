@@ -16,6 +16,10 @@ namespace CyberCore.Manager.Forms
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(CyberFormCustom));
         
+        public CyberFormCustom(MainForm ttype) 
+        {
+            FT = ttype;
+        }
         public CyberFormCustom(MainForm ttype,  List<CustomElement> elements) 
         {
             FT = ttype;

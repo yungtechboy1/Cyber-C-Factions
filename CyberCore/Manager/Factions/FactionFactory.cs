@@ -4,6 +4,7 @@ using System.Numerics;
 using System.Text.RegularExpressions;
 using CyberCore.Manager.Factions.Data;
 using CyberCore.Utils;
+using log4net;
 using MiNET;
 using MiNET.Utils;
 using MySql.Data.MySqlClient;
@@ -17,11 +18,12 @@ namespace CyberCore.Manager.Factions
         static StringComparer dd = StringComparer.OrdinalIgnoreCase;
         public Dictionary<String, Faction> LocalFactionCache = new Dictionary<String, Faction>(dd);
 
+        public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(FactionFactory));
         public Dictionary<String, String> FacList = new Dictionary<String, String>(dd);
 
 //    public Map<String, String> PlotsList = new TreeMap<>;
         public PlotManager PM;
-        public RelationshipManager RM = new RelationshipManager(this);
+        public RelationshipManager RM;
         public Dictionary<String, String> allyrequest = new Dictionary<String, String>(dd);
         public Dictionary<String, String> War = new Dictionary<String, String>(dd); //Attacking V Defending
         public Dictionary<String, int> Top = new Dictionary<String, int>(dd);
@@ -29,16 +31,25 @@ namespace CyberCore.Manager.Factions
         public FactionsMain Main;
 
         private Dictionary<String, List<FactionInviteData>>
-            InvList = new Dictionary<String, List<FactionInviteData>(dd);
+            InvList = new Dictionary<String, List<FactionInviteData>>(dd);
 
         private List<String> bannednames = new List<String>()
         {
             ("wilderness"), ("safezone"), ("peace")
         };
 
+        private static FactionFactory instance { get; set; }
+
+        public static FactionFactory GetInstance()
+        {
+            return instance;
+        }
+
         public FactionFactory(FactionsMain main)
         {
+            instance = this;
             Main = main;
+            RM = new RelationshipManager(this);
             PM = new PlotManager(this);
         }
 
@@ -640,11 +651,11 @@ namespace CyberCore.Manager.Factions
      * @return
      * @deprecated
      */
-        public Dictionary<String,object> GetWars(String faction)
+        public Dictionary<String, object> GetWars(String faction)
         {
             try
             {
-                Dictionary<string,object> results = new Dictionary<string, object>();
+                Dictionary<string, object> results = new Dictionary<string, object>();
 
                 MySqlDataReader r =
                     this.ExecuteQuerySQL($"select * from `war` where `attackingfaction` LIKE '{faction}'");
@@ -705,12 +716,15 @@ namespace CyberCore.Manager.Factions
             try
             {
                 List<String> results = new List<String>();
-                MySqlDataReader r = this.ExecuteQuerySQL($"select * from `relationships` where `factiona` LIKE '{faction}' OR `factionb` LIKE '{faction}'");
+                MySqlDataReader r = this.ExecuteQuerySQL(
+                    $"select * from `relationships` where `factiona` LIKE '{faction}' OR `factionb` LIKE '{faction}'");
                 if (r == null) return null;
                 while (r.Read())
                 {
-                    if (r.GetString("factiona").Equals(faction,StringComparison.CurrentCultureIgnoreCase)) results.Add(r.GetString("factionb"));
-                    if (r.GetString("factionb").Equals(faction, StringComparison.CurrentCultureIgnoreCase)) results.Add(r.GetString("factiona"));
+                    if (r.GetString("factiona").Equals(faction, StringComparison.CurrentCultureIgnoreCase))
+                        results.Add(r.GetString("factionb"));
+                    if (r.GetString("factionb").Equals(faction, StringComparison.CurrentCultureIgnoreCase))
+                        results.Add(r.GetString("factiona"));
                 }
 
                 return results;
@@ -727,12 +741,15 @@ namespace CyberCore.Manager.Factions
             try
             {
                 List<String> results = new List<String>();
-                MySqlDataReader r = this.ExecuteQuerySQL($"select * from `enemies` where `factiona` LIKE '{faction}' OR `factionb` LIKE '{faction}'");
+                MySqlDataReader r = this.ExecuteQuerySQL(
+                    $"select * from `enemies` where `factiona` LIKE '{faction}' OR `factionb` LIKE '{faction}'");
                 if (r == null) return null;
                 while (r.Read())
                 {
-                    if (r.GetString("factiona").Equals(faction,StringComparison.CurrentCultureIgnoreCase)) results.Add(r.GetString("factionb"));
-                    if (r.GetString("factionb").Equals(faction, StringComparison.CurrentCultureIgnoreCase)) results.Add(r.GetString("factiona"));
+                    if (r.GetString("factiona").Equals(faction, StringComparison.CurrentCultureIgnoreCase))
+                        results.Add(r.GetString("factionb"));
+                    if (r.GetString("factionb").Equals(faction, StringComparison.CurrentCultureIgnoreCase))
+                        results.Add(r.GetString("factiona"));
                 }
 
                 return results;
@@ -773,7 +790,7 @@ namespace CyberCore.Manager.Factions
                 while (r.Read())
                 {
                     FactionInviteData fid =
-                        new FactionInviteData(r.GetString("player"),  faction,r.GetInt32("timestamp"));
+                        new FactionInviteData(r.GetString("player"), faction, r.GetInt32("timestamp"));
                     result.Add(r.GetString("player").ToLower(), r.GetInt32("timestamp"));
                     addFactionInvite(fid);
 //                InvList.put(r.GetString("player").ToLower(), fid);
@@ -833,12 +850,12 @@ namespace CyberCore.Manager.Factions
                 return FactionErrorString.Error_FactionExists;
             }
 
-            if (name.length() > 20)
+            if (name.Length > 20)
             {
                 return FactionErrorString.Error_NameTooLong;
             }
 
-            if (name.length() < 3)
+            if (name.Length < 3)
             {
                 return FactionErrorString.Error_NameTooShort;
             }
@@ -914,7 +931,7 @@ namespace CyberCore.Manager.Factions
                 return null;
             }
         }
-        
+
         public Faction getPlayerFaction(Player p)
         {
             String f = null;
@@ -1027,7 +1044,7 @@ namespace CyberCore.Manager.Factions
             try
             {
                 MySqlDataReader r =
-                    this.ExecuteQuerySQL($"select * from `Settings` where `privacy`= '1' and `faction` LIKE '{ name }'");
+                    this.ExecuteQuerySQL($"select * from `Settings` where `privacy`= '1' and `faction` LIKE '{name}'");
                 if (r == null) return null;
                 while (r.Read())
                 {
@@ -1073,7 +1090,7 @@ namespace CyberCore.Manager.Factions
             return null;
         }
 
-        public bool isPlayerInFaction(Player p)
+        public bool isPlayerInFaction(OpenPlayer p)
         {
             return isPlayerInFaction(p.getName());
         }
@@ -1087,7 +1104,7 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                MySqlDataReader r = this.ExecuteQuerySQL("select * from Master where `player`= '" + p + "'");
+                MySqlDataReader r = this.ExecuteQuerySQL($"select * from Master where `player`= '{p}'");
                 if (r == null) return false;
                 if (r.Read())
                 {
@@ -1098,7 +1115,7 @@ namespace CyberCore.Manager.Factions
             }
             catch (Exception e)
             {
-                CyberCoreMain.Log.Error("ERROR WHILE CHECKING PLOT", e);
+                CyberCoreMain.Log.Error("ERROR WHILE CHECKING Player In Factions", e);
             }
 
             return true;

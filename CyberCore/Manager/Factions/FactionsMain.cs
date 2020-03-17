@@ -1,11 +1,11 @@
 ﻿using System;
 using CyberCore.Manager.Factions.Data;
+using CyberCore.Manager.Factions.Windows;
 using CyberCore.Utils;
 using MiNET;
 using MiNET.Blocks;
 using MiNET.Utils;
 using OpenAPI;
-using OpenAPI.OpenPlayer;
 using OpenAPI.Player;
 
 namespace CyberCore.Manager.Factions
@@ -179,11 +179,11 @@ namespace CyberCore.Manager.Factions
                 fr);
 
             ExtraPlayerData epd = CyberUtils.getExtraPlayerData(invited);
-            epd.fid = fid;
+            epd.FactionInviteData.Add(fid);
             CyberUtils.updateExtraPlayerData(invited, epd);
             FFactory.addFactionInvite(fid);
             if (!invited.GetExtraPlayerData().InternalPlayerSettings.isAllowFactionRequestPopUps()) return;
-            invited.showFormWindow(new FactionInvited(invited.getDisplayName(), fac.getSettings().getDisplayName()));
+            invited.showFormWindow(new FactionInvited(invited.Username, fac.getName()));
         }
     }
 }

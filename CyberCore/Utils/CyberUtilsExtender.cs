@@ -51,16 +51,9 @@ namespace CyberCore.Utils
             return f;
         }
         
-        public static void showFormWindow(this OpenPlayer p)
+        public static void showFormWindow(this OpenPlayer p, Form f)
         {
-            var modalForm = new ModalForm();
-            modalForm.ExecuteAction = ExecutePayment;
-            modalForm.Title = "Review Order";
-            modalForm.Content = "§lPlease review your ordering information below.§r\nProduct: Mega coins extra pack.\nYour total: $3.99 USD\nPayment method: VISA ************59 $3.99 USD\n";
-            modalForm.Button1 = "§2§lBuy now";
-            modalForm.Button2 = "Cancel";
-
-            player.SendForm(modalForm);
+            p.SendForm(f);
         }
 
         public static ExtraPlayerData GetExtraPlayerData(this OpenPlayer p)

@@ -19,6 +19,25 @@ namespace CyberCore.Utils
         public static readonly String NAME = ChatColors.DarkAqua + "Cyber" + ChatColors.Gold + "Tech" +
                                              ChatColors.Green + "++";
 
+        public static Dictionary<String, Object> cloneObjectDictionary(Dictionary<String, Object> o)
+        {
+            Dictionary<String, Object> ret = new Dictionary<String, Object>();
+            foreach (KeyValuePair<String, Object> entry in o)
+            {
+                ret.Add(entry.Key, entry.Value);
+            }
+            return ret;
+        }
+        public static List<String> cloneListString(List<String> o)
+        {
+            List<String> ret = new List<String>();
+            foreach (var entry in o)
+            {
+                ret.Add(entry);
+            }
+            return ret;
+        }
+        
         public static MainForm? getMainFromFromInt(int n)
         {
             int i = 0;

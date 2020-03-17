@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -21,6 +22,7 @@ namespace CyberCore
         Version = "1.0.0.0-PA", Website = "CyberTechpp.com")]
     public class CyberCoreMain : OpenPlugin
     {
+        public Dictionary<String, Object> PlayerIdentification = new Dictionary<string, object>();
         public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(CyberCoreMain));
         private static CyberCoreMain instance { get; set; }
         public ConfigSection MasterConfig { get; }
@@ -108,7 +110,7 @@ namespace CyberCore
         }
 
         private OpenApi API;
-
+        
         public override void Enabled(OpenApi api)
         {
             API = api;
@@ -120,9 +122,17 @@ namespace CyberCore
             {
                 Player player = args.Player;
                 player.PlayerJoin += OnPlayerJoin;
+                player.PlayerJoin += MasterListener.joinEvent;
                 player.PlayerLeave += OnPlayerLeave;
                 player.Ticking += OnTicking;
             };
+
+            foreach (var l in getServer().LevelManager.Levels)
+            {
+                l.BlockBreak +=
+            }
+
+            getServer().LevelManager.Levels
 
             // api.CommandManager.RegisterPermissionChecker(new FactionPermissionChecker(FactionManager));
             //
