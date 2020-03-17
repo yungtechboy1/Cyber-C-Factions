@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using CyberCore.Manager.Forms;
 using JetBrains.Annotations;
 using MiNET;
 using MiNET.Plugins;
@@ -18,9 +19,23 @@ namespace CyberCore.Utils
         public static readonly String NAME = ChatColors.DarkAqua + "Cyber" + ChatColors.Gold + "Tech" +
                                              ChatColors.Green + "++";
 
+        public static MainForm? getMainFromFromInt(int n)
+        {
+            int i = 0;
+            foreach (MainForm ff in Enum.GetValues(typeof(MainForm)) )
+            {
+                if (n == i) return ff;
+                i++;
+            }
+
+            return null;
+        }
+        
         [CanBeNull]
         public static ExtraPlayerData getExtraPlayerData(Player p)
         {
+            //TODO add Saveing of This Data!
+            //SQL Save
             if (epd.ContainsKey(p.getName().ToLower())) return epd[p.getName().ToLower()];
             else
             {

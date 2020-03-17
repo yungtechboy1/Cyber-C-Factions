@@ -2,18 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Data/RelationshipManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Utils/ExtraPlayerData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Utils/InternalPlayerSettings.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberForm.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormCustom.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormModal.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormSimple.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Forms/FormType.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/Invitation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Invitation.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CustomConfigSection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CustomConfigSection.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/ExtraPlayerData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/ExtraPlayerData.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,8 +48,10 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A8585F79-75D3-4675-9AF8-7A57243E6E17/93/f8e33f1f/OpenPlugin.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/Commands/MissionCmd.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/fc/881484da/ChatColors.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormCustom.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Invitation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionLocalCache.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/6b/9ece1221/Button.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Roaming/NuGet/NuGet.Config" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Data/FactionInviteData.cs" root0="FORCE_HIGHLIGHTING" />
@@ -68,16 +70,20 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A8585F79-75D3-4675-9AF8-7A57243E6E17/2f/a9ac20e2/OpenApi.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A8585F79-75D3-4675-9AF8-7A57243E6E17/4e/01327bc4/OpenServer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A8585F79-75D3-4675-9AF8-7A57243E6E17/f5/383f6c7e/OpenMotdProvider.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Forms/FormType.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F5619BA5-7468-445C-8ECD-7DF2876332AC/83/af26f18f/Item.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormModal.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/3e/0a5fb5dc/Config.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/B16D78DA-268A-40BA-951E-52055D07F662/0/ConnectionState.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/b1/d6ef4bbe/Form.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F5619BA5-7468-445C-8ECD-7DF2876332AC/d9/d1834601/Config.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/BBB3B884-123D-47EA-9CD1-5BED540D02AE/2A5/FieldInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/BBB3B884-123D-47EA-9CD1-5BED540D02AE/CE/StringComparer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Forms/CyberForm.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/PlotManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/BBB3B884-123D-47EA-9CD1-5BED540D02AE/87/773f2f97/ICollection`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1C998C91-6729-4AF5-B147-9544EB72A2E0/52/6ec26383/MySqlCommand.cs" root0="SKIP_HIGHLIGHTING" />
@@ -95,6 +101,7 @@
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/ExtraPlayerData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/FactionMain.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Missions/MissionData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormSimple.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/AbstractClass.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/InternalPlayerSettings.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionSettings.cs" root0="FORCE_HIGHLIGHTING" />
@@ -137,23 +144,30 @@
         <option value="$PROJECT_DIR$/CyberCore/Utils/FactionErrorString.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtils2.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberTexts.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CustomConfigSection.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/FactionInviteData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Data/FactionInviteData.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Utils/ExtraPlayerData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/InternalPlayerSettings.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Data/RelationshipManager.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Utils/ExtraPlayerData.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/FormType.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberForm.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormSimple.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormModal.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormCustom.cs" />
       </list>
     </option>
   </component>
   <component name="ProjectId" id="1YQ8OGJqhd8R2A7QQmQ000KFgZA" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -186,7 +200,8 @@
       <workItem from="1583625037725" duration="4602000" />
       <workItem from="1583637451887" duration="2446000" />
       <workItem from="1583640493608" duration="1302000" />
-      <workItem from="1584216622367" duration="15527000" />
+      <workItem from="1584216622367" duration="15903000" />
+      <workItem from="1584409889698" duration="2835000" />
     </task>
     <servers />
   </component>
@@ -226,10 +241,10 @@
     </state>
     <state x="-1943" y="289" key="Rider.ProjectTemplateDialog.Size/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583548955442" />
     <state x="617" y="288" key="Rider.ProjectTemplateDialog.Size/0.0.2048.1112/-2560.1.2048.1112@0.0.2048.1112" timestamp="1582865519424" />
-    <state x="-1703" y="273" key="RiderGenerateDialog" timestamp="1584230181107">
+    <state x="-1703" y="273" key="RiderGenerateDialog" timestamp="1584410966303">
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
-    <state x="-1703" y="273" key="RiderGenerateDialog/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584230181107" />
+    <state x="-1703" y="273" key="RiderGenerateDialog/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584410966303" />
     <state x="-1713" y="268" key="RollbackChangesDialog" timestamp="1584232196669">
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
@@ -246,15 +261,15 @@
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
     <state x="-1726" y="474" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584230136039" />
-    <state x="-6" y="0" width="1037" height="1118" key="dock-window-1" timestamp="1584218061972">
+    <state x="0" y="0" width="1404" height="765" key="dock-window-1" timestamp="1584411771012">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="-6" y="0" width="1037" height="1118" key="dock-window-1/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584218061972" />
+    <state x="0" y="0" width="1404" height="765" key="dock-window-1/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584411771012" />
     <state x="-6" y="0" width="1037" height="1118" key="dock-window-1/0.0.2048.1112@0.0.2048.1112" timestamp="1583635438152" />
-    <state x="366" y="-23" width="768" height="765" maximized="true" key="dock-window-2" timestamp="1584225198215">
+    <state x="0" y="433" width="1404" height="765" key="dock-window-2" timestamp="1584411771012">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="366" y="-23" width="768" height="765" maximized="true" key="dock-window-2/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584225198215" />
+    <state x="0" y="433" width="1404" height="765" key="dock-window-2/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584411771012" />
     <state x="122" y="-20" width="1406" height="765" maximized="true" key="dock-window-3" timestamp="1584225941781">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -267,10 +282,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="0" y="170" width="1406" height="765" key="dock-window-5/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584225941781" />
-    <state x="-6" y="0" width="1037" height="1118" key="dock-window-6" timestamp="1584226745255">
+    <state x="-6" y="0" width="1037" height="562" key="dock-window-6" timestamp="1584410566476">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="-6" y="0" width="1037" height="1118" key="dock-window-6/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584226745255" />
+    <state x="-6" y="0" width="1037" height="562" key="dock-window-6/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584410566476" />
     <state x="0" y="0" width="1406" height="765" key="dock-window-7" timestamp="1584228515859">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -283,10 +298,10 @@
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
     <state x="-1854" y="155" width="738" height="804" key="find.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584230277788" />
-    <state x="-1873" y="244" width="672" height="678" key="search.everywhere.popup" timestamp="1584230283291">
+    <state x="-1873" y="244" width="672" height="678" key="search.everywhere.popup" timestamp="1584412352537">
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
-    <state x="-1873" y="244" width="672" height="678" key="search.everywhere.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584230283291" />
+    <state x="-1873" y="244" width="672" height="678" key="search.everywhere.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584412352537" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand>

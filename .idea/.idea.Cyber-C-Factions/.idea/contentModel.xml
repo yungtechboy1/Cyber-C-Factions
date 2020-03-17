@@ -32,6 +32,13 @@
             </e>
             <e p="PlotManager.cs" t="Include" />
           </e>
+          <e p="Forms" t="Include">
+            <e p="CyberForm.cs" t="Include" />
+            <e p="CyberFormCustom.cs" t="Include" />
+            <e p="CyberFormModal.cs" t="Include" />
+            <e p="CyberFormSimple.cs" t="Include" />
+            <e p="FormType.cs" t="Include" />
+          </e>
         </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">

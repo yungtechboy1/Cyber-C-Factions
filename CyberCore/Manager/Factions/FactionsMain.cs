@@ -5,6 +5,7 @@ using MiNET;
 using MiNET.Blocks;
 using MiNET.Utils;
 using OpenAPI;
+using OpenAPI.OpenPlayer;
 using OpenAPI.Player;
 
 namespace CyberCore.Manager.Factions
@@ -87,26 +88,27 @@ namespace CyberCore.Manager.Factions
             return instance;
         }
 
-        public bool isInFaction(Player player)
-        {
-            return player != null && isInFaction(player);
-        }
+        // public bool isInFaction(OpenPlayer player)
+        // {
+        //     return player != null && isInFaction(player);
+        // }
 
-        public bool isInFaction(Player player)
+        public bool isInFaction(OpenPlayer player)
         {
             return player?.getFaction() != null;
         }
 
         public bool isInFaction(String name)
         {
-            return isInFaction(CCM.getAPI().PlayerManager.getPlayer(name));
+            OpenPlayer p = CCM.getPlayer(name);
+            return isInFaction(p);
         }
 
         /**
-     * @param player Player
+     * @param player OpenPlayer
      * @return String
      */
-        public String getPlayerFaction(Player player)
+        public String getPlayerFaction(OpenPlayer player)
         {
             return getPlayerFaction(player.getName());
         }
@@ -121,7 +123,7 @@ namespace CyberCore.Manager.Factions
             return null;
         }
 
-        public bool isLeader(Player player)
+        public bool isLeader(OpenPlayer player)
         {
             return isLeader(player.getName());
         }
@@ -148,12 +150,12 @@ namespace CyberCore.Manager.Factions
             return FFactory.PM.getFactionFromPlot(x, z);
         }
 
-        public void PlayerInvitedToFaction(Player invited, Player Sender, Faction fac)
+        public void PlayerInvitedToFaction(OpenPlayer invited, OpenPlayer Sender, Faction fac)
         {
             PlayerInvitedToFaction(invited, Sender, fac, fac.getPermSettings().getDefaultJoinRank());
         }
 
-        public void PlayerInvitedToFaction(Player invited, Player Sender, Faction fac, FactionRank fr)
+        public void PlayerInvitedToFaction(OpenPlayer invited, OpenPlayer Sender, Faction fac, FactionRank fr)
         {
             if (invited == null)
             {
@@ -180,7 +182,7 @@ namespace CyberCore.Manager.Factions
             epd.fid = fid;
             CyberUtils.updateExtraPlayerData(invited, epd);
             FFactory.addFactionInvite(fid);
-            if (!invited.InternalPlayerSettings.isAllowFactionRequestPopUps()) return;
+            if (!invited.GetExtraPlayerData().InternalPlayerSettings.isAllowFactionRequestPopUps()) return;
             invited.showFormWindow(new FactionInvited(invited.getDisplayName(), fac.getSettings().getDisplayName()));
         }
     }

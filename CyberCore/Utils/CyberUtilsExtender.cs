@@ -1,7 +1,9 @@
 ﻿using System;
 using CyberCore.Manager.Factions;
+using CyberCore.Manager.Forms;
 using JetBrains.Annotations;
 using MiNET;
+using MiNET.UI;
 using MiNET.Utils;
 using OpenAPI.Player;
 
@@ -44,6 +46,30 @@ namespace CyberCore.Utils
             return s.Equals(ss, StringComparison.CurrentCultureIgnoreCase);
         }
 
+        public static int getID(this MainForm f)
+        {
+            return f;
+        }
+        
+        public static void showFormWindow(this OpenPlayer p)
+        {
+            var modalForm = new ModalForm();
+            modalForm.ExecuteAction = ExecutePayment;
+            modalForm.Title = "Review Order";
+            modalForm.Content = "§lPlease review your ordering information below.§r\nProduct: Mega coins extra pack.\nYour total: $3.99 USD\nPayment method: VISA ************59 $3.99 USD\n";
+            modalForm.Button1 = "§2§lBuy now";
+            modalForm.Button2 = "Cancel";
+
+            player.SendForm(modalForm);
+        }
+
+        public static ExtraPlayerData GetExtraPlayerData(this OpenPlayer p)
+        {
+            return CyberUtils.getExtraPlayerData(p);
+        }public static ExtraPlayerData GetExtraPlayerData(this Player p)
+        {
+            return CyberUtils.getExtraPlayerData(p);
+        }
 
         [CanBeNull]
         public static OpenPlayer getPlayer(this OpenPlayerManager p, String name)
