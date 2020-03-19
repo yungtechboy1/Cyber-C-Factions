@@ -49,6 +49,11 @@ namespace CyberCore.Utils
 
             return null;
         }
+
+        public static bool hasExtraPlayerData(Player p)
+        {
+            return epd.ContainsKey(p.getName().ToLower());
+        }
         
         [CanBeNull]
         public static ExtraPlayerData getExtraPlayerData(Player p)
@@ -58,7 +63,7 @@ namespace CyberCore.Utils
             if (epd.ContainsKey(p.getName().ToLower())) return epd[p.getName().ToLower()];
             else
             {
-                var e = new ExtraPlayerData();
+                var e = new ExtraPlayerData(p);
                 epd.Add(p.getName().ToLower(),e);
                 return e;
             }
@@ -217,5 +222,10 @@ namespace CyberCore.Utils
         //     }
         //     return isBinary;
         // }
+        public static string colorize(string get)
+        {
+                return get.Replace('&', '§');
+         
+        }
     }
 }

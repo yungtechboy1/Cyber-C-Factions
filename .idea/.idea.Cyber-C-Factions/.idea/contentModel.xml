@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\CJ\Cyber-C-Factions" t="IncludeFlat">
+    <e p="C:\Minet-OpenNet\Cyber-C-Factions" t="IncludeFlat">
       <e p="CFactions" t="IncludeRecursive">
         <e p="CFactions.csproj" t="IncludeRecursive" />
       </e>
@@ -11,6 +11,9 @@
         <e p="CyberCore.csproj" t="IncludeRecursive" />
         <e p="CyberCoreMain.cs" t="Include" />
         <e p="Manager" t="Include">
+          <e p="ClassFactory" t="Include">
+            <e p="ClassFactory.cs" t="Include" />
+          </e>
           <e p="Factions" t="Include">
             <e p="Data" t="Include">
               <e p="FactionInviteData.cs" t="Include" />
@@ -42,6 +45,10 @@
             <e p="CyberFormSimple.cs" t="Include" />
             <e p="FormType.cs" t="Include" />
           </e>
+          <e p="Warp" t="Include">
+            <e p="WarpData.cs" t="Include" />
+            <e p="WarpManager.cs" t="Include" />
+          </e>
         </e>
         <e p="MasterListener.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
@@ -54,10 +61,15 @@
         <e p="Utils" t="Include">
           <e p="CacheChecker.cs" t="Include" />
           <e p="ConfigSection.cs" t="Include" />
+          <e p="CustomConfig.cs" t="Include" />
           <e p="CustomConfigSection.cs" t="Include" />
           <e p="CyberTexts.cs" t="Include" />
           <e p="CyberUtils.cs" t="Include" />
           <e p="CyberUtilsExtender.cs" t="Include" />
+          <e p="Data" t="Include">
+            <e p="PlayerDetailedInfo.cs" t="Include" />
+            <e p="ServerSqlite.cs" t="Include" />
+          </e>
           <e p="ExtraPlayerData.cs" t="Include" />
           <e p="FactionErrorString.cs" t="Include" />
           <e p="InternalPlayerSettings.cs" t="Include" />
@@ -66,9 +78,7 @@
       </e>
       <e p="packages" t="ExcludeRecursive" />
     </e>
-    <e p="C:\Users\Dirashi Mygashi\.Rider2019.3\config\consoles\db" t="IncludeRecursive" />
-    <e p="C:\Users\Dirashi Mygashi\.Rider2019.3\config\extensions" t="IncludeRecursive" />
-    <e p="C:\Users\Dirashi Mygashi\.Rider2019.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Dirashi Mygashi\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Cyber-C-Factions.1264782752.00" t="ExcludeRecursive" />
+    <e p="C:\Users\yungt\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\yungt\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Cyber-C-Factions.-790892132.00" t="ExcludeRecursive" />
   </component>
 </project>

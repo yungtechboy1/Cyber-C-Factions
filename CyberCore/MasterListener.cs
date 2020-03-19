@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Reflection.Metadata.Ecma335;
 using CyberCore.Manager.Factions;
 using CyberCore.Utils;
 using MiNET;
@@ -8,6 +9,7 @@ using MiNET.Blocks;
 using MiNET.Entities;
 using MiNET.Items;
 using MiNET.Net;
+using MiNET.Utils;
 using OpenAPI.Events.Block;
 using OpenAPI.Events.Entity;
 using OpenAPI.Events.Player;
@@ -18,60 +20,35 @@ namespace CyberCore
     {
         public static CyberCoreMain plugin = CyberCoreMain.GetInstance();
 
-        public static void joinEvent(object o, PlayerEventArgs eventArgs) {
+        public static void joinEvent(object o, PlayerEventArgs eventArgs)
+        {
             Player p = (Player) o;
-
-            if (plugin.PlayerIdentification.ContainsKey(p.getName().ToLower()))
+            if (p == null)
             {
-                Dictionary<String,Object> cs = (Dictionary<string, object>) plugin.PlayerIdentification[p.getName().ToLower()];
-                if (cs.ContainsKey("IP"))
-                {
-                    List<String> ipl = (List<string>) cs["IP"];
-                    var ip = p.EndPoint.Address.ToString();
-                    if (!ipl.Contains(ip)) ipl.Add(ip);
-                    List<long> cid = (List<long>) cs["CID"];
-                    if (!cid.Contains(p.ClientId)) cid.Add(p.ClientId);
-                    List<String> uid = (List<string>) cs["UID"];
-                    if (!uid.Contains(p.ClientUuid.ToString())) uid.Add(p.ClientUuid.ToString());
-                }
-            }
-            else
-            {
-                ConfigSection c = new ConfigSection()
-                {
-                    {
-                        put("IP", new ArrayList<String>()
-                        {
-                            {
-                                add(p.getAddress());
-                            }
-                        });
-                        put("CID", new ArrayList<Long>()
-                        {
-                            {
-                                add(p.getClientId());
-                            }
-                        });
-                        put("UID", new ArrayList<String>()
-                        {
-                            {
-                                add(p.getUniqueId().toString());
-                            }
-                        });
-                    }
-                };
-                plugin.PlayerIdentification.set(p.getName().toLowerCase(), c);
-                //NEW PLAYER
-                p.showFormWindow(new HTP_0_Window());
-                p.getServer().broadcastMessage(TextFormat.AQUA + "Welcome " + p.getName() +
-                                               " to the community!!! They have logged in for the 1st time!");
+                CyberCoreMain.Log.Error("Error With Join Event! Object is not player");
+                return;
             }
 
+            bool isnew = CyberUtils.hasExtraPlayerData(p);
+            var epd = p.GetExtraPlayerData();
+            if (epd == null)
+            {
+                CyberCoreMain.Log.Error($"Extra Player Data for {p.getName()} is NULL?!?!?!");
+                return;
+            }
 
-            String Msg = plugin.colorize((String) plugin.MainConfig.get("Join-Message"));
-                event.setJoinMessage(Msg.replace("{player}", p.getName()));
-            p.sendTitle(plugin.colorize("&l&bCyberTech"), plugin.colorize("&l&2Welcome!"), 30, 30, 10);
+            epd.PlayerDetailedInfo.onLogin(p);
+            p.SendForm(new HTP_0_Window()); //TODO
+            p.Level.BroadcastMessage(ChatColors.Aqua + "Welcome " + p.getName() +
+                                     " to the community!!! They have logged in for the 1st time!");
 
+
+            String Msg = CyberUtils.colorize((String) plugin.MasterConfig.GetProperty("Join-Message",
+                "{0} has joined the server. Default message"));
+            String fm = (Msg.Replace("{player}", p.getName()));
+            p.Level.BroadcastMessage(fm);
+            p.SendTitle(CyberUtils.colorize("&l&bCyberTech")+"\n"+CyberUtils.colorize("&l&2Welcome!"),TitleType.Title, 30, 30, 10);
+            
 //        _plugin.initiatePlayer(p);
             plugin.ServerSQL.LoadPlayer(plugin.getCorePlayer(p));
             String rank = plugin.RF.getPlayerRank(p).getDisplayName();
@@ -545,7 +522,7 @@ namespace CyberCore
                         {
                             if (ah.CurrentPage == AdminItemEdit)
                             {
-                                AdminItemEditHandle(ah, inv, sca, event,slot);
+                                AdminItemEditHandle(ah, inv, sca,  event,slot);
                             }
                             else
                                 ah.AdminModeItem(slot, ah.AdminMode);

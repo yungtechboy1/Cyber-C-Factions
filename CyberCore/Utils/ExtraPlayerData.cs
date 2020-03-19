@@ -1,43 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using CyberCore.Manager.Factions.Data;
+using CyberCore.Utils.Data;
+using MiNET;
 
 namespace CyberCore.Utils
 {
     public class ExtraPlayerData
     {
         //TODO Check FactionInviteData if Valid
-        private List<FactionInviteData> fid;
-        private InternalPlayerSettings ips;
+        public List<FactionInviteData> FactionInviteData { get; set; } = new List<FactionInviteData>();
+        public InternalPlayerSettings InternalPlayerSettings{ get; set; }= new InternalPlayerSettings();
+        public PlayerDetailedInfo PlayerDetailedInfo { get; set; } = null;
 
-        public List<FactionInviteData> FactionInviteData
+
+        public ExtraPlayerData()
         {
-            get => fid;
-            set => fid = value;
+            
+        }
+        public ExtraPlayerData(Player p)
+        {
+        PlayerDetailedInfo = new PlayerDetailedInfo(p);
+
+        }
+        public ExtraPlayerData(Player p ,List<FactionInviteData> fid, InternalPlayerSettings ips = null)
+        {
+            PlayerDetailedInfo = new PlayerDetailedInfo(p);
+            FactionInviteData = fid;
+            if(ips != null) InternalPlayerSettings = ips;
         }
 
-        public InternalPlayerSettings InternalPlayerSettings
-        {
-            get => ips;
-            set => ips = value;
-        }
-
-        public ExtraPlayerData(List<FactionInviteData> fid, InternalPlayerSettings ips = null)
-        {
-            this.fid = fid;
-            this.ips = ips;
-        }
-
-        public ExtraPlayerData(InternalPlayerSettings ips = null)
-        {
-            fid = new List<FactionInviteData>();
-        }
-
-        public ExtraPlayerData(FactionInviteData fid, InternalPlayerSettings ips = null)
-        {
-            this.fid = new List<FactionInviteData>() {fid};
-            this.ips = ips;
-        }
+        
+        // public ExtraPlayerData(FactionInviteData fid, InternalPlayerSettings ips = null)
+        // {
+        //     FactionInviteData = new List<FactionInviteData>() {fid};
+        //     InternalPlayerSettings = ips;
+        // }
 
         public int lastupdated = -1;
 

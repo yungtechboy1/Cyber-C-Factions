@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using CyberCore.Manager.Factions;
+using CyberCore.Manager.Warp;
 using CyberCore.Utils;
+using CyberCore.Utils.Data;
 using log4net;
 using MiNET;
 using MiNET.Net;
@@ -22,12 +24,16 @@ namespace CyberCore
         Version = "1.0.0.0-PA", Website = "CyberTechpp.com")]
     public class CyberCoreMain : OpenPlugin
     {
-        public Dictionary<String, Object> PlayerIdentification = new Dictionary<string, object>();
+        // public Dictionary<String, Object> PlayerIdentification = new Dictionary<string, object>();
         public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(CyberCoreMain));
         private static CyberCoreMain instance { get; set; }
-        public ConfigSection MasterConfig { get; }
+        // public ConfigSection MasterConfig { get; }
+        public CustomConfig MasterConfig { get; set; }
         public FactionsMain FM { get; private set; }
         public SqlManager SQL { get; private set; }
+        public ServerSqlite ServerSQL { get; set; }
+        public WarpManager WarpManager { get; set; }
+        public ClassFactory ClassFactory { get; set; }
 
 
         public static CyberCoreMain GetInstance()
@@ -37,8 +43,11 @@ namespace CyberCore
 
         public CyberCoreMain()
         {
+            MasterConfig = new CustomConfig(this,"config.cfg");
             instance = this;
-            MasterConfig = new ConfigSection() {ConfigFileName = "MasterConfig.conf"};
+            ServerSQL = new ServerSqlite(this);
+            WarpManager = new WarpManager(this);
+            // MasterConfig = new ConfigSection() {ConfigFileName = "MasterConfig.conf"};
         }
 
         private void OnPlayerJoin(object o, PlayerEventArgs eventArgs)
@@ -129,7 +138,7 @@ namespace CyberCore
 
             foreach (var l in getServer().LevelManager.Levels)
             {
-                l.BlockBreak +=
+                l.BlockBreak += MasterListener.
             }
 
             getServer().LevelManager.Levels
