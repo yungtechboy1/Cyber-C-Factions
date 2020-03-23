@@ -5,14 +5,7 @@
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" exact-version="0" />
       <secret-storage>master_key</secret-storage>
       <user-name>cyber</user-name>
-      <schema-mapping>
-        <introspection-scope>
-          <node kind="schema">
-            <name qname="@" />
-            <name qname="cyber" />
-          </node>
-        </introspection-scope>
-      </schema-mapping>
+      <schema-mapping />
     </data-source>
   </component>
 </project>

@@ -1,13 +1,13 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Minet-OpenNet\\Cyber-C-Factions\\CyberCore\\CyberCore.csproj",
+    "projectUniqueName": "F:\\Projects\\Cyber-C-Factions\\CyberCore\\CyberCore.csproj",
     "projectName": "CyberCore",
-    "projectPath": "C:\\Minet-OpenNet\\Cyber-C-Factions\\CyberCore\\CyberCore.csproj",
-    "outputPath": "C:\\Minet-OpenNet\\Cyber-C-Factions\\CyberCore\\obj\\",
+    "projectPath": "F:\\Projects\\Cyber-C-Factions\\CyberCore\\CyberCore.csproj",
+    "outputPath": "F:\\Projects\\Cyber-C-Factions\\CyberCore\\obj\\",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
-      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      "C:\\Program Files (x86)\\dotnet\\sdk\\NuGetFallbackFolder"
     ],
     "originalTargetFrameworks": [
       "netcoreapp3.1"
@@ -54,7 +54,7 @@
           "privateAssets": "all"
         }
       },
-      "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
+      "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
     }
   }
 }

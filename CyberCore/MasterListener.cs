@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using CyberCore.Manager.Factions;
+using CyberCore.Manager.Factions.Windows;
 using CyberCore.Utils;
 using MiNET;
 using MiNET.Blocks;
@@ -10,13 +11,14 @@ using MiNET.Entities;
 using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
+using OpenAPI.Events;
 using OpenAPI.Events.Block;
 using OpenAPI.Events.Entity;
 using OpenAPI.Events.Player;
 
 namespace CyberCore
 {
-    public static class MasterListener
+    public class MasterListener : IEventHandler
     {
         public static CyberCoreMain plugin = CyberCoreMain.GetInstance();
 
@@ -50,16 +52,16 @@ namespace CyberCore
             p.SendTitle(CyberUtils.colorize("&l&bCyberTech")+"\n"+CyberUtils.colorize("&l&2Welcome!"),TitleType.Title, 30, 30, 10);
             
 //        _plugin.initiatePlayer(p);
-            plugin.ServerSQL.LoadPlayer(plugin.getCorePlayer(p));
+            plugin.ServerSQL.LoadPlayer(p);
             String rank = plugin.RF.getPlayerRank(p).getDisplayName();
-            p.sendMessage(plugin.colorize("&2You Have Joined with the Rank: " + rank));
+            p.SendMessage(CyberUtils.colorize("&2You Have Joined with the Rank: " + rank));
             if (rank != null && rank.equalsIgnoreCase("op"))
             {
-                p.setOp(true);
+                p.PermissionLevel = PermissionLevel.Operator;
             }
             else
             {
-                p.setOp(false);
+                p.PermissionLevel = PermissionLevel.Visitor;
             }
 
 //        Scoreboard s = ScoreboardAPI.createScoreboard();
@@ -70,15 +72,14 @@ namespace CyberCore
 //            ScoreboardAPI.setScoreboard(p,s);
         }
 
-        @EventHandler(priority = EventPriority.HIGHEST)
-
+        [EventHandler(EventPriority.Highest)]
         public void InteractEvent(PlayerInteractEvent e)
         {
-            String n = e.getPlayer().getName();
-            Block b = e.getBlock();
-            if (b.getId() == Block.CHEST)
+            String n = e.Player.getName();
+            Item b = e.Item;
+            if (b.Id == new Chest().Id)
             {
-                CrateObject x = CyberCoreMain.getInstance().CrateMain.isCrate(b);
+                CrateObject x = CyberCoreMain.GetInstance().CrateMain.isCrate(b);
                 if (x != null)
                 {
                     e.setCancelled();

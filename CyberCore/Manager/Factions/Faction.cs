@@ -121,38 +121,20 @@ namespace CyberCore.Manager.Factions
 //    private int Settings_Cache_Lastupload = 0;
         private int UpdateEverySecs = 60 * 5;
 
-        public Faction(FactionsMain main, String name, Player cp)
-        {
-            Player
-            LC = new FactionLocalCache(this);
-            this(main, name, true);
-            addPlayer(cp, FactionRank.Leader, null);
-        }
-
-        public Faction(FactionsMain main, String name, bool newfac)
+    
+        public Faction(FactionsMain main, String name, bool newfac = false, String displayname = null)
         {
             Main = main;
             Name = name;
             LC = new FactionLocalCache(this);
             Settings = new FactionSettings(this, true);
+            if(displayname!=null)getSettings().setDisplayName(displayname, true);
             if (newfac)
                 onCreation();
             else
                 loadFromDB();
         }
-
-        public Faction(FactionsMain main, String name, String displayname, bool newfac = false)
-        {
-            Main = main;
-            Name = name;
-            LC = new FactionLocalCache(this);
-            Settings = new FactionSettings(this, false);
-            getSettings().setDisplayName(displayname, true);
-            if (newfac)
-                onCreation();
-            else
-                loadFromDB();
-        }
+        
 
 //    public Faction(FactionsMain main, String name, String displayname, String leader, List<String> members, List<String> generals, List<String> officers, List<String> recruits) {
 //        Main = main;
@@ -213,7 +195,7 @@ namespace CyberCore.Manager.Factions
                 {
                     String pn = q.GetString("player");
                     FactionRank fr = FactionRankMethods.getRankFromString(q.GetString("rank"));
-                    PlayerRanks.Add(pn] =fr);
+                    PlayerRanks.Add(pn,fr);
                 }
 
                 PlayerRanksCC.updateLastUpdated();

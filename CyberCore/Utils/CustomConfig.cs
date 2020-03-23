@@ -15,9 +15,11 @@ namespace CyberCore.Utils
         private readonly ILog Log = LogManager.GetLogger(typeof(CustomConfig));
         public string ConfigFileName = "server.conf";
 
+        public bool loaded { get; private set; } = false;
+
         private IReadOnlyDictionary<string, string> KeyValues { get; set; }
 
-        public CustomConfig(OpenPlugin plugin,string fileName =  null)
+        public CustomConfig(OpenPlugin plugin, string fileName = null)
         {
             if (fileName != null) ConfigFileName = fileName;
             try
@@ -25,7 +27,7 @@ namespace CyberCore.Utils
                 string userName = Environment.UserName;
                 string data = string.Empty;
                 string directoryName = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                Log.Info("DIRECTORY >> "+directoryName);
+                Log.Info("DIRECTORY >> " + directoryName);
                 if (directoryName != null)
                 {
                     string path = Path.Combine(directoryName, "server." + userName + ".conf");
@@ -41,7 +43,7 @@ namespace CyberCore.Utils
                         if (File.Exists(path))
                             data = File.ReadAllText(path);
                     }
-            
+
                     Log.Info((object) ("Loading config-file " + path));
                 }
 
@@ -77,6 +79,7 @@ namespace CyberCore.Utils
                 }
             }
 
+            loaded = true;
             KeyValues =
                 (IReadOnlyDictionary<string, string>) new ReadOnlyDictionary<string, string>(
                     (IDictionary<string, string>) dictionary);

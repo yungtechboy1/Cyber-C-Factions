@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Minet-OpenNet\\Cyber-C-Factions\\CyberCore\\CyberCore.csproj": {}
+    "F:\\Projects\\Cyber-C-Factions\\CyberCore\\CyberCore.csproj": {}
   },
   "projects": {
-    "C:\\Minet-OpenNet\\Cyber-C-Factions\\CyberCore\\CyberCore.csproj": {
+    "F:\\Projects\\Cyber-C-Factions\\CyberCore\\CyberCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Minet-OpenNet\\Cyber-C-Factions\\CyberCore\\CyberCore.csproj",
+        "projectUniqueName": "F:\\Projects\\Cyber-C-Factions\\CyberCore\\CyberCore.csproj",
         "projectName": "CyberCore",
-        "projectPath": "C:\\Minet-OpenNet\\Cyber-C-Factions\\CyberCore\\CyberCore.csproj",
-        "packagesPath": "C:\\Users\\yungt\\.nuget\\packages\\",
-        "outputPath": "C:\\Minet-OpenNet\\Cyber-C-Factions\\CyberCore\\obj\\",
+        "projectPath": "F:\\Projects\\Cyber-C-Factions\\CyberCore\\CyberCore.csproj",
+        "packagesPath": "C:\\Users\\carlt\\.nuget\\packages\\",
+        "outputPath": "F:\\Projects\\Cyber-C-Factions\\CyberCore\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\yungt\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\carlt\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -65,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
         }
       }
     }

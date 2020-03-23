@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using CyberCore.Manager.ClassFactory;
 using CyberCore.Manager.Factions;
+using CyberCore.Manager.Rank;
 using CyberCore.Manager.Warp;
 using CyberCore.Utils;
 using CyberCore.Utils.Data;
@@ -15,6 +17,7 @@ using MiNET.Sounds;
 using MiNET.Utils;
 using MiNET.Worlds;
 using OpenAPI;
+using OpenAPI.Events;
 using OpenAPI.Player;
 using OpenAPI.Plugins;
 
@@ -34,6 +37,7 @@ namespace CyberCore
         public ServerSqlite ServerSQL { get; set; }
         public WarpManager WarpManager { get; set; }
         public ClassFactory ClassFactory { get; set; }
+        public RankFactory RF { get; set; }
 
 
         public static CyberCoreMain GetInstance()
