@@ -23,6 +23,8 @@
           <e p="Crate" t="Include">
             <e p="CrateData.cs" t="Include" />
             <e p="CrateMain.cs" t="Include" />
+            <e p="CrateObject.cs" t="Include" />
+            <e p="ItemChanceData.cs" t="Include" />
           </e>
           <e p="Factions" t="Include">
             <e p="Data" t="Include">
@@ -49,6 +51,9 @@
               <e p="FactionInvited.cs" t="Include" />
               <e p="HTP_0_Window.cs" t="Include" />
             </e>
+          </e>
+          <e p="FloatingText" t="Include">
+            <e p="CyberFloatingTextContainer.cs" t="Include" />
           </e>
           <e p="Forms" t="Include">
             <e p="CyberFormCustom.cs" t="Include" />
