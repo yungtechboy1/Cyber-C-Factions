@@ -781,7 +781,7 @@ namespace CyberCore
 
         public String formatForChat(Player player, String chat)
         {
-            HashMap<String, Object> badwords = new HashMap<String, Object>()
+            Dictionary<String, Object> badwords = new Dictionary<String, Object>()
             {
                 {
                     put("fuck", "f***");

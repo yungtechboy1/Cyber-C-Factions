@@ -71,6 +71,7 @@
 
     public enum SubMenu
     {
+        NULL,
         Enchanting_Confirm,
         MainMenu,
         Offense,

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.Forms;
 using fNbt;
 using JetBrains.Annotations;
+using Jose;
 using MiNET;
 using MiNET.Items;
 using MiNET.UI;
@@ -23,6 +25,15 @@ namespace CyberCore.Utils
             return CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction(c);
         }
 
+        public static Object getOrDefault(this Dictionary<String, Object> d,String s, Object de)
+        {
+            if (d.ContainsKey(s))
+            {
+                return d[s];
+            }
+
+            return de;
+        }
         public static String getName(this FactionRank s)
         {
             return FactionRankMethods.getName(s);

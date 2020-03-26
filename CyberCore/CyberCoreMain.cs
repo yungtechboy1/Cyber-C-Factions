@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using CyberCore.Manager.ClassFactory;
 using CyberCore.Manager.Factions;
+using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
 using CyberCore.Manager.Warp;
 using CyberCore.Utils;
@@ -13,6 +14,7 @@ using CyberCore.Utils.Data;
 using log4net;
 using MiNET;
 using MiNET.Net;
+using MiNET.Plugins;
 using MiNET.Sounds;
 using MiNET.Utils;
 using MiNET.Worlds;
@@ -25,11 +27,21 @@ namespace CyberCore
 {
     [OpenPluginInfo(Name = "CyberCore", Description = "CyberTech++ Core Plugin", Author = "YungTechBoy1",
         Version = "1.0.0.0-PA", Website = "CyberTechpp.com")]
-    public class CyberCoreMain : OpenPlugin
+    public class CyberCoreMain : OpenPlugin , IStartup
     {
         // public Dictionary<String, Object> PlayerIdentification = new Dictionary<string, object>();
         public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(CyberCoreMain));
+
+        public void Configure(MiNetServer s)
+        {
+            // s.ServerManager = new CyberTechServerManager(s);
+            s.PlayerFactory = new CyberPlayerFactory();
+            Log.Info("Executed startup successfully. Replaced identity managment.");
+            
+        }
+        
         private static CyberCoreMain instance { get; set; }
+
         // public ConfigSection MasterConfig { get; }
         public CustomConfig MasterConfig { get; set; }
         public FactionsMain FM { get; private set; }
@@ -39,6 +51,9 @@ namespace CyberCore
         public ClassFactory ClassFactory { get; set; }
         public RankFactory RF { get; set; }
 
+        public List<CyberFloatingTextContainer> SavedFloatingText { get; set; } =
+            new List<CyberFloatingTextContainer>();
+
 
         public static CyberCoreMain GetInstance()
         {
@@ -47,7 +62,7 @@ namespace CyberCore
 
         public CyberCoreMain()
         {
-            MasterConfig = new CustomConfig(this,"config.cfg");
+            MasterConfig = new CustomConfig(this, "config.cfg");
             instance = this;
             ServerSQL = new ServerSqlite(this);
             WarpManager = new WarpManager(this);
@@ -123,13 +138,12 @@ namespace CyberCore
         }
 
         private OpenApi API;
-        
+
         public override void Enabled(OpenApi api)
         {
             API = api;
             SQL = new SqlManager(this);
-
-            FM = new FactionsMain(this);
+            api.OpenServer.FM = new FactionsMain(this);
 
             getServer().PlayerFactory.PlayerCreated += (sender, args) =>
             {
@@ -179,6 +193,60 @@ namespace CyberCore
         public OpenPlayer getPlayer(string name)
         {
             return getAPI().PlayerManager.getPlayer(name);
+        }
+
+            public double getTicksPerSecond()
+        {
+            //50 = Good
+            long avg = 50;
+            foreach (var l in getAPI().LevelManager.Levels)
+            {
+                long a = l.AvarageTickProcessingTime;
+                avg = (a + avg) / 2;
+            }
+
+            return 1000d / avg;
+        }
+
+        public double getTicksPerSecond(Level l)
+        {
+            //50 = Good
+            long avg = 50;
+            long a = l.AvarageTickProcessingTime;
+            avg = (a + avg) / 2;
+
+
+            return 1000d / avg;
+        }
+
+        public List<Player> getOnlinePlayers()
+        {
+            List<Player> a =  new List<Player>();
+            foreach (var l in getAPI().LevelManager.Levels)
+            {
+               a.AddRange(l.GetAllPlayers());
+            }
+
+            return a;
+        }
+        public int getOnlinePlayersCount()
+        {
+            int amt = 0;
+            foreach (var l in getAPI().LevelManager.Levels)
+            {
+                int a = l.GetAllPlayers().Length;
+                amt += a;
+            }
+
+            return amt;
+        }
+        public Rank getPlayerRank(String p) {
+            return getPlayerRank(getPlayer(p));
+        }
+
+
+        public Rank getPlayerRank(Player p) {
+            return RF.getPlayerRank(p);
         }
     }
 }

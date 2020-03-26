@@ -1,0 +1,4 @@
+F:\Projects\Cyber-C-Factions\CyberCore\obj\Debug\netcoreapp3.1\CyberCore.csprojAssemblyReference.cache
+F:\Projects\Cyber-C-Factions\CyberCore\obj\Debug\netcoreapp3.1\CyberCore.csproj.CoreCompileInputs.cache
+F:\Projects\Cyber-C-Factions\CyberCore\obj\Debug\netcoreapp3.1\CyberCore.AssemblyInfoInputs.cache
+F:\Projects\Cyber-C-Factions\CyberCore\obj\Debug\netcoreapp3.1\CyberCore.AssemblyInfo.cs

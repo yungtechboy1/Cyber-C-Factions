@@ -266,7 +266,7 @@ namespace CyberCore.Manager.Factions
 //                            ActiveMission a = fac.GetActiveMission();
 //                            a.faction = null;
 //                            a.Main = null;
-//                            Main.AM.set(fac.getName(), a.ToHashMap());
+//                            Main.AM.set(fac.getName(), a.ToDictionary());
 //                         /*Yaml y = new Yaml();
 //                        CyberUtils.writeFile(new File(Main.getDataFolder().toString() + "/missions/" + fac.getName() + ".yml"), y.dump(a));
 //                        ;

@@ -28,6 +28,16 @@ namespace CyberCore.Utils
             }
             return ret;
         }
+        
+        public  static long LongRandom(long min, long max)
+        {
+            var rand = new Random();
+            long result = rand.Next((Int32)(min >> 32), (Int32)(max >> 32));
+            result = (result << 32);
+            result = result | (long)rand.Next((Int32)min, (Int32)max);
+            return result;
+        }
+        
         public static List<String> cloneListString(List<String> o)
         {
             List<String> ret = new List<String>();

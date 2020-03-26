@@ -319,7 +319,7 @@ namespace CyberCore.Manager.Factions.Missions
         if (PointReward != 0) faction.getSettings().addPoints(PointReward);
     }
 
-    public ConfigSection ToHashMap() {
+    public ConfigSection ToDictionary() {
         ConfigSection config = new ConfigSection();
         config.set("name", name);
         config.set("desc", desc);

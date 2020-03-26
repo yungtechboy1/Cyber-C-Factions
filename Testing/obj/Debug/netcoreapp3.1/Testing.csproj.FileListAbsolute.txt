@@ -1,0 +1,13 @@
+F:\Projects\Cyber-C-Factions\Testing\bin\Debug\netcoreapp3.1\Testing.exe
+F:\Projects\Cyber-C-Factions\Testing\bin\Debug\netcoreapp3.1\Testing.deps.json
+F:\Projects\Cyber-C-Factions\Testing\bin\Debug\netcoreapp3.1\Testing.runtimeconfig.json
+F:\Projects\Cyber-C-Factions\Testing\bin\Debug\netcoreapp3.1\Testing.runtimeconfig.dev.json
+F:\Projects\Cyber-C-Factions\Testing\bin\Debug\netcoreapp3.1\Testing.dll
+F:\Projects\Cyber-C-Factions\Testing\bin\Debug\netcoreapp3.1\Testing.pdb
+F:\Projects\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.csprojAssemblyReference.cache
+F:\Projects\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.csproj.CoreCompileInputs.cache
+F:\Projects\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.AssemblyInfoInputs.cache
+F:\Projects\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.AssemblyInfo.cs
+F:\Projects\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.dll
+F:\Projects\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.pdb
+F:\Projects\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.genruntimeconfig.cache

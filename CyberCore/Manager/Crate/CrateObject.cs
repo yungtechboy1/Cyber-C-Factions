@@ -80,22 +80,22 @@ namespace CyberCore.Manager.Crate
             return cf;
         }
 
-        public ArrayList<String> getPossibleKeys()
+        public List<String> getPossibleKeys()
         {
             return CD == null ? null : CD.KeyItems;
         }
 
         public bool checkKey(Item hand)
         {
-            ArrayList<String> pk = getPossibleKeys();
+            List<String> pk = getPossibleKeys();
             if (pk == null || pk.size() == 0 || !hand.hasCompoundTag()) return false;
             String n = hand.getNamedTag().getString(CrateMain.CK);
             return pk.contains(n);
         }
 
-        public ArrayList<Item> getPossibleItems()
+        public List<Item> getPossibleItems()
         {
-            ArrayList<Item> pi = new ArrayList<>();
+            List<Item> pi = new List<>();
             for (ItemChanceData icd :
             CD.PossibleItems) {
                 Item i = icd.check();

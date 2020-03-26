@@ -1,14 +1,21 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using CyberCore.Utils;
 using MiNET;
 using MiNET.Entities;
 using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
+using MiNET.Worlds;
+using Newtonsoft.Json;
+using OpenAPI.Player;
 
 namespace CyberCore.Manager.FloatingText
 {
-    public class CyberFloatingTextContainer
+    public class CyberFloatingTextContainer : Entity
     {
         public FloatingTextType TYPE = FloatingTextType.FT_Standard;
         public String Syntax;
@@ -17,10 +24,27 @@ namespace CyberCore.Manager.FloatingText
         public bool Formated = false;
         public int UpdateTicks = 20;
         public int LastUpdate = 0;
-        public int Range = 64;
-        public long EID = -1;
 
-        public PlayerLocation Pos;
+        public int Range = 64;
+        // public long EntityId = -1;
+
+
+        public Level _Level { get; set; } = null;
+
+        [JsonIgnore]
+        public new Level Level
+        {
+            get { return _Level; }
+            set
+            {
+                _Level = value;
+                Lvl = value.LevelName;
+            }
+        }
+
+        // public PlayerLocation Pos;
+        public String Lvl;
+
 
 //    public Level Lvl;
         public bool _CE_Lock = false;
@@ -28,75 +52,121 @@ namespace CyberCore.Manager.FloatingText
         public bool Vertical = false;
         public FloatingTextFactory FTF;
 
-        @Override
 
-        public String toString()
+//         public String toString()
+//         {
+//             return ("CyberFloatingTextContainer{" +
+//                     "TYPE=" + TYPE +
+//                     ", Syntax='" + Syntax + '\'' +
+//                     ", PlayerUnique=" + PlayerUnique +
+//                     ", Active=" + Active +
+//                     ", Formated=" + Formated +
+//                     ", UpdateTicks=" + UpdateTicks +
+//                     ", LastUpdate=" + LastUpdate +
+//                     ", Range=" + Range +
+//                     ", EntityId=" + EntityId +
+//                     ", Pos=" + Pos +
+//                     ", Vertical=" + Vertical +
+// //                ", Lvl=" + Lvl +
+//                     ", _CE_Lock=" + _CE_Lock +
+//                     ", _CE_Done=" + _CE_Done +
+//                     ", FTF=" + FTF +
+//                     ", lastSyntax='" + lastSyntax + '\'' +
+//                     ", uuid=" + uuid +
+//                     ", metadata=" + metadata +
+//                     '}').ToString();
+//         }
+
+        public void setFlags()
         {
-            return "CyberFloatingTextContainer{" +
-                   "TYPE=" + TYPE +
-                   ", Syntax='" + Syntax + '\'' +
-                   ", PlayerUnique=" + PlayerUnique +
-                   ", Active=" + Active +
-                   ", Formated=" + Formated +
-                   ", UpdateTicks=" + UpdateTicks +
-                   ", LastUpdate=" + LastUpdate +
-                   ", Range=" + Range +
-                   ", EID=" + EID +
-                   ", Pos=" + Pos +
-                   ", Vertical=" + Vertical +
-//                ", Lvl=" + Lvl +
-                   ", _CE_Lock=" + _CE_Lock +
-                   ", _CE_Done=" + _CE_Done +
-                   ", FTF=" + FTF +
-                   ", lastSyntax='" + lastSyntax + '\'' +
-                   ", uuid=" + uuid +
-                   ", metadata=" + metadata +
-                   '}';
+            HealthManager.IsOnFire = false;
+            IsSneaking = false;
+            IsRiding = false;
+            IsSprinting = false;
+            IsUsingItem = false;
+            IsInvisible = true;
+            IsTempted = false;
+            IsInLove = false;
+            IsSaddled = false;
+            IsPowered = false;
+            IsIgnited = false;
+            IsBaby = false;
+            IsConverting = false;
+            HideNameTag = false;
+            IsAlwaysShowName = true;
+            NoAi = false;
+            IsSilent = false;
+            IsWallClimbing = false;
+            CanClimb = false;
+            IsWalker = false;
+            IsResting = false;
+            IsSitting = false;
+            IsAngry = false;
+            IsInterested = false;
+            IsCharged = false;
+            IsTamed = false;
+            IsLeashed = false;
+            IsSheared = false;
+            IsGliding = false;
+            IsElder = false;
+            IsMoving = false;
+            IsInWater = false;
+            IsChested = false;
+            IsStackable = false;
+            IsIdling = false;
+            IsRearing = false;
+            IsVibrating = false;
+            HasCollision = false;
+            IsAffectedByGravity = false;
+            IsWasdControlled = false;
+            CanPowerJump = false;
         }
 
-        public CyberFloatingTextContainer(FloatingTextFactory ftf, Position pos, String syntax)
+        public CyberFloatingTextContainer(FloatingTextFactory ftf, PlayerLocation pos, Level l, String syntax) : base(
+            EntityType.Villager, l)
         {
+            KnownPosition = pos;
+            LastSentPosition = pos;
+            setFlags();
+            Width = .01f;
+            Height = .01f;
+            Scale = .01f;
             FTF = ftf;
-            generateEID();
+            //TODO No Need?
+            // EntityId = generateEntityId();
             Syntax = syntax;
-            Pos = pos;
 //        Lvl = pos.level;
-            long flags = (
-                1L << Entity.DATA_FLAG_NO_AI
-            );
-            metadata = new EntityMetadata().putLong(Entity.DATA_FLAGS, flags)
-                .putLong(Entity.DATA_LEAD_HOLDER_EID, -1)
-                .putFloat(Entity.DATA_SCALE, 0.01f) //zero causes problems on debug builds?
-                .putFloat(Entity.DATA_BOUNDING_BOX_HEIGHT, 0.01f)
-                .putFloat(Entity.DATA_BOUNDING_BOX_WIDTH, 0.01f);
-
-
         }
 
-        public Long generateEID()
+        protected override BitArray GetFlags()
         {
-            this.EID = 1095216660480L + ThreadLocalRandom.current().nextLong(0L, 2147483647L);
-            return EID;
+            return base.GetFlags();
         }
 
-        public ConfigSection getSave()
+        public long generateEntityId()
         {
-            //todo
-            return new ConfigSection()
-            {
-                {
-                    put("Syntax", Syntax);
-                    put("PlayerUnique", PlayerUnique);
-                    put("UpdateTicks", UpdateTicks);
-                    put("LastUpdate", LastUpdate);
-                    put("Vertical", Vertical);
-                    put("X", Pos.getX());
-                    put("Y", Pos.getY());
-                    put("Z", Pos.getZ());
-                    if(Pos.getLevel() != null)put("Level", Pos.getLevel().getName());
-                }
-            };
+            long e = 1095216660480L + CyberUtils.LongRandom(0L, 2147483647L);
+            return e;
         }
+
+        // public ConfigSection getSave()
+        // {
+        //     //todo
+        //     return new ConfigSection()
+        //     {
+        //         {
+        //             put("Syntax", Syntax);
+        //             put("PlayerUnique", PlayerUnique);
+        //             put("UpdateTicks", UpdateTicks);
+        //             put("LastUpdate", LastUpdate);
+        //             put("Vertical", Vertical);
+        //             put("X", Pos.getX());
+        //             put("Y", Pos.getY());
+        //             put("Z", Pos.getZ());
+        //             if(Pos.getLevel() != null)put("Level", Pos.getLevel().getName());
+        //         }
+        //     };
+        // }
 
 //    public class CFTCS extends CustomConfigSection {
 //        public CFTCS() {
@@ -108,32 +178,30 @@ namespace CyberCore.Manager.FloatingText
 //
 //    }
 
-        public String GetText(Player p)
-        {
-            return GetText(p, false);
-        }
-
-        public String GetText(Player p, bool vertical)
+        public String GetText(Player p, bool vertical = false)
         {
             return FTF.FormatText(Syntax, p, vertical);
         }
 
         //Generate Flaoting Text for following players
-        public void HaldleSend(ArrayList<String> ap)
+        public void HaldleSend(List<String> ap)
         {
 //        System.out.println("HS");
-//        ArrayList<DataPacket> tosend = new ArrayList<>();
-            HashMap<String, ArrayList<DataPacket>> tosend;
+//        List<Packet> tosend = new List<>();
+            Dictionary<String, List<Packet>> tosend;
 //        sync(_CE_Lock)//TODO
             if (_CE_Lock || _CE_Done) return;
             _CE_Lock = true;
-            for (String pn :
-            ap) {
-                Player p = Server.getInstance().getPlayerExact(pn);
-                if (p == null) continue;
-                for (DataPacket dp :
-                encode(p)) p.dataPacket(dp);
+            foreach (var pn in ap)
+            {
+                OpenPlayer p;
+                if (FTF.API.PlayerManager.TryGetPlayer(pn, out p)) continue;
+                foreach (var dp in encode(p))
+                {
+                    p.SendPacket(dp);
+                }
             }
+
             _CE_Lock = false;
         }
 
@@ -158,133 +226,82 @@ namespace CyberCore.Manager.FloatingText
 
         public bool _CE_Dynamic()
         {
-            return Syntax.contains("{name}");
+            return Syntax.Contains("{name}");
         }
 
         //Generate Flaoting Text for following players
-        public void HaldleSendP(ArrayList<Player> ap)
+        public void HaldleSendP(List<Player> ap)
         {
 //        System.out.println("HS");
-//        ArrayList<DataPacket> tosend = new ArrayList<>();
-            HashMap<String, ArrayList<DataPacket>> tosend;
+//        List<Packet> tosend = new List<>();
+            Dictionary<String, List<Packet>> tosend;
 //        sync(_CE_Lock)//TODO
             if (_CE_Lock || _CE_Done) return;
             _CE_Lock = true;
             if (_CE_Dynamic() || _CE_NeedToResend())
             {
-                for (Player p :
-                ap) {
+                foreach (var p in ap)
+                {
 //            Player p = Server.getInstance().getPlayerExact(pn);
                     if (p == null) continue;
-                    for (DataPacket dp :
-                    encode(p)) p.dataPacket(dp);
+                    foreach (var dp in encode(p))p.SendPacket(dp);
                 }
                 _CE_Lock = false;
             }
         }
 
-        protected UUID uuid = UUID.randomUUID();
-        EntityMetadata metadata = new EntityMetadata();
-
         private void sendMetadata(Player p)
         {
-            if (Pos.getLevel() != null)
+            if (Level != null)
             {
-                SetEntityDataPacket packet = new SetEntityDataPacket();
-                packet.eid = EID;
+                McpeSetEntityData packet = new McpeSetEntityData();
+                packet.runtimeEntityId = EntityId;
 
 //            if (!Strings.isNullOrEmpty(text)) {
 //                metadata.putString(Entity.DATA_SCORE_TAG, text);
 //            }
-                packet.metadata = metadata;
-                Pos.getLevel().addChunkPacket(Pos.getChunkX(), Pos.getChunkZ(), packet);
+                packet.metadata = GetMetadata();
+                Level.RelayBroadcast(Level.GetAllPlayers(), packet);
             }
         }
 
-        public ArrayList<DataPacket> encode(Player p)
+        public List<Packet> encode(Player p)
         {
-            ArrayList<DataPacket> packets = new ArrayList<>();
+            List<Packet> packets = new List<Packet>();
 
             if (Active)
             {
-                RemoveEntityPacket pk = new RemoveEntityPacket();
-                pk.eid = EID;
+                McpeRemoveEntity pk = new McpeRemoveEntity();
+                pk.entityIdSelf = EntityId;
 
-                packets.add(pk);
+                packets.Add(pk);
             }
 
+            NameTag = GetText(p, Vertical);
+            McpeAddEntity addEntity = McpeAddEntity.CreateObject();
+            addEntity.entityType = EntityTypeId;
+            addEntity.entityIdSelf = EntityId;
+            addEntity.runtimeEntityId = EntityId;
+            addEntity.x = KnownPosition.X;
+            addEntity.y = KnownPosition.Y;
+            addEntity.z = KnownPosition.Z;
+            addEntity.pitch = KnownPosition.Pitch;
+            addEntity.yaw = KnownPosition.Yaw;
+            addEntity.headYaw = KnownPosition.HeadYaw;
+            addEntity.metadata = GetMetadata();
+            addEntity.speedX = Velocity.X;
+            addEntity.speedY = Velocity.Y;
+            addEntity.speedZ = Velocity.Z;
+            addEntity.attributes = GetEntityAttributes();
+            packets.Add(addEntity);
 
-            AddPlayerPacket pk = new AddPlayerPacket();
-            pk.uuid = uuid;
-            pk.username = "";
-            pk.entityUniqueId = EID;
-            pk.entityRuntimeId = EID;
-            pk.x = (float) Pos.x;
-            pk.y = (float) (Pos.y - 0.75);
-            pk.z = (float) Pos.z;
-            pk.speedX = 0;
-            pk.speedY = 0;
-            pk.speedZ = 0;
-            pk.yaw = 0;
-            pk.pitch = 0;
-            if (!Strings.isNullOrEmpty(Syntax))
-            {
-                metadata.putString(Entity.DATA_NAMETAG, GetText(p, Vertical));
-            }
-
-            pk.metadata = metadata;
-            pk.item = Item.get(Item.AIR);
-            packets.add(pk);
-
-
-//        AddEntityPacket pk = new AddEntityPacket ();
-//        pk.entityUniqueId = EID;
-//        pk.entityRuntimeId = EID;
-//        pk.type = 61; //
-//        pk.x = (float) Pos.x;
-//        pk.y = (float) (Pos.y - 1.62);
-//        pk.z = (float) Pos.z;
-//        pk.speedX = 0;
-//        pk.speedY = 0;
-//        pk.speedZ = 0;
-//        pk.yaw = 0;
-//        pk.pitch = 0;
-//        long flags = 0;
-//        flags |= 1 << Entity.DATA_FLAG_INVISIBLE;
-//        flags |= 1 << Entity.DATA_FLAG_CAN_SHOW_NAMETAG;
-//        flags |= 1 << Entity.DATA_FLAG_ALWAYS_SHOW_NAMETAG;
-//        flags |= 1 << Entity.DATA_FLAG_IMMOBILE;
-//        pk.metadata = new EntityMetadata()
-//                .putLong(Entity.DATA_FLAGS, flags)
-//                .putString(Entity.DATA_NAMETAG, FTF.FormatText(Syntax, p))
-//                .putLong(Entity.DATA_LEAD_HOLDER_EID, -1)
-//                .putByte(Entity.DATA_ALWAYS_SHOW_NAMETAG, 1)
-//                .putFloat(Entity.DATA_BOUNDING_BOX_HEIGHT, 0)
-//                .putFloat(Entity.DATA_BOUNDING_BOX_WIDTH, 0);
-////                    .putByte(Entity.DATA_LEAD, 0);
-//        pk.metadata = new EntityMetadata().putLong(Entity.DATA_FLAGS, (
-//                (1L << Entity.DATA_FLAG_CAN_SHOW_NAMETAG) |
-//                        (1L << Entity.DATA_FLAG_ALWAYS_SHOW_NAMETAG) |
-//                        (1L << Entity.DATA_FLAG_IMMOBILE) |
-//                        (1L << Entity.DATA_FLAG_SILENT)
-////                            (1L << Entity.DATA_FLAG_INVISIBLE)
-//        ))
-//                .putFloat(Entity.DATA_BOUNDING_BOX_HEIGHT, 0)
-//                .putFloat(Entity.DATA_BOUNDING_BOX_WIDTH, 0)
-//                .putFloat(Entity.DATA_SCALE, 0f)
-////            .putFloat(Entity.DATA_HEALTH, 100)
-//                .putLong(Entity.DATA_LEAD_HOLDER_EID, -1)
-//                .putByte(Entity.DATA_ALWAYS_SHOW_NAMETAG, 1)
-//                .putString(Entity.DATA_NAMETAG, FTF.FormatText(Syntax, p));
-//        packets.add(pk);
             Active = true;
             return packets;
-
         }
 
-        public DataPacket[] arryListToArray(ArrayList<DataPacket> packets)
+        public Packet[] arryListToArray(List<Packet> packets)
         {
-            return packets.stream().toArray(DataPacket[]::new);
+            return packets.ToArray();
         }
 
         public void OnUpdate(int tick)
@@ -299,12 +316,12 @@ namespace CyberCore.Manager.FloatingText
 
         public String getKeyPos()
         {
-            return Pos.getX() + "|" + Pos.getY() + "|" + Pos.getZ() + "|" + Pos.getLevel().getName() + "|";
+            return KnownPosition.X + "|" + KnownPosition.Y + "|" + KnownPosition.Z + "|" + Lvl;
         }
 
         public bool isValid()
         {
-            if (Pos == null) return false;
+            if (Lvl == null) return false;
             return true;
         }
     }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using CyberCore.CustomEnums;
 using CyberCore.Utils;
+using log4net;
 using MiNET;
 
 namespace CyberCore.Manager.Rank
@@ -25,12 +27,13 @@ namespace CyberCore.Manager.Rank
 
         public void loadDefault()
         {
-            ranks.put(RankList.PERM_GUEST.getID(), new Guest_Rank());
+            ranks[RankList.PERM_GUEST.getID()] =  new Guest_Rank();
         }
 
+        public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(RankFactory));
         public void loadRanks()
         {
-            Main.getLogger().info("Loading Ranks...");
+            CyberCoreMain.Log.Info("Loading Ranks...");
             loadDefault();
             Config rankConf = new Config(new File(Main.getDataFolder(), "ranks.yml"));
             Dictionary<String, Object> Dictionary = rankConf.getSection("Ranks").getAllDictionary();
@@ -51,7 +54,7 @@ namespace CyberCore.Manager.Rank
                     Rank rank = ranks.get(index);
                     rank.display_name = display;
                     rank.chat_prefix = chat_prefix;
-                    Main.getLogger().info("Rank: " + s + " [" + index + "]- Updated!...");
+                    CyberCoreMain.Log.Info("RFF>> Rank: " + s + " [" + index + "]- Updated!...");
                 }
             }
         }
@@ -67,8 +70,7 @@ namespace CyberCore.Manager.Rank
                 var r = ranks[rid];
                 return r;
             }
-            return new Guest_Rank())
-            ;
+            return new Guest_Rank();
         }
 
         public String GetRankStringFromGroup(String group)
