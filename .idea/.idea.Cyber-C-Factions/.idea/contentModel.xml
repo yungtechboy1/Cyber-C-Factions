@@ -22,7 +22,9 @@
         <e p="CyberPlayerFactory.cs" t="Include" />
         <e p="Manager" t="Include">
           <e p="AuctionHouse" t="Include">
+            <e p="AuctionFactory.cs" t="Include" />
             <e p="AuctionHouse.cs" t="Include" />
+            <e p="AuctionItemData.cs" t="Include" />
           </e>
           <e p="ClassFactory" t="Include">
             <e p="ClassFactory.cs" t="Include" />
@@ -100,6 +102,7 @@
           <e p="CyberUtils.cs" t="Include" />
           <e p="CyberUtilsExtender.cs" t="Include" />
           <e p="Data" t="Include">
+            <e p="ConfigSection2.cs" t="Include" />
             <e p="PlayerDetailedInfo.cs" t="Include" />
             <e p="ServerSqlite.cs" t="Include" />
           </e>
