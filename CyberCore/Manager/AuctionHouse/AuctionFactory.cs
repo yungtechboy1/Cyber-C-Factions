@@ -38,7 +38,7 @@ namespace CyberCore.Manager.AuctionHouse
         }
 
 
-        public List<AuctionItemData> GetAllItems()
+        public List<AuctionItemData> GetAllItems() 
         {
             List<AuctionItemData> is  = new List<>();
             try
