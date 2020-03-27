@@ -1,9 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
+using CyberCore.Utils;
+using fNbt;
 using MiNET;
 using MiNET.Blocks;
 using MiNET.Items;
+using MiNET.Net;
+using MiNET.Utils;
+using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace CyberCore.Manager.AuctionHouse
 {
@@ -28,96 +37,64 @@ namespace CyberCore.Manager.AuctionHouse
         public readonly String Path = "./AF.js";
 
 
-        List<AuctionItemData> items = new List<>();
+        List<AuctionItemData> items = new List<AuctionItemData>();
 
         public AuctionFactory(CyberCoreMain CCM)
         {
             this.CCM = CCM;
-            Settings = new Config(new File(CCM.getDataFolder(), "Auctions.yml"), Config.YAML);
-            Sqlite = new AHSqlite(CCM);
+            loadFromJSONFile();
+            // Sqlite = new AHSqlite(CCM);
+        }
+
+        public void loadFromJSONFile()
+        {
+            if (File.Exists(Path)) Settings = JsonConvert.DeserializeObject<AFSettings>(File.ReadAllText(Path));
         }
 
 
-        public List<AuctionItemData> GetAllItems() 
+        public List<AuctionItemData> GetAllItems()
         {
-            List<AuctionItemData> is  = new List<>();
-            try
-            {
-                ResultSet rs = Sqlite.ExecuteQuerySQLite("SELECT * FROM `AuctionHouse` WHERE `purchased` != 1");
-                if (rs != null)
-                {
-                    try
-                    {
-                        while (rs.next())
-                        {
-                            AuctionItemData aid = new AuctionItemData(rs);
-                                is.add(aid);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.printStackTrace();
-                        CCM.getLogger().info("Error loading Items3!");
-                        return null;
-                    }
+            List<AuctionItemData> ils = new List<AuctionItemData>();
 
-                    CCM.getLogger().info("Loaded " + is .size() + " Items for AH1");
-                    return is;
+
+            MySqlDataReader q = CCM.SQL.Query("select * from `AuctionHouse` where `purchased` != 1");
+            if (q != null)
+            {
+                while (q.Read())
+                {
+                    AuctionItemData aid = new AuctionItemData(q);
+                    ils.Add(aid);
                 }
             }
-            catch (Exception e)
-            {
-                CCM.getLogger().error("ERRRORRROOROORORR", e);
-            }
 
-            return is;
+            CyberCoreMain.Log.Info("AF>>Loaded " + ils.Count + " Items for AH1");
+            return ils;
         }
 
 
         public List<AuctionItemData> GetAllItemsLimit(int start, int stop, String seller)
         {
-            List<AuctionItemData> is  = new List<>();
-            try
-            {
-                ResultSet rs;
-                if (seller != null)
-                    rs = Sqlite.ExecuteQuerySQLite("SELECT * FROM `AuctionHouse` WHERE `soldbyn` = '" + seller +
-                                                   "' AND `purchased` != true LIMIT " + start + "," + stop);
-                else
-                    rs = Sqlite.ExecuteQuerySQLite("SELECT * FROM `AuctionHouse` WHERE `purchased` != true LIMIT " +
-                                                   start + "," + stop);
-                if (rs != null)
-                {
-                    try
-                    {
-                        while (rs.next())
-                        {
-                            AuctionItemData aid = new AuctionItemData(rs);
-                                is.add(aid);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.printStackTrace();
-                        CCM.getLogger().info("Error loading Items33!");
-                        return null;
-                    }
+            List<AuctionItemData> ils = new List<AuctionItemData>();
 
-                    CCM.getLogger().info("Loaded " + is .size() + " Items for AH2");
-                    return is;
-                }
-            }
-            catch (Exception e)
+            MySqlDataReader r =
+                CCM.SQL.Query($"SELECT * FROM `AuctionHouse` WHERE `purchased` != true LIMIT {start},{stop}");
+            ;
+            if (seller != null)
+                r = CCM.SQL.Query(
+                    $"SELECT * FROM `AuctionHouse` WHERE `soldbyn` = '{seller}' AND `purchased` != true LIMIT {start},{stop}");
+
+            while (r.Read())
             {
-                CCM.getLogger().error("ERRRORRROOROORORR", e);
+                AuctionItemData aid = new AuctionItemData(r);
+                ils.Add(aid);
             }
 
-            return is;
+            return ils;
         }
 
         //@Todo
 //    public List<Item> getSoldItems() {
-//        List<Item> is = new List<>();
+//        List<Item> ils = new List<>();
 //        ResultSet rs = null;//ExecuteQuerySQLite("SELECT * FROM `auctions` WHERE `purchased` != 1");
 //        if (rs != null) {
 //            try {
@@ -161,26 +138,27 @@ namespace CyberCore.Manager.AuctionHouse
 //
 //                    i.setCustomName(cn);
 //
-//                    is.add(i);
+//                    ils.add(i);
 //                }
 //            } catch (Exception ex) {
 //                ex.printStackTrace();
 //                CCM.getLogger().info("ERror loading Items!");
 //                return null;
 //            }
-//            CCM.getLogger().info("Loaded " + is.size() + " Items for AH");
-//            items = is;
+//            CCM.getLogger().info("Loaded " + ils.Count + " Items for AH");
+//            items = ils;
 //        }
 //        return null;
 //    }
 
         public List<Item> getListOfItems()
         {
-            List<Item> il = new List<>();
-            for (AuctionItemData ahd :
-            GetAllItems()) {
-                il.add(ahd.MakePretty());
+            List<Item> il = new List<Item>();
+            foreach (var ahd in GetAllItems())
+            {
+                il.Add(ahd.MakePretty());
             }
+
             return il;
         }
 
@@ -196,23 +174,24 @@ namespace CyberCore.Manager.AuctionHouse
 
         public List<AuctionItemData> getListOfAIDBetween(int start, int stop, String seller)
         {
-            List<AuctionItemData> il = new List<>();
+            List<AuctionItemData> il = new List<AuctionItemData>();
 //        if(GetAllItemsLimit(start, stop) == null)System.out.println("YEAAAAAAAAAA THISSSSS SSSHSHHHHIIIITTT NUUUULLLLLLIINNNNN~!!!!!!!!");
-            for (AuctionItemData ahd :
-            GetAllItemsLimit(start, stop, seller)) {
-                il.add(ahd);
+            foreach (var ahd in GetAllItemsLimit(start, stop, seller))
+            {
+                il.Add(ahd);
             }
+
             return il;
         }
 
         public List<Item> getListOfItemsBetween(int start, int stop, String seller)
         {
-            List<Item> il = new List<>();
-//        if(GetAllItemsLimit(start, stop) == null)System.out.println("YEAAAAAAAAAA THISSSSS SSSHSHHHHIIIITTT NUUUULLLLLLIINNNNN~!!!!!!!!");
-            for (AuctionItemData ahd :
-            GetAllItemsLimit(start, stop, seller)) {
-                il.add(ahd.MakePretty());
+            List<Item> il = new List<Item>();
+            foreach (var ahd in GetAllItemsLimit(start, stop, seller))
+            {
+                il.Add(ahd.MakePretty());
             }
+
             return il;
         }
 
@@ -223,28 +202,24 @@ namespace CyberCore.Manager.AuctionHouse
 //        return items.get(key);
 //    }
 
-        public HashMap<Integer, Item> getPageHash(int page)
-        {
-            return getPageHash(page, null);
-        }
 
-        public HashMap<Integer, Item> getPageHash(int page, String seller)
+        public Dictionary<int, Item> getPageHash(int page, String seller = null)
         {
-            HashMap<Integer, Item> list = new HashMap<Integer, Item>();
+            Dictionary<int, Item> list = new Dictionary<int, Item>();
             int k = 0;
             if (seller == null)
             {
-                for (Item i :
-                getPage(page)) {
-                    list.put(k, i);
+                foreach (var i in getPage(page))
+                {
+                    list[k] = i;
                     k++;
                 }
             }
             else
             {
-                for (Item i :
-                SetPagePlayerSelling(seller, page)) {
-                    list.put(k, i);
+                foreach (var i in SetPagePlayerSelling(seller, page))
+                {
+                    list[k] = i;
                     k++;
                 }
             }
@@ -252,35 +227,35 @@ namespace CyberCore.Manager.AuctionHouse
             return list;
         }
 
-        public Item[] SetPagePlayerSelling(String seller, int page)
+        public List<Item> SetPagePlayerSelling(String seller, int page)
         {
             int stop = page * 45;
             int start = stop - 45;
 //        System.out.println("START = " + start + ", STOP = " + stop + " Seller" + seller);
             List<Item> list2 = getListOfItemsBetween(start, stop, seller);
-            if (45 > list2.size())
+            if (45 > list2.Count)
             {
                 List<Item> a = new List<Item>();
                 for (int i = 0; i < 45; i++)
                 {
 //                list2.iterator().n
-                    if (list2.size() > i && list2.get(i) != null)
+                    if (list2.Count > i && list2[i] != null)
                     {
 //                    System.out.println("ADDING ACTUAL ITEM " + list2.get(i).getId());
-                        a.add(list2.get(i));
+                        a.Add(list2[i]);
                     }
                     else
                     {
-                        a.add(new ItemBlock(new BlockAir(), 0, 0));
+                        a.Add(new ItemAir());
 //                    System.out.println("ADDING AIR");
                     }
                 }
 
-                return a.toArray(new Item[45]);
+                return a;
             }
             else
             {
-                return list2.toArray(new Item[45]);
+                return list2;
             }
         }
 
@@ -288,20 +263,20 @@ namespace CyberCore.Manager.AuctionHouse
         {
             if (slot > 45)
             {
-                CCM.getLogger().error("ERROR! Slot out of range! E443 Slot:" + slot);
+                CyberCoreMain.Log.Error("ERROR! Slot out of range! E443 Slot:" + slot);
                 return null;
             }
 
-            Item[] list = getPage(page);
-            if (slot > list.length)
+            List<Item> list = getPage(page);
+            if (slot > list.Count)
             {
-                CCM.getLogger().error("ERROR! Selected Slot out of List Range! E33342 SLOT:" + slot + " OF " +
-                                      list.length);
+                CyberCoreMain.Log.Error("ERROR! Selected Slot out of List Range! E33342 SLOT:" + slot + " OF " +
+                                        list.Count);
                 return null;
             }
 
             Item s = list[slot];
-            if (s.getId() == Item.AIR) return null;
+            if (s.Id == new ItemAir().Id) return null;
             return s;
         }
 
@@ -309,91 +284,91 @@ namespace CyberCore.Manager.AuctionHouse
         {
             if (slot > 45)
             {
-                CCM.getLogger().error("ERROR! Slot out of range! E443 Slot:" + slot);
+                CyberCoreMain.Log.Error("ERROR! Slot out of range! E443 Slot:" + slot);
                 return null;
             }
 
-            AuctionItemData[] list = getPageAID(page);
-            if (slot > list.length)
+            List<AuctionItemData> list = getPageAID(page);
+            if (slot > list.Count)
             {
-                CCM.getLogger().error("ERROR! Selected Slot out of List Range! E33342 SLOT:" + slot + " OF " +
-                                      list.length);
+                CyberCoreMain.Log.Error("ERROR! Selected Slot out of List Range! E33342 SLOT:" + slot + " OF " +
+                                        list.Count);
                 return null;
             }
 
             return list[slot];
         }
 
-        public AuctionItemData[] getPageAID(int page)
+        public List<AuctionItemData> getPageAID(int page)
         {
             int stop = page * 45;
             int start = stop - 45;
 //        System.out.println("START = " + start + ", STOP = " + stop);
             List<AuctionItemData> list2 = getListOfAIDBetween(start, stop);
-            if (45 > list2.size())
+            if (45 > list2.Count)
             {
                 List<AuctionItemData> a = new List<AuctionItemData>();
                 for (int i = 0; i < 45; i++)
                 {
 //                list2.iterator().n
-                    if (list2.size() > i && list2.get(i) != null)
+                    if (list2.Count > i && list2[i] != null)
                     {
 //                    System.out.println("ADDING ACTUAL ITEM " + list2.get(i).toString());
-                        a.add(list2.get(i));
+                        a.Add(list2[i]);
                     }
                     else
                     {
-                        a.add(null);
+                        a.Add(null);
 //                    System.out.println("ADDING AIR");
                     }
                 }
 
-                return a.toArray(new AuctionItemData[45]);
+                return a;
             }
             else
             {
-                return list2.toArray(new AuctionItemData[45]);
+                return list2;
             }
         }
 
-        public Item[] getPage(int page)
+        public List<Item> getPage(int page)
         {
             int stop = page * 45;
             int start = stop - 45;
 //        System.out.println("START = " + start + ", STOP = " + stop);
             List<Item> list2 = getListOfItemsBetween(start, stop);
-            if (45 > list2.size())
+            if (45 > list2.Count)
             {
                 List<Item> a = new List<Item>();
                 for (int i = 0; i < 45; i++)
                 {
 //                list2.iterator().n
-                    if (list2.size() > i && list2.get(i) != null)
+                    if (list2.Count > i && list2[i] != null)
                     {
 //                    System.out.println("ADDING ACTUAL ITEM || " + list2.get(i).getId());
-                        a.add(list2.get(i));
+                        a.Add(list2[i]);
                     }
                     else
                     {
-                        a.add(new ItemBlock(new BlockAir(), 0, 0));
+                        a.Add(new ItemAir());
 //                    System.out.println("ADDING AIR ||");
                     }
                 }
 
-                return a.toArray(new Item[45]);
+                return a;
             }
             else
             {
-                return list2.toArray(new Item[45]);
+                return list2;
             }
 //
 //        List<Item> list = new List<>();
 //
-//        for (int a = start; a < list2.size(); a++) {
+//        for (int a = start; a < list2.Count; a++) {
 //            if (a >= stop) break;
 //            Item newitem = list2.get(a).clone();
 //            System.out.println(newitem.toString());
-//            if (newitem == null) list.add(new ItemBlock(new BlockAir(), (Integer) null, 0));
+//            if (newitem == null) list.add(new ItemBlock(new BlockAir(), (int) null, 0));
 //            else list.add(newitem);
 //        }
 //
@@ -405,56 +380,87 @@ namespace CyberCore.Manager.AuctionHouse
              */
         }
 
-        public void OpenAH(CorePlayer p, Integer pg)
+        public void OpenAH(CorePlayer p, int pg)
         {
-            SpawnFakeBlockAndEntity(p, new CompoundTag().putString("CustomName", "Auction House!"));
-            AuctionHouse b = new AuctionHouse(p, CCM, p, pg);
-            CyberCoreMain.getInstance().getLogger().info(b.getContents().values().size() + " < SIZZEEE" + b.getSize());
-            CyberCoreMain.getInstance().getServer().getScheduler().scheduleDelayedTask(new OpenAH(p, b), 5);
+            var n = new NbtCompound();
+            n.Add(new NbtString("CustomName", "Auction House!"));
+            SpawnFakeBlockAndEntity(p, n);
+            AuctionHouse b = new AuctionHouse(p, CCM, p.KnownPosition.ToVector3(), pg);
+            CyberCoreMain.Log.Info(b.getContents().values().Count + " < SIZZEEE" + b.size);
+            //TODO !IMPORTANT
+            // CyberCoreMain.getInstance().getServer().getScheduler().scheduleDelayedTask(new OpenAH(p, b), 5);
 //        b.open()
         }
 
-        public void SpawnFakeBlockAndEntity(Player to, CompoundTag data)
+        public void SpawnFakeBlockAndEntity(Player to, NbtCompound data)
         {
-            SpawnBlock(to, new BlockChest());
+            SpawnBlock(to, new Chest());
             SpawnBlockEntity(to, data);
         }
 
         public void SpawnBlock(Player to, Block b)
         {
-            UpdateBlockPacket a = new UpdateBlockPacket();
-            UpdateBlockPacket aa = new UpdateBlockPacket();
-            a.x = aa.x = to.getFloorX();
-            a.y = aa.y = to.getFloorY() - 2;
-            a.z = aa.z = to.getFloorZ();
-            aa.z += 1;
-            a.flags = aa.flags = UpdateBlockPacket.FLAG_ALL;
-            a.blockRuntimeId = aa.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(b.getFullId());
-            to.dataPacket(a);
-            to.dataPacket(aa);
+            PlayerLocation a = new PlayerLocation();
+            PlayerLocation aa = new PlayerLocation();
+            a.X = aa.X = to.KnownPosition.X;
+            a.Y = aa.Y = to.KnownPosition.Y - 2;
+            a.Z = aa.Z = to.KnownPosition.Z;
+            aa.Z += 1;
+            BlockCoordinates l1 = new BlockCoordinates(a);
+            BlockCoordinates l2 = new BlockCoordinates(aa);
+            var message = McpeUpdateBlock.CreateObject();
+            message.blockRuntimeId = (uint) new Chest().GetRuntimeId();
+            message.coordinates = l1;
+            message.blockPriority = (int) (McpeUpdateBlock.Flags.AllPriority);
+            var message2 = McpeUpdateBlock.CreateObject();
+            message2.blockRuntimeId = (uint) new Chest().GetRuntimeId();
+            message2.coordinates = l2;
+            message2.blockPriority = (int) (McpeUpdateBlock.Flags.AllPriority);
+            to.SendPacket(message);
+            to.SendPacket(message2);
         }
 
-        public void SpawnBlockEntity(Player to, CompoundTag data)
+        public void SpawnBlockEntity(Player to, NbtCompound data)
         {
-            BlockEntityDataPacket bedp = new BlockEntityDataPacket();
-            BlockEntityDataPacket bedp2 = new BlockEntityDataPacket();
-            bedp2.x = bedp.x = to.getFloorX();
-            bedp2.y = bedp.y = to.getFloorY() - 2;
-            bedp2.z = bedp.z = to.getFloorZ();
-            bedp2.z += 1;
-            try
+            PlayerLocation a = new PlayerLocation();
+            PlayerLocation aa = new PlayerLocation();
+            a.X = aa.X = to.KnownPosition.X;
+            a.Y = aa.Y = to.KnownPosition.Y - 2;
+            a.Z = aa.Z = to.KnownPosition.Z;
+            aa.Z += 1;
+            var nbt = new Nbt
             {
-                bedp.namedTag = NBTIO.write(data, ByteOrder.LITTLE_ENDIAN, true);
-                bedp2.namedTag = NBTIO.write(new CompoundTag().putInt("pairx", bedp.x).putInt("pairz", bedp.z),
-                    ByteOrder.LITTLE_ENDIAN, true);
-            }
-            catch (IOException e)
+                NbtFile = new NbtFile
+                {
+                    BigEndian = false,
+                    UseVarInt = true,
+                    RootTag =  data
+                }
+            };
+            var nbt2 = new Nbt
             {
-                throw new RuntimeException(e);
-            }
-
-            to.dataPacket(bedp);
-            to.dataPacket(bedp2);
+                NbtFile = new NbtFile
+                {
+                    BigEndian = false,
+                    UseVarInt = true,
+                    RootTag =  new NbtCompound()
+                    {
+                        new NbtInt("pairx",(int)a.X),
+                        new NbtInt("pairxz",(int)a.Z),
+                    }
+                }
+            };
+            BlockCoordinates l1 = new BlockCoordinates(a);
+            BlockCoordinates l2 = new BlockCoordinates(aa);
+            McpeBlockEntityData bedp = McpeBlockEntityData.CreateObject();
+            McpeBlockEntityData bedp2 = McpeBlockEntityData.CreateObject();
+            bedp.coordinates = l1;
+            bedp.namedtag = nbt;
+            bedp2.coordinates = l2;
+            bedp2.namedtag = nbt2;
+            
+            to.SendPacket(bedp);
+            to.SendPacket(bedp2);
         }
 
 //    @EventHandler(ignoreCancelled = true)
@@ -653,7 +659,7 @@ namespace CyberCore.Manager.AuctionHouse
             AuctionItemData aid = getAIDFromPage(page, slot);
             if (aid == null)
             {
-                System.out.println("ERROR IN SELECTION!!!!");
+                Console.WriteLine("ERROR IN SELECTION!!!!");
             }
             else if (aid.getCost() > holder.getMoney())
             {
@@ -663,35 +669,61 @@ namespace CyberCore.Manager.AuctionHouse
 
 //        SetBought(aid.getMasterid());
             holder.TakeMoney(aid.getCost());
-            holder.getInventory().addItem(aid.getKeepItem());
+            holder.Inventory.AddItem(aid.getKeepItem(),true);
             holder.AH.ClearConfirmPurchase();
             holder.AH.setPage(1);
         }
 
         public void SetBought(int id)
         {
-            String sql = "UPDATE `AuctionHouse` SET `purchased` = '1' WHERE `auctions`.`id` = " + id + ";";
+            String sql = $"UPDATE `AuctionHouse` SET `purchased` = '1' WHERE `id` = {id};";
             try
             {
-                Sqlite.executeUpdate(sql);
+                CCM.SQL.Insert(sql);
             }
             catch (Exception e)
             {
-                CCM.getLogger().error("ERRORRR 555 ", e);
+                CyberCoreMain.Log.Error("ERRORRR 555 ", e);
             }
         }
 
         public void ClaimMoney(int id)
         {
-            String sql = "UPDATE `AuctionHouse` SET `moneysent` = '1' WHERE `auctions`.`id` = " + id + ";";
+            String sql = $"UPDATE `AuctionHouse` SET `moneysent` = '1' WHERE `master_id` = {id}";
+            CCM.SQL.Insert(sql);
             //ExecuteUpdateSQLite(sql);
         }
 
         public void additem(Item i, CorePlayer p, int cost)
         {
             AuctionItemData aid = new AuctionItemData(i, cost, p);
-            Sqlite.AddItemForSale(aid);
+            AddItemForSale(aid);
         }
+        
+        
+        public AuctionItemData AddItemForSale(AuctionItemData data) {
+           
+                if (data.getMasterid() != -1)
+                    CCM.SQL.Insert($"DELETE FROM `AuctionHouse` WHERE `master_id` == ' {data.getMasterid()}'");
+                String fnt = "";
+                var a = new NbtFile();
+                a.RootTag = data.getItem().ExtraData;
+                // byte[] bytes = NBTCompressionSteamTool.NBTCompressedStreamTools.a(a);
+        var aa = (new MemoryStream());
+        a.SaveToStream(aa, NbtCompression.AutoDetect);
+        var aaa = new StreamReader(aa).ReadToEnd();
+
+        if (data.getItem().ExtraData.HasValue) fnt = aaa;
+        CCM.SQL.Insert(
+                    $"INSERT INTO `AuctionHouse` VALUES (null,{data.getItem().Id},{data.getItem().Metadata},{data.getItem().Count},@data,{data.Cost}, {data.Soldby},{data.Soldbyn} ,false)","@data",Encoding.ASCII.GetBytes(aaa));
+
+                CyberCoreMain.Log.Info("AH saved for " + data.toString());
+                // ExecuteQuerySQLite("SELECT * FROM `AuctionHouse` ");
+
+            
+            return data;
+        }
+        
     }
 
     public class AFSettings

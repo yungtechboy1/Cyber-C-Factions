@@ -155,6 +155,25 @@ namespace CyberCore.Utils
         }
 
 
+        public bool Insert(string q, string c,byte[] b)
+        {
+            using (MySqlConnection con =  GetMySqlConnection())
+            {
+                string query = q;
+                using (MySqlCommand cmd = new MySqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    cmd.Parameters.AddWithValue(c, b);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public bool Insert(string q)
         {
             MySqlConnection c = GetMySqlConnection();

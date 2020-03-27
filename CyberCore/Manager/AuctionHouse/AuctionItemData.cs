@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using CyberCore.Utils;
 using fNbt;
 using MiNET.Items;
 using MiNET.Utils;
+using MySql.Data.MySqlClient;
 
 namespace CyberCore.Manager.AuctionHouse
 {
     public class AuctionItemData
     {
-        private readonly int Cost;
-        private readonly Item item;
-        private readonly int masterid = -1;
-        private readonly string Soldby; //UUID
-        private readonly string Soldbyn; //Display Name
+        public int Cost;
+        public Item item;
+        public int masterid = -1;
+        public string Soldby; //UUID
+        public string Soldbyn; //Display Name
 
         public AuctionItemData(Item i, int cost, CorePlayer seller)
         {
@@ -23,24 +25,27 @@ namespace CyberCore.Manager.AuctionHouse
             Soldbyn = seller.DisplayName;
         }
 
-        // public AuctionItemData(ResultSet rs) throws Exception {
-        //     int item_id = rs.getInt("item-id");
-        //     int item_meta = rs.getInt("item-meta");
-        //     int item_count = rs.getInt("item-count");
-        //     byte[] namedtag = rs.getString("namedtag").getBytes();
-        //     Cost = rs.getInt("cost");
-        //     String soldbyn = rs.getString("soldbyn");
-        //     String soldby = rs.getString("soldby");
-        //     int mid = rs.getInt("master_id");
-        //
-        //     item = Item.get(item_id, item_meta, item_count);
-        //     item.setCompoundTag(namedtag);
-        //
-        //     Soldby = soldby;
-        //     Soldbyn = soldbyn;
-        //     masterid = mid;
-        //
-        // }
+        public AuctionItemData(MySqlDataReader rs){
+            int item_id = rs.GetInt32("item-id");
+            int item_meta = rs.GetInt32("item-meta");
+            int item_count = rs.GetInt32("item-count");
+            byte[] namedtag = Encoding.ASCII.GetBytes(rs.GetString("namedtag"));
+            Cost = rs.GetInt32("cost");
+            String soldbyn = rs.GetString("soldbyn");
+            String soldby = rs.GetString("soldby");
+            int mid = rs.GetInt32("master_id");
+        
+            item = ItemFactory.GetItem((short)item_id, (short)item_meta, item_count);
+            var a = new NbtFile();
+            a.LoadFromBuffer(namedtag, 0, namedtag.Length, NbtCompression.ZLib);
+            item.ExtraData = (NbtCompound) a.RootTag;
+            // item.ExtraData = (namedtag);
+        
+            Soldby = soldby;
+            Soldbyn = soldbyn;
+            masterid = mid;
+        
+        }
 
         public AuctionItemData(Dictionary<string, object> v)
         {

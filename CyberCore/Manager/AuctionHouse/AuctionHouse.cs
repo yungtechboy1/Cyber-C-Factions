@@ -22,6 +22,7 @@ namespace CyberCore.Manager.AuctionHouse
     public int ConfirmPurchaseSlot = 0;
     public Inventory I ;
     public AuctionFactory AF = null;
+    public int size = 12;
     protected int maxStackSize = 64;//Default
     Player holder;
     Vector3 BA;
@@ -66,7 +67,7 @@ namespace CyberCore.Manager.AuctionHouse
         I = new Inventory(GetInventoryId(),getChestBlockEntity(),54,new NbtList());
         //TODO SHOULD SIZE BE 54!?!?
         holder = Holder;
-//        this.size = 9 * 6;
+        this.size = 9 * 6;
 
         CCM = ccm;
         AF = CCM.AF;
