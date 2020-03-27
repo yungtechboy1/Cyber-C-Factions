@@ -8,6 +8,7 @@ using MiNET.BlockEntities;
 using MiNET.Blocks;
 using MiNET.Entities;
 using MiNET.Items;
+using MiNET.Utils;
 using SharpAvi.Codecs;
 
 namespace CyberCore.Manager.AuctionHouse
@@ -95,11 +96,11 @@ namespace CyberCore.Manager.AuctionHouse
 
     public void ReloadCurrentPage() {
         switch (CurrentPage) {
-            case ItemPage:
+            case CurrentPageEnum.ItemPage:
                 clearAll();
                 setPage(getPage());
                 break;
-            case PlayerSellingPage:
+            case CurrentPageEnum.PlayerSellingPage:
                 setPagePlayerSelling(getPage());
                 break;
 
@@ -115,10 +116,12 @@ namespace CyberCore.Manager.AuctionHouse
 
     public void DisplayCatagories() {
         clearAll();
-        for (int i = 0; i < 5 * 9; i++) {
-            Block itm = new BlockGlassPaneStained(7);
+        for (int i = 0; i < 5 * 9; i++)
+        {
+            StainedGlass itm = new StainedGlass();
+            itm.Color = "Gray";
             Item bi = new ItemBlock(itm);
-            bi.setCustomName(TextFormat.GRAY + "FEATURE CURRENTLY DISABLED!");
+            bi.setCustomName(ChatColors.Gray + "FEATURE CURRENTLY DISABLED!");
             setItem(i, bi, true);
         }
         ReloadInv();
@@ -194,9 +197,9 @@ namespace CyberCore.Manager.AuctionHouse
     }
 
     @Override
-    public Map<int, Item> getContents() {
+    public Dictionary<int, Item> getContents() {
 
-        Map<int, Item> contents = new HashMap<>();
+        Dictionary<int, Item> contents = new HashMap<>();
 
         for (int i = 0; i < this.getSize(); ++i) {
             contents.put(i, this.getItem(i));
@@ -206,7 +209,7 @@ namespace CyberCore.Manager.AuctionHouse
     }
 
     @Override
-    public void setContents(Map<int, Item> items) {
+    public void setContents(Dictionary<int, Item> items) {
 //        super.setContents(items);
 //        if (holder != null) SendAllSlots((Player) holder);
         setContents(items, true);
@@ -222,7 +225,7 @@ namespace CyberCore.Manager.AuctionHouse
         setItem(getSize() - k--, si.Netherstar);
         setItem(getSize() - k--, si.Chest);
         setItem(getSize() - k--, si.Grayglass);
-        setItem(getSize() - k--, si.Map);
+        setItem(getSize() - k--, si.Dictionary);
         setItem(getSize() - k, si.Greenglass);
 //        sendContents((Player) holder);
     }
@@ -310,7 +313,7 @@ namespace CyberCore.Manager.AuctionHouse
         }
     }
 
-    public void setContents(Map<int, Item> items, bool send) {
+    public void setContents(Dictionary<int, Item> items, bool send) {
         System.out.println("SETTINNGG CCCOONNNTTTZ " + items.size());
         for (int i = 0; i < this.size - 1; ++i) {
 
@@ -319,7 +322,7 @@ namespace CyberCore.Manager.AuctionHouse
                 if (this.slots.containsKey(i)) {
                     this.clear(i);
                 }
-            } else if (!this.setItem(i, (Item) ((Map) items).get(i), send)) {
+            } else if (!this.setItem(i, (Item) ((Dictionary) items).get(i), send)) {
                 this.clear(i);
             }
         }
@@ -516,11 +519,11 @@ namespace CyberCore.Manager.AuctionHouse
     }
 
     @Override
-    public Map<int, Item> all(Item item) {
-        Map<int, Item> slots = new HashMap<>();
+    public Dictionary<int, Item> all(Item item) {
+        Dictionary<int, Item> slots = new HashMap<>();
         bool checkDamage = item.hasMeta();
         bool checkTag = item.getCompoundTag() != null;
-        for (Map.Entry<int, Item> entry : this.getContents().entrySet()) {
+        for (Dictionary.Entry<int, Item> entry : this.getContents().entrySet()) {
             if (item.equals(entry.getValue(), checkDamage, checkTag)) {
                 slots.put(entry.getKey(), entry.getValue());
             }
@@ -533,7 +536,7 @@ namespace CyberCore.Manager.AuctionHouse
     public void remove(Item item) {
         bool checkDamage = item.hasMeta();
         bool checkTag = item.getCompoundTag() != null;
-        for (Map.Entry<int, Item> entry : this.getContents().entrySet()) {
+        for (Dictionary.Entry<int, Item> entry : this.getContents().entrySet()) {
             if (item.equals(entry.getValue(), checkDamage, checkTag)) {
                 this.clear(entry.getKey());
             }
@@ -568,7 +571,7 @@ namespace CyberCore.Manager.AuctionHouse
         int count = Math.max(1, item.getCount());
         bool checkDamage = item.hasMeta();
         bool checkTag = item.getCompoundTag() != null;
-        for (Map.Entry<int, Item> entry : this.getContents().entrySet()) {
+        for (Dictionary.Entry<int, Item> entry : this.getContents().entrySet()) {
             if (item.equals(entry.getValue(), checkDamage, checkTag) && entry.getValue().getCount() >= count) {
                 return entry.getKey();
             }
@@ -747,7 +750,7 @@ namespace CyberCore.Manager.AuctionHouse
         public readonly Item Netherstar;
         public readonly Item Chest;
         public readonly Item Paper;
-        public readonly Item Map;
+        public readonly Item Dictionary;
         public readonly Item Confirm;
         public readonly Item AddX1;
         public readonly Item AddX10;
@@ -856,8 +859,8 @@ namespace CyberCore.Manager.AuctionHouse
                     TextFormat.GOLD + "" + TextFormat.BOLD + "Categories"
             );
 
-            Map = Item.get(Item.MAP);
-            Map.setCustomName(TextFormat.GOLD + "" + TextFormat.BOLD + "List Item In Hand");
+            Dictionary = Item.get(Item.MAP);
+            Dictionary.setCustomName(TextFormat.GOLD + "" + TextFormat.BOLD + "List Item In Hand");
 
             Paper = Item.get(Item.PAPER);
             Paper.setCustomName(TextFormat.GOLD + "" + TextFormat.BOLD + "Search Auction House For Item");

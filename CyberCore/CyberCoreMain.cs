@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using CyberCore.Manager.AuctionHouse;
 using CyberCore.Manager.ClassFactory;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.FloatingText;
@@ -143,7 +144,9 @@ namespace CyberCore
         {
             API = api;
             SQL = new SqlManager(this);
-            api.OpenServer.FM = new FactionsMain(this);
+            FM = new FactionsMain(this);
+            
+            AF = new AuctionFactory(this);
 
             getServer().PlayerFactory.PlayerCreated += (sender, args) =>
             {
@@ -166,6 +169,8 @@ namespace CyberCore
             // api.CommandManager.LoadCommands(CommandsClass);
             // api.CommandManager.LoadCommands(new FactionCommands(FactionManager));
         }
+
+        public AuctionFactory AF { get; set; }
 
         private void OnTicking(object sender, PlayerEventArgs e)
         {
