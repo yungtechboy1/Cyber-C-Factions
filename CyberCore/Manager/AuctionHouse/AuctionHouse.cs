@@ -98,7 +98,7 @@ namespace CyberCore.Manager.AuctionHouse
             setPage(1);
             setContents(AF.getPageHash(getPage(), getHolder().getName()), true);
             ReloadInv();
-            sendContents(getHolder());
+            // sendContents(getHolder());
             SendAllSlots(getHolder());
         }
 
@@ -359,12 +359,12 @@ namespace CyberCore.Manager.AuctionHouse
                 {
                     if (inv.isEmpty(i))
                     {
-                        this.clear(i);
+                        // this.clear(i);
                     }
                 }
                 else if (!this.setItem(i, items[i], send))
                 {
-                    this.clear(i);
+                    // this.clear(i);
                 }
             }
 
@@ -385,18 +385,18 @@ namespace CyberCore.Manager.AuctionHouse
                 if (item.Id != 0 && item.Count > 0)
                 {
                     Player holder = getHolder();
-                    if (holder instanceof Entity && !send) {
-                        EntityInventoryChangeEvent ev =
-                            new EntityInventoryChangeEvent((Entity) holder, this.getItem(index), item, index);
-                        Server.getInstance().getPluginManager().callEvent(ev);
-                        if (ev.isCancelled())
-                        {
-                            sendSlot(index, getHolder());
-                            return false;
-                        }
-
-                        item = ev.getNewItem();
-                    }
+                    // if (holder instanceof Entity && !send) {
+                    //     EntityInventoryChangeEvent ev =
+                    //         new EntityInventoryChangeEvent((Entity) holder, this.getItem(index), item, index);
+                    //     Server.getInstance().getPluginManager().callEvent(ev);
+                    //     if (ev.isCancelled())
+                    //     {
+                    //         sendSlot(index, getHolder());
+                    //         return false;
+                    //     }
+                    //
+                    //     item = ev.getNewItem();
+                    // }
 
                     // if (holder instanceof BlockEntity) {
                     //     ((BlockEntity) holder).setDirty();
@@ -408,29 +408,31 @@ namespace CyberCore.Manager.AuctionHouse
 //            System.out.println("AAAAAAAAAAAAAAAAAAAA >> "+old);
 //            System.out.println("AAAAAAAAAAAAAAAAAAAA >> "+send);
 //            this.onSlotChange(index, old, send);
-                    if (getHolder() != null) sendSlot(index, getHolder());
+                    // if (getHolder() != null) sendSlot(index, getHolder());
                     return true;
 
 //            return super.setItem(index,item,send);
                 }
                 else
                 {
-                    return this.clear(index);
+                    // return this.clear(index);
                 }
             }
             else
             {
                 return false;
             }
+
+            return true;
         }
 
 
-        public void sendContents(Player player)
-        {
-            ArrayList<Player> al = new ArrayList<>();
-            al.add(player);
-            this.sendContents(al.toArray(new Player[1]));
-        }
+        // public void sendContents(Player player)
+        // {
+        //     ArrayList<Player> al = new ArrayList<>();
+        //     al.add(player);
+        //     this.sendContents(al.toArray(new Player[1]));
+        // }
 
 //    public bool setItem(int index, Item item, bool send) {
 //        item = item.Clone();
@@ -474,163 +476,161 @@ namespace CyberCore.Manager.AuctionHouse
 
         public void SendAllSlots(Player p)
         {
-            ArrayList<Player> al = new ArrayList<>();
-            al.add(p);
             for (int i = 0; i < getSize(); i++)
             {
-                sendSlot(i, p);
+                // sendSlot(i, p);
             }
         }
 
         public void SetupPageNotEnoughMoney(AuctionItemData aid)
         {
-            CorePlayer cp = (CorePlayer) getHolder();
-            StaticItems si = new StaticItems(Page);
-            Item item = aid.MakePretty();
-            Item deny = si.Deny.Clone();
-            Item deny2 = si.Deny.Clone();
-            CurrentPage = Confirm_Purchase_Not_Enough_Money;
-            deny.setCustomName(TextFormat.RED + "Not Enough Money!");
-            for (int i = 0; i < 5; i++)
-            {
-                for (int ii = 0; ii < 9; ii++)
-                {
-                    int key = (i * 9) + ii;
-                    if (ii != 4)
-                    {
-                        //RED
-                        setItem(key, deny.Clone(), true);
-                    }
-                    else
-                    {
-                        //White or Item
-                        if (i == 2)
-                        {
-                            //@TODO Get ITem
-                            setItem(key, item, true);
-                        }
-                        else if (i == 0)
-                        {
-                            Item g = si.Gold.Clone();
-                            g.setCustomName(TextFormat.GOLD + " Your money: " + cp.getMoney());
-                            setItem(key, g, true);
-                        }
-                        else
-                        {
-                            Item r = Item.get(160, 14);
-                            r.setCustomName(TextFormat.RED + "Not Enough Money \n" + TextFormat.YELLOW +
-                                            " Your Balance : " + cp.getMoney() + "\n" + TextFormat.AQUA +
-                                            "Item Cost : " + aid.getCost());
-                            setItem(key, r, true);
-                        }
-                    }
-                }
-            }
+            // CorePlayer cp = (CorePlayer) getHolder();
+            // StaticItems si = new StaticItems(Page);
+            // Item item = aid.MakePretty();
+            // Item deny = si.Deny.Clone();
+            // Item deny2 = si.Deny.Clone();
+            // CurrentPage = Confirm_Purchase_Not_Enough_Money;
+            // deny.setCustomName(TextFormat.RED + "Not Enough Money!");
+            // for (int i = 0; i < 5; i++)
+            // {
+            //     for (int ii = 0; ii < 9; ii++)
+            //     {
+            //         int key = (i * 9) + ii;
+            //         if (ii != 4)
+            //         {
+            //             //RED
+            //             setItem(key, deny.Clone(), true);
+            //         }
+            //         else
+            //         {
+            //             //White or Item
+            //             if (i == 2)
+            //             {
+            //                 //@TODO Get ITem
+            //                 setItem(key, item, true);
+            //             }
+            //             else if (i == 0)
+            //             {
+            //                 Item g = si.Gold.Clone();
+            //                 g.setCustomName(TextFormat.GOLD + " Your money: " + cp.getMoney());
+            //                 setItem(key, g, true);
+            //             }
+            //             else
+            //             {
+            //                 Item r = Item.get(160, 14);
+            //                 r.setCustomName(TextFormat.RED + "Not Enough Money \n" + TextFormat.YELLOW +
+            //                                 " Your Balance : " + cp.getMoney() + "\n" + TextFormat.AQUA +
+            //                                 "Item Cost : " + aid.getCost());
+            //                 setItem(key, r, true);
+            //             }
+            //         }
+            //     }
+            // }
         }
 
         public void SetupPageToConfirmSingleItem(AuctionItemData aid)
         {
-            CurrentPage = Confirm_Purchase;
-            CorePlayer cp = (CorePlayer) getHolder();
-            StaticItems si = new StaticItems(Page);
-            Item item = aid.MakePretty();
-            Item confrim = si.Confirm.Clone();
-            Item deny = si.Deny.Clone();
-            for (int i = 0; i < 5; i++)
-            {
-                for (int ii = 0; ii < 9; ii++)
-                {
-                    int key = (i * 9) + ii;
-                    if (ii < 4)
-                    {
-                        //RED
-                        setItem(key, deny.Clone(), true);
-                    }
-                    else if (ii == 4)
-                    {
-                        //White or Item
-                        if (i == 2)
-                        {
-                            //@TODO Get ITem
-                            setItem(key, item, true);
-                        }
-                        else if (i == 0)
-                        {
-                            Item g = si.Gold.Clone();
-                            g.setCustomName(TextFormat.GOLD + " Your money: " + cp.getMoney());
-                            setItem(key, g, true);
-                        }
-                        else
-                        {
-                            setItem(key, Item.get(160), true);
-                        }
-                    }
-                    else
-                    {
-                        //GREEN
-                        setItem(key, confrim.Clone(), true);
-                    }
-                }
-            }
+            // CurrentPage = Confirm_Purchase;
+            // CorePlayer cp = (CorePlayer) getHolder();
+            // StaticItems si = new StaticItems(Page);
+            // Item item = aid.MakePretty();
+            // Item confrim = si.Confirm.Clone();
+            // Item deny = si.Deny.Clone();
+            // for (int i = 0; i < 5; i++)
+            // {
+            //     for (int ii = 0; ii < 9; ii++)
+            //     {
+            //         int key = (i * 9) + ii;
+            //         if (ii < 4)
+            //         {
+            //             //RED
+            //             setItem(key, deny.Clone(), true);
+            //         }
+            //         else if (ii == 4)
+            //         {
+            //             //White or Item
+            //             if (i == 2)
+            //             {
+            //                 //@TODO Get ITem
+            //                 setItem(key, item, true);
+            //             }
+            //             else if (i == 0)
+            //             {
+            //                 Item g = si.Gold.Clone();
+            //                 g.setCustomName(TextFormat.GOLD + " Your money: " + cp.getMoney());
+            //                 setItem(key, g, true);
+            //             }
+            //             else
+            //             {
+            //                 setItem(key, Item.get(160), true);
+            //             }
+            //         }
+            //         else
+            //         {
+            //             //GREEN
+            //             setItem(key, confrim.Clone(), true);
+            //         }
+            //     }
+            // }
         }
 
-        public void setItem2(int index, Item item)
-        {
-            setItem(index, item.Clone());
-            this.onSlotChange(index, null);
-        }
+        // public void setItem2(int index, Item item)
+        // {
+        //     setItem(index, item.Clone());
+        //     this.onSlotChange(index, null);
+        // }
 
 
-        public bool contains(Item item)
-        {
-            int count = Math.max(1, item.getCount());
-            bool checkDamage = item.hasMeta();
-            bool checkTag = item.getCompoundTag() != null;
-            for (Item i :
-            this.getContents().values()) {
-                if (item.equals(i, checkDamage, checkTag))
-                {
-                    count -= i.getCount();
-                    if (count <= 0)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-
-        public Dictionary<int, Item> all(Item item)
-        {
-            Dictionary<int, Item> slots = new HashMap<>();
-            bool checkDamage = item.hasMeta();
-            bool checkTag = item.getCompoundTag() != null;
-            for (Dictionary.Entry < int, Item > entry : this.getContents().entrySet())
-            {
-                if (item.equals(entry.getValue(), checkDamage, checkTag))
-                {
-                    slots.put(entry.getKey(), entry.getValue());
-                }
-            }
-
-            return slots;
-        }
+        // public bool contains(Item item)
+        // {
+        //     int count = Math.max(1, item.getCount());
+        //     bool checkDamage = item.hasMeta();
+        //     bool checkTag = item.getCompoundTag() != null;
+        //     for (Item i :
+        //     this.getContents().values()) {
+        //         if (item.equals(i, checkDamage, checkTag))
+        //         {
+        //             count -= i.getCount();
+        //             if (count <= 0)
+        //             {
+        //                 return true;
+        //             }
+        //         }
+        //     }
+        //
+        //     return false;
+        // }
 
 
-        public void remove(Item item)
-        {
-            bool checkDamage = item.hasMeta();
-            bool checkTag = item.getCompoundTag() != null;
-            for (Dictionary.Entry < int, Item > entry : this.getContents().entrySet())
-            {
-                if (item.equals(entry.getValue(), checkDamage, checkTag))
-                {
-                    this.clear(entry.getKey());
-                }
-            }
-        }
+        // public Dictionary<int, Item> all(Item item)
+        // {
+        //     Dictionary<int, Item> slots = new HashMap<>();
+        //     bool checkDamage = item.hasMeta();
+        //     bool checkTag = item.getCompoundTag() != null;
+        //     for (Dictionary.Entry < int, Item > entry : this.getContents().entrySet())
+        //     {
+        //         if (item.equals(entry.getValue(), checkDamage, checkTag))
+        //         {
+        //             slots.put(entry.getKey(), entry.getValue());
+        //         }
+        //     }
+        //
+        //     return slots;
+        // }
+        //
+        //
+        // public void remove(Item item)
+        // {
+        //     bool checkDamage = item.hasMeta();
+        //     bool checkTag = item.getCompoundTag() != null;
+        //     for (Dictionary.Entry < int, Item > entry : this.getContents().entrySet())
+        //     {
+        //         if (item.equals(entry.getValue(), checkDamage, checkTag))
+        //         {
+        //             this.clear(entry.getKey());
+        //         }
+        //     }
+        // }
 
 //    
 //    public bool setItem(int index, Item item) {
@@ -656,41 +656,41 @@ namespace CyberCore.Manager.AuctionHouse
 //    }
 
 
-        public int first(Item item)
-        {
-            int count = Math.max(1, item.getCount());
-            bool checkDamage = item.hasMeta();
-            bool checkTag = item.getCompoundTag() != null;
-            for (Dictionary.Entry < int, Item > entry : this.getContents().entrySet())
-            {
-                if (item.equals(entry.getValue(), checkDamage, checkTag) && entry.getValue().getCount() >= count)
-                {
-                    return entry.getKey();
-                }
-            }
-
-            return -1;
-        }
-
-
-        public int first(Item item, bool exact)
-        {
-            return 0;
-        }
-
-
-        public int firstEmpty(Item item)
-        {
-            for (int i = 0; i < this.size; ++i)
-            {
-                if (this.getItem(i).getId() == Item.AIR)
-                {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
+        // public int first(Item item)
+        // {
+        //     int count = Math.max(1, item.getCount());
+        //     bool checkDamage = item.hasMeta();
+        //     bool checkTag = item.getCompoundTag() != null;
+        //     for (Dictionary.Entry < int, Item > entry : this.getContents().entrySet())
+        //     {
+        //         if (item.equals(entry.getValue(), checkDamage, checkTag) && entry.getValue().getCount() >= count)
+        //         {
+        //             return entry.getKey();
+        //         }
+        //     }
+        //
+        //     return -1;
+        // }
+        //
+        //
+        // public int first(Item item, bool exact)
+        // {
+        //     return 0;
+        // }
+        //
+        //
+        // public int firstEmpty(Item item)
+        // {
+        //     for (int i = 0; i < this.size; ++i)
+        //     {
+        //         if (this.getItem(i).getId() == Item.AIR)
+        //         {
+        //             return i;
+        //         }
+        //     }
+        //
+        //     return -1;
+        // }
 
 
         public void decreaseCount(int slot)
@@ -698,10 +698,10 @@ namespace CyberCore.Manager.AuctionHouse
         }
 
 
-        public bool clear(int index)
-        {
-            return this.clear(index, true);
-        }
+        // public bool clear(int index)
+        // {
+        //     return this.clear(index, true);
+        // }
 
 
 //         public bool clear(int index, bool send)
@@ -781,7 +781,7 @@ namespace CyberCore.Manager.AuctionHouse
                 SendPage(Page);
             }
 
-            this.sendSlot(index, getHolder());
+            // this.sendSlot(index, getHolder());
         }
 
         public void SendPage(int page)
@@ -817,23 +817,23 @@ namespace CyberCore.Manager.AuctionHouse
             return inv.GetSlots();
         }
 
-        public void sendContents(Collection<Player> players)
-        {
-            this.sendContents(players.stream().toArray(Player[]::new));
-            inv.SendSetSlot();
-        }
+        // public void sendContents(Collection<Player> players)
+        // {
+        //     this.sendContents(players.stream().toArray(Player[]::new));
+        //     inv.SendSetSlot();
+        // }
 
 
-        public void sendSlot(int index, Player player)
-        {
-            this.sendSlot(index, new Player[] {player});
-        }
+        // public void sendSlot(int index, Player player)
+        // {
+        //     this.sendSlot(index, new Player[] {player});
+        // }
 
 
-        public InventoryType getType()
-        {
-            return InventoryType.DOUBLE_CHEST;
-        }
+        // public InventoryType getType()
+        // {
+        //     return InventoryType.DOUBLE_CHEST;
+        // }
 
 //    
 //    public void sendContents(Player player) {
