@@ -9,380 +9,431 @@ using MiNET.Blocks;
 using MiNET.Entities;
 using MiNET.Items;
 using MiNET.Utils;
+using OpenAPI.Player;
 using SharpAvi.Codecs;
 
 namespace CyberCore.Manager.AuctionHouse
 {
-    public class AuctionHouse  {
-
-    protected readonly String name;
-    protected readonly String title;
-    //    public static HashMap<int, Item> slots = new HashMap<>();
-    protected readonly List<Player> viewers = new List<Player>();
-    public bool ConfirmPurchase = false;
-    public int ConfirmPurchaseSlot = 0;
-    public Inventory I ;
-    public AuctionFactory AF = null;
-    public int size = 12;
-    protected int maxStackSize = 64;//Default
-    Player holder;
-    Vector3 BA;
-    CyberCoreMain CCM;
-    BlockEntity blockEntity2 = null;
-    BlockEntity blockEntity = null;
-
-    public CurrentPageEnum getCurrentPage() {
-        return CurrentPage;
-    }
-
-    public void setCurrentPage(CurrentPageEnum currentPage) {
-        CurrentPage = currentPage;
-    }
-
-    CurrentPageEnum CurrentPage;
-    private int Page = 1;
-    public int _inventoryId = 7000000;
-    public object _cache= new object();
-    private int GetInventoryId()
+    public class AuctionHouse
     {
-        lock (_cache)
+        protected readonly String name;
+
+        protected readonly String title;
+
+        //    public static HashMap<int, Item> slots = new HashMap<>();
+        protected readonly List<Player> viewers = new List<Player>();
+        public bool ConfirmPurchase = false;
+        public int ConfirmPurchaseSlot = 0;
+        public Inventory I;
+        public AuctionFactory AF = null;
+        public int size = 12;
+        protected int maxStackSize = 64; //Default
+        Player holder;
+        Vector3 BA;
+        CyberCoreMain CCM;
+        BlockEntity blockEntity2 = null;
+        BlockEntity blockEntity = null;
+
+        public CurrentPageEnum getCurrentPage()
         {
-            _inventoryId++;
-            if (_inventoryId == 0x78)
-                _inventoryId++;
-            if (_inventoryId == 0x79)
-                _inventoryId++;
-
-            return _inventoryId;
+            return CurrentPage;
         }
-    }
 
-    public ChestBlockEntity getChestBlockEntity()
-    {
-        return new ChestBlockEntity();
-    }
-    
-    public AuctionHouse(Player Holder, CyberCoreMain ccm, Vector3 ba, int page = 1) {
+        public void setCurrentPage(CurrentPageEnum currentPage)
+        {
+            CurrentPage = currentPage;
+        }
+
+        CurrentPageEnum CurrentPage;
+        private int Page = 1;
+        public int _inventoryId = 7000000;
+        public object _cache = new object();
+
+        private int GetInventoryId()
+        {
+            lock (_cache)
+            {
+                _inventoryId++;
+                if (_inventoryId == 0x78)
+                    _inventoryId++;
+                if (_inventoryId == 0x79)
+                    _inventoryId++;
+
+                return _inventoryId;
+            }
+        }
+
+        public ChestBlockEntity getChestBlockEntity()
+        {
+            return new ChestBlockEntity();
+        }
+
+        public AuctionHouse(Player Holder, CyberCoreMain ccm, Vector3 ba, int page = 1)
+        {
 //        super(Holder, InventoryType.DOUBLE_CHEST, CyberCoreMain.getInstance().SF.getPageHash(page), 9 * 6);//54??
-        // super(Holder, InventoryType.DOUBLE_CHEST, ccm.AF.getPageHash(page), 9 * 6);//54??
-        I = new Inventory(GetInventoryId(),getChestBlockEntity(),54,new NbtList());
-        //TODO SHOULD SIZE BE 54!?!?
-        holder = Holder;
-        this.size = 9 * 6;
+            // super(Holder, InventoryType.DOUBLE_CHEST, ccm.AF.getPageHash(page), 9 * 6);//54??
+            I = new Inventory(GetInventoryId(), getChestBlockEntity(), 54, new NbtList());
+            //TODO SHOULD SIZE BE 54!?!?
+            holder = Holder;
+            this.size = 9 * 6;
 
-        CCM = ccm;
-        AF = CCM.AF;
+            CCM = ccm;
+            AF = CCM.AF;
 //        addItem(SF.getPage(Page));
-        Page = page;
+            Page = page;
 
-        BA = ba;
+            BA = ba;
 
-        this.title = "Auction House Page" + page;
+            this.title = "Auction House Page" + page;
 
-        this.name = title;
-        System.Console.WriteLine("Creating AuctionHouse Class");
+            this.name = title;
+            System.Console.WriteLine("Creating AuctionHouse Class");
 //        if (CyberCoreMain.getInstance().SF.getPageHash(page) == null) System.out.println("NUUUUUUUUUUU");
 //        setContents(CyberCoreMain.getInstance().SF.getPageHash(page));
-    }
-
-    public void GoToSellerPage() {
-        clearAll();
-        setPage(1);
-        setContents(AF.getPageHash(getPage(), getHolder().getName()), true);
-        ReloadInv();
-        sendContents(getHolder());
-        SendAllSlots(getHolder());
-    }
-
-    public void ReloadCurrentPage() {
-        switch (CurrentPage) {
-            case CurrentPageEnum.ItemPage:
-                clearAll();
-                setPage(getPage());
-                break;
-            case CurrentPageEnum.PlayerSellingPage:
-                setPagePlayerSelling(getPage());
-                break;
-
-
         }
-    }
 
-    public void ClearConfirmPurchase() {
-
-        ConfirmPurchase = false;
-        ConfirmPurchaseSlot = -1;
-    }
-
-    public void DisplayCatagories() {
-        clearAll();
-        for (int i = 0; i < 5 * 9; i++)
+        public void GoToSellerPage()
         {
-            StainedGlass itm = new StainedGlass();
-            itm.Color = "Gray";
-            Item bi = new ItemBlock(itm);
-            bi.setCustomName(ChatColors.Gray + "FEATURE CURRENTLY DISABLED!");
-            setItem(i, bi, true);
-        }
-        ReloadInv();
-        SendAllSlots(getHolder());
-    }
-
-    public void GoToNextPage() {
-        setPage(getPage() + 1);
-    }
-
-    public void GoToPrevPage() {
-        setPage(getPage() - 1);
-    }
-
-    public void setPagePlayerSelling() {
-        setPagePlayerSelling(1);
-    }
-
-    public void setPagePlayerSelling(int page) {
-        Page = page;
-        CurrentPage = CurrentPageEnum.PlayerSellingPage;
-        clearAll();
-        setContents(AF.getPageHash(getPage(), getHolder().getName()));
-        ReloadInv();
-        SendAllSlots(getHolder());
-    }
-
-    public int getPage() {
-        return Page;
-    }
-
-    public void setPage(int page) {
-        if (1 > page) page = 1;
-        Page = page;
-        CurrentPage = CurrentPageEnum.ItemPage;
-        clearAll();
-        addItem(AF.getPage(getPage()));
-        ReloadInv();
-        SendAllSlots(getHolder());
-    }
-
-    @Override
-    public void onOpen(Player who) {
-        super.onOpen(who);
-        ReloadInv();
-        ContainerOpenPacket containerOpenPacket = new ContainerOpenPacket();
-        containerOpenPacket.windowId = who.getWindowId(this);
-        containerOpenPacket.type = this.getType().getNetworkType();
-        BlockEnderChest chest = null;//who.getViewingEnderChest();
-        containerOpenPacket.x = who.getFloorX();
-        containerOpenPacket.y = who.getFloorY() - 2;
-        containerOpenPacket.z = who.getFloorZ();
-
-
-        who.dataPacket(containerOpenPacket);
-        this.sendContents(who);
-
-
-    }
-
-    @Override
-    public void onClose(Player who) {
-
-    }
-
-    @Override
-    public void onSlotChange(int index, Item before, bool send) {
-        super.onSlotChange(index, before, send);
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    @Override
-    public Dictionary<int, Item> getContents() {
-
-        Dictionary<int, Item> contents = new HashMap<>();
-
-        for (int i = 0; i < this.getSize(); ++i) {
-            contents.put(i, this.getItem(i));
+            clearAll();
+            setPage(1);
+            setContents(AF.getPageHash(getPage(), getHolder().getName()), true);
+            ReloadInv();
+            sendContents(getHolder());
+            SendAllSlots(getHolder());
         }
 
-        return contents;
-    }
+        public void ReloadCurrentPage()
+        {
+            switch (CurrentPage)
+            {
+                case CurrentPageEnum.ItemPage:
+                    clearAll();
+                    setPage(getPage());
+                    break;
+                case CurrentPageEnum.PlayerSellingPage:
+                    setPagePlayerSelling(getPage());
+                    break;
+            }
+        }
 
-    @Override
-    public void setContents(Dictionary<int, Item> items) {
+        public void ClearConfirmPurchase()
+        {
+            ConfirmPurchase = false;
+            ConfirmPurchaseSlot = -1;
+        }
+
+        public void DisplayCatagories()
+        {
+            clearAll();
+            for (int i = 0; i < 5 * 9; i++)
+            {
+                StainedGlass itm = new StainedGlass();
+                itm.Color = "Gray";
+                Item bi = new ItemBlock(itm);
+                bi.setCustomName(ChatColors.Gray + "FEATURE CURRENTLY DISABLED!");
+                setItem(i, bi, true);
+            }
+
+            ReloadInv();
+            SendAllSlots(getHolder());
+        }
+
+        public void GoToNextPage()
+        {
+            setPage(getPage() + 1);
+        }
+
+        public void GoToPrevPage()
+        {
+            setPage(getPage() - 1);
+        }
+
+        public void setPagePlayerSelling()
+        {
+            setPagePlayerSelling(1);
+        }
+
+        public void setPagePlayerSelling(int page)
+        {
+            Page = page;
+            CurrentPage = CurrentPageEnum.PlayerSellingPage;
+            clearAll();
+            setContents(AF.getPageHash(getPage(), getHolder().getName()));
+            ReloadInv();
+            SendAllSlots(getHolder());
+        }
+
+        public int getPage()
+        {
+            return Page;
+        }
+
+        public void setPage(int page)
+        {
+            if (1 > page) page = 1;
+            Page = page;
+            CurrentPage = CurrentPageEnum.ItemPage;
+            clearAll();
+            addItem(AF.getPage(getPage()));
+            ReloadInv();
+            SendAllSlots(getHolder());
+        }
+
+
+        // public void onOpen(Player who) {
+        //     // super.onOpen(who);
+        //     ReloadInv();
+        //     ContainerOpenPacket containerOpenPacket = new ContainerOpenPacket();
+        //     containerOpenPacket.windowId = who.getWindowId(this);
+        //     containerOpenPacket.type = this.getType().getNetworkType();
+        //     BlockEnderChest chest = null;//who.getViewingEnderChest();
+        //     containerOpenPacket.x = who.getFloorX();
+        //     containerOpenPacket.y = who.getFloorY() - 2;
+        //     containerOpenPacket.z = who.getFloorZ();
+        //
+        //
+        //     who.dataPacket(containerOpenPacket);
+        //     this.sendContents(who);
+        //
+        //
+        // }
+
+
+        public void onClose(Player who)
+        {
+        }
+
+
+        // public void onSlotChange(int index, Item before, bool send) {
+        //     super.onSlotChange(index, before, send);
+        // }
+
+        public void setSize(int size)
+        {
+            this.size = size;
+        }
+
+
+        public Dictionary<int, Item> getContents()
+        {
+            Dictionary<int, Item> contents = new Dictionary<int, Item>();
+
+            for (int i = 0; i < this.size; ++i)
+            {
+                contents[i] = inv.Slots[i];
+            }
+
+            return contents;
+        }
+
+
+        public void setContents(Dictionary<int, Item> items)
+        {
 //        super.setContents(items);
 //        if (holder != null) SendAllSlots((Player) holder);
-        setContents(items, true);
-    }
+            setContents(items, true);
+        }
 
-    public void ReloadInv() {
-        StaticItems si = new StaticItems(Page);
-        int k = 9;
-        setItem(getSize() - k--, si.Redglass);
-        setItem(getSize() - k--, si.Paper);
-        setItem(getSize() - k--, si.Grayglass);
-        setItem(getSize() - k--, si.Diamond);
-        setItem(getSize() - k--, si.Netherstar);
-        setItem(getSize() - k--, si.Chest);
-        setItem(getSize() - k--, si.Grayglass);
-        setItem(getSize() - k--, si.Dictionary);
-        setItem(getSize() - k, si.Greenglass);
+        public int getSize()
+        {
+            return inv.Slots.Count;
+        }
+
+        public void ReloadInv()
+        {
+            StaticItems si = new StaticItems(Page);
+            int k = 9;
+            setItem(getSize() - k--, si.Redglass, true);
+            setItem(getSize() - k--, si.Paper, true);
+            setItem(getSize() - k--, si.Grayglass, true);
+            setItem(getSize() - k--, si.Diamond, true);
+            setItem(getSize() - k--, si.Netherstar, true);
+            setItem(getSize() - k--, si.Chest, true);
+            setItem(getSize() - k--, si.Grayglass, true);
+            setItem(getSize() - k--, si.Dictionary, true);
+            setItem(getSize() - k, si.Greenglass, true);
 //        sendContents((Player) holder);
-    }
+        }
 
-    public void ConfirmItemPurchase(int slot) {
-        clearAll();
-        AuctionItemData aid = AF.getAIDFromPage(Page, slot);
-        SetupPageToConfirmSingleItem(aid);
-        ReloadInv();
-        ConfirmPurchase = true;
-        ConfirmPurchaseSlot = slot;
+        public void ConfirmItemPurchase(int slot)
+        {
+            clearAll();
+            AuctionItemData aid = AF.getAIDFromPage(Page, slot);
+            SetupPageToConfirmSingleItem(aid);
+            ReloadInv();
+            ConfirmPurchase = true;
+            ConfirmPurchaseSlot = slot;
 
 //        sendContents((Player) holder);
+        }
 
-
-    }
-
-    /**
+        /**
      * Maybe use later... Probablly wont work well with /ah I think...
      *
      * @param aid
      * @deprecated
      */
-    public void SetupPageToConfirmMultiItem(AuctionItemData aid) {
-        StaticItems si = new StaticItems(Page);
-        Item item = aid.MakePretty();
-        Item confrim = si.Confirm;
-        Item deny = si.Deny;
-        for (int i = 0; i < 5; i++) {
-            for (int ii = 0; ii < 9; ii++) {
-                int key = (i * 9) + ii;
-                Item add = null;
-                switch (ii) {
-                    case 0:
-                    case 1:
-                    case 2:
-                    case 3:
-                        add = si.Deny.clone();
-                        setItem(key, add, true);
-                        break;
+        public void SetupPageToConfirmMultiItem(AuctionItemData aid)
+        {
+            StaticItems si = new StaticItems(Page);
+            Item item = aid.MakePretty();
+            Item confrim = si.Confirm;
+            Item deny = si.Deny;
+            for (int i = 0; i < 5; i++)
+            {
+                for (int ii = 0; ii < 9; ii++)
+                {
+                    int key = (i * 9) + ii;
+                    Item add = null;
+                    switch (ii)
+                    {
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                            add = (Item) si.Deny.Clone();
+                            setItem(key, add, true);
+                            break;
 //                    case 1:
-//                        if (item.count >= 32) add = si.RmvX32.clone();
-//                        else add = si.Deny.clone();
+//                        if (item.count >= 32) add = si.RmvX32.Clone();
+//                        else add = si.Deny.Clone();
 //                        setItem(key,add,true);
 //                        break;
 //                    case 2:
-//                        if (item.count >= 10) add = si.RmvX10.clone();
-//                        else add = si.Deny.clone();
+//                        if (item.count >= 10) add = si.RmvX10.Clone();
+//                        else add = si.Deny.Clone();
 //                        setItem(key,add,true);
 //                        break;
 //                    case 3:
-//                        if (item.count >= 1) add = si.RmvX1.clone();
-//                        else add = si.Deny.clone();
+//                        if (item.count >= 1) add = si.RmvX1.Clone();
+//                        else add = si.Deny.Clone();
 //                        setItem(key,add,true);
 //                        break;
-                    case 4:
-                        if (i == 2) add = item.clone();
-                        else add = Item.get(160).clone();
-                        setItem(key, add, true);
-                        break;
-                    case 5:
-                        if (item.count >= 1) add = si.AddX1.clone();
-                        else add = si.Deny.clone();
-                        setItem(key, add, true);
-                        break;
-                }
-
-
-                if (ii < 4) {
-                    //RED
-                    setItem(key, deny.clone(), true);
-                } else if (ii == 4) {
-                    //White or Item
-                    if (i == 2) {
-                        //@TODO Get ITem
-                        setItem(key, item, true);
-                    } else {
-                        setItem(key, Item.get(160), true);
+                        case 4:
+                            if (i == 2) add = (Item) item.Clone();
+                            else add = new ItemBlock(new StainedGlassPane());
+                            setItem(key, add, true);
+                            break;
+                        case 5:
+                            if (item.Count >= 1) add = (Item) si.AddX1.Clone();
+                            else add = (Item) si.Deny.Clone();
+                            setItem(key, add, true);
+                            break;
                     }
-                } else {
-                    //GREEN
-                    setItem(key, confrim.clone(), true);
+
+
+                    if (ii < 4)
+                    {
+                        //RED
+                        setItem(key, (Item) deny.Clone(), true);
+                    }
+                    else if (ii == 4)
+                    {
+                        //White or Item
+                        if (i == 2)
+                        {
+                            //@TODO Get ITem
+                            setItem(key, item, true);
+                        }
+                        else
+                        {
+                            setItem(key, new ItemBlock(new StainedGlassPane()), true);
+                        }
+                    }
+                    else
+                    {
+                        //GREEN
+                        setItem(key, (Item) si.Confirm.Clone(), true);
+                    }
                 }
             }
         }
-    }
 
-    public void setContents(Dictionary<int, Item> items, bool send) {
-        System.out.println("SETTINNGG CCCOONNNTTTZ " + items.size());
-        for (int i = 0; i < this.size - 1; ++i) {
-
+        public void setContents(Dictionary<int, Item> items, bool send)
+        {
+            CyberCoreMain.Log.Info("AHHHH>>>>>>> SETTINNGG CCCOONNNTTTZ " + items.Count);
+            for (int i = 0; i < this.size - 1; ++i)
+            {
 //            System.out.println("SETTING ITEM IN KEY " + i + " VVVVVVVV " + items.get(i).getClass().getName());
-            if (!items.containsKey(i)) {
-                if (this.slots.containsKey(i)) {
+                if (!items.ContainsKey(i))
+                {
+                    if (inv.isEmpty(i))
+                    {
+                        this.clear(i);
+                    }
+                }
+                else if (!this.setItem(i, items[i], send))
+                {
                     this.clear(i);
                 }
-            } else if (!this.setItem(i, (Item) ((Dictionary) items).get(i), send)) {
-                this.clear(i);
             }
+
+
+            ReloadInv();
         }
 
 
-        ReloadInv();
-    }
-
-    @Override
-    public bool setItem(int index, Item item, bool send) {
-        item = item.clone();
+        public bool setItem(int index, Item item, bool send)
+        {
+            item = (Item) item.Clone();
 //    System.out.println("INNNNEEDDDDEDEE >> "+index);
 //    System.out.println("INNNNEEDDDDEDEE >> "+item.getClass().getName());
 //        System.out.println("INNNNEEDDDDEDEE >> "+item.getCount());
 //        System.out.println("INNNNEEDDDDEDEE >> "+item.getId());
-        if (index >= 0 && index < getSize()) {
-            if (item.getId() != 0 && item.getCount() > 0) {
-                InventoryHolder holder = this.getHolder();
-                if (holder instanceof Entity && !send) {
-                    EntityInventoryChangeEvent ev = new EntityInventoryChangeEvent((Entity) holder, this.getItem(index), item, index);
-                    Server.getInstance().getPluginManager().callEvent(ev);
-                    if (ev.isCancelled()) {
-                        this.sendSlot(index, (Collection) this.getViewers());
-                        return false;
+            if (index >= 0 && index < getSize())
+            {
+                if (item.Id != 0 && item.Count > 0)
+                {
+                    Player holder = getHolder();
+                    if (holder instanceof Entity && !send) {
+                        EntityInventoryChangeEvent ev =
+                            new EntityInventoryChangeEvent((Entity) holder, this.getItem(index), item, index);
+                        Server.getInstance().getPluginManager().callEvent(ev);
+                        if (ev.isCancelled())
+                        {
+                            sendSlot(index, getHolder());
+                            return false;
+                        }
+
+                        item = ev.getNewItem();
                     }
 
-                    item = ev.getNewItem();
-                }
-
-                if (holder instanceof BlockEntity) {
-                    ((BlockEntity) holder).setDirty();
-                }
+                    // if (holder instanceof BlockEntity) {
+                    //     ((BlockEntity) holder).setDirty();
+                    // }
 //
-                Item old = this.getItem(index);
-                slots.put(index, item.clone());
+                    Item old = inv.Slots[index];
+                    inv.SetInventorySlot(index, (Item) item.Clone());
 //            System.out.println("AAAAAAAAAAAAAAAAAAAA >> "+index);
 //            System.out.println("AAAAAAAAAAAAAAAAAAAA >> "+old);
 //            System.out.println("AAAAAAAAAAAAAAAAAAAA >> "+send);
 //            this.onSlotChange(index, old, send);
-                if (getHolder() != null) sendSlot(index, getHolder());
-                return true;
+                    if (getHolder() != null) sendSlot(index, getHolder());
+                    return true;
 
 //            return super.setItem(index,item,send);
-            } else {
-                return this.clear(index);
+                }
+                else
+                {
+                    return this.clear(index);
+                }
             }
-        } else {
-            return false;
+            else
+            {
+                return false;
+            }
         }
-    }
 
-    @Override
-    public void sendContents(Player player) {
-        ArrayList<Player> al = new ArrayList<>();
-        al.add(player);
-        this.sendContents(al.toArray(new Player[1]));
-    }
+
+        public void sendContents(Player player)
+        {
+            ArrayList<Player> al = new ArrayList<>();
+            al.add(player);
+            this.sendContents(al.toArray(new Player[1]));
+        }
 
 //    public bool setItem(int index, Item item, bool send) {
-//        item = item.clone();
+//        item = item.Clone();
 //        if (index >= 0 && index < this.size) {
 //            if (item.getId() != 0 && item.getCount() > 0) {
 //                InventoryHolder holder = this.getHolder();
@@ -404,9 +455,9 @@ namespace CyberCore.Manager.AuctionHouse
 //                Item old = this.getItem(index);
 //                System.out.println("SEEEEETTTTT >> "+index);
 //                System.out.println("SEEEEETTTTT >> "+item.getClass().getName());
-//                System.out.println("SEEEEETTTTT >> "+item.clone().getClass().getName());
+//                System.out.println("SEEEEETTTTT >> "+item.Clone().getClass().getName());
 //                System.out.println("SEEEEETTTTT >> "+slots.getClass().getName());
-//                slots.put((int) index, item.clone());
+//                slots.put((int) index, item.Clone());
 //                this.onSlotChange(index, old, send);
 //                return true;
 //            } else {
@@ -421,131 +472,169 @@ namespace CyberCore.Manager.AuctionHouse
 //        }
 //    }
 
-    public void SendAllSlots(Player p) {
-        ArrayList<Player> al = new ArrayList<>();
-        al.add(p);
-        for (int i = 0; i < getSize(); i++) {
-            sendSlot(i, p);
+        public void SendAllSlots(Player p)
+        {
+            ArrayList<Player> al = new ArrayList<>();
+            al.add(p);
+            for (int i = 0; i < getSize(); i++)
+            {
+                sendSlot(i, p);
+            }
         }
-    }
 
-    public void SetupPageNotEnoughMoney(AuctionItemData aid) {
-        CorePlayer cp = (CorePlayer) getHolder();
-        StaticItems si = new StaticItems(Page);
-        Item item = aid.MakePretty();
-        Item deny = si.Deny.clone();
-        Item deny2 = si.Deny.clone();
-        CurrentPage = Confirm_Purchase_Not_Enough_Money;
-        deny.setCustomName(TextFormat.RED + "Not Enough Money!");
-        for (int i = 0; i < 5; i++) {
-            for (int ii = 0; ii < 9; ii++) {
-                int key = (i * 9) + ii;
-                if (ii != 4) {
-                    //RED
-                    setItem(key, deny.clone(), true);
-                } else {
-                    //White or Item
-                    if (i == 2) {
-                        //@TODO Get ITem
-                        setItem(key, item, true);
-                    } else if (i == 0) {
-                        Item g = si.Gold.clone();
-                        g.setCustomName(TextFormat.GOLD + " Your money: "+ cp.getMoney());
-                        setItem(key, g, true);
-                    } else {
-                        Item r = Item.get(160, 14);
-                        r.setCustomName(TextFormat.RED + "Not Enough Money \n" + TextFormat.YELLOW + " Your Balance : " + cp.getMoney() + "\n" + TextFormat.AQUA + "Item Cost : " + aid.getCost());
-                        setItem(key, r, true);
+        public void SetupPageNotEnoughMoney(AuctionItemData aid)
+        {
+            CorePlayer cp = (CorePlayer) getHolder();
+            StaticItems si = new StaticItems(Page);
+            Item item = aid.MakePretty();
+            Item deny = si.Deny.Clone();
+            Item deny2 = si.Deny.Clone();
+            CurrentPage = Confirm_Purchase_Not_Enough_Money;
+            deny.setCustomName(TextFormat.RED + "Not Enough Money!");
+            for (int i = 0; i < 5; i++)
+            {
+                for (int ii = 0; ii < 9; ii++)
+                {
+                    int key = (i * 9) + ii;
+                    if (ii != 4)
+                    {
+                        //RED
+                        setItem(key, deny.Clone(), true);
+                    }
+                    else
+                    {
+                        //White or Item
+                        if (i == 2)
+                        {
+                            //@TODO Get ITem
+                            setItem(key, item, true);
+                        }
+                        else if (i == 0)
+                        {
+                            Item g = si.Gold.Clone();
+                            g.setCustomName(TextFormat.GOLD + " Your money: " + cp.getMoney());
+                            setItem(key, g, true);
+                        }
+                        else
+                        {
+                            Item r = Item.get(160, 14);
+                            r.setCustomName(TextFormat.RED + "Not Enough Money \n" + TextFormat.YELLOW +
+                                            " Your Balance : " + cp.getMoney() + "\n" + TextFormat.AQUA +
+                                            "Item Cost : " + aid.getCost());
+                            setItem(key, r, true);
+                        }
                     }
                 }
             }
         }
-    }
 
-    public void SetupPageToConfirmSingleItem(AuctionItemData aid) {
-        CurrentPage = Confirm_Purchase;
-        CorePlayer cp = (CorePlayer) getHolder();
-        StaticItems si = new StaticItems(Page);
-        Item item = aid.MakePretty();
-        Item confrim = si.Confirm.clone();
-        Item deny = si.Deny.clone();
-        for (int i = 0; i < 5; i++) {
-            for (int ii = 0; ii < 9; ii++) {
-                int key = (i * 9) + ii;
-                if (ii < 4) {
-                    //RED
-                    setItem(key, deny.clone(), true);
-                } else if (ii == 4) {
-                    //White or Item
-                    if (i == 2) {
-                        //@TODO Get ITem
-                        setItem(key, item, true);
-
-                    } else if (i == 0) {
-                        Item g = si.Gold.clone();
-                        g.setCustomName(TextFormat.GOLD + " Your money: " + cp.getMoney());
-                        setItem(key, g, true);
-                    } else {
-                        setItem(key, Item.get(160), true);
+        public void SetupPageToConfirmSingleItem(AuctionItemData aid)
+        {
+            CurrentPage = Confirm_Purchase;
+            CorePlayer cp = (CorePlayer) getHolder();
+            StaticItems si = new StaticItems(Page);
+            Item item = aid.MakePretty();
+            Item confrim = si.Confirm.Clone();
+            Item deny = si.Deny.Clone();
+            for (int i = 0; i < 5; i++)
+            {
+                for (int ii = 0; ii < 9; ii++)
+                {
+                    int key = (i * 9) + ii;
+                    if (ii < 4)
+                    {
+                        //RED
+                        setItem(key, deny.Clone(), true);
                     }
-                } else {
-                    //GREEN
-                    setItem(key, confrim.clone(), true);
+                    else if (ii == 4)
+                    {
+                        //White or Item
+                        if (i == 2)
+                        {
+                            //@TODO Get ITem
+                            setItem(key, item, true);
+                        }
+                        else if (i == 0)
+                        {
+                            Item g = si.Gold.Clone();
+                            g.setCustomName(TextFormat.GOLD + " Your money: " + cp.getMoney());
+                            setItem(key, g, true);
+                        }
+                        else
+                        {
+                            setItem(key, Item.get(160), true);
+                        }
+                    }
+                    else
+                    {
+                        //GREEN
+                        setItem(key, confrim.Clone(), true);
+                    }
                 }
             }
         }
-    }
 
-    public void setItem2(int index, Item item) {
-        setItem(index, item.clone());
-        this.onSlotChange(index, null);
-    }
+        public void setItem2(int index, Item item)
+        {
+            setItem(index, item.Clone());
+            this.onSlotChange(index, null);
+        }
 
-    @Override
-    public bool contains(Item item) {
-        int count = Math.max(1, item.getCount());
-        bool checkDamage = item.hasMeta();
-        bool checkTag = item.getCompoundTag() != null;
-        for (Item i : this.getContents().values()) {
-            if (item.equals(i, checkDamage, checkTag)) {
-                count -= i.getCount();
-                if (count <= 0) {
-                    return true;
+
+        public bool contains(Item item)
+        {
+            int count = Math.max(1, item.getCount());
+            bool checkDamage = item.hasMeta();
+            bool checkTag = item.getCompoundTag() != null;
+            for (Item i :
+            this.getContents().values()) {
+                if (item.equals(i, checkDamage, checkTag))
+                {
+                    count -= i.getCount();
+                    if (count <= 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        public Dictionary<int, Item> all(Item item)
+        {
+            Dictionary<int, Item> slots = new HashMap<>();
+            bool checkDamage = item.hasMeta();
+            bool checkTag = item.getCompoundTag() != null;
+            for (Dictionary.Entry < int, Item > entry : this.getContents().entrySet())
+            {
+                if (item.equals(entry.getValue(), checkDamage, checkTag))
+                {
+                    slots.put(entry.getKey(), entry.getValue());
+                }
+            }
+
+            return slots;
+        }
+
+
+        public void remove(Item item)
+        {
+            bool checkDamage = item.hasMeta();
+            bool checkTag = item.getCompoundTag() != null;
+            for (Dictionary.Entry < int, Item > entry : this.getContents().entrySet())
+            {
+                if (item.equals(entry.getValue(), checkDamage, checkTag))
+                {
+                    this.clear(entry.getKey());
                 }
             }
         }
 
-        return false;
-    }
-
-    @Override
-    public Dictionary<int, Item> all(Item item) {
-        Dictionary<int, Item> slots = new HashMap<>();
-        bool checkDamage = item.hasMeta();
-        bool checkTag = item.getCompoundTag() != null;
-        for (Dictionary.Entry<int, Item> entry : this.getContents().entrySet()) {
-            if (item.equals(entry.getValue(), checkDamage, checkTag)) {
-                slots.put(entry.getKey(), entry.getValue());
-            }
-        }
-
-        return slots;
-    }
-
-    @Override
-    public void remove(Item item) {
-        bool checkDamage = item.hasMeta();
-        bool checkTag = item.getCompoundTag() != null;
-        for (Dictionary.Entry<int, Item> entry : this.getContents().entrySet()) {
-            if (item.equals(entry.getValue(), checkDamage, checkTag)) {
-                this.clear(entry.getKey());
-            }
-        }
-    }
-
-//    @Override
+//    
 //    public bool setItem(int index, Item item) {
-//        item = item.clone();
+//        item = item.Clone();
 //        if (index < 0 || index >= this.size) {
 //            return false;
 //        } else if (item.getId() == 0 || item.getCount() <= 0) {
@@ -554,181 +643,216 @@ namespace CyberCore.Manager.AuctionHouse
 //
 //
 //        Item old = this.getItem(index);
-//        setItem(index, item.clone());
+//        setItem(index, item.Clone());
 //        this.onSlotChange(index, old);
 //        //if (getItem(0).getId() == 0 || getItem(4).getId() == 0) setItem2(2, Item.get(Item.ANVIL));
 //
 //        return true;
 //    }
 //
-//    @Override
+//    
 //    public bool setItem(int index, Item item, bool send) {
 //        return false;
 //    }
 
-    @Override
-    public int first(Item item) {
-        int count = Math.max(1, item.getCount());
-        bool checkDamage = item.hasMeta();
-        bool checkTag = item.getCompoundTag() != null;
-        for (Dictionary.Entry<int, Item> entry : this.getContents().entrySet()) {
-            if (item.equals(entry.getValue(), checkDamage, checkTag) && entry.getValue().getCount() >= count) {
-                return entry.getKey();
+
+        public int first(Item item)
+        {
+            int count = Math.max(1, item.getCount());
+            bool checkDamage = item.hasMeta();
+            bool checkTag = item.getCompoundTag() != null;
+            for (Dictionary.Entry < int, Item > entry : this.getContents().entrySet())
+            {
+                if (item.equals(entry.getValue(), checkDamage, checkTag) && entry.getValue().getCount() >= count)
+                {
+                    return entry.getKey();
+                }
             }
+
+            return -1;
         }
 
-        return -1;
-    }
 
-    @Override
-    public int first(Item item, bool exact) {
-        return 0;
-    }
+        public int first(Item item, bool exact)
+        {
+            return 0;
+        }
 
-    @Override
-    public int firstEmpty(Item item) {
-        for (int i = 0; i < this.size; ++i) {
-            if (this.getItem(i).getId() == Item.AIR) {
-                return i;
+
+        public int firstEmpty(Item item)
+        {
+            for (int i = 0; i < this.size; ++i)
+            {
+                if (this.getItem(i).getId() == Item.AIR)
+                {
+                    return i;
+                }
             }
+
+            return -1;
         }
 
-        return -1;
-    }
 
-    @Override
-    public void decreaseCount(int slot) {
-
-    }
-
-    @Override
-    public bool clear(int index) {
-        return this.clear(index, true);
-    }
-
-    @Override
-    public bool clear(int index, bool send) {
-//        System.out.println("AAAAAAAAAAAAAA" + index);
-        if (this.slots.containsKey(index)) {
-            Item item = new ItemBlock(new BlockAir(), null, 0);
-            Item old = this.slots.get(index);
-//            if (item.getId() != Item.AIR) {
-//                setItem(index, item.clone());
-//            } else {
-            this.slots.remove(index);
-//            }
-//            this.onSlotChange(index, old, send);
-        } else if (send) {
-            Item item = new ItemBlock(new BlockAir(), null, 0);
-            Item old = this.slots.get(index);
-//            setItem(index, item.clone(),true);
-//            this.onSlotChange(index, old, true);
-            slots.remove(index);
+        public void decreaseCount(int slot)
+        {
         }
-        if (getHolder() != null) sendSlot(index, getHolder());
-//        System.out.println("CLEARRRR###" + index);
-        return true;
-    }
 
-    @Override
-    public void clearAll() {
-        for (int index : this.getContents().keySet()) {
-            this.clear(index);
+
+        public bool clear(int index)
+        {
+            return this.clear(index, true);
         }
-    }
 
-    @Override
-    public bool isFull() {
-        return false;
-    }
 
-    @Override
-    public bool isEmpty() {
-        return false;
-    }
+//         public bool clear(int index, bool send)
+//         {
+// //        System.out.println("AAAAAAAAAAAAAA" + index);
+//             if (this.slots.containsKey(index))
+//             {
+//                 Item item = new ItemBlock(new BlockAir(), null, 0);
+//                 Item old = this.slots.get(index);
+// //            if (item.getId() != Item.AIR) {
+// //                setItem(index, item.Clone());
+// //            } else {
+//                 this.slots.remove(index);
+// //            }
+// //            this.onSlotChange(index, old, send);
+//             }
+//             else if (send)
+//             {
+//                 Item item = new ItemBlock(new BlockAir(), null, 0);
+//                 Item old = this.slots.get(index);
+// //            setItem(index, item.Clone(),true);
+// //            this.onSlotChange(index, old, true);
+//                 slots.remove(index);
+//             }
+//
+//             if (getHolder() != null) sendSlot(index, getHolder());
+// //        System.out.println("CLEARRRR###" + index);
+//             return true;
+//         }
 
-    @Override
-    public Set<Player> getViewers() {
-        return viewers;
-    }
 
-    @Override
-    public Player getHolder() {
-        return (Player) this.holder;
-    }
+        public void clearAll()
+        {
+            inv.Clear();
+        }
 
-    @Override
-    public bool open(Player who) {
-        this.onOpen(who);
 
-        return true;
-    }
+        public bool isFull()
+        {
+            return false;
+        }
 
-    @Override
-    public void close(Player who) {
-        this.onClose(who);
-    }
 
-    public void onSlotChange(int index, Item before) {
+        public bool isEmpty()
+        {
+            return false;
+        }
 
-        switch (index) {
-            case MainPageItemRef.Reload:
+
+        public List<Player> getViewers()
+        {
+            return viewers;
+        }
+
+
+        public Player getHolder()
+        {
+            return (Player) this.holder;
+        }
+
+
+        // public bool open(Player who) {
+        //     this.onOpen(who);
+        //
+        //     return true;
+        // }
+
+
+        // public void close(Player who) {
+        //     this.onClose(who);
+        // }
+
+        public void onSlotChange(int index, Item before)
+        {
+            if (index == MainPageItemRef.Reload)
+            {
                 SendPage(Page);
-                break;
-        }
-        this.sendSlot(index, this.getViewers());
-    }
-
-    public void SendPage(int page) {
-
-    }
-
-    @Override
-    public Item[] addItem(Item... slots) {
-        if (slots.length > 5 * 9) {
-            ArrayList<Item> I = new ArrayList<>();
-            for (int i = 0; i < 5 * 9; i++) {
-                I.add(slots[i]);
             }
-            CyberCoreMain.getInstance().getLogger().error("ERROR TRIED TO ADD " + slots.length);
-            return this.addItem(I.toArray(new Item[45]));
+
+            this.sendSlot(index, getHolder());
         }
-        return super.addItem(slots);
-    }
 
-    @Override
-    public void sendContents(Collection<Player> players) {
-        this.sendContents(players.stream().toArray(Player[]::new));
-    }
+        public void SendPage(int page)
+        {
+        }
 
-    @Override
-    public void sendSlot(int index, Player player) {
-        this.sendSlot(index, new Player[]{player});
-    }
+        private OpenPlayerInventory inv = new OpenPlayerInventory(null);
 
-    @Override
-    public InventoryType getType() {
-        return InventoryType.DOUBLE_CHEST;
-    }
+        public List<Item> addItem(List<Item> slots)
+        {
+            if (slots.Count > 5 * 9)
+            {
+                List<Item> I = new List<Item>();
+                for (int i = 0; i < 5 * 9; i++)
+                {
+                    I.Add(slots[i]);
+                }
 
-//    @Override
+                CyberCoreMain.Log.Error("ERROR TRIED TO ADD " + slots.Count);
+                foreach (var i in I)
+                {
+                    inv.AddItem(i, true);
+                }
+            }
+            else
+            {
+                foreach (var i in slots)
+                {
+                    inv.AddItem(i, true);
+                }
+            }
+
+            return inv.GetSlots();
+        }
+
+        public void sendContents(Collection<Player> players)
+        {
+            this.sendContents(players.stream().toArray(Player[]::new));
+            inv.SendSetSlot();
+        }
+
+
+        public void sendSlot(int index, Player player)
+        {
+            this.sendSlot(index, new Player[] {player});
+        }
+
+
+        public InventoryType getType()
+        {
+            return InventoryType.DOUBLE_CHEST;
+        }
+
+//    
 //    public void sendContents(Player player) {
 //        this.sendContents(new Player[]{player});
 //    }
 
 
-    public enum CurrentPageEnum {
-        ItemPage,
-        PlayerSellingPage,
-        Expired,
-        Confirm_Purchase,
-        Confirm_Purchase_Not_Enough_Money,
-
-    }
+        public enum CurrentPageEnum
+        {
+            ItemPage,
+            PlayerSellingPage,
+            Expired,
+            Confirm_Purchase,
+            Confirm_Purchase_Not_Enough_Money,
+        }
 //    public void sendSlot(int index, Player[] players) {
 //        ContainerSetSlotPacket pk = new ContainerSetSlotPacket();
 //        pk.slot = index;
-//        pk.item = this.getItem(index).clone();
+//        pk.item = this.getItem(index).Clone();
 //
 //        for (Player player : players) {
 //            int id = player.getWindowId(this);
@@ -741,142 +865,23 @@ namespace CyberCore.Manager.AuctionHouse
 //        }
 //    }
 
-    public class StaticItems {
-        public readonly Item Diamond;
-        public readonly Item Potato;
-        public readonly Item Grayglass;
-        public readonly Item Redglass;
-        public readonly Item Greenglass;
-        public readonly Item Netherstar;
-        public readonly Item Chest;
-        public readonly Item Paper;
-        public readonly Item Dictionary;
-        public readonly Item Confirm;
-        public readonly Item AddX1;
-        public readonly Item AddX10;
-        public readonly Item AddX32;
-        public readonly Item RmvX1;
-        public readonly Item RmvX10;
-        public readonly Item RmvX32;
-        public readonly Item Deny;
-        public readonly Item Gold;
 
-        StaticItems() {
-            this(-1);
+        public class MainPageItemRef
+        {
+            public static readonly int Size = 6 * 9;
+            public static readonly int LastPage = Size - 9;
+
+            public static readonly int Search = Size - 8;
+
+            //        public static readonly int NULL = Size - 7;
+            public static readonly int PlayerSelling = Size - 6;
+            public static readonly int Reload = Size - 5;
+
+            public static readonly int Catagories = Size - 4;
+
+            //        public static readonly int MULL = Size - 3;
+            public static readonly int ListItem = Size - 2;
+            public static readonly int NextPage = Size - 1;
         }
-
-        StaticItems(int page) {
-            CompoundTag T = new CompoundTag();
-            T.putBoolean("AHITEM", true);
-            Gold =Item.get(ItemID.GOLD_INGOT,0, 1);
-            Gold.setCompoundTag(T);
-            Gold.setCustomName(TextFormat.GOLD + " Your money: ");
-
-            AddX1 = Item.get(Item.EMERALD_BLOCK);
-            AddX1.setCompoundTag(T);
-            AddX1.getNamedTag().putInt("ADD", 1);
-            AddX1.setCount(1);
-            AddX1.setCustomName(TextFormat.GREEN + " Add 1 To Cart");
-
-            AddX10 = Item.get(Item.EMERALD_BLOCK);
-            AddX10.setCompoundTag(T);
-            AddX10.getNamedTag().putInt("ADD", 10);
-            AddX10.setCount(10);
-            AddX10.setCustomName(TextFormat.GREEN + " Add 10 To Cart");
-
-
-            AddX32 = Item.get(Item.EMERALD_BLOCK);
-            AddX32.setCompoundTag(T);
-            AddX32.getNamedTag().putInt("ADD", 32);
-            AddX32.setCount(32);
-            AddX32.setCustomName(TextFormat.GREEN + " Add 32 To Cart");
-
-
-            RmvX1 = Item.get(Item.REDSTONE_BLOCK);
-            RmvX1.setCompoundTag(T);
-            RmvX1.getNamedTag().putInt("RMV", 1);
-            RmvX1.setCustomName(TextFormat.GREEN + "Remove 1 From Cart");
-
-
-            RmvX10 = Item.get(Item.REDSTONE_BLOCK);
-            RmvX10.setCompoundTag(T);
-            RmvX10.getNamedTag().putInt("RMV", 10);
-            RmvX10.setCustomName(TextFormat.GREEN + "Remove 10 From Cart");
-
-
-            RmvX32 = Item.get(Item.REDSTONE_BLOCK);
-            RmvX32.setCompoundTag(T);
-            RmvX32.getNamedTag().putInt("RMV", 32);
-            RmvX32.setCustomName(TextFormat.GREEN + "Remove 32 From Cart");
-
-
-            Confirm = Item.get(Item.EMERALD_BLOCK);
-            Confirm.setCompoundTag(T);
-            Confirm.setCustomName(TextFormat.GREEN + "Confirm Cart Purchase");
-            Deny = Item.get(Item.REDSTONE_BLOCK);
-            Deny.setCompoundTag(T);
-            Deny.setCustomName(TextFormat.RED + "Cancel Cart Purchase");
-            Diamond = Item.get(Item.DIAMOND);
-            Diamond.setCompoundTag(T);
-            Diamond.setCustomName(
-                    TextFormat.GOLD + "" + TextFormat.BOLD + "Items you are Selling" + TextFormat.RESET + "\n" +
-                            TextFormat.GREEN + " Click here to view all the items" + TextFormat.RESET + "\n" + TextFormat.GREEN + "you are currently selling on the auction" + TextFormat.RESET + "\n\n" +
-                            TextFormat.GREEN + "Can also use " + TextFormat.DARK_GREEN + "/ah listed"
-            );
-            Potato = Item.get(Item.POISONOUS_POTATO, 1);
-            Potato.setCompoundTag(T);
-            Potato.setCustomName(
-                    TextFormat.GOLD + "" + TextFormat.BOLD + "Collect Expired Items" + TextFormat.RESET + "\n" +
-                            TextFormat.GREEN + " Click here to view all the items" + TextFormat.RESET + "\n" + TextFormat.GREEN + " you have canceled or experied" + TextFormat.RESET + "\n\n" +
-                            TextFormat.GREEN + "Can also use " + TextFormat.DARK_GREEN + "/ah expired"
-            );
-
-            Grayglass = Item.get(Item.STAINED_GLASS_PANE, 7);
-            Grayglass.setCompoundTag(T);
-            Grayglass.setCustomName(
-                    TextFormat.DARK_GRAY + "" + TextFormat.BOLD + "-------------"
-            );
-            Redglass = Item.get(Item.STAINED_GLASS_PANE, 14);
-            Redglass.setCompoundTag(T);
-            Redglass.setCustomName(
-                    TextFormat.YELLOW + "" + TextFormat.BOLD + "Previous Page"
-            );
-            Greenglass = Item.get(Item.STAINED_GLASS_PANE, 5);
-            Greenglass.setCompoundTag(T);
-            Greenglass.setCustomName(
-                    TextFormat.YELLOW + "" + TextFormat.BOLD + "Next Page"
-            );
-            Netherstar = Item.get(Item.NETHER_STAR);
-            Netherstar.setCompoundTag(T);
-            Netherstar.setCustomName(
-                    TextFormat.GREEN + "" + TextFormat.BOLD + "Refresh Page\n"
-                            + TextFormat.GRAY + " Current Page " + page
-            );
-            if (page != -1) Netherstar.getNamedTag().putInt("page", page);
-            Chest = Item.get(Item.CHEST);
-            Chest.setCompoundTag(T);
-            Chest.setCustomName(
-                    TextFormat.GOLD + "" + TextFormat.BOLD + "Categories"
-            );
-
-            Dictionary = Item.get(Item.MAP);
-            Dictionary.setCustomName(TextFormat.GOLD + "" + TextFormat.BOLD + "List Item In Hand");
-
-            Paper = Item.get(Item.PAPER);
-            Paper.setCustomName(TextFormat.GOLD + "" + TextFormat.BOLD + "Search Auction House For Item");
-        }
-    }
-
-    public class MainPageItemRef {
-        public static readonly int Size = 6 * 9;
-        public static readonly int LastPage = Size - 9;
-        public static readonly int Search = Size - 8;
-        //        public static readonly int NULL = Size - 7;
-        public static readonly int PlayerSelling = Size - 6;
-        public static readonly int Reload = Size - 5;
-        public static readonly int Catagories = Size - 4;
-        //        public static readonly int MULL = Size - 3;
-        public static readonly int ListItem = Size - 2;
-        public static readonly int NextPage = Size - 1;
     }
 }

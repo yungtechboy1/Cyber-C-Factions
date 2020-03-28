@@ -6,6 +6,7 @@ using fNbt;
 using JetBrains.Annotations;
 using Jose;
 using MiNET;
+using MiNET.Blocks;
 using MiNET.Items;
 using MiNET.UI;
 using MiNET.Utils;
@@ -37,6 +38,26 @@ namespace CyberCore.Utils
         public static String getName(this FactionRank s)
         {
             return FactionRankMethods.getName(s);
+        }
+
+        public static bool isEmpty(this PlayerInventory i, int k)
+        {
+            var ii = i.Slots[k];
+            return ii is ItemAir || ii.Id == 0 || ii.Id == -1;
+        }
+        public static NbtCompound putInt(this NbtCompound i, string key, int val)
+        {
+            i.Add(new NbtInt(key,val));
+            return i;
+        }
+        public static NbtCompound getNamedTag(this Item i)
+        {
+            return i.ExtraData;
+        }
+        public static Item setCompoundTag(this Item i, NbtCompound n)
+        {
+            i.ExtraData = n;
+            return i;
         }
 
         public static String getChatColor(this FactionRank s)
