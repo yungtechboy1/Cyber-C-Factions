@@ -114,7 +114,7 @@ namespace CyberCore
         public int TPRTimeout;
 
         // public Scoreboard PlayerScoreBoard = ScoreboardAPI.createScoreboard();
-        // protected Dictionary<BuffType, float> lastdata = null;
+        protected Dictionary<BuffType, float> lastdata = null;
         private long uct;
         private bool uw;
         private int WaitingForTP = -1;
@@ -221,19 +221,18 @@ namespace CyberCore
 //                    break;
                 }
         }
-        
+
         public void setMovementSpeed(float speed, bool send)
         {
             MovementSpeed = speed;
-            if (IsSpawned && send)SendUpdateAttributes();
-
+            if (IsSpawned && send) SendUpdateAttributes();
         }
 
         public void setMaxHealth(int maxHealth)
         {
             HealthManager.MaxHealth = maxHealth;
         }
-        
+
         public void initClassBuffs()
         {
             foreach (var b in getClassBuffList().Values)
@@ -264,26 +263,27 @@ namespace CyberCore
             {
                 data[b.getBt()] = b.getAmount();
             }
+
             foreach (var b in getClassDeBuffList().Values)
             {
                 if (data.ContainsKey(b.getBt()))
                 {
                     float f = data[b.getBt()];
-                    data[b.getBt()] =  f / b.getAmount();
+                    data[b.getBt()] = f / b.getAmount();
                 }
                 else
                 {
-                    data[b.getBt()] =  1 / b.getAmount();
+                    data[b.getBt()] = 1 / b.getAmount();
                 }
             }
 
-            //Temp Buffs Override Everything!
+            //Temp Buffs  Everything!
             if (getTempBuff().Count > 0)
             {
                 Console.WriteLine("HAS TEMPPPPPPPPP BUFFFFFFFFFFFFFF");
                 foreach (var b in getTempBuff().Values)
                 {
-                    data[b.getBt()]  = b.getAmount();
+                    data[b.getBt()] = b.getAmount();
                 }
             }
 
@@ -291,6 +291,10 @@ namespace CyberCore
             if (!data.ContainsKey(Movement)) setMovementSpeed(DEFAULT_SPEED, true);
             if (!areequal(data, lastdata))
             {
+                foreach (var VARIABLE in COLLECTION)
+                {
+                    
+                }
                 data.forEach((key, value)-> {
                     switch (key)
                     {
@@ -336,24 +340,25 @@ namespace CyberCore
 
         private bool areequal(Dictionary<BuffType, float> a, Dictionary<BuffType, float> b)
         {
-            if (a == null || b == null || a.size() != b.size()) return false;
-            for (Map.Entry < BuffType, float > entry : a.entrySet())
+            if (a == null || b == null || a.Count != b.Count) return false;
+            foreach (var entry in a)
             {
-                BuffType k = entry.getKey();
-                float v = entry.getValue();
-                if (!b.ContainsKey(k) || !v.equals(b.get(k))) return false;
+                BuffType k = entry.Key;
+                float v = entry.Value;
+                if (!b.ContainsKey(k) || !v.Equals(b[k])) return false;
             }
+
             return true;
         }
 
-        Override
+        
 
         public float getHealth()
         {
             return super.getHealth();
         }
 
-        Override
+        
 
         public int getMaxHealth()
         {
@@ -409,7 +414,7 @@ namespace CyberCore
         }
 
         //for testing
-//    @Override
+//    @
 //    public int dataPacket(DataPacket packet, bool needACK) {
 //        if (!this.connected) {
 //            return -1;
@@ -448,7 +453,7 @@ namespace CyberCore
             return PlayerClass;
         }
 
-        Override
+        
 
         public void sendAttributes()
         {
@@ -543,7 +548,7 @@ namespace CyberCore
             return getSettingsData();
         }
 
-        Override
+        
 
         public void close(TextContainer message, string reason, bool notify)
         {
@@ -559,7 +564,7 @@ namespace CyberCore
             setSettingsData(a);
         }
 
-        Override
+        
 
         public int addWindow(Inventory inventory, int forceId, bool isPermanent)
         {
@@ -594,7 +599,7 @@ namespace CyberCore
             return true;
         }
 
-        Override
+        
 
         public float getMovementSpeed()
         {
@@ -680,7 +685,7 @@ namespace CyberCore
             this.nw = null;
         }
 
-        Override
+        
 
         public void fall(float fallDistance)
         {
@@ -734,7 +739,7 @@ namespace CyberCore
             return true;
         }
 
-        Override
+        
 
         public bool attack(EntityDamageEvent source)
         {
@@ -778,7 +783,7 @@ namespace CyberCore
             return false;
         }
 
-        Override
+        
 
         protected void doFirstSpawn()
         {
@@ -877,7 +882,7 @@ namespace CyberCore
             return onGround;
         }
 
-        Override
+        
 
         public int showFormWindow(FormWindow window, int id)
         {
@@ -893,7 +898,7 @@ namespace CyberCore
             return id;
         }
 
-        Override
+        
 
         public void handleDataPacket(DataPacket packet)
         {
@@ -1834,7 +1839,7 @@ namespace CyberCore
             sendMessage(TextFormat.GREEN + "You are now out of Combat!");
         }
 
-        Override
+        
 
         public bool onUpdate(int currentTick)
         {
@@ -2397,7 +2402,7 @@ namespace CyberCore
             FactionInviteTimeout = -1;
         }
 
-        Override
+        
 
         public void completeLoginSequence()
         {
@@ -2467,7 +2472,7 @@ namespace CyberCore
             this.server.onPlayerCompleteLoginSequence(this);
         }
 
-        Override
+        
 
         public void heal(EntityRegainHealthEvent source)
         {
@@ -2495,14 +2500,14 @@ namespace CyberCore
             }
         }
 
-        Override
+        
 
         public PlayerFood getFoodData()
         {
             return foodData;
         }
 
-        Override
+        
 
         protected void processLogin()
         {

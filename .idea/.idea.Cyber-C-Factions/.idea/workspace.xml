@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Buff.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BuffOrigin.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BuffType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/CorePlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CorePlayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/CyberPlayerFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberPlayerFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -339,7 +332,7 @@
       <workItem from="1585274550766" duration="1240000" />
       <workItem from="1585281893612" duration="9054000" />
       <workItem from="1585427928867" duration="348000" />
-      <workItem from="1585428818816" duration="10654000" />
+      <workItem from="1585428818816" duration="11440000" />
     </task>
     <servers />
   </component>
