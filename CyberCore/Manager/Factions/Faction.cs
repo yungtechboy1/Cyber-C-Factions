@@ -1016,7 +1016,7 @@ namespace CyberCore.Manager.Factions
      *
      * @return
      */
-        @Deprecated
+        
 
         public Dictionary<String, Position> GetHome_V1()
         {
@@ -1937,7 +1937,7 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        //    @Deprecated
+        //    
         public void save()
         {
             //Save Settings

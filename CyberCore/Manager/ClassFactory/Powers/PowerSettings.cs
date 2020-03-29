@@ -2,10 +2,10 @@
 {
     public class PowerSettings
     {
-        private bool isPassive = false;
-        private bool isHotbar = false;
-        private bool isAbility = false;
-        private bool isEffect = false;
+        public bool isPassive = false;
+        public bool isHotbar = false;
+        public bool isAbility = false;
+        public bool isEffect = false;
 
         public PowerSettings()
         {

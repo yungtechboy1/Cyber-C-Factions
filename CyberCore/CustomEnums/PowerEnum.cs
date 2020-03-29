@@ -125,6 +125,11 @@ namespace CyberCore.CustomEnums
         {
             return Slot;
         }
+
+        public bool Equals(LockedSlot obj)
+        {
+            return (Slot == obj.Slot);
+        }
     }
 
     public struct PowerEnum

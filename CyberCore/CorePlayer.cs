@@ -96,7 +96,7 @@ namespace CyberCore
         public int MaxHomes = 5;
 
         /**
-     * @@deprecated
+     * @
      */
         public int money = 0;
 
@@ -496,7 +496,7 @@ namespace CyberCore
             ItemBeingEnchantedLock = itemBeingEnchantedLock;
         }
 
-//    @Deprecated
+//    
 //    public PlayerEconData GetEconData() {
 //        return new PlayerEconData(GetData());
 //    }

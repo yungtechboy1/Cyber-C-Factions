@@ -271,7 +271,7 @@ namespace CyberCore.Manager.AuctionHouse
      * Maybe use later... Probablly wont work well with /ah I think...
      *
      * @param aid
-     * @deprecated
+     * 
      */
         public void SetupPageToConfirmMultiItem(AuctionItemData aid)
         {

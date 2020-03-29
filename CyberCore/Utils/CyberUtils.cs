@@ -195,6 +195,10 @@ namespace CyberCore.Utils
      * Returns Time as an Integer in secs
      * @return
      */
+        public static long getTick()
+        {
+            return DateTime.Now.Ticks / 500000;//500K = 1 Tick = 1/20th of a Sec
+        }
         public static long getLongTime()
         {
             return DateTime.Now.Ticks / TimeSpan.TicksPerSecond;

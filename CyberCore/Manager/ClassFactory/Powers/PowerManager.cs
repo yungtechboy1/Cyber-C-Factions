@@ -27,37 +27,39 @@ namespace CyberCore.Manager.TypeFactory.Powers
         public static PowerAbstract getPowerfromAPE(AdvancedPowerEnum pe) {
             return getPowerfromAPE(pe,null);
         }
-        public static PowerAbstract getPowerfromAPE(AdvancedPowerEnum pe, BaseType b) {
-            Type cpa = PowerList.get(pe.getPowerEnum());
+        public static PowerAbstract getPowerfromAPE(AdvancedPowerEnum pe, Type b) {
+            Type cpa = PowerList[pe.getPowerEnum()];
             if (cpa == null) {
                 CyberCoreMain.Log.Info("WAS LOG"+"NONE IN POWER LIST!!!" + pe);
                 return null;
             }
-            if (cpa.getSuperclass().isAssignableFrom(StagePowerAbstract.class)) {
-                //Stage
-                Constructor c;
+            if (cpa.BaseType == typeof(StagePowerAbstract)) {
                 if (b == null) {
-                    CyberCoreMain.Log.Info("WAS LOG"+"BASECLASS IS NULL!!!!!!!!!" + cpa.getName());
-                    try {
-                        c = cpa.getConstructor(AdvancedPowerEnum.class);
-                        return (PowerAbstract) c.newInstance(pe);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        CyberCoreMain.Log.Info("WAS LOG"+"ERRORROOORROR C2  +++++=====  NUUULLLLLL");
+                    CyberCoreMain.Log.Info("WAS LOG"+"BASECLASS IS NULL!!!!!!!!!" + cpa.Name);
+                //Stage
+                StagePowerAbstract o = (StagePowerAbstract) Activator.CreateInstance(cpa,pe);
+                
+                   
+                    if(o == null) {
+                        CyberCoreMain.Log.Error("WAS LOG"+"ERRORROOORROR C2  +++++=====  NUUULLLLLL");
                         return null;
                     }
+
+                    return o;
                 } else {
-                    try {
-                        c = cpa.getConstructor(BaseType.class, AdvancedPowerEnum.class);
-                        return (PowerAbstract) c.newInstance(b, pe);
-                    } catch (Exception e) {
-                        CyberCoreMain.Log.Info("WAS LOG"+"ERRORROOORROR C  +++++=====  NUUULLLLLL");
+                    CyberCoreMain.Log.Info("WAS LOG" + "BASECLASS IS NULL!!!!!!!!!" + cpa.Name);
+                    //Stage
+                    var o = (StagePowerAbstract) Activator.CreateInstance(cpa,b, pe);
+                    if (o == null)
+                    {
+                        CyberCoreMain.Log.Error("WAS LOG" + "ERRORROOORROR44444444 C2  +++++=====  NUUULLLLLL");
                         return null;
                     }
+                    return o;
                 }
 //        }else if(cpa.isAssignableFrom()){
             } else {
-                CyberCoreMain.Log.Info("WAS LOG"+"ERROR! " + cpa.getName() + "|| " + cpa);
+                CyberCoreMain.Log.Info("WAS LOG"+"ERROR! " + cpa.Name + "|| " + cpa);
             }
 //        return cpa;
             return null;

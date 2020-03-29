@@ -649,7 +649,7 @@ namespace CyberCore.Manager.Factions
         /**
      * @param faction
      * @return
-     * @deprecated
+     * 
      */
         public Dictionary<String, object> GetWars(String faction)
         {

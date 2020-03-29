@@ -1,5 +1,6 @@
 ﻿using System;
 using CyberCore.CustomEnums;
+using CyberCore.Manager.TypeFactory.Powers;
 using CyberCore.Utils;
 using static CyberCore.CustomEnums.LevelingType;
 
@@ -188,6 +189,10 @@ namespace CyberCore.Manager.ClassFactory.Powers
                 else
                 {
                     s = "== Available Classes ==\n";
+                    foreach (var v in ape.getAllowedClasses())
+                    {
+                        
+                    }
                     for (Class v :
                     ape.getAllowedClasses()) {
                         try

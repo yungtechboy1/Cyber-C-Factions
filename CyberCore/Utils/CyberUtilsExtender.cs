@@ -50,6 +50,15 @@ namespace CyberCore.Utils
             i.Add(new NbtInt(key,val));
             return i;
         }
+        public static bool hasCompoundTag(this Item i)
+        {
+            return i.ExtraData != null;
+        }
+        public static NbtCompound putBoolean(this NbtCompound i, string key, bool val)
+        {
+            i.Add(new NbtByte(key,(byte) (val ? 1 : 0)));
+            return i;
+        }
         public static NbtCompound getNamedTag(this Item i)
         {
             return i.ExtraData;

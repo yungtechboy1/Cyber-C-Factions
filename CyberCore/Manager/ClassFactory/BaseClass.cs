@@ -388,7 +388,7 @@ namespace CyberCore.Manager.ClassFactory
         getPlayer().sendMessage(TextFormat.RED + "POWER > " + p.getDispalyName() + " has been DEactivated!");
     }
 
-    //@Deprecated
+    //
 //    public void enablePower(PowerData pe) {
 //        CyberCoreMain.Log.Error("Was LOG ||"+"Attempting to activate "+pe.getPowerID());
 //        PowerAbstract p = pe.getPA();
@@ -501,7 +501,7 @@ namespace CyberCore.Manager.ClassFactory
     public final void addPossiblePower(PowerAbstract power) {
         PowerSettings ps = power.getPowerSettings();
         if (ps == null) {
-            getPlayer().getServer().getLogger().error("CAN NOT ADD POWER " + power.getName() + "! No PowerSetting Set!");
+            CyberCoreMain.Log.error("CAN NOT ADD POWER " + power.getName() + "! No PowerSetting Set!");
             getPlayer().sendMessage(TextFormat.RED + "Error > Plugin > Power > " + power.getName() + " | Error activating power! No Power Setting Set!!!!");
             return;
         }
@@ -774,7 +774,7 @@ namespace CyberCore.Manager.ClassFactory
         return new MainClassSettingsWindow(this, FormType.MainForm.NULL, "InternalPlayerSettings Window", "");
     }
 
-    @Deprecated
+    
     public void activateAbility() {
 //        if (HasCooldown(PrimeKey)) {
 //            getPlayer().sendMessage("This Has a CoolDown!");

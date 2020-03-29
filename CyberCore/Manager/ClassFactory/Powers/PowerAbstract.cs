@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using CyberCore.CustomEnums;
 using CyberCore.Utils;
 using CyberCore.Utils.Cooldowns;
+using fNbt;
 using MiNET;
 using MiNET.Effects;
 using MiNET.Items;
 using OpenAPI.Events;
 using OpenAPI.Events.Entity;
+using static CyberCore.CustomEnums.HotbarStatus;
 
 namespace CyberCore.Manager.ClassFactory.Powers
 {
@@ -24,7 +27,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public PowerSettings PS = null;
         public PowerType MainPowerType = PowerType.Regular;
         public PowerType SecondaryPowerType = PowerType.None;
-        protected int DeActivatedTick = -1;
+        protected long DeActivatedTick = -1;
 
         LockedSlot LS = LockedSlot.NA;
 
@@ -49,15 +52,14 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //            if(this instanceof StagePowerAbstract){
                 try
                 {
-                    if (this instanceof StagePowerAbstract) {
+                    if (this.GetType() ==  typeof(StagePowerAbstract)) {
                         CyberCoreMain.Log.Error("Was LOG ||"+"IS STAGE ABSTRACT!!!!!");
                         ape = new AdvancedPowerEnum(ape.getPowerEnum(), StageEnum.STAGE_1);
                     } else ape = new AdvancedPowerEnum(ape.getPowerEnum(), 0);
                 }
                 catch (Exception e)
                 {
-                    CyberCoreMain.Log.Error("Was LOG ||"+"Error!eeeeeeeeeeeeeeeeeeee");
-                    e.printStackTrace();
+                    CyberCoreMain.Log.Error("Was LOG ||"+"Error!eeeeeeeeeeeeeeeeeeee",e);
                     return;
                 }
 
@@ -73,8 +75,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
                 loadLevelManager(new ClassLevelingManagerXPLevel(ape.getXP()));
             }
         }
-
-        @Deprecated
+        
 
         public PowerAbstract(BaseClass b, AdvancedPowerEnum ape, PowerSettings ps)
         {
@@ -99,8 +100,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
                 setPowerSettings(ps);
             }
             else
-                b.getPlayer().getServer().getLogger()
-                    .warning("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
+                CyberCoreMain.Log.Warn("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
 
 //        Level = lvl;
 //        Level = b.getLVL();
@@ -117,15 +117,14 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //            if(this instanceof StagePowerAbstract){
                 try
                 {
-                    if (this instanceof StagePowerAbstract) {
+                    if (GetType() == typeof(StagePowerAbstract)) {
                         CyberCoreMain.Log.Error("Was LOG ||"+"IS STAGE ABSTRACT!!!!!");
                         ape = new AdvancedPowerEnum(ape.getPowerEnum(), StageEnum.STAGE_1);
                     } else ape = new AdvancedPowerEnum(ape.getPowerEnum(), 0);
                 }
                 catch (Exception e)
                 {
-                    CyberCoreMain.Log.Error("Was LOG ||"+"Error!eeeeeeeeeeeeeeeeeeee");
-                    e.printStackTrace();
+                    CyberCoreMain.Log.Error("Was LOG ||"+"Error!eeeeeeeeeeeeeeeeeeee",e);;
                     return;
                 }
 
@@ -143,8 +142,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             }
 
             if (getPowerSettings() == null)
-                b.getPlayer().getServer().getLogger()
-                    .warning("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
+                CyberCoreMain.Log.Warn("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
 //        Level = lvl;
 //        Level = b.getLVL();
             initStages();
@@ -168,8 +166,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             PlayerClass = b;
             loadLevelManager(new ClassLevelingManagerXPLevel());
             if (getPowerSettings() == null)
-                b.getPlayer().getServer().getLogger()
-                    .warning("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
+                CyberCoreMain.Log.Warn("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
             initStages();
             initAfterCreation();
         }
@@ -181,7 +178,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //        if (ps != null) {
 //            setPowerSettings(ps);
 //        } else
-//            b.getPlayer().getServer().getLogger().warning("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
+//            CyberCoreMain.Log..warning("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
 ////        Level = lvl;
 ////        Level = b.getLVL();
 //        initStages();
@@ -194,8 +191,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             PlayerClass = b;
             loadLevelManager(new ClassLevelingManagerStage(stageEnum));
             if (getPowerSettings() == null)
-                b.getPlayer().getServer().getLogger()
-                    .warning("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
+                CyberCoreMain.Log.Warn("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
             initStages();
             initAfterCreation();
         }
@@ -213,7 +209,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //        if (ps != null) {
 //            setPowerSettings(ps);
 //        } else
-//            b.getPlayer().getServer().getLogger().warning("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
+//            CyberCoreMain.Log..warning("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
 ////        Level = lvl;
 ////        Level = b.getLVL();
 //        initStages();
@@ -234,9 +230,9 @@ namespace CyberCore.Manager.ClassFactory.Powers
             return Cooldown;
         }
 
-        public ArrayList<Class> getAllowedClasses()
+        public List<Type> getAllowedClasses()
         {
-            return new ArrayList<>();
+            return new List<Type>();
         }
 
         public ClassLevelingManagerStage getStageLevelManager()
@@ -263,8 +259,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public PowerSettings getPowerSettings()
         {
             if (PS == null)
-                getPlayer().getServer().getLogger()
-                    .error("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
+                CyberCoreMain.Log.Error("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
             return PS;
         }
 
@@ -276,13 +271,13 @@ namespace CyberCore.Manager.ClassFactory.Powers
         protected void setPowerSettings(bool ability, bool effect, bool hotbar, bool passive)
         {
             if (getPowerSettings() == null) PS = new PowerSettings();
-            getPowerSettings().setAbility(ability);
-            getPowerSettings().setEffect(effect);
-            getPowerSettings().setHotbar(hotbar);
-            getPowerSettings().setPassive(passive);
+            getPowerSettings().isAbility = (ability);
+            getPowerSettings().isEffect = (effect);
+            getPowerSettings().isHotbar = (hotbar);
+            getPowerSettings().isPassive = (passive);
         }
 
-        public final void activate()
+        public void activate()
         {
             if (isAbilityActive()) return;
             ActivateAbility();
@@ -294,12 +289,12 @@ namespace CyberCore.Manager.ClassFactory.Powers
         {
         }
 
-        public int getDeActivatedTick()
+        public long getDeActivatedTick()
         {
             return DeActivatedTick;
         }
 
-        public final void setDeActivatedTick(int deActivatedTick)
+        public  void setDeActivatedTick(int deActivatedTick)
         {
             DeActivatedTick = deActivatedTick;
         }
@@ -307,8 +302,8 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public void loadLevelManager(ClassLevelingManager lm)
         {
             if (lm == null) return;
-            if (lm instanceof ClassLevelingManagerStage) SLM = (ClassLevelingManagerStage) lm;
-            if (lm instanceof ClassLevelingManagerXPLevel) XLM = (ClassLevelingManagerXPLevel) lm;
+            if (lm.GetType() == typeof(ClassLevelingManagerStage)) SLM = (ClassLevelingManagerStage) lm;
+            if (lm.GetType() == typeof(ClassLevelingManagerXPLevel)) XLM = (ClassLevelingManagerXPLevel) lm;
         }
 
         public int getDurationTick()
@@ -325,7 +320,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //        return LT;
 //    }
 //
-//    @Deprecated
+//    
 //    public LevelingType getLT() {
 //        return LT;
 //    }
@@ -345,13 +340,12 @@ namespace CyberCore.Manager.ClassFactory.Powers
                     return;
                 }
 
-                if (getPowerSettings().isHotbar() && isLSNull())
+                if (getPowerSettings().isHotbar && isLSNull())
                 {
                     CyberCoreMain.Log.Error("Was LOG ||"+"====> CAN NOT ACTIVATE POWER NO HOT BAR SLOT IN SETTINGS!!!");
                     return;
                 }
-
-                DeActivatedTick = Server.getInstance().getTick() + getRunTimeTick();
+                DeActivatedTick = CyberUtils.getTick() + getRunTimeTick();
             }
 
             Active = active;
@@ -374,16 +368,16 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public void enablePower(LockedSlot ls)
         {
-            if (getLS() != ls) setLS(ls);
+            if (!getLS().Equals(ls)) setLS(ls);
             if (!hasPowerSettings())
             {
                 CyberCoreMain.Log.Error("Was LOG ||"+"====> CAN NOT ENAVBLE POWER NO POWER SETTINGS!!!");
                 return;
             }
 
-            if (getPowerSettings().isHotbar() && isLSNull())
+            if (getPowerSettings().isHotbar && isLSNull())
             {
-                CyberCoreMain.Log.Error("Was LOG ||"+"====> CAN NOT ENAVBLE POWER NO HOT BAR SLOT IN SETTINGS!!!" + getClass().getName());
+                CyberCoreMain.Log.Error("Was LOG ||"+"====> CAN NOT ENAVBLE POWER NO HOT BAR SLOT IN SETTINGS!!!" + GetType().Name);
                 return;
             }
 
@@ -407,8 +401,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
                 }
                 catch (Exception e)
                 {
-                    CyberCoreMain.Log.Error("Was LOG ||"+"ERRORR ###@@@ " + this + " || " + getClass().getName());
-                    e.printStackTrace();
+                    CyberCoreMain.Log.Error("Was LOG ||"+"ERRORR ###@@@ " + this + " || " + GetType().Name,e);
                     return null;
                 }
             }
@@ -420,16 +413,16 @@ namespace CyberCore.Manager.ClassFactory.Powers
             if (hasPowerSettings())
             {
                 PowerSettings ps = getPowerSettings();
-                if (ps.isHotbar())
+                if (ps.isHotbar)
                 {
-                    if (getLS() == LockedSlot.NA)
+                    if (getLS().Equals(LockedSlot.NA))
                     {
                         CyberCoreMain.Log.Error("Was LOG ||"+"Error! No Valid locked slot set!");
-                        getPlayer().sendMessage("Error! No Valid locked slot set!");
+                        getPlayer().SendMessage("Error! No Valid locked slot set!");
                     }
                     else
                     {
-                        sendHotbarItemToLS(HotbarStatus.Success);
+                        sendHotbarItemToLS(Success);
                     }
                 }
             }
@@ -438,10 +431,10 @@ namespace CyberCore.Manager.ClassFactory.Powers
         private void sendHotbarItemToLS(HotbarStatus hbs)
         {
             Item i = getHotbarItem(hbs);
-            PlayerInventory pi = getPlayer().getInventory();
-            Item ii = pi.getItem(getLS().getSlot()).clone();
-            pi.clear(getLS().getSlot());
-            if (ii == null || ii.hasCompoundTag() && ii.getNamedTag().contains(PowerHotBarNBTTag)) ii = null;
+            PlayerInventory pi = getPlayer().Inventory;
+            Item ii = (Item) pi.Slots[getLS().getSlot()].Clone();
+            pi.Slots[getLS().getSlot()] = new ItemAir();
+            if (ii == null || ii.ExtraData != null && ii.ExtraData.Contains(PowerHotBarNBTTag)) ii = null;
             CyberCoreMain.Log.Error("Was LOG ||"+">>>>>>>>>>>>>Data::: " + getLS() + "|||||" + i);
             try
             {
@@ -451,14 +444,14 @@ namespace CyberCore.Manager.ClassFactory.Powers
                     return;
                 }
 
-                if (getLS() == LockedSlot.NA)
+                if (getLS().Equals(LockedSlot.NA))
                 {
                     CyberCoreMain.Log.Error("Was LOG ||"+"Error! LS IS NA aaaaaaaaaaaaaaaNELL");
                     return;
                 }
 
-                pi.setItem(getLS().getSlot(), i);
-                if (ii != null && !ii.isNull()) pi.addItem(ii);
+                pi.Slots[getLS().getSlot()] = i;
+                if (ii != null && ii.Id != 0&& ii.Id != -1) pi.AddItem(ii,true);
             }
             catch (Exception e)
             {
@@ -477,13 +470,12 @@ namespace CyberCore.Manager.ClassFactory.Powers
                 case Success:
                     i = getHotbarItem_Success();
                     break;
-                case Cooldown:
                 default:
                     i = getHotbarItem_Cooldown();
                     break;
             }
 
-            if (!i.hasCompoundTag()) i.setCompoundTag(new CompoundTag());
+            if (!i.hasCompoundTag()) i.setCompoundTag(new NbtCompound());
             i.getNamedTag().putBoolean(PowerHotBarNBTTag, true);
             return i;
         }
@@ -674,12 +666,12 @@ namespace CyberCore.Manager.ClassFactory.Powers
             return 60 * 3; //3 Mins
         }
 
-        public final String getSafeName()
+        public  String getSafeName()
         {
             return getName().replaceAll(" ", "_");
         }
 
-        public final int getCooldownTimeTick()
+        public  int getCooldownTimeTick()
         {
             return getCooldownTimeSecs() * 20;
         }
@@ -698,7 +690,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //        return c;
 //    }
 
-        public final void handleTick(int tick)
+        public  void handleTick(int tick)
         {
 //        CyberCoreMain.Log.Error("Was LOG ||"+"PowerAbstract Call TICK");
 //        CyberCoreMain.Log.Error("Was LOG ||"+"PowerAbstract Call TICK 1");
@@ -742,7 +734,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //    }
 
         //USE TO RUN
-        public final void initPowerRun(Object...args)
+        public  void initPowerRun(Object...args)
         {
             if (CanRun(false))
             {
@@ -759,7 +751,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             }
         }
 
-        public final void initForcePowerRun(Object...args)
+        public  void initForcePowerRun(Object...args)
         {
             PlayerClass.takePowerSourceCount(PowerSourceCost);
             usePower(args);
@@ -860,8 +852,8 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public HotbarStatus getCurrentHotbarStatus()
         {
             if (getCooldown() != null) return HotbarStatus.Cooldown;
-            if (getPowerState() == PowerState.Fail) return HotbarStatus.Fail;
-            return HotbarStatus.Success;
+            if (getPowerState() == PowerState.Fail) return Fail;
+            return Success;
         }
 
         public PowerState getPowerState()
@@ -910,7 +902,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             setActive(false);
         }
 
-        public final void ActivateAbility()
+        public  void ActivateAbility()
         {
             AbilityActive = true;
         }
