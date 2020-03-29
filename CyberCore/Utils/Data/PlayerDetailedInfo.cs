@@ -52,7 +52,7 @@ namespace CyberCore.Utils.Data
         }
         public LoginData(Player p)
         {
-            IntTime = CyberUtils.getIntTime();
+            IntTime = CyberUtils.getLongTime();
             IP = p.EndPoint.Address.ToString();
             ClientID = p.ClientId;
             ClientUUID = p.ClientUuid.ToString();

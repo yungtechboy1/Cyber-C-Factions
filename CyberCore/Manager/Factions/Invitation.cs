@@ -108,7 +108,7 @@ namespace CyberCore.Manager.Factions
 
         public bool isValid()
         {
-            return !(CyberUtils.getIntTime() > getTimeout());
+            return !(CyberUtils.getLongTime() > getTimeout());
         }
     }
 }

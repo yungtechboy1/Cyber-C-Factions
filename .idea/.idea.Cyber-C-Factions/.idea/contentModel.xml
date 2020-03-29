@@ -87,6 +87,12 @@
             <e p="Rank.cs" t="Include" />
             <e p="RankFactory.cs" t="Include" />
           </e>
+          <e p="Shop" t="Include">
+            <e p="ShopInv.cs" t="Include" />
+            <e p="Spawner" t="Include">
+              <e p="SpawnerShop.cs" t="Include" />
+            </e>
+          </e>
           <e p="Warp" t="Include">
             <e p="WarpData.cs" t="Include" />
             <e p="WarpManager.cs" t="Include" />
@@ -100,9 +106,13 @@
             </e>
           </e>
         </e>
+        <e p="PlayerSettingsData.cs" t="Include" />
         <e p="Utils" t="Include">
           <e p="CacheChecker.cs" t="Include" />
           <e p="ConfigSection.cs" t="Include" />
+          <e p="Cooldowns" t="Include">
+            <e p="CoolDown.cs" t="Include" />
+          </e>
           <e p="CustomConfig.cs" t="Include" />
           <e p="CustomConfigSection.cs" t="Include" />
           <e p="CyberTexts.cs" t="Include" />

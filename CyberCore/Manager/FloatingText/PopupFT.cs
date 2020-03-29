@@ -18,7 +18,7 @@ namespace CyberCore.Manager.FloatingText
         
         public PopupFT(FloatingTextFactory ftf, PlayerLocation pos, Level l, string syntax) : base(ftf, pos, l, syntax)
         {
-            Created = CyberUtils.getIntTime();
+            Created = CyberUtils.getLongTime();
             
         }
         
@@ -31,7 +31,7 @@ namespace CyberCore.Manager.FloatingText
         public override void OnTick(Entity[] entities)
         {
             base.OnTick(entities);
-            OnUpdate(CyberUtils.getIntTime());
+            OnUpdate(CyberUtils.getLongTime());
         }
 
         public new void OnUpdate(int tick) {

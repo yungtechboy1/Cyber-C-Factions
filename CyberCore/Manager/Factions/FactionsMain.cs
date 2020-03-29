@@ -172,7 +172,7 @@ namespace CyberCore.Manager.Factions
                                 fac.getSettings().getDisplayName() + " by " + Sender.getName() + "\n" +
                                 ChatColors.Green + "Type '/f accept' or '/f deny' into chat to accept or deny!");
 
-            int time = CyberUtils.getIntTime() + 60 * 5; //5 Mins
+            int time = CyberUtils.getLongTime() + 60 * 5; //5 Mins
             fac.AddInvite(invited, time, Sender, fr);
 
             var fid = new FactionInviteData(invited.getName(), fac.getName(), time, Sender.getName(),

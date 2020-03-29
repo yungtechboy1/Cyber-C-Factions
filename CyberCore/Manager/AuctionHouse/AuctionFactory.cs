@@ -386,7 +386,7 @@ namespace CyberCore.Manager.AuctionHouse
             n.Add(new NbtString("CustomName", "Auction House!"));
             SpawnFakeBlockAndEntity(p, n);
             AuctionHouse b = new AuctionHouse(p, CCM, p.KnownPosition.ToVector3(), pg);
-            CyberCoreMain.Log.Info(b.getContents().values().Count + " < SIZZEEE" + b.size);
+            CyberCoreMain.Log.Info(b.getContents().Values.Count + " < SIZZEEE" + b.size);
             //TODO !IMPORTANT
             // CyberCoreMain.getInstance().getServer().getScheduler().scheduleDelayedTask(new OpenAH(p, b), 5);
 //        b.open()

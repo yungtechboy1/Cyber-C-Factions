@@ -41,7 +41,7 @@ namespace CyberCore.Utils
 
         public void update()
         {
-            lastupdated = CyberUtils.getIntTime();
+            lastupdated = CyberUtils.getLongTime();
             var a = new List<FactionInviteData>();
             for (int i = 0; i > FactionInviteData.Count; i++)
             {

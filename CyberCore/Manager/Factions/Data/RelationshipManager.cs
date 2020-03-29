@@ -39,7 +39,7 @@ namespace CyberCore.Manager.Factions.Data
 
         public int TimeToInt()
         {
-            return CyberUtils.getIntTime();
+            return CyberUtils.getLongTime();
         }
 
         public void update()
@@ -84,7 +84,7 @@ namespace CyberCore.Manager.Factions.Data
 
             String k1 = FactionNamesToKey(fac1, fac2);
             String k2 = FactionNamesToKey(fac2, fac1);
-            int time = CyberUtils.getIntTime();
+            int time = CyberUtils.getLongTime();
             SqlManager c = CyberCoreMain.GetInstance().SQL;
             try
             {
@@ -114,7 +114,7 @@ namespace CyberCore.Manager.Factions.Data
             }
 
             String k = FactionNamesToKey(fac1, fac2);
-            int time = CyberUtils.getIntTime();
+            int time = CyberUtils.getLongTime();
             SqlManager c = CyberCoreMain.GetInstance().SQL;
             try
             {
@@ -149,7 +149,7 @@ namespace CyberCore.Manager.Factions.Data
 
             String k1 = FactionNamesToKey(fac1, fac2);
             String k2 = FactionNamesToKey(fac2, fac1);
-            int time = CyberUtils.getIntTime();
+            int time = CyberUtils.getLongTime();
             SqlManager c = CyberCoreMain.GetInstance().SQL;
             try
             {
@@ -173,7 +173,7 @@ namespace CyberCore.Manager.Factions.Data
             }
 
             String k = FactionNamesToKey(fac1, fac2);
-            int time = CyberUtils.getIntTime();
+            int time = CyberUtils.getLongTime();
             SqlManager c = CyberCoreMain.GetInstance().SQL;
             try
             {

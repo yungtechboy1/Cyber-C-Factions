@@ -55,7 +55,7 @@ namespace CyberCore.Manager.Factions.Data
 
         public bool isValid()
         {
-            return CyberUtils.getIntTime() < TimeStamp;
+            return CyberUtils.getLongTime() < TimeStamp;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using CyberCore.Manager.Forms;
 using JetBrains.Annotations;
 using MiNET;
@@ -28,7 +29,6 @@ namespace CyberCore.Utils
             }
             return ret;
         }
-        
         public  static long LongRandom(long min, long max)
         {
             var rand = new Random();
@@ -195,9 +195,9 @@ namespace CyberCore.Utils
      * Returns Time as an Integer in secs
      * @return
      */
-        public static int getIntTime()
+        public static long getLongTime()
         {
-            return (int) (DateTime.Now.Millisecond / 1000);
+            return DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
         }
 
         // public static int convertBinaryToDecimal(String number) {

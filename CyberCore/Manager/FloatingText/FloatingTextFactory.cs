@@ -116,7 +116,7 @@ namespace CyberCore.Manager.FloatingText
             int lasttick = -1;
 //        System.out.println("11111111111111111111");
 //System.out.println("======");
-            int tick = CyberUtils.getIntTime();
+            int tick = CyberUtils.getLongTime();
             if (tick != lasttick)
             {
 //                System.out.println("||||||||======");

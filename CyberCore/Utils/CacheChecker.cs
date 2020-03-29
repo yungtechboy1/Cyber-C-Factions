@@ -47,7 +47,7 @@ namespace CyberCore.Utils
         }
 
         public int getTime(){
-            return CyberUtils.getIntTime();
+            return CyberUtils.getLongTime();
         }
 
         public void invalidate() {
