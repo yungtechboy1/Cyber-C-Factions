@@ -36,7 +36,7 @@ namespace CyberCore
         public void Configure(MiNetServer s)
         {
             // s.ServerManager = new CyberTechServerManager(s);
-            s.PlayerFactory = new CyberPlayerFactory();
+            s.PlayerFactory = new CyberPlayerFactory(API);
             Log.Info("Executed startup successfully. Replaced identity managment.");
             
         }

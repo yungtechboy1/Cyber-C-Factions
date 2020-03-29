@@ -15,9 +15,9 @@ namespace CyberCore
             api = plugin;
         }
         
-        public override MiNET.Player CreatePlayer(MiNetServer server, IPEndPoint endPoint, PlayerInfo playerInfo)
+        public override CorePlayer CreatePlayer(MiNetServer server, IPEndPoint endPoint, PlayerInfo playerInfo)
         {
-            var player = new OpenPlayer(server, endPoint, api);
+            var player = new CorePlayer(server, endPoint, api);
             player.ClientUuid = playerInfo.ClientUuid;
             player.MaxViewDistance = Config.GetProperty("MaxViewDistance", 22);
             player.MoveRenderDistance = Config.GetProperty("MoveRenderDistance", 1);
