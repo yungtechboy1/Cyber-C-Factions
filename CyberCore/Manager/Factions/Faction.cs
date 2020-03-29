@@ -997,7 +997,7 @@ namespace CyberCore.Manager.Factions
                 }
                 catch (Exception e)
                 {
-                    CyberCoreMain.GetInstance().getLogger().error("Error GETTING HOMES FROM SQL E33112A", e);
+                    CyberCoreMain.Log.Error("Error GETTING HOMES FROM SQL E33112A", e);
                     return null;
                 }
 
@@ -1039,7 +1039,7 @@ namespace CyberCore.Manager.Factions
                             cn.nukkit.level.Level l = Server.GetInstance().getLevelByName(lvl);
                             if (l == null)
                             {
-                                CyberCoreMain.GetInstance().getLogger().error(
+                                CyberCoreMain.Log.Error(
                                     "COULD NOT LOAD FACCCTION HOME FOR " + getName() + " BECAUSE HOME AT " + x +
                                     " | " + y + " | " + z + " LEVEL NAME IS NOT VALID!!! LEVEVL NAME:" + lvl);
                                 continue;
@@ -1050,13 +1050,13 @@ namespace CyberCore.Manager.Factions
                         }
                         catch (Exception e)
                         {
-                            CyberCoreMain.GetInstance().getLogger().error(
+                            CyberCoreMain.Log.Error(
                                 "Error! Exception While tring to get " + getName() + "'s Faction Homes!", e);
                         }
                     }
                     else
                     {
-                        CyberCoreMain.GetInstance().getLogger().error("Home Syntax error for " + aa);
+                        CyberCoreMain.Log.Error("Home Syntax error for " + aa);
                     }
                 }
             }
@@ -1074,7 +1074,7 @@ namespace CyberCore.Manager.Factions
                         cn.nukkit.level.Level l = Server.GetInstance().getLevelByName(lvl);
                         if (l == null)
                         {
-                            CyberCoreMain.GetInstance().getLogger().error(
+                            CyberCoreMain.Log.Error(
                                 "111COULD NOT LOAD FACCCTION HOME FOR " + getName() + " BECAUSE HOME AT " + x +
                                 " | " + y + " | " + z + " LEVEL NAME IS NOT VALID!!! LEVEVL NAME:" + lvl);
                             return null;
@@ -1085,13 +1085,13 @@ namespace CyberCore.Manager.Factions
                     }
                     catch (Exception e)
                     {
-                        CyberCoreMain.GetInstance().getLogger().error(
+                        CyberCoreMain.Log.Error(
                             "111Error! Exception While tring to get " + getName() + "'s Faction Homes!", e);
                     }
                 }
                 else
                 {
-                    CyberCoreMain.GetInstance().getLogger().error("111Home Syntax error for " + h);
+                    CyberCoreMain.Log.Error("111Home Syntax error for " + h);
                 }
             }
 
@@ -1110,7 +1110,7 @@ namespace CyberCore.Manager.Factions
             catch (Exception e)
             {
                 e.printStackTrace();
-                CyberCoreMain.GetInstance().getLogger()
+                CyberCoreMain.Log
                     .error("Error DELETING HOME ! Please report Error 'E30DDDR' to an admin ID:" + h, e);
                 return false;
             }
@@ -1142,7 +1142,7 @@ namespace CyberCore.Manager.Factions
             catch (Exception e)
             {
                 e.printStackTrace();
-                CyberCoreMain.GetInstance().getLogger()
+                CyberCoreMain.Log
                     .error("Error SETTING HOME ! Please report Error 'E3022asDR' to an admin" + h.toString(), e);
                 return false;
             }
@@ -2054,7 +2054,7 @@ namespace CyberCore.Manager.Factions
                 Level tl = Server.GetInstance().getLevelByName(ln);
                 if (tl == null)
                 {
-                    CyberCoreMain.GetInstance().getLogger()
+                    CyberCoreMain.Log
                         .error("Error! HOME DATA FOR FACTION " + getFaction() + " HOME AT " +
                                getVector3().toString() + " WITH INVALID LEVEL NAME: " + ln);
                 }

@@ -224,7 +224,7 @@ namespace CyberCore.Manager.Factions
             catch (Exception e)
             {
                 CyberCoreMain.Log.Error("Error with Faction Settings Upload Process E3922! \n\n " + q, e);
-//            CyberCoreMain.getInstance().getLogger().error("Error with Faction PermSettings Cache E39942!AAA", e);
+//            CyberCoreMain.Log.Error("Error with Faction PermSettings Cache E39942!AAA", e);
                 return;
             }
         }

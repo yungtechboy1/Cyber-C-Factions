@@ -106,7 +106,7 @@ namespace CyberCore.Utils.Cooldowns
         private bool isValidTime()
         {
             long ct = CyberUtils.getLongTime();
-//        System.out.println(ct+" > "+Time);
+//        CyberCoreMain.Log.Error("Was LOG ||"+ct+" > "+Time);
             return ct < Time;
         }
     }

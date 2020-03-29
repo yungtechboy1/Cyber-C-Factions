@@ -60,7 +60,7 @@ namespace CyberCore.Manager.ClassFactory
         if (v instanceof int) {
             pe.add(PowerEnum.fromint((int) v));
         } else {
-            System.out.println("EEEEEEEEQweqweqwe qwe qwe qweqwqe qweqweqqqqqqqqq!");
+            CyberCoreMain.Log.Error("Was LOG ||"+"EEEEEEEEQweqweqwe qwe qwe qweqwqe qweqweqqqqqqqqq!");
         }
     }
     return (PowerEnum[]) pe.toArray();
@@ -88,7 +88,7 @@ namespace CyberCore.Manager.ClassFactory
 
     public BaseClass GetClass(CorePlayer p, boolean force) {
     if (p == null) {
-        CyberCoreMain.getInstance().getLogger().info("Error! Tring to get class from NULL");
+        CyberCoreMain.Log.info("Error! Tring to get class from NULL");
         return null;
     }
 
@@ -143,11 +143,11 @@ namespace CyberCore.Manager.ClassFactory
 
         if (data == null)
         {
-            System.out.println("ERROROROROR NONEEE WEREEEEEE DDDDDDDDDDD" + o.getInt("TYPE", 0));
+            CyberCoreMain.Log.Error("Was LOG ||"+"ERROROROROR NONEEE WEREEEEEE DDDDDDDDDDD" + o.getInt("TYPE", 0));
             return null;
         }
 
-        System.out.println(p.getName() + "'s CLASS WAS LOADEDEDDDD NONEEE WEREEEEEE DDDDDDDDDDD");
+        CyberCoreMain.Log.Error("Was LOG ||"+p.getName() + "'s CLASS WAS LOADEDEDDDD NONEEE WEREEEEEE DDDDDDDDDDD");
         data.onCreate();
         p.SetPlayerClass(data);
         return data;
@@ -160,9 +160,9 @@ namespace CyberCore.Manager.ClassFactory
     BaseClass bc = p.getPlayerClass();
         if (bc != null) {
         MMOSave.set(p.getName().toLowerCase(), p.getPlayerClass().export());
-        System.out.println("SAVEEE");
+        CyberCoreMain.Log.Error("Was LOG ||"+"SAVEEE");
     } else {
-        System.out.println(p.getName() + " HASS NUNN CLASS???");
+        CyberCoreMain.Log.Error("Was LOG ||"+p.getName() + " HASS NUNN CLASS???");
     }
     MMOSave.save();
     }
@@ -224,13 +224,13 @@ namespace CyberCore.Manager.ClassFactory
 //            cp = (CorePlayer) ((EntityEvent) event).getEntity();
 //        }
 //
-//        if (cp == null) System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//        if (cp == null) System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//        if (cp == null) System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//        if (cp == null) System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//        if (cp == null) System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//        if (cp == null) System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//        if (cp == null) System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        if (cp == null) CyberCoreMain.Log.Error("Was LOG ||"+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        if (cp == null) CyberCoreMain.Log.Error("Was LOG ||"+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        if (cp == null) CyberCoreMain.Log.Error("Was LOG ||"+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        if (cp == null) CyberCoreMain.Log.Error("Was LOG ||"+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        if (cp == null) CyberCoreMain.Log.Error("Was LOG ||"+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        if (cp == null) CyberCoreMain.Log.Error("Was LOG ||"+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        if (cp == null) CyberCoreMain.Log.Error("Was LOG ||"+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //
 //    }
 

@@ -88,7 +88,7 @@ namespace CyberCore.Manager.AuctionHouse
 
             this.name = title;
             System.Console.WriteLine("Creating AuctionHouse Class");
-//        if (CyberCoreMain.getInstance().SF.getPageHash(page) == null) System.out.println("NUUUUUUUUUUU");
+//        if (CyberCoreMain.getInstance().SF.getPageHash(page) == null) CyberCoreMain.Log.Error("Was LOG ||"+"NUUUUUUUUUUU");
 //        setContents(CyberCoreMain.getInstance().SF.getPageHash(page));
         }
 
@@ -354,7 +354,7 @@ namespace CyberCore.Manager.AuctionHouse
             CyberCoreMain.Log.Info("AHHHH>>>>>>> SETTINNGG CCCOONNNTTTZ " + items.Count);
             for (int i = 0; i < this.size - 1; ++i)
             {
-//            System.out.println("SETTING ITEM IN KEY " + i + " VVVVVVVV " + items.get(i).getClass().getName());
+//            CyberCoreMain.Log.Error("Was LOG ||"+"SETTING ITEM IN KEY " + i + " VVVVVVVV " + items.get(i).getClass().getName());
                 if (!items.ContainsKey(i))
                 {
                     if (inv.isEmpty(i))
@@ -376,10 +376,10 @@ namespace CyberCore.Manager.AuctionHouse
         public bool setItem(int index, Item item, bool send)
         {
             item = (Item) item.Clone();
-//    System.out.println("INNNNEEDDDDEDEE >> "+index);
-//    System.out.println("INNNNEEDDDDEDEE >> "+item.getClass().getName());
-//        System.out.println("INNNNEEDDDDEDEE >> "+item.getCount());
-//        System.out.println("INNNNEEDDDDEDEE >> "+item.getId());
+//    CyberCoreMain.Log.Error("Was LOG ||"+"INNNNEEDDDDEDEE >> "+index);
+//    CyberCoreMain.Log.Error("Was LOG ||"+"INNNNEEDDDDEDEE >> "+item.getClass().getName());
+//        CyberCoreMain.Log.Error("Was LOG ||"+"INNNNEEDDDDEDEE >> "+item.getCount());
+//        CyberCoreMain.Log.Error("Was LOG ||"+"INNNNEEDDDDEDEE >> "+item.getId());
             if (index >= 0 && index < getSize())
             {
                 if (item.Id != 0 && item.Count > 0)
@@ -404,9 +404,9 @@ namespace CyberCore.Manager.AuctionHouse
 //
                     Item old = inv.Slots[index];
                     inv.SetInventorySlot(index, (Item) item.Clone());
-//            System.out.println("AAAAAAAAAAAAAAAAAAAA >> "+index);
-//            System.out.println("AAAAAAAAAAAAAAAAAAAA >> "+old);
-//            System.out.println("AAAAAAAAAAAAAAAAAAAA >> "+send);
+//            CyberCoreMain.Log.Error("Was LOG ||"+"AAAAAAAAAAAAAAAAAAAA >> "+index);
+//            CyberCoreMain.Log.Error("Was LOG ||"+"AAAAAAAAAAAAAAAAAAAA >> "+old);
+//            CyberCoreMain.Log.Error("Was LOG ||"+"AAAAAAAAAAAAAAAAAAAA >> "+send);
 //            this.onSlotChange(index, old, send);
                     // if (getHolder() != null) sendSlot(index, getHolder());
                     return true;
@@ -455,17 +455,17 @@ namespace CyberCore.Manager.AuctionHouse
 //                }
 //
 //                Item old = this.getItem(index);
-//                System.out.println("SEEEEETTTTT >> "+index);
-//                System.out.println("SEEEEETTTTT >> "+item.getClass().getName());
-//                System.out.println("SEEEEETTTTT >> "+item.Clone().getClass().getName());
-//                System.out.println("SEEEEETTTTT >> "+slots.getClass().getName());
+//                CyberCoreMain.Log.Error("Was LOG ||"+"SEEEEETTTTT >> "+index);
+//                CyberCoreMain.Log.Error("Was LOG ||"+"SEEEEETTTTT >> "+item.getClass().getName());
+//                CyberCoreMain.Log.Error("Was LOG ||"+"SEEEEETTTTT >> "+item.Clone().getClass().getName());
+//                CyberCoreMain.Log.Error("Was LOG ||"+"SEEEEETTTTT >> "+slots.getClass().getName());
 //                slots.put((int) index, item.Clone());
 //                this.onSlotChange(index, old, send);
 //                return true;
 //            } else {
 //                slots.put(index, new ItemBlock(new BlockAir(), 0, 0));
 //                this.onSlotChange(index, this.getItem(index), send);
-//                System.out.println("MAN CLLEEAARRR");
+//                CyberCoreMain.Log.Error("Was LOG ||"+"MAN CLLEEAARRR");
 ////                return this.clear(index);
 //                return true;
 //            }
@@ -706,7 +706,7 @@ namespace CyberCore.Manager.AuctionHouse
 
 //         public bool clear(int index, bool send)
 //         {
-// //        System.out.println("AAAAAAAAAAAAAA" + index);
+// //        CyberCoreMain.Log.Error("Was LOG ||"+"AAAAAAAAAAAAAA" + index);
 //             if (this.slots.containsKey(index))
 //             {
 //                 Item item = new ItemBlock(new BlockAir(), null, 0);
@@ -728,7 +728,7 @@ namespace CyberCore.Manager.AuctionHouse
 //             }
 //
 //             if (getHolder() != null) sendSlot(index, getHolder());
-// //        System.out.println("CLEARRRR###" + index);
+// //        CyberCoreMain.Log.Error("Was LOG ||"+"CLEARRRR###" + index);
 //             return true;
 //         }
 

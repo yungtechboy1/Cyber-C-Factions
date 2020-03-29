@@ -76,7 +76,7 @@ namespace CyberCore.Utils.Data
 //        try {
 //            List<Dictionary<String, Object>> data = executeSelect("SELECT * FROM `Ranks` WHERE `uuid` LIKE '" + p.getUniqueId() + "'");
 //            if (data == null || data.size() == 0) {
-//                CyberCoreMain.getInstance().getLogger().error("No Ranks found for "+p.getName());
+//                CyberCoreMain.Log.Error("No Ranks found for "+p.getName());
 //                p.SetRank(RankList.PERM_GUEST);
 //                return;
 //            } else {
@@ -131,7 +131,7 @@ namespace CyberCore.Utils.Data
                     executeSelect("SELECT * FROM `PlayerHomes` WHERE `owneruuid` LIKE '" + p.getUniqueId() + "'");
                 if (data == null)
                 {
-                    CyberCoreMain.getInstance().getLogger().error("Error Loading Warps from Sqlite!");
+                    CyberCoreMain.Log.Error("Error Loading Warps from Sqlite!");
                     return;
                 }
                 else

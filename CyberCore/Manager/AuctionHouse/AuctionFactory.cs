@@ -175,7 +175,7 @@ namespace CyberCore.Manager.AuctionHouse
         public List<AuctionItemData> getListOfAIDBetween(int start, int stop, String seller)
         {
             List<AuctionItemData> il = new List<AuctionItemData>();
-//        if(GetAllItemsLimit(start, stop) == null)System.out.println("YEAAAAAAAAAA THISSSSS SSSHSHHHHIIIITTT NUUUULLLLLLIINNNNN~!!!!!!!!");
+//        if(GetAllItemsLimit(start, stop) == null)CyberCoreMain.Log.Error("Was LOG ||"+"YEAAAAAAAAAA THISSSSS SSSHSHHHHIIIITTT NUUUULLLLLLIINNNNN~!!!!!!!!");
             foreach (var ahd in GetAllItemsLimit(start, stop, seller))
             {
                 il.Add(ahd);
@@ -231,7 +231,7 @@ namespace CyberCore.Manager.AuctionHouse
         {
             int stop = page * 45;
             int start = stop - 45;
-//        System.out.println("START = " + start + ", STOP = " + stop + " Seller" + seller);
+//        CyberCoreMain.Log.Error("Was LOG ||"+"START = " + start + ", STOP = " + stop + " Seller" + seller);
             List<Item> list2 = getListOfItemsBetween(start, stop, seller);
             if (45 > list2.Count)
             {
@@ -241,13 +241,13 @@ namespace CyberCore.Manager.AuctionHouse
 //                list2.iterator().n
                     if (list2.Count > i && list2[i] != null)
                     {
-//                    System.out.println("ADDING ACTUAL ITEM " + list2.get(i).getId());
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"ADDING ACTUAL ITEM " + list2.get(i).getId());
                         a.Add(list2[i]);
                     }
                     else
                     {
                         a.Add(new ItemAir());
-//                    System.out.println("ADDING AIR");
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"ADDING AIR");
                     }
                 }
 
@@ -303,7 +303,7 @@ namespace CyberCore.Manager.AuctionHouse
         {
             int stop = page * 45;
             int start = stop - 45;
-//        System.out.println("START = " + start + ", STOP = " + stop);
+//        CyberCoreMain.Log.Error("Was LOG ||"+"START = " + start + ", STOP = " + stop);
             List<AuctionItemData> list2 = getListOfAIDBetween(start, stop);
             if (45 > list2.Count)
             {
@@ -313,13 +313,13 @@ namespace CyberCore.Manager.AuctionHouse
 //                list2.iterator().n
                     if (list2.Count > i && list2[i] != null)
                     {
-//                    System.out.println("ADDING ACTUAL ITEM " + list2.get(i).toString());
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"ADDING ACTUAL ITEM " + list2.get(i).toString());
                         a.Add(list2[i]);
                     }
                     else
                     {
                         a.Add(null);
-//                    System.out.println("ADDING AIR");
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"ADDING AIR");
                     }
                 }
 
@@ -335,7 +335,7 @@ namespace CyberCore.Manager.AuctionHouse
         {
             int stop = page * 45;
             int start = stop - 45;
-//        System.out.println("START = " + start + ", STOP = " + stop);
+//        CyberCoreMain.Log.Error("Was LOG ||"+"START = " + start + ", STOP = " + stop);
             List<Item> list2 = getListOfItemsBetween(start, stop);
             if (45 > list2.Count)
             {
@@ -345,13 +345,13 @@ namespace CyberCore.Manager.AuctionHouse
 //                list2.iterator().n
                     if (list2.Count > i && list2[i] != null)
                     {
-//                    System.out.println("ADDING ACTUAL ITEM || " + list2.get(i).getId());
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"ADDING ACTUAL ITEM || " + list2.get(i).getId());
                         a.Add(list2[i]);
                     }
                     else
                     {
                         a.Add(new ItemAir());
-//                    System.out.println("ADDING AIR ||");
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"ADDING AIR ||");
                     }
                 }
 
@@ -367,7 +367,7 @@ namespace CyberCore.Manager.AuctionHouse
 //        for (int a = start; a < list2.Count; a++) {
 //            if (a >= stop) break;
 //            Item newitem = list2.get(a).clone();
-//            System.out.println(newitem.toString());
+//            CyberCoreMain.Log.Error("Was LOG ||"+newitem.toString());
 //            if (newitem == null) list.add(new ItemBlock(new BlockAir(), (int) null, 0));
 //            else list.add(newitem);
 //        }
@@ -466,22 +466,22 @@ namespace CyberCore.Manager.AuctionHouse
 //    @EventHandler(ignoreCancelled = true)
 //    public void TTE(InventoryClickEvent event) {
 //
-//        System.out.println("++++++++++++++++++++++++++++++++++++++++");
-//        System.out.println("++++++++++++++++++++++++++++++++++++++++");
-//        System.out.println(event.getSlot());
-//        System.out.println(event.getInventory().getClass().getName());
+//        CyberCoreMain.Log.Error("Was LOG ||"+"++++++++++++++++++++++++++++++++++++++++");
+//        CyberCoreMain.Log.Error("Was LOG ||"+"++++++++++++++++++++++++++++++++++++++++");
+//        CyberCoreMain.Log.Error("Was LOG ||"+event.getSlot());
+//        CyberCoreMain.Log.Error("Was LOG ||"+event.getInventory().getClass().getName());
 //
-//        System.out.println("CALLLLCLLIICCCKKK");
-//                System.out.println("CALLLL SLOTCCCCCCCC");
+//        CyberCoreMain.Log.Error("Was LOG ||"+"CALLLLCLLIICCCKKK");
+//                CyberCoreMain.Log.Error("Was LOG ||"+"CALLLL SLOTCCCCCCCC");
 //                int slott = event.getSlot();
 //
 ////                sca.getInventory()
 //
 //                Inventory inv = event.getInventory();
-//                System.out.println("CHECK INNNNNVVVVVVV " + inv.getClass().getName());
+//                CyberCoreMain.Log.Error("Was LOG ||"+"CHECK INNNNNVVVVVVV " + inv.getClass().getName());
 ////                if (inv.isEmpty()) return;
 //
-//                System.out.println("NEEEEEEE" + inv.getClass().getTypeName());
+//                CyberCoreMain.Log.Error("Was LOG ||"+"NEEEEEEE" + inv.getClass().getTypeName());
 //                if (inv instanceof PlayerInventory) {
 //
 //                }
@@ -489,27 +489,27 @@ namespace CyberCore.Manager.AuctionHouse
 //
 //                    AuctionHouse ah = (AuctionHouse) inv;
 ////                    if(!ah.Init)return;
-//                    System.out.println(slott + " || " + ah.getHolder().getName() + " || " + ah.getHolder().getClass().getName());
+//                    CyberCoreMain.Log.Error("Was LOG ||"+slott + " || " + ah.getHolder().getName() + " || " + ah.getHolder().getClass().getName());
 //                    CorePlayer ccpp = (CorePlayer) ah.getHolder();
 //                    int slot = slott;
 ////                    event.setCancelled();
 //                    if (slot < 5 * 9) {
-//                        System.out.println("TOP INV");
+//                        CyberCoreMain.Log.Error("Was LOG ||"+"TOP INV");
 //                        //TODO CONFIRM AND SHOW ITEM
 //                        if (!ah.ConfirmPurchase) {
 //                            ah.ConfirmItemPurchase(slot);
 //                            event.setCancelled();
-//                            System.out.println("SSSSSSSSSSSSCPPPPPPPP");
+//                            CyberCoreMain.Log.Error("Was LOG ||"+"SSSSSSSSSSSSCPPPPPPPP");
 ////                        ccpp.AH.ConfirmItemPurchase(slot);
 //                        } else {
-//                            System.out.println("CPPPPPPPP");
+//                            CyberCoreMain.Log.Error("Was LOG ||"+"CPPPPPPPP");
 //                            Item si = ah.getContents().get(slot);
 //                            if (si != null) {
 //                                if (si.getId() == BlockID.EMERALD_BLOCK) {
-//                                    System.out.println("CONFIRM PURCHASE!!!!!!!");
+//                                    CyberCoreMain.Log.Error("Was LOG ||"+"CONFIRM PURCHASE!!!!!!!");
 ////                                    ah.SF.PurchaseItem((CorePlayer) ah.getHolder(), Page, slot);
 //                                } else if (si.getId() == BlockID.REDSTONE_BLOCK) {
-//                                    System.out.println("DENCLINE PURCHASE!!!!!!!!");
+//                                    CyberCoreMain.Log.Error("Was LOG ||"+"DENCLINE PURCHASE!!!!!!!!");
 //                                }
 //                            }
 //                        }
@@ -557,45 +557,45 @@ namespace CyberCore.Manager.AuctionHouse
         //TODO MAke Pages with new API
 //    @EventHandler(ignoreCancelled = true)
 //    public void TE(InventoryTransactionEvent event) {
-////        System.out.println("CALLLL");
+////        CyberCoreMain.Log.Error("Was LOG ||"+"CALLLL");
 //        InventoryTransaction transaction = event.getTransaction();
 //        Set<InventoryAction> traa = transaction.getActions();
 //        for (InventoryAction t : traa) {
-////            System.out.println("CALLLL TTTTTTTTTTTTTTTTTTT" + t.getClass().getName());
+////            CyberCoreMain.Log.Error("Was LOG ||"+"CALLLL TTTTTTTTTTTTTTTTTTT" + t.getClass().getName());
 //            if (t instanceof SlotChangeAction) {
-////                System.out.println("CALLLL SLOTCCCCCCCC");
+////                CyberCoreMain.Log.Error("Was LOG ||"+"CALLLL SLOTCCCCCCCC");
 //                SlotChangeAction sca = (SlotChangeAction) t;
 //
 ////                sca.getInventory()
 //
 //                Inventory inv = sca.getInventory();
-//                System.out.println("CHECK INNNNNVVVVVV2222222222222V " + inv.getClass().getName());
+//                CyberCoreMain.Log.Error("Was LOG ||"+"CHECK INNNNNVVVVVV2222222222222V " + inv.getClass().getName());
 ////                if (inv.isEmpty()) return;
 //
-////                System.out.println("NEEEEEEE" + inv.getClass().getTypeName());
+////                CyberCoreMain.Log.Error("Was LOG ||"+"NEEEEEEE" + inv.getClass().getTypeName());
 //                if (inv instanceof PlayerInventory) {
 //
 //                }else if(inv instanceof PlayerCursorInventory){
 //                    event.setCancelled();
 //                    transaction.getSource().sendAllInventories();
-//                    System.out.println("+++++>"+transaction.getSource().getCursorInventory());
-//                    System.out.println("+++++>"+transaction.getSource().getCursorInventory().slots);
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"+++++>"+transaction.getSource().getCursorInventory());
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"+++++>"+transaction.getSource().getCursorInventory().slots);
 //                }
 //                if (inv instanceof AuctionHouse) {
 //
 //                    AuctionHouse ah = (AuctionHouse) inv;
 ////                    if(!ah.Init)return;
-//                    System.out.println(sca.getSlot() + " || " + ah.getHolder().getName() + " || " + ah.getHolder().getClass().getName());
+//                    CyberCoreMain.Log.Error("Was LOG ||"+sca.getSlot() + " || " + ah.getHolder().getName() + " || " + ah.getHolder().getClass().getName());
 //                    CorePlayer ccpp = (CorePlayer) ah.getHolder();
 //                    int slot = sca.getSlot();
 ////                    event.setCancelled();
 //                    event.setCancelled();
 //                    if (slot < 5 * 9) {
-//                        System.out.println("TOP INV");
+//                        CyberCoreMain.Log.Error("Was LOG ||"+"TOP INV");
 //                        //TODO CONFIRM AND SHOW ITEM
 //                        if (!ah.ConfirmPurchase) {
 //                            ah.ConfirmItemPurchase(slot);
-//                            System.out.println("SSSSSSSSSSSSCPPPPPPPP");
+//                            CyberCoreMain.Log.Error("Was LOG ||"+"SSSSSSSSSSSSCPPPPPPPP");
 ////                        ccpp.AH.ConfirmItemPurchase(slot);
 //                        } else {
 //                            Item si = ah.getContents().get(slot);
@@ -606,20 +606,20 @@ namespace CyberCore.Manager.AuctionHouse
 //                                    //Back Home
 //                                    break;
 //                                } else {
-//                                    System.out.println("CPPPPPPPP");
+//                                    CyberCoreMain.Log.Error("Was LOG ||"+"CPPPPPPPP");
 //
 //                                    if (si.getId() == BlockID.EMERALD_BLOCK) {
-//                                        System.out.println("CONFIRM PURCHASE!!!!!!!");
+//                                        CyberCoreMain.Log.Error("Was LOG ||"+"CONFIRM PURCHASE!!!!!!!");
 //                                        ah.SF.PurchaseItem((CorePlayer) ah.getHolder(), ah.getPage(), ah.ConfirmPurchaseSlot);
 //                                        break;
 //                                    } else if (si.getId() == BlockID.REDSTONE_BLOCK) {
-//                                        System.out.println("DENCLINE PURCHASE!!!!!!!!");
+//                                        CyberCoreMain.Log.Error("Was LOG ||"+"DENCLINE PURCHASE!!!!!!!!");
 //                                        ah.setPage(1);
 //                                        ah.ClearConfirmPurchase();
 //                                        break;
 //                                    } else {
 //                                        ah.setPage(1);
-//                                        System.out.println("UNKNOWNMNNN!!!!!!!!");
+//                                        CyberCoreMain.Log.Error("Was LOG ||"+"UNKNOWNMNNN!!!!!!!!");
 //                                        ah.ClearConfirmPurchase();
 //                                        break;
 //                                    }

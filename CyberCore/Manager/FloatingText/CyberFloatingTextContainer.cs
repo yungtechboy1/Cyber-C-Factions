@@ -186,7 +186,7 @@ namespace CyberCore.Manager.FloatingText
         //Generate Flaoting Text for following players
         public void HaldleSend(List<String> ap)
         {
-//        System.out.println("HS");
+//        CyberCoreMain.Log.Error("Was LOG ||"+"HS");
 //        List<Packet> tosend = new List<>();
             Dictionary<String, List<Packet>> tosend;
 //        sync(_CE_Lock)//TODO
@@ -232,7 +232,7 @@ namespace CyberCore.Manager.FloatingText
         //Generate Flaoting Text for following players
         public void HaldleSendP(List<Player> ap)
         {
-//        System.out.println("HS");
+//        CyberCoreMain.Log.Error("Was LOG ||"+"HS");
 //        List<Packet> tosend = new List<>();
             Dictionary<String, List<Packet>> tosend;
 //        sync(_CE_Lock)//TODO

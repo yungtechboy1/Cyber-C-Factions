@@ -66,15 +66,15 @@ namespace CyberCore.Manager.Crate
         public ConfigSection toConfig()
         {
             ConfigSection cf = new ConfigSection();
-            System.out.println("1111" + Location);
+            CyberCoreMain.Log.Error("Was LOG ||"+"1111" + Location);
             cf.put("x", Location.x);
             cf.put("y", Location.y);
             cf.put("z", Location.z);
-            System.out.println("1111");
+            CyberCoreMain.Log.Error("Was LOG ||"+"1111");
             if (Location.getLevel() != null) cf.put("level", Location.getLevel().getName());
-            System.out.println("1111");
+            CyberCoreMain.Log.Error("Was LOG ||"+"1111");
             if (CD != null) cf.put("Key", CD.Key);
-            System.out.println("1111");
+            CyberCoreMain.Log.Error("Was LOG ||"+"1111");
 //        cf.put("Loc", Location);
 //        cf.put("Loc", .put.put("y",));
             return cf;

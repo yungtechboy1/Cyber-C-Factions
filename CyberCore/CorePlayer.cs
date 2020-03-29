@@ -52,7 +52,7 @@ namespace CyberCore
 
         private readonly Dictionary<string, CoolDown> CDL = new Dictionary<string, CoolDown>();
 
-        // private BaseClass PlayerClass = null;
+        private BaseClass PlayerClass = null;
         private int ClassCheck = -1;
         public CombatData Combat;
         private Vector3 CTLastPos;
@@ -291,11 +291,10 @@ namespace CyberCore
             if (!data.ContainsKey(Movement)) setMovementSpeed(DEFAULT_SPEED, true);
             if (!areequal(data, lastdata))
             {
-                foreach (var VARIABLE in COLLECTION)
+                foreach (var v in data)
                 {
-                    
-                }
-                data.forEach((key, value)-> {
+                    var key = v.Key;
+                    var value = v.Value;
                     switch (key)
                     {
                         case Movement:
@@ -304,7 +303,7 @@ namespace CyberCore
                         case NULL:
                             break;
                         case Health:
-                            CustomExtraHP = value + 0;
+                            CustomExtraHP = (int)value + 0;
                             setMaxHealth(20 + CustomExtraHP);
                             sendAttributes();
                             break;
@@ -422,7 +421,7 @@ namespace CyberCore
 //
 //        if(needACK)return super.dataPacket(packet,needACK);
 //
-////        System.out.println("Sending >> "+packet);
+////        CyberCoreMain.Log.Error("Was LOG ||"+"Sending >> "+packet);
 //
 //        try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
 //            DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
@@ -453,34 +452,15 @@ namespace CyberCore
             return PlayerClass;
         }
 
-        
+
 
         public void sendAttributes()
         {
-            UpdateAttributesPacket pk = new UpdateAttributesPacket();
-            pk.entityId = this.getId();
-            pk.entries = new Attribute[]
-            {
-                Attribute.getAttribute(Attribute.MAX_HEALTH).setMaxValue(getMaxHealth())
-                    .setValue(health > 0 ? health < getMaxHealth() ? health : getMaxHealth() : 0),
-                Attribute.getAttribute(Attribute.MAX_HUNGER).setValue(getFoodData().getLevel()),
-                Attribute.getAttribute(Attribute.MOVEMENT_SPEED).setValue(getMovementSpeed()),
-                Attribute.getAttribute(Attribute.EXPERIENCE_LEVEL).setValue(this.getExperienceLevel()),
-                Attribute.getAttribute(Attribute.EXPERIENCE)
-                    .setValue((float) this.getExperience() / calculateRequireExperience(this.getExperienceLevel()))
-            };
-            this.dataPacket(pk);
+            SendUpdateAttributes();
         }
 
-        public bool isInTeleportingProcess()
-        {
-            return isInTeleportingProcess;
-        }
+        
 
-        public void setInTeleportingProcess(bool inTeleportingProcess)
-        {
-            isInTeleportingProcess = inTeleportingProcess;
-        }
 
         public bool IsItemBeingEnchanted()
         {
@@ -536,7 +516,7 @@ namespace CyberCore
             if (IsItemBeingEnchanted() && !isItemBeingEnchantedLock())
             {
                 var i = getItemBeingEnchanted();
-                getInventory().addItem(i);
+                Inventory.AddItem(i,true);
                 clearItemBeingEnchanted();
                 removeItemBeingEnchantedLock();
             }
@@ -548,14 +528,12 @@ namespace CyberCore
             return getSettingsData();
         }
 
-        
 
-        public void close(TextContainer message, string reason, bool notify)
+        public override void Disconnect(string reason, bool sendDisconnect = true)
         {
-            System.out.println("CCCCCCCC1");
-            CyberCoreMain.getInstance().ServerSQL.UnLoadPlayer(this);
-            System.out.println("CCCCCCCC2");
-            super.close(message, reason, notify);
+            base.Disconnect(reason, sendDisconnect);
+            CyberCoreMain.GetInstance().ServerSQL.UnLoadPlayer(this);
+            
         }
 
         public void CreateDefaultSettingsData(CorePlayer p)
@@ -566,24 +544,24 @@ namespace CyberCore
 
         
 
-        public int addWindow(Inventory inventory, int forceId, bool isPermanent)
-        {
-            if (this.windows.ContainsKey(inventory)) return this.windows.get(inventory);
-            int cnt;
-            if (forceId == null)
-                this.windowCnt = cnt = Math.max(4, ++this.windowCnt % 99);
-            else
-                cnt = forceId;
-            this.windows.put(inventory, cnt);
-
-            if (isPermanent) this.permanentWindows.add(cnt);
-
-            if (inventory.open(this)) return cnt;
-
-            this.removeWindow(inventory);
-            sendMessage("ERROR!!!!!!! I FUCKKKKED UUUUPPP");
-            return -1;
-        }
+        // public int addWindow(Inventory inventory, int forceId, bool isPermanent)
+        // {
+        //     if (this.windows.ContainsKey(inventory)) return this.windows.get(inventory);
+        //     int cnt;
+        //     if (forceId == null)
+        //         this.windowCnt = cnt = Math.max(4, ++this.windowCnt % 99);
+        //     else
+        //         cnt = forceId;
+        //     this.windows.put(inventory, cnt);
+        //
+        //     if (isPermanent) this.permanentWindows.add(cnt);
+        //
+        //     if (inventory.open(this)) return cnt;
+        //
+        //     this.removeWindow(inventory);
+        //     sendMessage("ERROR!!!!!!! I FUCKKKKED UUUUPPP");
+        //     return -1;
+        // }
 
         public bool canMakeTransaction(double price)
         {
@@ -601,10 +579,10 @@ namespace CyberCore
 
         
 
-        public float getMovementSpeed()
-        {
-            return super.getMovementSpeed();
-        }
+        // public float getMovementSpeed()
+        // {
+        //     return super.getMovementSpeed();
+        // }
 
         public void TakeMoney(double price)
         {
@@ -902,7 +880,7 @@ namespace CyberCore
 
         public void handleDataPacket(DataPacket packet)
         {
-//        System.out.println("DP >>>> " + packet + "||" + packet.pid());
+//        CyberCoreMain.Log.Error("Was LOG ||"+"DP >>>> " + packet + "||" + packet.pid());
             if (!connected) return;
 
             try
@@ -971,7 +949,7 @@ namespace CyberCore
                         try
                         {
 //                        InventoryTransactionPacket transactionPacket = (InventoryTransactionPacket) packet;
-//                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!1");b
+//                        CyberCoreMain.Log.Error("Was LOG ||"+"BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!1");b
                             CustomInventoryTransactionPacket transactionPacket2 =
                                 (CustomInventoryTransactionPacket) packet;
 
@@ -979,29 +957,29 @@ namespace CyberCore
                                 System.out.
                             println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-//                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!2");
+//                        CyberCoreMain.Log.Error("Was LOG ||"+"BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!2");
                             List<InventoryAction> actions = new List<>();
                             for (CustomNetworkInventoryAction na :
                             transactionPacket2.actions) {
-//                            System.out.println("zACTIONz z-1+++");
+//                            CyberCoreMain.Log.Error("Was LOG ||"+"zACTIONz z-1+++");
 //                            CustomNetworkInventoryAction networkInventoryAction = new CustomNetworkInventoryAction(na);
                                 CustomNetworkInventoryAction networkInventoryAction = na;
                                 InventoryAction a = networkInventoryAction.createInventoryAction(this);
                                 InventoryAction aa = na.createInventoryAction(this);
 
-//                            System.out.println("zACTIONz xxxx>"+new CustomNetworkInventoryAction(na));
-                                System.out.println("zACTIONz xxxx>" + na);
-//                            System.out.println("zACTIONz z");Cybers
-//                            System.out.println("zACTIONz z > "+a);
-//                            System.out.println("zACTIONz z > "+a.getClass().getName());
+//                            CyberCoreMain.Log.Error("Was LOG ||"+"zACTIONz xxxx>"+new CustomNetworkInventoryAction(na));
+                                CyberCoreMain.Log.Error("Was LOG ||"+"zACTIONz xxxx>" + na);
+//                            CyberCoreMain.Log.Error("Was LOG ||"+"zACTIONz z");Cybers
+//                            CyberCoreMain.Log.Error("Was LOG ||"+"zACTIONz z > "+a);
+//                            CyberCoreMain.Log.Error("Was LOG ||"+"zACTIONz z > "+a.getClass().getName());
                                 if (a instanceof SlotChangeAction && aa instanceof SlotChangeAction) {
                                     SlotChangeAction sca = (SlotChangeAction) a;
                                     SlotChangeAction scaa = (SlotChangeAction) aa;
-//                                System.out.println("GGGGGGGGGGGGG"+scaa.getSlot());
-//                                System.out.println("GGGGGGGGGGGGG"+sca.getSlot());
+//                                CyberCoreMain.Log.Error("Was LOG ||"+"GGGGGGGGGGGGG"+scaa.getSlot());
+//                                CyberCoreMain.Log.Error("Was LOG ||"+"GGGGGGGGGGGGG"+sca.getSlot());
                                 }
-//                            System.out.println("zACTIONz 5.1.1 > "+a.getTargetItem());
-//                            System.out.println("zACTIONz 5.1.2 > "+a.getSourceItem());
+//                            CyberCoreMain.Log.Error("Was LOG ||"+"zACTIONz 5.1.1 > "+a.getTargetItem());
+//                            CyberCoreMain.Log.Error("Was LOG ||"+"zACTIONz 5.1.2 > "+a.getSourceItem());
 
                                 if (a == null)
                                 {
@@ -1012,24 +990,24 @@ namespace CyberCore
                                     break packetswitch;
                                 }
 
-                                System.out.println("Adding Network Action to Regualr Action!!!!!!!!");
+                                CyberCoreMain.Log.Error("Was LOG ||"+"Adding Network Action to Regualr Action!!!!!!!!");
                                 actions.add(a);
                             }
 
-//                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!3");
+//                        CyberCoreMain.Log.Error("Was LOG ||"+"BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!3");
                             if (transactionPacket2.isCraftingPart)
                             {
-                                System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!4 IS CRAFTING");
+                                CyberCoreMain.Log.Error("Was LOG ||"+"BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!4 IS CRAFTING");
                                 if (this.cct == null)
                                 {
-                                    System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!5 WILL CREATE NEW CT");
+                                    CyberCoreMain.Log.Error("Was LOG ||"+"BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!5 WILL CREATE NEW CT");
                                     this.cct = new CustomCraftingTransaction(this, actions);
                                 }
                                 else
                                 {
                                     for (InventoryAction action :
                                     actions) {
-                                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!6 ADDING TO EXISTING CTT");
+                                        CyberCoreMain.Log.Error("Was LOG ||"+"BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!6 ADDING TO EXISTING CTT");
                                         this.cct.addAction(action);
                                     }
                                 }
@@ -1038,7 +1016,7 @@ namespace CyberCore
                                 {
                                     //we get the actions for this in several packets, so we can't execute it until we get the result
 
-                                    System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!7 CALLING EXECUTE");
+                                    CyberCoreMain.Log.Error("Was LOG ||"+"BBBBBBBBBBBBBBBBBBBBBBBBB!!!!!!!!7 CALLING EXECUTE");
                                     if (!this.cct.execute()) server.getLogger().error("ERROR NO EXECITE!");
                                     this.cct = null;
                                 }
@@ -1056,18 +1034,18 @@ namespace CyberCore
                             }
 
 
-                            //                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAA");
-//                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAA2"+transactionPacket2.transactionType);
+                            //                        CyberCoreMain.Log.Error("Was LOG ||"+"AAAAAAAAAAAAAAAAAAAAAAAAA");
+//                        CyberCoreMain.Log.Error("Was LOG ||"+"AAAAAAAAAAAAAAAAAAAAAAAAA2"+transactionPacket2.transactionType);
                             switch (transactionPacket2.transactionType)
                             {
                                 case InventoryTransactionPacket.TYPE_NORMAL:
-//                                System.out.println("ZZZZZZZZZZZZZZZZZZ");
+//                                CyberCoreMain.Log.Error("Was LOG ||"+"ZZZZZZZZZZZZZZZZZZ");
                                     CustomInventoryTransaction transaction =
                                         new CustomInventoryTransaction(this, actions);
 
-//                                System.out.println("ZZZZZZZZZZZZZZZZZZ1"+transaction);
-//                                System.out.println("ZZZZZZZZZZZZZZZZZZ2"+transaction.getInventories());
-//                                System.out.println("ZZZZZZZZZZZZZZZZZZ3"+transaction.canExecute());
+//                                CyberCoreMain.Log.Error("Was LOG ||"+"ZZZZZZZZZZZZZZZZZZ1"+transaction);
+//                                CyberCoreMain.Log.Error("Was LOG ||"+"ZZZZZZZZZZZZZZZZZZ2"+transaction.getInventories());
+//                                CyberCoreMain.Log.Error("Was LOG ||"+"ZZZZZZZZZZZZZZZZZZ3"+transaction.canExecute());
                                     if (!transaction.execute())
                                     {
                                         this.server.getLogger()
@@ -1113,11 +1091,11 @@ namespace CyberCore
                                         case InventoryTransactionPacket.USE_ITEM_ACTION_CLICK_BLOCK:
                                             this.setDataFlag(DATA_FLAGS, DATA_FLAG_ACTION, false);
 
-                                            System.out.println("wwwwwwwwwwwwww > 11111111111111111");
+                                            CyberCoreMain.Log.Error("Was LOG ||"+"wwwwwwwwwwwwww > 11111111111111111");
                                             if (this.canInteract(blockVector.add(0.5, 0.5, 0.5),
                                                 this.isCreative() ? 13 : 7))
                                             {
-                                                System.out.println("wwwwwwwwwwwwww > 22222222222");
+                                                CyberCoreMain.Log.Error("Was LOG ||"+"wwwwwwwwwwwwww > 22222222222");
                                                 if (this.isCreative())
                                                 {
                                                     Item i = inventory.getItemInHand();
@@ -1125,27 +1103,27 @@ namespace CyberCore
                                                         useItemData.clickPos.x, useItemData.clickPos.y,
                                                         useItemData.clickPos.z, this) != null)
                                                     {
-                                                        System.out.println("wwwwwwwwwwwwww > GOOD");
+                                                        CyberCoreMain.Log.Error("Was LOG ||"+"wwwwwwwwwwwwww > GOOD");
                                                         break packetswitch;
                                                     }
                                                 }
                                                 else if (inventory.getItemInHand().equals(useItemData.itemInHand))
                                                 {
                                                     Item i = inventory.getItemInHand();
-                                                    System.out.println(
+                                                    CyberCoreMain.Log.Error("Was LOG ||"+
                                                         "wwwwwwwwwwwwww > GOOD " + i + "||" + i.getClass());
                                                     Item oldItem = i.clone();
                                                     if (i instanceof ItemBlock)
-                                                    System.out.println("YYYYYYYYYYYYYYYYEEEEEEE");
+                                                    CyberCoreMain.Log.Error("Was LOG ||"+"YYYYYYYYYYYYYYYYEEEEEEE");
                                                     //TODO: Implement adventure mode checks
                                                     if ((i = this.level.useItemOn(blockVector.asVector3(), i, face,
                                                         useItemData.clickPos.x, useItemData.clickPos.y,
                                                         useItemData.clickPos.z, this)) != null)
                                                     {
-                                                        System.out.println("wwwwwwwwwwwwww > GOOD2");
+                                                        CyberCoreMain.Log.Error("Was LOG ||"+"wwwwwwwwwwwwww > GOOD2");
                                                         if (!i.equals(oldItem) || i.getCount() != oldItem.getCount())
                                                         {
-                                                            System.out.println("wwwwwwwwwwwwww > GOOD3");
+                                                            CyberCoreMain.Log.Error("Was LOG ||"+"wwwwwwwwwwwwww > GOOD3");
                                                             inventory.setItemInHand(i);
                                                             inventory.sendHeldItem(this.getViewers().values());
                                                         }
@@ -1153,8 +1131,8 @@ namespace CyberCore
                                                     else
                                                     {
                                                         if (i instanceof ItemBlock)
-                                                        System.out.println("YYYYYYYYYYYYYYYYEEEEEE222222222222E");
-                                                        System.out.println(
+                                                        CyberCoreMain.Log.Error("Was LOG ||"+"YYYYYYYYYYYYYYYYEEEEEE222222222222E");
+                                                        CyberCoreMain.Log.Error("Was LOG ||"+
                                                             "ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR" + i);
                                                     }
                                                 }
@@ -1804,25 +1782,25 @@ namespace CyberCore
         private CoolDown GetCooldown(string key, bool checkvalid)
         {
             if (!CDL.ContainsKey(key)) return null;
-//        CyberCoreMain.getInstance().getLogger().info(" VALID"+key);
+//        CyberCoreMain.Log.info(" VALID"+key);
             CoolDown cd = CDL.get(key);
             if (cd == null) return null;
-//        CyberCoreMain.getInstance().getLogger().info("CVALID"+!cd.isValidTick()+" | "+cd.Time+"|"+Server.getInstance().getTick());
+//        CyberCoreMain.Log.info("CVALID"+!cd.isValidTick()+" | "+cd.Time+"|"+Server.getInstance().getTick());
             if (checkvalid && !cd.isValid())
             {
-//            CyberCoreMain.getInstance().getLogger().info(" EXPIRED "+key);
+//            CyberCoreMain.Log.info(" EXPIRED "+key);
                 CDL.remove(key);
                 return null;
             }
 
-//        CyberCoreMain.getInstance().getLogger().info(" GOOD "+key);
+//        CyberCoreMain.Log.info(" GOOD "+key);
             return cd;
 //
 //
 //        for (CoolDown c : (List<CoolDown>) CDL.clone()) {
-//            CyberCoreMain.getInstance().getLogger().info("CHECK KEY"+key +" == "+ c.Key);
+//            CyberCoreMain.Log.info("CHECK KEY"+key +" == "+ c.Key);
 //            if (c.Key.equalsIgnoreCase(key)) {
-//                CyberCoreMain.getInstance().getLogger().info("CHECK VALID"+checkvalid +" == "+ !c.isValidTick());
+//                CyberCoreMain.Log.info("CHECK VALID"+checkvalid +" == "+ !c.isValidTick());
 //                if (checkvalid && !c.isValidTick()) {//CT !> Set Time
 //                    CDL.remove(c);
 //                    return null;
@@ -1854,11 +1832,11 @@ namespace CyberCore
                             if (Combat.getTick() < currentTick) //No Long in combat
                                 leaveCombat();
 
-                        //            CyberCoreMain.getInstance().getLogger().info("RUNNNING "+CDL.size());
+                        //            CyberCoreMain.Log.info("RUNNNING "+CDL.size());
                         var fc = GetCooldown(Cooldown_Faction, true);
                         if (fc == null)
                         {
-//                    CyberCoreMain.getInstance().getLogger().info("RUNNNING FACTION CHECK IN CP" + CDL.size());
+//                    CyberCoreMain.Log.info("RUNNNING FACTION CHECK IN CP" + CDL.size());
                             AddCoolDown(Cooldown_Faction, 60); //3 mins
                             if (Faction == null)
                             {
@@ -1887,7 +1865,7 @@ namespace CyberCore
                         var tc = GetCooldown(Cooldown_DTP, true);
                         if (tc == null)
                         {
-//                    CyberCoreMain.getInstance().getLogger().info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
+//                    CyberCoreMain.Log.info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
                             AddCoolDown(Cooldown_DTP, 1);
                             if (isWaitingForTeleport())
                             {
@@ -1902,7 +1880,7 @@ namespace CyberCore
                         var cc = GetCooldown(Cooldown_Class, true);
                         if (cc == null)
                         {
-//                    CyberCoreMain.getInstance().getLogger().info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
+//                    CyberCoreMain.Log.info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
                             AddCoolDown(Cooldown_Class, 5);
                             BaseClass bc = getPlayerClass();
                             if (bc != null) bc.onUpdate(currentTick);
@@ -1912,7 +1890,7 @@ namespace CyberCore
                         var sc = GetCooldown(Scoreboard_Class, true);
                         if (sc == null)
                         {
-//                    CyberCoreMain.getInstance().getLogger().info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
+//                    CyberCoreMain.Log.info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
                             AddCoolDown(Scoreboard_Class, 3);
                             ReloadScoreBoard();
 
@@ -1965,7 +1943,7 @@ namespace CyberCore
 
                         if (TeleportTick <= currentTick && isTeleporting)
                         {
-                            System.out.println("AAAAAA");
+                            CyberCoreMain.Log.Error("Was LOG ||"+"AAAAAA");
                             if (isTeleporting)
                             {
                                 removeAllEffects(); //TODO use `removeEffect` to only remove that Effect
@@ -2489,10 +2467,10 @@ namespace CyberCore
                 .setMaxValue(this.getAbsorption() % 2 != 0 ? getMaxHealth() + 1 : getMaxHealth())
                 .setValue(health > 0 ? health < getMaxHealth() ? health : getMaxHealth() : 0);
 
-//        System.out.println("PRINGING A LINE HEEERRRRRRRRRR");
+//        CyberCoreMain.Log.Error("Was LOG ||"+"PRINGING A LINE HEEERRRRRRRRRR");
             if (this.spawned)
             {
-//        System.out.println("PRINGING A LINE SEEEEEEEEEEEEEEEEEEEEE");
+//        CyberCoreMain.Log.Error("Was LOG ||"+"PRINGING A LINE SEEEEEEEEEEEEEEEEEEEEE");
                 UpdateAttributesPacket pk = new UpdateAttributesPacket();
                 pk.entries = new[] {attr};
                 pk.entityId = this.id;

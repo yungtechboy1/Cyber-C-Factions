@@ -49,8 +49,8 @@ namespace CyberCore.Manager.Crate
 
             ConfigSection cl = c.getRootSection();
             ConfigSection cd = cc.getRootSection();
-            System.out.println(cd);
-            System.out.println("Loading Crate Data");
+            CyberCoreMain.Log.Error("Was LOG ||"+cd);
+            CyberCoreMain.Log.Error("Was LOG ||"+"Loading Crate Data");
             Map<String, Object> cdd = cd.getAllMap();
             if (cc.loaded)
             {
@@ -61,7 +61,7 @@ namespace CyberCore.Manager.Crate
             }
             else
             {
-                System.out.println("CD SIZE +=====>>" + cd.size());
+                CyberCoreMain.Log.Error("Was LOG ||"+"CD SIZE +=====>>" + cd.size());
                 for (Object o :
                 cdd.values()) {
                     if (o instanceof ConfigSection) {
@@ -80,13 +80,13 @@ namespace CyberCore.Manager.Crate
                 }
             }
 
-            System.out.println("Loading Crate Locations");
+            CyberCoreMain.Log.Error("Was LOG ||"+"Loading Crate Locations");
             if (cl.isEmpty())
             {
             }
             else
             {
-                System.out.println("CL SIZE +=====>>" + cl.size());
+                CyberCoreMain.Log.Error("Was LOG ||"+"CL SIZE +=====>>" + cl.size());
                 for (Object o :
                 cl.getAllMap().values()) {
                     if (o instanceof ConfigSection) {
@@ -104,20 +104,20 @@ namespace CyberCore.Manager.Crate
                         }
                         else
                         {
-                            CyberCoreMain.getInstance().getLogger().error("Error Loading Chest Crate Location! " + nme);
+                            CyberCoreMain.Log.Error("Error Loading Chest Crate Location! " + nme);
                         }
                     }
                 }
             }
 
-            System.out.println("Loading Crate Keys");
+            CyberCoreMain.Log.Error("Was LOG ||"+"Loading Crate Keys");
             ConfigSection CKC = ck.getRootSection();
             if (cl.isEmpty())
             {
             }
             else
             {
-                System.out.println("CKC SIZE +=====>>" + CKC.size());
+                CyberCoreMain.Log.Error("Was LOG ||"+"CKC SIZE +=====>>" + CKC.size());
                 for (Object o :
                 CKC.getAllMap().values()) {
                     if (o instanceof ConfigSection) {
@@ -125,12 +125,12 @@ namespace CyberCore.Manager.Crate
                         String nme = c.getString("Key_Name");
                         if (nme == null || nme.length() == 0)
                         {
-                            System.out.println("Error! The Key_Name was Null!");
+                            CyberCoreMain.Log.Error("Was LOG ||"+"Error! The Key_Name was Null!");
                             return;
                         }
 
                         CrateKeys.put(nme, new KeyData(c));
-                        CyberCoreMain.getInstance().getLogger().info("Loaded " + nme + " Crate Key!");
+                        CyberCoreMain.Log.info("Loaded " + nme + " Crate Key!");
                     }
                 }
             }
@@ -205,12 +205,12 @@ namespace CyberCore.Manager.Crate
             }
             else
             {
-                System.out.println("CD SIZE +=====>>" + cd.size());
+                CyberCoreMain.Log.Error("Was LOG ||"+"CD SIZE +=====>>" + cd.size());
                 for (Object o :
                 cdd.values()) {
                     if (o instanceof ConfigSection) {
                         ConfigSection c = (ConfigSection) o;
-//                    System.out.println("THIS IS A >>>>" + o + "+" + o.getClass());
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"THIS IS A >>>>" + o + "+" + o.getClass());
                         String nme = c.getString("Name");
                         if (nme == null || nme.length() == 0)
                         {

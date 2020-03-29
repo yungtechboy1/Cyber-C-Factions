@@ -338,7 +338,7 @@ namespace CyberCore.Manager.Factions
                         //stmt2.executeUpdate(String.format("INSERT INTO `home` VALUES ('"+name+"',%s,%s,%s) ;",home.getX(),home.getY(),home.getZ()));
 //                    Console.WriteLine(String.format("INSERT INTO `Master` VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');"
 //                            , name, maxplayers, powerbonus, motd, displayName, desc, perms, privacy, power, money, point, xp, lvl, CMID, am, rich));
-//                    CyberCoreMain.getInstance().getLogger().error(String.format("INSERT INTO `Master` VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');"
+//                    CyberCoreMain.Log.Error(String.format("INSERT INTO `Master` VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');"
 //                            , name, maxplayers, powerbonus, motd, displayName, desc, perms, privacy, power, money, point, xp, lvl, CMID, am, rich));
 //                    stmt.executeUpdate(String.format("DELETE FROM `Master` WHERE `faction` LIKE '%s';", fac.getName()));
 //                    stmt.executeUpdate(String.format("INSERT INTO `Master` VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');"

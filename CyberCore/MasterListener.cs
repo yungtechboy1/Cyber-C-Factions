@@ -191,7 +191,7 @@ namespace CyberCore
 
         @EventHandler(priority = EventPriority.HIGHEST)
         public void InventoryClickEvent(InventoryClickEvent event) {
-            System.out.println("CLICKKKKK EVENTTTTTTTTTTTT >>>> " + event);
+            CyberCoreMain.Log.Error("Was LOG ||"+"CLICKKKKK EVENTTTTTTTTTTTT >>>> " + event);
             Player p = event.getPlayer();
             CorePlayer cp = (CorePlayer) p;
             if (cp.getPlayerClass() == null) return;
@@ -202,7 +202,7 @@ namespace CyberCore
                     event = (InventoryClickEvent) pp.handelEvent(event);
                 }
             }
-            if (event.isCancelled()) System.out.println("CANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
+            if (event.isCancelled()) CyberCoreMain.Log.Error("Was LOG ||"+"CANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
         }
 
         //No need RN
@@ -221,7 +221,7 @@ namespace CyberCore
         @EventHandler(ignoreCancelled = true)
         public void TEE(InventoryTransactionEvent event) {
 //        event.setCancelled();
-            System.out.println("CALLLLzzzzzzzzAAAAASSDDb");
+            CyberCoreMain.Log.Error("Was LOG ||"+"CALLLLzzzzzzzzAAAAASSDDb");
 //        event.getTransaction().
             InventoryTransaction transaction = event.getTransaction();
             Set<InventoryAction> traa = transaction.getActions();
@@ -246,7 +246,7 @@ namespace CyberCore
         @EventHandler(ignoreCancelled = true)
         public void TE(InventoryTransactionEvent event) {
 //        event.setCancelled();
-            System.out.println("CALLLL");
+            CyberCoreMain.Log.Error("Was LOG ||"+"CALLLL");
 //        event.getTransaction().
             InventoryTransaction transaction = event.getTransaction();
             Set<InventoryAction> traa = transaction.getActions();
@@ -260,26 +260,26 @@ namespace CyberCore
             if (s) return;
             for (InventoryAction t :
             traa) {
-                System.out.println("CALLLL TTTTTTTTTTTTTTTTTTT" + t.getClass().getName());
+                CyberCoreMain.Log.Error("Was LOG ||"+"CALLLL TTTTTTTTTTTTTTTTTTT" + t.getClass().getName());
                 if (t instanceof SlotChangeAction) {
-//                System.out.println("CALLLL SLOTCCCCCCCC");
+//                CyberCoreMain.Log.Error("Was LOG ||"+"CALLLL SLOTCCCCCCCC");
                     SlotChangeAction sca = (SlotChangeAction) t;
 //                sca.getInventory()
 
                     Inventory inv = sca.getInventory();
-//                System.out.println("CHECK INNNNNVVVVVVV " + inv.getClass().getName());
+//                CyberCoreMain.Log.Error("Was LOG ||"+"CHECK INNNNNVVVVVVV " + inv.getClass().getName());
 //                if (inv.isEmpty()) return;
 
-//                System.out.println("NEEEEEEE" + inv.getClass().getTypeName());
+//                CyberCoreMain.Log.Error("Was LOG ||"+"NEEEEEEE" + inv.getClass().getTypeName());
                     if (inv instanceof PlayerInventory) {
-                        System.out.println("CHECK INNNNNVVVVVVV " + sca);
+                        CyberCoreMain.Log.Error("Was LOG ||"+"CHECK INNNNNVVVVVVV " + sca);
 //                event.setCancelled();
                     } else if (inv instanceof PlayerCursorInventory) {
                         event.setCancelled();
                         transaction.getSource().getCursorInventory().clearAll();
                         transaction.getSource().sendAllInventories();
-                        System.out.println("+++++>" + transaction.getSource().getCursorInventory());
-                        System.out.println("+++++>" + transaction.getSource().getCursorInventory().slots);
+                        CyberCoreMain.Log.Error("Was LOG ||"+"+++++>" + transaction.getSource().getCursorInventory());
+                        CyberCoreMain.Log.Error("Was LOG ||"+"+++++>" + transaction.getSource().getCursorInventory().slots);
                     }
                     if (inv instanceof ShopInv) {
                         ShopInvMainHandle(inv, sca,  event);
@@ -287,7 +287,7 @@ namespace CyberCore
                     if (inv instanceof AuctionHouse) {
                         AuctionHouse ah = (AuctionHouse) inv;
 //                    if(!ah.Init)return;
-                        System.out.println(sca.getSlot() + " || " + ah.getHolder().getName() + " || " +
+                        CyberCoreMain.Log.Error("Was LOG ||"+sca.getSlot() + " || " + ah.getHolder().getName() + " || " +
                                            ah.getHolder().getClass().getName());
                         CorePlayer ccpp = (CorePlayer) ah.getHolder();
                         int slot = sca.getSlot();
@@ -295,12 +295,12 @@ namespace CyberCore
 //                    event.setCancelled();
                         if (slot < 5 * 9)
                         {
-                            System.out.println("TOP INV");
+                            CyberCoreMain.Log.Error("Was LOG ||"+"TOP INV");
                             //TODO CONFIRM AND SHOW ITEM
                             if (!ah.ConfirmPurchase)
                             {
                                 ah.ConfirmItemPurchase(slot);
-                                System.out.println("SSSSSSSSSSSSCPPPPPPPP");
+                                CyberCoreMain.Log.Error("Was LOG ||"+"SSSSSSSSSSSSCPPPPPPPP");
 //                        ccpp.AH.ConfirmItemPurchase(slot);
                             }
                             else
@@ -317,18 +317,18 @@ namespace CyberCore
                                     }
                                     else
                                     {
-                                        System.out.println("CPPPPPPPP");
+                                        CyberCoreMain.Log.Error("Was LOG ||"+"CPPPPPPPP");
 
                                         if (si.getId() == BlockID.EMERALD_BLOCK)
                                         {
-                                            System.out.println("CONFIRM PURCHASE!!!!!!!");
+                                            CyberCoreMain.Log.Error("Was LOG ||"+"CONFIRM PURCHASE!!!!!!!");
                                             ah.AF.PurchaseItem((CorePlayer) ah.getHolder(), ah.getPage(),
                                                 ah.ConfirmPurchaseSlot);
                                             break;
                                         }
                                         else if (si.getId() == BlockID.REDSTONE_BLOCK)
                                         {
-                                            System.out.println("DENCLINE PURCHASE!!!!!!!!");
+                                            CyberCoreMain.Log.Error("Was LOG ||"+"DENCLINE PURCHASE!!!!!!!!");
                                             ah.setPage(1);
                                             ah.ClearConfirmPurchase();
                                             break;
@@ -336,7 +336,7 @@ namespace CyberCore
                                         else
                                         {
                                             ah.setPage(1);
-                                            System.out.println("UNKNOWNMNNN!!!!!!!!");
+                                            CyberCoreMain.Log.Error("Was LOG ||"+"UNKNOWNMNNN!!!!!!!!");
                                             ah.ClearConfirmPurchase();
                                             break;
                                         }
@@ -372,7 +372,7 @@ namespace CyberCore
                     if (inv instanceof SpawnerShop) {
                         SpawnerShop ah = (SpawnerShop) inv;
 //                    if(!ah.Init)return;
-                        System.out.println(sca.getSlot() + " || " + ah.getHolder().getName() + " || " +
+                        CyberCoreMain.Log.Error("Was LOG ||"+sca.getSlot() + " || " + ah.getHolder().getName() + " || " +
                                            ah.getHolder().getClass().getName());
                         CorePlayer ccpp = (CorePlayer) ah.getHolder();
                         int slot = sca.getSlot();
@@ -380,7 +380,7 @@ namespace CyberCore
 //                    event.setCancelled();
                         if (slot < 5 * 9)
                         {
-                            System.out.println("TOP INV");
+                            CyberCoreMain.Log.Error("Was LOG ||"+"TOP INV");
                             //TODO CONFIRM AND SHOW ITEM
                             if (!ah.ConfirmPurchase)
                             {
@@ -398,7 +398,7 @@ namespace CyberCore
                                     int isc = is.getCount();
                                     if (is != null && is.getId() != 0) {
                                         if (is.getId() == Item.IRON_BLOCK) isi = true;
-                                        System.out.println("Selected Slot SX:" + sx + " | SY:" + sy);
+                                        CyberCoreMain.Log.Error("Was LOG ||"+"Selected Slot SX:" + sx + " | SY:" + sy);
                                         if (sy != 0 && sy != 5 && sx != 4 && !isi)
                                         {
                                             if (sx < 4)
@@ -431,18 +431,18 @@ namespace CyberCore
                                         }
                                         else
                                         {
-                                            System.out.println("CPPPPPPPP");
+                                            CyberCoreMain.Log.Error("Was LOG ||"+"CPPPPPPPP");
 
                                             if (si.getId() == BlockID.EMERALD_BLOCK)
                                             {
-                                                System.out.println("CONFIRM PURCHASE!!!!!!!");
+                                                CyberCoreMain.Log.Error("Was LOG ||"+"CONFIRM PURCHASE!!!!!!!");
                                                 ah.SSF.PurchaseItem((CorePlayer) ah.getHolder(), ah.getPage(),
                                                     ah.ConfirmPurchaseSlot, si.getCount());
                                                 break;
                                             }
                                             else if (si.getId() == BlockID.REDSTONE_BLOCK)
                                             {
-                                                System.out.println("DENCLINE PURCHASE!!!!!!!!");
+                                                CyberCoreMain.Log.Error("Was LOG ||"+"DENCLINE PURCHASE!!!!!!!!");
                                                 ah.setPage(1);
                                                 ah.ClearConfirmPurchase();
                                                 break;
@@ -450,7 +450,7 @@ namespace CyberCore
                                             else
                                             {
                                                 ah.setPage(1);
-                                                System.out.println("UNKNOWNMNNN!!!!!!!!");
+                                                CyberCoreMain.Log.Error("Was LOG ||"+"UNKNOWNMNNN!!!!!!!!");
                                                 ah.ClearConfirmPurchase();
                                                 break;
                                             }
@@ -494,10 +494,10 @@ namespace CyberCore
 
         private void ShopInvMainHandle(Inventory inv, SlotChangeAction sca, InventoryTransactionEvent event) {
             event.setCancelled();
-            System.out.println("CHECK INNNNNVVV222222VVVV " + sca);
+            CyberCoreMain.Log.Error("Was LOG ||"+"CHECK INNNNNVVV222222VVVV " + sca);
             ShopInv ah = (ShopInv) inv;
 //                    if(!ah.Init)return;
-            System.out.println(sca.getSlot() + " || " + ah.getHolder().getName() + " || " +
+            CyberCoreMain.Log.Error("Was LOG ||"+sca.getSlot() + " || " + ah.getHolder().getName() + " || " +
                                ah.getHolder().getClass().getName());
             CorePlayer ccpp = (CorePlayer) ah.getHolder();
             int slot = sca.getSlot();
@@ -506,7 +506,7 @@ namespace CyberCore
 //                    event.setCancelled();
             if (slot < 5 * 9)
             {
-                System.out.println("TOP INV");
+                CyberCoreMain.Log.Error("Was LOG ||"+"TOP INV");
                 //TODO CONFIRM AND SHOW ITEM
                 if (!ah.ConfirmPurchase)
                 {
@@ -552,7 +552,7 @@ namespace CyberCore
                         int isc = is.getCount();
                         if (is != null && is.getId() != 0) {
                             if (is.getId() == Item.IRON_BLOCK) isi = true;
-                            System.out.println("Selected Slot SX:" + sx + " | SY:" + sy);
+                            CyberCoreMain.Log.Error("Was LOG ||"+"Selected Slot SX:" + sx + " | SY:" + sy);
                             if (sy != 0 && sy != 5 && sx != 4 && !isi)
                             {
                                 if (sx < 4)
@@ -583,18 +583,18 @@ namespace CyberCore
                             }
                             else
                             {
-                                System.out.println("CPPPPPPPP");
+                                CyberCoreMain.Log.Error("Was LOG ||"+"CPPPPPPPP");
 
                                 if (si.getId() == BlockID.EMERALD_BLOCK)
                                 {
-                                    System.out.println("CONFIRM PURCHASE!!!!!!!");
+                                    CyberCoreMain.Log.Error("Was LOG ||"+"CONFIRM PURCHASE!!!!!!!");
                                     ah.SF.PurchaseItem((CorePlayer) ah.getHolder(), ah.getPage(),
                                         ah.ConfirmPurchaseSlot, si.getCount(), ah.AdminMode);
                                     return;
                                 }
                                 else if (si.getId() == BlockID.REDSTONE_BLOCK)
                                 {
-                                    System.out.println("DENCLINE PURCHASE!!!!!!!!");
+                                    CyberCoreMain.Log.Error("Was LOG ||"+"DENCLINE PURCHASE!!!!!!!!");
                                     ah.setPage(1);
                                     ah.ClearConfirmPurchase();
                                     return;
@@ -602,7 +602,7 @@ namespace CyberCore
                                 else
                                 {
                                     ah.setPage(1);
-                                    System.out.println("UNKNOWNMNNN!!!!!!!!");
+                                    CyberCoreMain.Log.Error("Was LOG ||"+"UNKNOWNMNNN!!!!!!!!");
                                     ah.ClearConfirmPurchase();
                                     return;
                                 }
@@ -653,7 +653,7 @@ namespace CyberCore
                     ShopMysqlData sd = ah.CCM.Shop.getItemFrom(s);
                     if (sd == null)
                     {
-                        System.out.println("Error!!!!! WTF!!!1221aas222e2aaqqqwd  ass");
+                        CyberCoreMain.Log.Error("Was LOG ||"+"Error!!!!! WTF!!!1221aas222e2aaqqqwd  ass");
                     }
                     else
                     {
@@ -699,7 +699,7 @@ namespace CyberCore
         @EventHandler(priority = EventPriority.HIGHEST)
         public void EICE(EntityInventoryChangeEvent event) {
             if (event == null) {
-                System.out.println("WTF NUUUUUUUUUUUUUUUUUUULLLLLLLLLLLLLLLLLLLLL");
+                CyberCoreMain.Log.Error("Was LOG ||"+"WTF NUUUUUUUUUUUUUUUUUUULLLLLLLLLLLLLLLLLLLLL");
                 return;
             }
             Entity e = event.getEntity();

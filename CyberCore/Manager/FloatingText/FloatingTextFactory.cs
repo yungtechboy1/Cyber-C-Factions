@@ -86,7 +86,7 @@ namespace CyberCore.Manager.FloatingText
             lock (llock)
             {
                 ToAddList.Add(ftc);
-//            System.out.println("added!");
+//            CyberCoreMain.Log.Error("Was LOG ||"+"added!");
             }
         }
 
@@ -95,7 +95,7 @@ namespace CyberCore.Manager.FloatingText
             lock (llock)
             {
                 ToRemoveList.Add(ftc);
-//            System.out.println("added!");
+//            CyberCoreMain.Log.Error("Was LOG ||"+"added!");
             }
         }
 
@@ -103,23 +103,23 @@ namespace CyberCore.Manager.FloatingText
 
         public Dictionary<String, PlayerLocation> GetPlayerPoss()
         {
-//        System.out.println("GP");
+//        CyberCoreMain.Log.Error("Was LOG ||"+"GP");
             Dictionary<String, PlayerLocation> playerposs = new Dictionary<String, PlayerLocation>();
             foreach (OpenPlayer p in CyberCoreMain.GetInstance().getAPI().PlayerManager.GetPlayers())
                 playerposs.Add(p.getName(), p.KnownPosition);
-//        System.out.println("EP"+playerposs.size());
+//        CyberCoreMain.Log.Error("Was LOG ||"+"EP"+playerposs.size());
             return playerposs;
         }
 
         public void run()
         {
             int lasttick = -1;
-//        System.out.println("11111111111111111111");
-//System.out.println("======");
+//        CyberCoreMain.Log.Error("Was LOG ||"+"11111111111111111111");
+//CyberCoreMain.Log.Error("Was LOG ||"+"======");
             int tick = CyberUtils.getLongTime();
             if (tick != lasttick)
             {
-//                System.out.println("||||||||======");
+//                CyberCoreMain.Log.Error("Was LOG ||"+"||||||||======");
                 lasttick = tick;
 //                Dictionary<String, PlayerLocation> ppss = GetPlayerPoss();
                 foreach (CyberFloatingTextContainer a in getLList())
@@ -131,13 +131,13 @@ namespace CyberCore.Manager.FloatingText
                     }
 
 
-//                    System.out.println("|||||"+ft.GetText(null));
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"|||||"+ft.GetText(null));
                     //Create Blank array if not present!
                     if (!FTLastSentToRmv.ContainsKey(a.EntityId)) FTLastSentToRmv.Add(a.EntityId, new List<String>());
 
-//                    System.out.println("OU");
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"OU");
                     a.OnUpdate(tick);
-//                    System.out.println("OU");
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"OU");
 //                    int ftlt = a.LastUpdate;
 // ?????????
 // if (ftlt >= tick) continue;
@@ -146,9 +146,9 @@ namespace CyberCore.Manager.FloatingText
                     List<Player> app = new List<Player>();
                     //For Each player with pos
 //                    for (String player : ppss.keySet()) {
-//                    System.out.println("ERroror >> 1");
-//                    System.out.println("ERroror >> "+a.Lvl);
-//                    System.out.println("ERroror >> "+a.Syntax);
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"ERroror >> 1");
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"ERroror >> "+a.Lvl);
+//                    CyberCoreMain.Log.Error("Was LOG ||"+"ERroror >> "+a.Syntax);
                     Level l = null;
                     if (a.KnownPosition == null || a.Lvl == null)
                     {
@@ -170,14 +170,14 @@ namespace CyberCore.Manager.FloatingText
                     var pc = l.GetAllPlayers();
                     if (pc == null || pc.Length == 0)
                     {
-//                        System.out.println("ERroror roor ororororo E15072458");
+//                        CyberCoreMain.Log.Error("Was LOG ||"+"ERroror roor ororororo E15072458");
                         continue;
                     }
 
                     foreach (var p in pc)
                     {
                         String player = p.getName();
-//                        System.out.println("2222"+player);
+//                        CyberCoreMain.Log.Error("Was LOG ||"+"2222"+player);
                         PlayerLocation ppos = p.KnownPosition;
                         if (a.KnownPosition.DistanceTo(ppos) > 200) continue;
                         //TODO many implement a Quick Check?
@@ -187,7 +187,7 @@ namespace CyberCore.Manager.FloatingText
                             continue;
                         ap.Add(player);
                         app.Add(p);
-//                        System.out.println("AP");
+//                        CyberCoreMain.Log.Error("Was LOG ||"+"AP");
                         //Remove Player we just added cuz We dont need to remove the FT particle from them!
                         if (FTLastSentToRmv[a.EntityId].Count > 0) FTLastSentToRmv[a.EntityId].Remove(player);
                     }
@@ -269,13 +269,13 @@ namespace CyberCore.Manager.FloatingText
 
         public String FormatText(String text, Player player, bool vertical)
         {
-//        if(text == null)System.out.println("----0");
-//        if(CCM == null)System.out.println("----1");
-//        if(CCM.getServer() == null)System.out.println("----2");
-//        if(CCM.getServer().getOnlinePlayers() == null)System.out.println("----3");
-//        System.out.println("----4"+CCM.getServer().getOnlinePlayers().size());
-//        System.out.println("----5"+CCM.getServer().getTicksPerSecondAverage());
-//        System.out.println("----6"+text);
+//        if(text == null)CyberCoreMain.Log.Error("Was LOG ||"+"----0");
+//        if(CCM == null)CyberCoreMain.Log.Error("Was LOG ||"+"----1");
+//        if(CCM.getServer() == null)CyberCoreMain.Log.Error("Was LOG ||"+"----2");
+//        if(CCM.getServer().getOnlinePlayers() == null)CyberCoreMain.Log.Error("Was LOG ||"+"----3");
+//        CyberCoreMain.Log.Error("Was LOG ||"+"----4"+CCM.getServer().getOnlinePlayers().size());
+//        CyberCoreMain.Log.Error("Was LOG ||"+"----5"+CCM.getServer().getTicksPerSecondAverage());
+//        CyberCoreMain.Log.Error("Was LOG ||"+"----6"+text);
             text = text.Replace("{online-players}", "" + CCM.getAPI().PlayerManager.GetPlayers().Length)
                 .Replace("{ticks}", 20 + "") //TODO
                 .Replace("`", "\n")
@@ -342,7 +342,7 @@ namespace CyberCore.Manager.FloatingText
             }
 
             if (vertical) text = text.Replace("|n", "\n");
-//        System.out.println(text);
+//        CyberCoreMain.Log.Error("Was LOG ||"+text);
             return text;
         }
 

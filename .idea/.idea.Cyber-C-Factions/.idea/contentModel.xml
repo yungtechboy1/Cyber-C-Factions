@@ -22,6 +22,7 @@
         </e>
         <e p="CustomEnums" t="Include">
           <e p="ChatFormats.cs" t="Include" />
+          <e p="PowerEnum.cs" t="Include" />
           <e p="RankList.cs" t="Include" />
         </e>
         <e p="CyberCore.csproj" t="IncludeRecursive" />
@@ -34,10 +35,23 @@
             <e p="AuctionItemData.cs" t="Include" />
           </e>
           <e p="ClassFactory" t="Include">
+            <e p="BaseClass.cs" t="Include" />
             <e p="Buff.cs" t="Include" />
             <e p="BuffOrigin.cs" t="Include" />
             <e p="BuffType.cs" t="Include" />
             <e p="ClassFactory.cs" t="Include" />
+            <e p="Leveling" t="Include">
+              <e p="ClassLevelingManager.cs" t="Include" />
+              <e p="ClassLevelingManagerStage.cs" t="Include" />
+            </e>
+            <e p="Powers" t="Include">
+              <e p="AdvancedPowerEnum.cs" t="Include" />
+              <e p="AdvancedStagePowerEnum.cs" t="Include" />
+              <e p="AdvancedXPPowerEnum.cs" t="Include" />
+              <e p="PowerAbstract.cs" t="Include" />
+              <e p="PowerManager.cs" t="Include" />
+              <e p="PowerSettings.cs" t="Include" />
+            </e>
           </e>
           <e p="Crate" t="Include">
             <e p="CrateData.cs" t="Include" />

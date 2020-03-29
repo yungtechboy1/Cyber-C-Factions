@@ -241,7 +241,7 @@ namespace CyberCore.Manager.Factions.Missions
     public Item CheckPlayerItems() {
         Dictionary<String, int> map = new Dictionary<>();
         if(Main == null){
-            System.out.println("WTF!!??!?! Really!");
+            CyberCoreMain.Log.Error("Was LOG ||"+"WTF!!??!?! Really!");
             return new Item(1,0,0);
         }
         for (Map.Entry<UUID, Player> a : Main.getServer().getOnlinePlayers().entrySet()) {
