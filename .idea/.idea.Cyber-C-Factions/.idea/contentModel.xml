@@ -17,6 +17,7 @@
         <e p="CoreSettings.cs" t="Include" />
         <e p="Custom" t="Include">
           <e p="Items" t="Include">
+            <e p="ItemEmerald.cs" t="Include" />
             <e p="NetherStar.cs" t="Include" />
           </e>
         </e>

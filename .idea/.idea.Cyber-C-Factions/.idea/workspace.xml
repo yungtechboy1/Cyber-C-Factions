@@ -2,22 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Leveling/ClassLevelingManagerXPLevel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Stage/StagePowerAbstract.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CyberCore/Custom/Items/ItemEmerald.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/CorePlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CorePlayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/CustomEnums/PowerEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CustomEnums/PowerEnum.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/AuctionHouse/AuctionHouse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/AuctionHouse/AuctionHouse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/AdvancedPowerEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/AdvancedPowerEnum.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/AdvancedStagePowerEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Stage/AdvancedStagePowerEnum.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerAbstract.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerAbstract.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerSettings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,6 +59,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/38/fffc6363/StainedGlass.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/13/78afceed/ItemBlock.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Custom/Items/ItemEmerald.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/59/ee84ffa7/BlockStateContainer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A8585F79-75D3-4675-9AF8-7A57243E6E17/1c/0dad66ad/OpenPlayerInventory.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ED586835-1D44-43DA-8994-3392681570C4/1c/a65ee99b/NbtTag.cs" root0="SKIP_HIGHLIGHTING" />
@@ -219,7 +208,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateObject.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextType.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/EntityMetadata.cs" />
@@ -268,6 +256,7 @@
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerSettings.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CustomEnums/PowerEnum.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Custom/Items/ItemEmerald.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerAbstract.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
       </list>
@@ -362,7 +351,7 @@
       <workItem from="1585274550766" duration="1240000" />
       <workItem from="1585281893612" duration="9054000" />
       <workItem from="1585427928867" duration="348000" />
-      <workItem from="1585428818816" duration="23292000" />
+      <workItem from="1585428818816" duration="25979000" />
     </task>
     <servers />
   </component>
@@ -530,11 +519,11 @@
     </state>
     <state x="0" y="433" width="1404" height="765" key="dock-window-2/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584411771012" />
     <state x="0" y="0" width="1280" height="1040" key="dock-window-2/0.0.2560.1040@0.0.2560.1040" timestamp="1585445023694" />
-    <state x="0" y="0" width="1280" height="1040" key="dock-window-3" timestamp="1585523504038">
+    <state x="1280" y="0" width="1280" height="1040" key="dock-window-3" timestamp="1585580368681">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="99" y="256" width="1404" height="765" key="dock-window-3/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584413779374" />
-    <state x="0" y="0" width="1280" height="1040" key="dock-window-3/0.0.2560.1040@0.0.2560.1040" timestamp="1585523504038" />
+    <state x="1280" y="0" width="1280" height="1040" key="dock-window-3/0.0.2560.1040@0.0.2560.1040" timestamp="1585580368681" />
     <state x="-1902" y="1" width="1404" height="765" key="dock-window-4" timestamp="1584416513152">
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
@@ -555,12 +544,12 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="0" y="0" width="1406" height="765" key="dock-window-8/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584230358805" />
-    <state x="869" y="144" width="936" height="752" key="find.popup" timestamp="1585522668536">
+    <state x="869" y="144" width="936" height="752" key="find.popup" timestamp="1585524103689">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="662" y="144" width="692" height="752" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584584090275" />
     <state x="-1854" y="155" width="738" height="804" key="find.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584417682271" />
-    <state x="869" y="144" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1585522668536" />
+    <state x="869" y="144" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1585524103689" />
     <state x="1461" y="244" key="run.anything.popup" timestamp="1585436525775">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>

@@ -26,7 +26,7 @@ namespace CyberCore.Utils
             return CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction(c);
         }
 
-        public static Object getOrDefault(this Dictionary<String, Object> d,String s, Object de)
+        public static Object getOrDefault(this Dictionary<String, Object> d, String s, Object de)
         {
             if (d.ContainsKey(s))
             {
@@ -35,6 +35,7 @@ namespace CyberCore.Utils
 
             return de;
         }
+
         public static String getName(this FactionRank s)
         {
             return FactionRankMethods.getName(s);
@@ -45,24 +46,127 @@ namespace CyberCore.Utils
             var ii = i.Slots[k];
             return ii is ItemAir || ii.Id == 0 || ii.Id == -1;
         }
+
         public static NbtCompound putInt(this NbtCompound i, string key, int val)
         {
-            i.Add(new NbtInt(key,val));
+            i.Add(new NbtInt(key, val));
             return i;
         }
+
         public static bool hasCompoundTag(this Item i)
         {
             return i.ExtraData != null;
         }
+
         public static NbtCompound putBoolean(this NbtCompound i, string key, bool val)
         {
-            i.Add(new NbtByte(key,(byte) (val ? 1 : 0)));
+            i.Add(new NbtByte(key, (byte) (val ? 1 : 0)));
             return i;
         }
+
+        public static NbtCompound getDisplayCompound(this Item i)
+        {
+            if (i.hasCompoundTag())
+            {
+                var a = i.ExtraData;
+                if (a.Contains("display")) return (NbtCompound) a["display"];
+            }
+
+            return new NbtCompound
+            {
+                new NbtCompound("display")
+            };
+        }
+
+        public static NbtCompound getDisplayCompound(this NbtCompound i)
+        {
+            if (i != null)
+            {
+                if (i.Contains("display")) return (NbtCompound) i["display"];
+                i.Add(new NbtCompound("display"));
+                return (NbtCompound) i["display"];
+            }
+
+            i = new NbtCompound
+            {
+                new NbtCompound("display")
+            };
+            return (NbtCompound) i["display"];
+        }
+
+        public static Item setLore(this Item i, List<String> lines)
+        {
+            return setLore(i, lines.ToArray());
+        }
+
+        public static NbtCompound getLore(this Item i)
+        {
+            NbtCompound tag = getDisplayCompound(i);
+
+            NbtList lore = new NbtList("Lore");
+            String[] var4 = lines;
+            int var5 = lines.Length;
+
+            for (int var6 = 0; var6 < var5; ++var6)
+            {
+                String line = var4[var6];
+                //OR Maybe try ""
+                lore.Add(new NbtString(line));
+            }
+
+            if(tag.Contains("Lore"))tag.Remove("Lore");
+            tag.Add(lore);
+            
+            return i;
+        }
+        {
+        public static Item addLore(this Item i, String[] lines)
+        {
+            NbtCompound tag = getDisplayCompound(i);
+
+            NbtList lore = new NbtList("Lore");
+            String[] var4 = lines;
+            int var5 = lines.Length;
+
+            for (int var6 = 0; var6 < var5; ++var6)
+            {
+                String line = var4[var6];
+                //OR Maybe try ""
+                lore.Add(new NbtString(line));
+            }
+
+            if(tag.Contains("Lore"))tag.Remove("Lore");
+            tag.Add(lore);
+            
+            return i;
+        }
+        {
+        public static Item setLore(this Item i, String[] lines)
+        {
+            NbtCompound tag = getDisplayCompound(i);
+
+            NbtList lore = new NbtList("Lore");
+            String[] var4 = lines;
+            int var5 = lines.Length;
+
+            for (int var6 = 0; var6 < var5; ++var6)
+            {
+                String line = var4[var6];
+                //OR Maybe try ""
+                lore.Add(new NbtString(line));
+            }
+
+            if(tag.Contains("Lore"))tag.Remove("Lore");
+            tag.Add(lore);
+            
+            return i;
+        }
+
         public static NbtCompound getNamedTag(this Item i)
         {
             return i.ExtraData;
         }
+
         public static Item setCompoundTag(this Item i, NbtCompound n)
         {
             i.ExtraData = n;
@@ -161,7 +265,7 @@ namespace CyberCore.Utils
 
         public static Item setCustomName(this Item i, String name)
         {
-            if (String.IsNullOrEmpty(name))return i.clearCustomName();
+            if (String.IsNullOrEmpty(name)) return i.clearCustomName();
 
             var tag = i.ExtraData;
             if (tag.Contains("display") && tag.Get("display") is NbtCompound)
@@ -181,11 +285,12 @@ namespace CyberCore.Utils
             return i;
         }
 
-        
-        public static String getName(this Item i) {
+
+        public static String getName(this Item i)
+        {
             return i.hasCustomName() ? i.getCustomName() : i.GetType().Name;
         }
-        
+
         // public static int getID(this MainForm f)
         // {
         //     return f;
@@ -206,7 +311,8 @@ namespace CyberCore.Utils
             return CyberUtils.getExtraPlayerData(p);
         }
 
-        [CanBeNull]
+        [
+            CanBeNull]
         public static OpenPlayer getPlayer(this OpenPlayerManager p, String name)
         {
             foreach (OpenPlayer players in p.GetPlayers())

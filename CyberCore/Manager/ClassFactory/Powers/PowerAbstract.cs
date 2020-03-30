@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using CyberCore.Custom.Items;
 using CyberCore.CustomEnums;
 using CyberCore.Utils;
 using CyberCore.Utils.Cooldowns;
 using fNbt;
 using MiNET;
+using MiNET.Blocks;
 using MiNET.Effects;
 using MiNET.Items;
 using OpenAPI.Events;
@@ -482,7 +484,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public Item getHotbarItem_Success()
         {
-            Item i = Item.get(Item.EMERALD);
+            Item i = new ItemEmerald();
             i.setCustomName(getDispalyName() + " Power");
             i.setLore(TextFormat.GREEN + "Ready for Use!",
                 TextFormat.GRAY + "Cooldown: " + getCooldownTimeSecs() + " Secs");
