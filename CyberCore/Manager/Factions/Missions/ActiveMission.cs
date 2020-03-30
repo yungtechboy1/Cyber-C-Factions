@@ -116,7 +116,7 @@ namespace CyberCore.Manager.Factions.Missions
     }
 
     public String PlaceBlockStatus() {
-        String fnl = TextFormat.GRAY+"--------Place Block Status------\n";
+        String fnl = ChatColors.Gray+"--------Place Block Status------\n";
         for (Map.Entry<String, int> a : Place.entrySet()) {
             int min = a.getValue();
             Item c;
@@ -128,31 +128,31 @@ namespace CyberCore.Manager.Factions.Missions
             if (PlaceCount.containsKey(a.getKey())) {
                 int current = PlaceCount.get(a.getKey());
                 if (current >= min) {
-                    fnl = fnl + TextFormat.GRAY+"["+ TextFormat.GREEN+"X"+TextFormat.GRAY+"]" +
-                            "  " + TextFormat.AQUA+c.getName()+
-                            TextFormat.GRAY+" | "+
-                            TextFormat.GREEN+current+
-                            TextFormat.GRAY+" / "+TextFormat.GREEN+min+"\n";
+                    fnl = fnl + ChatColors.Gray+"["+ ChatColors.Green+"X"+ChatColors.Gray+"]" +
+                            "  " + ChatColors.AQUA+c.getName()+
+                            ChatColors.Gray+" | "+
+                            ChatColors.Green+current+
+                            ChatColors.Gray+" / "+ChatColors.Green+min+"\n";
                 }else{
-                    fnl = fnl + TextFormat.GRAY+"["+ TextFormat.RED+"-"+TextFormat.GRAY+"]" +
-                            "  " + TextFormat.AQUA+c.getName()+
-                            TextFormat.GRAY+" | "+
-                            TextFormat.YELLOW+current+
-                            TextFormat.GRAY+" / "+TextFormat.YELLOW+min+"\n";
+                    fnl = fnl + ChatColors.Gray+"["+ ChatColors.Red+"-"+ChatColors.Gray+"]" +
+                            "  " + ChatColors.AQUA+c.getName()+
+                            ChatColors.Gray+" | "+
+                            ChatColors.Yellow+current+
+                            ChatColors.Gray+" / "+ChatColors.Yellow+min+"\n";
                 }
             }else{
-                fnl = fnl + TextFormat.GRAY+"["+ TextFormat.RED+"-"+TextFormat.GRAY+"]" +
-                        "  " + TextFormat.AQUA+c.getName()+
-                        TextFormat.GRAY+" | "+
-                        TextFormat.RED+0+
-                        TextFormat.GRAY+" / "+TextFormat.YELLOW+min+"\n";
+                fnl = fnl + ChatColors.Gray+"["+ ChatColors.Red+"-"+ChatColors.Gray+"]" +
+                        "  " + ChatColors.AQUA+c.getName()+
+                        ChatColors.Gray+" | "+
+                        ChatColors.Red+0+
+                        ChatColors.Gray+" / "+ChatColors.Yellow+min+"\n";
             }
         }
         return fnl;
     }
 
     public String BreakBlockStatus() {
-        String fnl = TextFormat.GRAY+"--------Break Block Status------\n";
+        String fnl = ChatColors.Gray+"--------Break Block Status------\n";
         for (Map.Entry<String, int> a : Break.entrySet()) {
             int min = a.getValue();
             Item c;
@@ -164,31 +164,31 @@ namespace CyberCore.Manager.Factions.Missions
             if (BreakCount.containsKey(a.getKey())) {
                 int current = BreakCount.get(a.getKey());
                 if (current >= min) {
-                    fnl = fnl + TextFormat.GRAY+"["+ TextFormat.GREEN+"X"+TextFormat.GRAY+"]" +
-                            "  " + TextFormat.AQUA+c.getName()+
-                            TextFormat.GRAY+" | "+
-                            TextFormat.GREEN+current+
-                            TextFormat.GRAY+" / "+TextFormat.GREEN+min+"\n";
+                    fnl = fnl + ChatColors.Gray+"["+ ChatColors.Green+"X"+ChatColors.Gray+"]" +
+                            "  " + ChatColors.AQUA+c.getName()+
+                            ChatColors.Gray+" | "+
+                            ChatColors.Green+current+
+                            ChatColors.Gray+" / "+ChatColors.Green+min+"\n";
                 }else{
-                    fnl = fnl + TextFormat.GRAY+"["+ TextFormat.RED+"-"+TextFormat.GRAY+"]" +
-                            "  " + TextFormat.AQUA+c.getName()+
-                            TextFormat.GRAY+" | "+
-                            TextFormat.YELLOW+current+
-                            TextFormat.GRAY+" / "+TextFormat.YELLOW+min+"\n";
+                    fnl = fnl + ChatColors.Gray+"["+ ChatColors.Red+"-"+ChatColors.Gray+"]" +
+                            "  " + ChatColors.AQUA+c.getName()+
+                            ChatColors.Gray+" | "+
+                            ChatColors.Yellow+current+
+                            ChatColors.Gray+" / "+ChatColors.Yellow+min+"\n";
                 }
             }else{
-                fnl = fnl + TextFormat.GRAY+"["+ TextFormat.RED+"-"+TextFormat.GRAY+"]" +
-                        "  " + TextFormat.AQUA+c.getName()+
-                        TextFormat.GRAY+" | "+
-                        TextFormat.RED+0+
-                        TextFormat.GRAY+" / "+TextFormat.YELLOW+min+"\n";
+                fnl = fnl + ChatColors.Gray+"["+ ChatColors.Red+"-"+ChatColors.Gray+"]" +
+                        "  " + ChatColors.AQUA+c.getName()+
+                        ChatColors.Gray+" | "+
+                        ChatColors.Red+0+
+                        ChatColors.Gray+" / "+ChatColors.Yellow+min+"\n";
             }
         }
         return fnl;
     }
 
     public String ItemStatus() {
-        String fnl = TextFormat.GRAY+"--------Item Status--------\n";
+        String fnl = ChatColors.Gray+"--------Item Status--------\n";
         Dictionary<String, int> map = new Dictionary<>();
         for (Map.Entry<UUID, Player> a : Main.getServer().getOnlinePlayers().entrySet()) {
             if (!faction.IsInFaction(a.getValue())) {
@@ -214,25 +214,25 @@ namespace CyberCore.Manager.Factions.Missions
                 int v = Math.round(a * 100f);
                 // [X]  TEST | 10 / 100
                 if (v != 100) {
-                    fnl = fnl + TextFormat.GRAY+"["+ TextFormat.RED+"-"+TextFormat.GRAY+"]" +
-                            "  " + TextFormat.AQUA+c.getName()+
-                            TextFormat.GRAY+" | "+
-                            TextFormat.YELLOW+map.get(key)+
-                            TextFormat.GRAY+" / "+TextFormat.YELLOW+c.getCount()+"\n";
+                    fnl = fnl + ChatColors.Gray+"["+ ChatColors.Red+"-"+ChatColors.Gray+"]" +
+                            "  " + ChatColors.AQUA+c.getName()+
+                            ChatColors.Gray+" | "+
+                            ChatColors.Yellow+map.get(key)+
+                            ChatColors.Gray+" / "+ChatColors.Yellow+c.getCount()+"\n";
                 }else{
-                    fnl = fnl + TextFormat.GRAY+"["+ TextFormat.GREEN+"X"+TextFormat.GRAY+"]" +
-                            "  " + TextFormat.AQUA+c.getName()+
-                            TextFormat.GRAY+" | "+
-                            TextFormat.GREEN+map.get(key)+
-                            TextFormat.GRAY+" / "+TextFormat.GREEN+c.getCount()+"\n";
+                    fnl = fnl + ChatColors.Gray+"["+ ChatColors.Green+"X"+ChatColors.Gray+"]" +
+                            "  " + ChatColors.AQUA+c.getName()+
+                            ChatColors.Gray+" | "+
+                            ChatColors.Green+map.get(key)+
+                            ChatColors.Gray+" / "+ChatColors.Green+c.getCount()+"\n";
                 }
                 ;
             } else {
-                fnl = fnl + TextFormat.GRAY+"["+ TextFormat.RED+"-"+TextFormat.GRAY+"]" +
-                        "  " + TextFormat.AQUA+c.getName()+
-                        TextFormat.GRAY+" | "+
-                        TextFormat.RED+0+
-                        TextFormat.GRAY+" / "+TextFormat.YELLOW+c.getCount()+"\n";
+                fnl = fnl + ChatColors.Gray+"["+ ChatColors.Red+"-"+ChatColors.Gray+"]" +
+                        "  " + ChatColors.AQUA+c.getName()+
+                        ChatColors.Gray+" | "+
+                        ChatColors.Red+0+
+                        ChatColors.Gray+" / "+ChatColors.Yellow+c.getCount()+"\n";
             }
         }
         return fnl;
@@ -296,7 +296,7 @@ namespace CyberCore.Manager.Factions.Missions
             return 5;
         }
         faction.CompleteMission(this);
-        String msg = TextFormat.GREEN + name + " Mission completed! You rewards have been given!";
+        String msg = ChatColors.Green + name + " Mission completed! You rewards have been given!";
         faction.BroadcastMessage(FactionsMain.NAME + msg);
         GiveReward();
         return 0;

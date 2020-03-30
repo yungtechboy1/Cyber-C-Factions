@@ -271,7 +271,7 @@ namespace CyberCore.Manager.Crate
             p.dataPacket(pk);
             CustomFloatingTextParticle ft = new CustomFloatingTextParticle(
                 new Vector3(b.getFloorX() + .5, b.getFloorY() + 1, b.getFloorZ() + .5), "",
-                TextFormat.OBFUSCATED + "§b|||||||||§r" + TextFormat.RED + "ROLLING Item" + TextFormat.OBFUSCATED +
+                ChatColors.OBFUSCATED + "§b|||||||||§r" + ChatColors.Red + "ROLLING Item" + ChatColors.OBFUSCATED +
                 "§b|||||||||");
             DataPacket[] packets = ft.encode();
             if (packets.length == 1)

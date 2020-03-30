@@ -41,8 +41,8 @@ namespace CyberCore.Manager.ClassFactory
         put(Block.FLOWER, 100);
         put(Block.BROWN_MUSHROOM, 150);
         put(Block.BROWN_MUSHROOM_BLOCK, 150);
-        put(Block.RED_MUSHROOM, 150);
-        put(Block.RED_MUSHROOM_BLOCK, 150);
+        put(Block.Red_MUSHROOM, 150);
+        put(Block.Red_MUSHROOM_BLOCK, 150);
     }};
     Dictionary<Integer, Integer> Excavation = new Dictionary<Integer, Integer>() {{
         put(Block.GRASS, 40);
@@ -221,8 +221,8 @@ namespace CyberCore.Manager.ClassFactory
         return new List<>();
     }
 
-    public TextFormat getColor() {
-        return TextFormat.GRAY;
+    public ChatColors getColor() {
+        return ChatColors.Gray;
     }
 
     public bool takePowerSourceCount(double a) {
@@ -385,7 +385,7 @@ namespace CyberCore.Manager.ClassFactory
 //        getClassSettings().delActiveGPDLPower(pe);
         onPowerDeActivate(p);//callback
         delActivePower(p);
-        getPlayer().sendMessage(TextFormat.RED + "POWER > " + p.getDispalyName() + " has been DEactivated!");
+        getPlayer().sendMessage(ChatColors.Red + "POWER > " + p.getDispalyName() + " has been DEactivated!");
     }
 
     //
@@ -400,7 +400,7 @@ namespace CyberCore.Manager.ClassFactory
 //        p.enablePower();
 //        onPowerEnabled(p);//callback
 ////        addActivePower(p);
-//        getPlayer().sendMessage(TextFormat.GREEN + "POWER > " + p.getDispalyName() + " has been activated!");
+//        getPlayer().sendMessage(ChatColors.Green + "POWER > " + p.getDispalyName() + " has been activated!");
 //    }
     public void enablePower(AdvancedPowerEnum pe) {
         enablePower(pe, null);
@@ -426,7 +426,7 @@ namespace CyberCore.Manager.ClassFactory
         p.enablePower();
         onPowerEnabled(p);//callback
 //        addActivePower(p);
-        getPlayer().sendMessage(TextFormat.GREEN + "POWER > " + p.getDispalyName() + " has been activated!");
+        getPlayer().sendMessage(ChatColors.Green + "POWER > " + p.getDispalyName() + " has been activated!");
     }
 //    public void enablePower(PowerEnum pe) {
 //        CyberCoreMain.Log.Error("Was LOG ||"+"Attempting to activate222 "+pe);
@@ -439,7 +439,7 @@ namespace CyberCore.Manager.ClassFactory
 //        p.enablePower();
 //        onPowerEnabled(p);//callback
 //        addActivePower(p);
-//        getPlayer().sendMessage(TextFormat.GREEN + "POWER2 > " + p.getDispalyName() + " has been activated!");
+//        getPlayer().sendMessage(ChatColors.Green + "POWER2 > " + p.getDispalyName() + " has been activated!");
 //    }
 
     private void onPowerEnabled(PowerAbstract p) {
@@ -454,7 +454,7 @@ namespace CyberCore.Manager.ClassFactory
         p.setActive();
         onPowerActivate(p);//callback
 //        addActivePower(p);
-        getPlayer().sendMessage(TextFormat.GREEN + "POWER > " + p.getDispalyName() + " has been activated!");
+        getPlayer().sendMessage(ChatColors.Green + "POWER > " + p.getDispalyName() + " has been activated!");
     }
 
     public void onPowerDeActivate(PowerAbstract p) {
@@ -502,7 +502,7 @@ namespace CyberCore.Manager.ClassFactory
         PowerSettings ps = power.getPowerSettings();
         if (ps == null) {
             CyberCoreMain.Log.error("CAN NOT ADD POWER " + power.getName() + "! No PowerSetting Set!");
-            getPlayer().sendMessage(TextFormat.RED + "Error > Plugin > Power > " + power.getName() + " | Error activating power! No Power Setting Set!!!!");
+            getPlayer().sendMessage(ChatColors.Red + "Error > Plugin > Power > " + power.getName() + " | Error activating power! No Power Setting Set!!!!");
             return;
         }
         if (!getLearnedPowersPE().contains(power.getType())) {
@@ -891,10 +891,10 @@ namespace CyberCore.Manager.ClassFactory
         int pxp = XPRemainder(getXP());
         int pxpof = calculateRequireExperience(lvl + 1);
         int plvl = lvl;
-        f.add(TextFormat.AQUA + pclass);
-        f.add("" + TextFormat.GREEN + pxp + TextFormat.AQUA + " / " + TextFormat.GOLD + pxpof);
-        f.add(TextFormat.GREEN + "Level: " + TextFormat.YELLOW + plvl);
-        f.add(TextFormat.AQUA + getPowerSourceType().name() + " PowerAbstract : " + getPowerSourceCount() + " / " + getMaxPowerSourceCount());
+        f.add(ChatColors.AQUA + pclass);
+        f.add("" + ChatColors.Green + pxp + ChatColors.AQUA + " / " + ChatColors.GOLD + pxpof);
+        f.add(ChatColors.Green + "Level: " + ChatColors.Yellow + plvl);
+        f.add(ChatColors.AQUA + getPowerSourceType().name() + " PowerAbstract : " + getPowerSourceCount() + " / " + getMaxPowerSourceCount());
         return f;
     }
 

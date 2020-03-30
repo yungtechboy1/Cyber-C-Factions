@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CyberCore.Custom.Events;
 using CyberCore.Custom.Items;
 using CyberCore.CustomEnums;
 using CyberCore.Utils;
@@ -9,6 +10,7 @@ using MiNET;
 using MiNET.Blocks;
 using MiNET.Effects;
 using MiNET.Items;
+using MiNET.Utils;
 using OpenAPI.Events;
 using OpenAPI.Events.Entity;
 using static CyberCore.CustomEnums.HotbarStatus;
@@ -486,28 +488,28 @@ namespace CyberCore.Manager.ClassFactory.Powers
         {
             Item i = new ItemEmerald();
             i.setCustomName(getDispalyName() + " Power");
-            i.setLore(TextFormat.GREEN + "Ready for Use!",
-                TextFormat.GRAY + "Cooldown: " + getCooldownTimeSecs() + " Secs");
+            i.setLore(new List<String>(){ChatColors.Green + "Ready for Use!",
+                ChatColors.Gray + "Cooldown: " + getCooldownTimeSecs() + " Secs"}.ToArray());
             return i;
         }
 
         public Item getHotbarItem_Fail()
         {
-            Item i = Item.get(Item.REDSTONE_DUST);
+            Item i = new ItemRedstone();
             i.setCustomName(getDispalyName() + " Power");
-            i.setLore(TextFormat.RED + "Power Failed Please Wait!",
-                TextFormat.GRAY + "Cooldown: " + getCooldownTimeSecs() + " Secs");
+            i.setLore(new List<String>(){ChatColors.Red + "Power Failed Please Wait!",
+                ChatColors.Gray + "Cooldown: " + getCooldownTimeSecs() + " Secs"}.ToArray());
             return i;
         }
 
         public Item getHotbarItem_Cooldown()
         {
-            Item i = Item.get(Item.GLOWSTONE_DUST);
+            Item i = new ItemBlock(new Glowstone());
             i.setCustomName(getDispalyName() + " Power");
-            i.setLore(TextFormat.YELLOW + "Power is in Cooldown!",
-                TextFormat.RED + "Cooldown Time Left: " +
-                ((getCooldown().getTick() - getPlayer().getServer().getTick()) / 20) + " Secs",
-                TextFormat.GRAY + "Cooldown: " + getCooldownTimeSecs() + " Secs");
+            i.setLore(new List<String>(){ChatColors.Yellow + "Power is in Cooldown!",
+                ChatColors.Red + "Cooldown Time Left: " +
+                ((getCooldown().getTime() - CyberUtils.getLongTime()) + " Secs",
+                ChatColors.Gray + "Cooldown: " + getCooldownTimeSecs() + " Secs")}.ToArray());
             return i;
         }
 
@@ -518,9 +520,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public bool isLSNull()
         {
-            LockedSlot ls = getLS();
-            if (ls == null) return true;
-            return ls == LockedSlot.NA;
+            return getLS().Equals(LockedSlot.NA);
         }
 
         public int getRunTimeTick()
@@ -563,7 +563,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public void setLS(LockedSlot LS)
         {
-            CyberCoreMain.Log.Error("Was LOG ||"+"LOCKEDSLOT SET FOR " + this.getClass().getName());
+            CyberCoreMain.Log.Error("Was LOG ||"+"LOCKEDSLOT SET FOR " + GetType().Name);
             this.LS = LS;
         }
 
@@ -584,10 +584,9 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public int getDefaultPowerSuccessChance()
         {
-            NukkitRandom nr = new NukkitRandom();
             int l = PlayerClass.getLVL();
-            double f = ((-Math.sin(l / 90) * 13 + Math.sin(-50 + (l / 80))));
-            return (int) Math.round(f * 100);
+            double f = ((-Math.Sin(l / 90) * 13 + Math.Sin(-50 + (l / 80))));
+            return (int)(f * 100);
         }
 
         public void initAfterCreation()
@@ -605,58 +604,58 @@ namespace CyberCore.Manager.ClassFactory.Powers
         }
 
         //TODO IMPLEMENT
-        public Event handelEvent(Event event) {
-            if (event instanceof PlayerTakeDamageEvent)
-            return PlayerTakeDamageEvent((PlayerTakeDamageEvent) event);
-            if (event instanceof EntityDamageEvent)
-            return EntityDamageEvent((EntityDamageEvent) event);
-            if (event instanceof CustomEntityDamageByEntityEvent)
-            return CustomEntityDamageByEntityEvent((CustomEntityDamageByEntityEvent) event);
-            if (event instanceof PlayerJumpEvent)
-            return PlayerJumpEvent((PlayerJumpEvent) event);
-            if (event instanceof InventoryTransactionEvent)
-            return InventoryTransactionEvent((InventoryTransactionEvent) event);
-            if (event instanceof InventoryClickEvent)
-            return InventoryClickEvent((InventoryClickEvent) event);
-            if (event instanceof EntityInventoryChangeEvent) {
-                return EntityInventoryChangeEvent((EntityInventoryChangeEvent) event);
-            }
-            return event;
-        }
+        // public Event handelEvent(Event event) {
+        //     if (event instanceof PlayerTakeDamageEvent)
+        //     return PlayerTakeDamageEvent((PlayerTakeDamageEvent) event);
+        //     if (event instanceof EntityDamageEvent)
+        //     return EntityDamageEvent((EntityDamageEvent) event);
+        //     if (event instanceof CustomEntityDamageByEntityEvent)
+        //     return CustomEntityDamageByEntityEvent((CustomEntityDamageByEntityEvent) event);
+        //     if (event instanceof PlayerJumpEvent)
+        //     return PlayerJumpEvent((PlayerJumpEvent) event);
+        //     if (event instanceof InventoryTransactionEvent)
+        //     return InventoryTransactionEvent((InventoryTransactionEvent) event);
+        //     if (event instanceof InventoryClickEvent)
+        //     return InventoryClickEvent((InventoryClickEvent) event);
+        //     if (event instanceof EntityInventoryChangeEvent) {
+        //         return EntityInventoryChangeEvent((EntityInventoryChangeEvent) event);
+        //     }
+        //     return event;
+        // }
 
-        public EntityDamageEvent EntityDamageEvent(EntityDamageEvent e)
-        {
-            return e;
-        }
-
-        public InventoryClickEvent InventoryClickEvent(InventoryClickEvent e)
-        {
-            return e;
-        }
-
-        public InventoryTransactionEvent InventoryTransactionEvent(InventoryTransactionEvent e)
-        {
-            return e;
-        }
-
-        public EntityInventoryChangeEvent EntityInventoryChangeEvent(EntityInventoryChangeEvent e)
-        {
-            return e;
-        }
-
-        public PlayerJumpEvent PlayerJumpEvent(PlayerJumpEvent e)
-        {
-            return e;
-        }
-
-        /**
-     * ALWAYS RETURN THE EVENT
-     *
-     * @param e
-     * @return e Event
-     */
-        public abstract CustomEntityDamageByEntityEvent CustomEntityDamageByEntityEvent(
-            CustomEntityDamageByEntityEvent e);
+     //    public EntityDamageEvent EntityDamageEvent(EntityDamageEvent e)
+     //    {
+     //        return e;
+     //    }
+     //
+     //    public InventoryClickEvent InventoryClickEvent(InventoryClickEvent e)
+     //    {
+     //        return e;
+     //    }
+     //
+     //    public InventoryTransactionEvent InventoryTransactionEvent(InventoryTransactionEvent e)
+     //    {
+     //        return e;
+     //    }
+     //
+     //    public EntityInventoryChangeEvent EntityInventoryChangeEvent(EntityInventoryChangeEvent e)
+     //    {
+     //        return e;
+     //    }
+     //
+     //    public PlayerJumpEvent PlayerJumpEvent(PlayerJumpEvent e)
+     //    {
+     //        return e;
+     //    }
+     //
+     //    /**
+     // * ALWAYS RETURN THE EVENT
+     // *
+     // * @param e
+     // * @return e Event
+     // */
+     //    public abstract CustomEntityDamageByEntityEvent CustomEntityDamageByEntityEvent(
+     //        CustomEntityDamageByEntityEvent e);
 
         /**
      * Time in Secs
@@ -670,7 +669,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public  String getSafeName()
         {
-            return getName().replaceAll(" ", "_");
+            return getName().Replace(" ", "_");
         }
 
         public  int getCooldownTimeTick()
@@ -715,7 +714,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
                 }
                 catch (Exception e)
                 {
-                    e.printStackTrace();
+                    CyberCoreMain.Log.Error("PA>>> Err",e);
                     return null;
                 }
             }
@@ -736,7 +735,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //    }
 
         //USE TO RUN
-        public  void initPowerRun(Object...args)
+        public  void initPowerRun(Object[] args)
         {
             if (CanRun(false))
             {
@@ -753,7 +752,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             }
         }
 
-        public  void initForcePowerRun(Object...args)
+        public  void initForcePowerRun(Object[] args)
         {
             PlayerClass.takePowerSourceCount(PowerSourceCost);
             usePower(args);
@@ -762,15 +761,15 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public void sendCanNotRunMessage()
         {
-            getPlayer().sendMessage(TextFormat.RED + "Error! PowerAbstract " + getDispalyName() + TextFormat.RED +
-                                    " still has a " + TextFormat.LIGHT_PURPLE + Cooldown.toString() + TextFormat.RED +
+            getPlayer().SendMessage(ChatColors.Red + "Error! PowerAbstract " + getDispalyName() + ChatColors.Red +
+                                    " still has a " + ChatColors.LightPurple + Cooldown.toString() + ChatColors.Red +
                                     " Cooldown.");
         }
 
-        public void afterPowerRun(Object...args)
+        public void afterPowerRun(Object[] args)
         {
             addCooldown();
-            getPlayer().sendMessage(getSuccessUsageMessage());
+            getPlayer().SendMessage(getSuccessUsageMessage());
         }
 
         public Effect getEffect()
@@ -780,11 +779,11 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public String getSuccessUsageMessage()
         {
-            return TextFormat.GREEN + " > PowerAbstract " + getDispalyName() + TextFormat.GREEN +
+            return ChatColors.Green + " > PowerAbstract " + getDispalyName() + ChatColors.Green +
                    " has been activated!";
         }
 
-        public Object usePower(Object...args)
+        public Object usePower(Object[] args)
         {
             setActive();
             if (isAbility())
@@ -799,18 +798,18 @@ namespace CyberCore.Manager.ClassFactory.Powers
             return null;
         }
 
-        public bool CanRun(bool force, Object...args)
+        public bool CanRun(bool force, Object[] args)
         {
             if (!PlayerClass.CCM.isInSpawn(getPlayer()))
             {
-                getPlayer().sendMessage(TextFormat.RED + "Error! can not use " + getDispalyName() + " while in spawn!");
+                getPlayer().sendMessage(ChatColors.Red + "Error! can not use " + getDispalyName() + " while in spawn!");
                 return false;
             }
 
             if (force) return true;
             if (PlayerClass.getPowerSourceCount() < PowerSourceCost)
             {
-                getPlayer().sendMessage(TextFormat.RED + "Not enough " + PlayerClass.getPowerSourceType().name() +
+                getPlayer().sendMessage(ChatColors.Red + "Not enough " + PlayerClass.getPowerSourceType().name() +
                                         " Energy!");
                 return false;
             }

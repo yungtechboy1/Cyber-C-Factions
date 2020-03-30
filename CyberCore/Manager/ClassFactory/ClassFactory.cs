@@ -79,7 +79,7 @@ namespace CyberCore.Manager.ClassFactory
     p.getPlayerClass().onLeaveClass();
     MMOSave.remove(p.getName().toLowerCase());
     p.SetPlayerClass(null);
-    p.sendMessage(TextFormat.GREEN + "You left your class!");
+    p.sendMessage(ChatColors.Green + "You left your class!");
     }
 
     public BaseClass GetClass(CorePlayer p) {

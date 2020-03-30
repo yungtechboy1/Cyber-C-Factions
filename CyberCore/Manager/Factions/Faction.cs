@@ -730,13 +730,13 @@ namespace CyberCore.Manager.Factions
         {
             if (GetActiveMission() != null)
             {
-                Sender.SendMessage(FactionsMain.NAME + TextFormat.RED + "Error you already have a mission!!");
+                Sender.SendMessage(FactionsMain.NAME + ChatColors.Red + "Error you already have a mission!!");
                 return;
             }
 
             if (CompletedMissionIDs.contains(id))
             {
-                Sender.SendMessage(FactionsMain.NAME + TextFormat.RED +
+                Sender.SendMessage(FactionsMain.NAME + ChatColors.Red +
                                    "Error you have already completed this mission!!");
                 return;
             }
@@ -749,7 +749,7 @@ namespace CyberCore.Manager.Factions
 //        for(Mission mission: Main.Missions){
 //            if(mission.id.equals(id)) {
 //                SetActiveMission(new ActiveMission(Main,this,mission));
-//                BroadcastMessage(FactionsMain.NAME+TextFormat.AQUA+mission.name+TextFormat.GREEN+" Faction mission accepted!");
+//                BroadcastMessage(FactionsMain.NAME+ChatColors.AQUA+mission.name+ChatColors.Green+" Faction mission accepted!");
 //            }
 //        }
         }
@@ -781,7 +781,7 @@ namespace CyberCore.Manager.Factions
 //                        ActiveMission activeMission = new ActiveMission(Main, this,(ConfigSection) Main.AM.get(getName()));
 //                        SetActiveMission(activeMission);
 //                        //SetActiveMission(new ActiveMission(Main,this,mission));
-//                        BroadcastMessage(FactionsMain.NAME+TextFormat.AQUA+mission.name+TextFormat.GREEN+" Faction mission accepted!");
+//                        BroadcastMessage(FactionsMain.NAME+ChatColors.AQUA+mission.name+ChatColors.Green+" Faction mission accepted!");
 //                        return;
 //                    }catch(Exception ex){
 //                        ex.printStackTrace();
@@ -921,11 +921,11 @@ namespace CyberCore.Manager.Factions
 //        int dif = value - GetPower();
 //        String t = "";
 //        if (dif > 0) {
-//            t = TextFormat.GREEN + "Gained +" + dif;
+//            t = ChatColors.Green + "Gained +" + dif;
 //        } else {
-//            t = TextFormat.RED + "Lost -" + Math.abs(dif);
+//            t = ChatColors.Red + "Lost -" + Math.abs(dif);
 //        }
-//        BroadcastPopUp(TextFormat.GRAY + "Faction now has " + TextFormat.GREEN + value + TextFormat.GRAY + " PowerAbstract!" + t);
+//        BroadcastPopUp(ChatColors.Gray + "Faction now has " + ChatColors.Green + value + ChatColors.Gray + " PowerAbstract!" + t);
 //        Power = value;
 //    }
 //
@@ -1402,7 +1402,7 @@ namespace CyberCore.Manager.Factions
                     break;
             }
 
-            BroadcastMessage(FactionsMain.NAME + TextFormat.GREEN + name + " Has joined your faction!");
+            BroadcastMessage(FactionsMain.NAME + ChatColors.Green + name + " Has joined your faction!");
             return true;
         }
 
@@ -1597,13 +1597,13 @@ namespace CyberCore.Manager.Factions
         public String GetFactionNameTag(String p)
         {
             FactionRank fr = getPlayerRank(p);
-            return fr.GetChatPrefix() + TextFormat.RESET + " - " + getSettings().getDisplayName();
+            return fr.GetChatPrefix() + ChatColors.RESET + " - " + getSettings().getDisplayName();
         }
 
         public String GetFactionNameTag(Player p)
         {
             FactionRank fr = getPlayerRank(p);
-            return fr.GetChatPrefix() + TextFormat.RESET + " - " + getSettings().getDisplayName();
+            return fr.GetChatPrefix() + ChatColors.RESET + " - " + getSettings().getDisplayName();
         }
 
         public void BroadcastMessage(String message)
@@ -1715,10 +1715,10 @@ namespace CyberCore.Manager.Factions
 
         public String BossBarText()
         {
-            /*return TextFormat.GOLD+""+TextFormat.BOLD+"====§eTERRA§6TIDE===="+TextFormat.RESET+"\n\n"+
+            /*return ChatColors.GOLD+""+ChatColors.BOLD+"====§eTERRA§6TIDE===="+ChatColors.RESET+"\n\n"+
                     "§6"+GetDisplayName()+" §b: §aLEVEL §b: §3"+GetLevel()+"\n"+
                      "§eXP §b: §6"+GetXP()+" §a/ §b"+calculateRequireExperience(GetLevel());*/
-            return TextFormat.GOLD + "" + TextFormat.BOLD + "====§eTERRA§6TIDE====" + TextFormat.RESET + "\n\n" +
+            return ChatColors.GOLD + "" + ChatColors.BOLD + "====§eTERRA§6TIDE====" + ChatColors.RESET + "\n\n" +
                    "§e" + getSettings().getDisplayName() + " §b: §aLEVEL §b: §3" + getSettings().getLevel() + "\n" +
                    "§eXP §b: §a" + getSettings().getXP() + " §a/ §3" +
                    getSettings().calculateRequireExperience(getSettings().getLevel());
@@ -1869,10 +1869,10 @@ namespace CyberCore.Manager.Factions
 //        }
 
 
-            BroadcastMessage(TextFormat.AQUA + "[ArchFactions] " + fac.getSettings().getDisplayName() +
+            BroadcastMessage(ChatColors.AQUA + "[ArchFactions] " + fac.getSettings().getDisplayName() +
                              " wants to be Ally's with you!");
-//        BroadcastMessage(TextFormat.AQUA + "[ArchFactions] Respond to the request using `/f inbox`");
-            player.SendMessage(TextFormat.AQUA + "[ArchFactions] Ally request sent to " +
+//        BroadcastMessage(ChatColors.AQUA + "[ArchFactions] Respond to the request using `/f inbox`");
+            player.SendMessage(ChatColors.AQUA + "[ArchFactions] Ally request sent to " +
                                getSettings().getDisplayName());
 
             AR.add(new AllyRequest(fac, timeout));
@@ -1914,8 +1914,8 @@ namespace CyberCore.Manager.Factions
         public void AddFactionChatMessage(String message, Player p)
         {
             FactionRank r = getPlayerRank(p);
-            message = TextFormat.GRAY + "[" + r.GetChatPrefix() + TextFormat.GRAY + "] - " + r.getChatColor() +
-                      p.getDisplayName() + TextFormat.GRAY + " > " + TextFormat.WHITE + message;
+            message = ChatColors.Gray + "[" + r.GetChatPrefix() + ChatColors.Gray + "] - " + r.getChatColor() +
+                      p.getDisplayName() + ChatColors.Gray + " > " + ChatColors.WHITE + message;
             BroadcastMessage("Faction> " + message);
             LastFactionChat.addFirst(message);
             if (LastFactionChat.size() > getPermSettings().getMaxFactionChat())
@@ -1927,8 +1927,8 @@ namespace CyberCore.Manager.Factions
         public void AddAllyChatMessage(String message, Player p)
         {
             FactionRank r = getPlayerRank(p);
-            message = TextFormat.GRAY + "[" + r.GetChatPrefix() + TextFormat.GRAY + "] - " + r.getChatColor() +
-                      p.getDisplayName() + TextFormat.GRAY + " > " + TextFormat.WHITE + message;
+            message = ChatColors.Gray + "[" + r.GetChatPrefix() + ChatColors.Gray + "] - " + r.getChatColor() +
+                      p.getDisplayName() + ChatColors.Gray + " > " + ChatColors.WHITE + message;
             BroadcastMessage("Ally> " + message);
             LastAllyChat.addFirst(message);
             if (LastAllyChat.size() > getPermSettings().getMaxAllyChat())

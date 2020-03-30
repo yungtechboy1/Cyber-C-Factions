@@ -672,7 +672,7 @@ namespace CyberCore
 
         public void enterCombat()
         {
-            if (Combat == null) sendMessage(TextFormat.YELLOW + "You are now in combat!");
+            if (Combat == null) sendMessage(ChatColors.Yellow + "You are now in combat!");
             Combat = new CombatData(getServer().getTick());
         }
 
@@ -749,7 +749,7 @@ namespace CyberCore
                 }
             }
 
-            if (attackTime > 0) sendMessage(TextFormat.YELLOW + "YOU STILL HAVE SWING COOLDONW!!!!!!");
+            if (attackTime > 0) sendMessage(ChatColors.Yellow + "YOU STILL HAVE SWING COOLDONW!!!!!!");
 
             if (super.attack(source))
             {
@@ -791,7 +791,7 @@ namespace CyberCore
 
             this.sendPlayStatus(3);
             var playerJoinEvent = new PlayerJoinEvent(this,
-                new TranslationContainer(TextFormat.YELLOW + "%multiplayer.player.joined",
+                new TranslationContainer(ChatColors.Yellow + "%multiplayer.player.joined",
                     new string[] {this.getDisplayName()}));
             this.server.getPluginManager().callEvent(playerJoinEvent);
             if (playerJoinEvent.getJoinMessage().toString().trim().length() > 0)
@@ -1303,8 +1303,8 @@ namespace CyberCore
                                         case InventoryTransactionPacket.USE_ITEM_ON_ENTITY_ACTION_ATTACK:
                                             if (SwingCooldown.isValid())
                                             {
-                                                sendTip(TextFormat.GRAY + "Class: Swing Cooldown");
-//                                            sendTitle(TextFormat.GRAY + "Class: Swing Cooldown");
+                                                sendTip(ChatColors.Gray + "Class: Swing Cooldown");
+//                                            sendTitle(ChatColors.Gray + "Class: Swing Cooldown");
                                                 break;
                                             }
 
@@ -1711,24 +1711,24 @@ namespace CyberCore
             if (s != null) s.hideFor(this);
             s = ScoreboardAPI.createScoreboard();
             ScoreboardDisplay sd = s.addDisplay(DisplaySlot.SIDEBAR, "PlayerInfo",
-                TextFormat.AQUA + "~~| UnlimitedPE Factions |~~");
+                ChatColors.AQUA + "~~| UnlimitedPE Factions |~~");
             var k = 0;
             if (!InternalPlayerSettings.isHudPosOff())
             {
-                sd.addLine(TextFormat.AQUA + "Positon:", k++);
+                sd.addLine(ChatColors.AQUA + "Positon:", k++);
                 sd.addLine(
-                    "    " + TextFormat.GOLD + "X: " + TextFormat.GREEN + getFloorX() + TextFormat.GOLD + " Y: " +
-                    TextFormat.GREEN + getFloorY() + TextFormat.GOLD + " Z: " + TextFormat.GREEN + getFloorZ(), k++);
+                    "    " + ChatColors.GOLD + "X: " + ChatColors.Green + getFloorX() + ChatColors.GOLD + " Y: " +
+                    ChatColors.Green + getFloorY() + ChatColors.GOLD + " Z: " + ChatColors.Green + getFloorZ(), k++);
             }
 
             if (!InternalPlayerSettings.isHudFactionOff() && getFaction() != null)
             {
-                sd.addLine(TextFormat.GRAY + "Faction : " + TextFormat.AQUA + getFaction().GetDisplayName(), k++);
+                sd.addLine(ChatColors.Gray + "Faction : " + ChatColors.AQUA + getFaction().GetDisplayName(), k++);
                 sd.addLine(
-                    "    " + TextFormat.AQUA + "XP" + TextFormat.GRAY + " | " + TextFormat.GREEN +
-                    getFaction().GetXP() + TextFormat.AQUA + " / " + TextFormat.GOLD +
-                    getFaction().calculateRequireExperience() + TextFormat.GRAY + " | " + TextFormat.GREEN + "Level: " +
-                    TextFormat.YELLOW + getFaction().GetLevel(), k++);
+                    "    " + ChatColors.AQUA + "XP" + ChatColors.Gray + " | " + ChatColors.Green +
+                    getFaction().GetXP() + ChatColors.AQUA + " / " + ChatColors.GOLD +
+                    getFaction().calculateRequireExperience() + ChatColors.Gray + " | " + ChatColors.Green + "Level: " +
+                    ChatColors.Yellow + getFaction().GetLevel(), k++);
             }
 
             if (!InternalPlayerSettings.isHudClassOff())
@@ -1752,11 +1752,11 @@ namespace CyberCore
             }
 
 
-//        if(!InternalPlayerSettings.isHudClassOff())sd.addLine(TextFormat.GOLD+"X: "+TextFormat.GREEN+getX()+TextFormat.GOLD+"Y: "+TextFormat.GREEN+getY()+TextFormat.GOLD+"Z: "+TextFormat.GREEN+getZ(),k++);
-            sd.addLine(TextFormat.YELLOW + "Money : " + TextFormat.AQUA + "$" + getMoney(), k++);
-            sd.addLine(TextFormat.YELLOW + "Hunger : " + TextFormat.AQUA + getFoodData().getLevel(), k++);
-            sd.addLine(TextFormat.YELLOW + "HP : " + TextFormat.AQUA + getHealth() + " / " + getMaxHealth(), k++);
-            sd.addLine(TextFormat.GRAY + "Class & Power COOLDOWNS:", k++);
+//        if(!InternalPlayerSettings.isHudClassOff())sd.addLine(ChatColors.GOLD+"X: "+ChatColors.Green+getX()+ChatColors.GOLD+"Y: "+ChatColors.Green+getY()+ChatColors.GOLD+"Z: "+ChatColors.Green+getZ(),k++);
+            sd.addLine(ChatColors.Yellow + "Money : " + ChatColors.AQUA + "$" + getMoney(), k++);
+            sd.addLine(ChatColors.Yellow + "Hunger : " + ChatColors.AQUA + getFoodData().getLevel(), k++);
+            sd.addLine(ChatColors.Yellow + "HP : " + ChatColors.AQUA + getHealth() + " / " + getMaxHealth(), k++);
+            sd.addLine(ChatColors.Gray + "Class & Power COOLDOWNS:", k++);
             sd.addEntity(this, k++);
 //        sd.addLine("TEST LINE 1",1);
 //        sd.addLine("YOUR NAME"+p.getDisplayName(),2);
@@ -1814,7 +1814,7 @@ namespace CyberCore
         public void leaveCombat()
         {
             Combat = null;
-            sendMessage(TextFormat.GREEN + "You are now out of Combat!");
+            sendMessage(ChatColors.Green + "You are now out of Combat!");
         }
 
         
@@ -1854,7 +1854,7 @@ namespace CyberCore
                                 if (t < FactionInviteTimeout)
                                 {
                                     Faction fac = CyberCoreMain.getInstance().FM.FFactory.getFaction(FactionInvite);
-                                    fac.BroadcastMessage(TextFormat.YELLOW + getName() +
+                                    fac.BroadcastMessage(ChatColors.Yellow + getName() +
                                                          " has declined your faction invite");
                                     ClearFactionInvite(true);
                                 }
@@ -1920,8 +1920,8 @@ namespace CyberCore
                 {
                     TPRTimeout = 0;
                     CorePlayer cp = CyberCoreMain.getInstance().getCorePlayer(TPR);
-                    if (cp != null) cp.sendPopup(TextFormat.YELLOW + "Teleport request expired");
-                    sendPopup(TextFormat.YELLOW + "Teleport request expired");
+                    if (cp != null) cp.sendPopup(ChatColors.Yellow + "Teleport request expired");
+                    sendPopup(ChatColors.Yellow + "Teleport request expired");
                     TPR = null;
                 }
 
@@ -2435,7 +2435,7 @@ namespace CyberCore
             this.setCanClimb(true);
 
             this.server.getLogger().info(this.getServer().getLanguage().translateString("nukkit.player.logIn",
-                TextFormat.AQUA + this.username + TextFormat.WHITE,
+                ChatColors.AQUA + this.username + ChatColors.WHITE,
                 this.ip,
                 string.valueOf(this.port),
                 string.valueOf(this.id),
@@ -2552,7 +2552,7 @@ namespace CyberCore
         {
             if (isWaitingForTeleport())
             {
-                sendMessage(TextFormat.RED + "Error! You are already waiting for a teleport!");
+                sendMessage(ChatColors.Red + "Error! You are already waiting for a teleport!");
                 return false;
             }
 

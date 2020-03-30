@@ -342,7 +342,7 @@ namespace CyberCore.Manager.AuctionHouse
                     }
                     else
                     {
-                        //GREEN
+                        //Green
                         setItem(key, (Item) si.Confirm.Clone(), true);
                     }
                 }
@@ -490,7 +490,7 @@ namespace CyberCore.Manager.AuctionHouse
             // Item deny = si.Deny.Clone();
             // Item deny2 = si.Deny.Clone();
             // CurrentPage = Confirm_Purchase_Not_Enough_Money;
-            // deny.setCustomName(TextFormat.RED + "Not Enough Money!");
+            // deny.setCustomName(ChatColors.Red + "Not Enough Money!");
             // for (int i = 0; i < 5; i++)
             // {
             //     for (int ii = 0; ii < 9; ii++)
@@ -512,14 +512,14 @@ namespace CyberCore.Manager.AuctionHouse
             //             else if (i == 0)
             //             {
             //                 Item g = si.Gold.Clone();
-            //                 g.setCustomName(TextFormat.GOLD + " Your money: " + cp.getMoney());
+            //                 g.setCustomName(ChatColors.GOLD + " Your money: " + cp.getMoney());
             //                 setItem(key, g, true);
             //             }
             //             else
             //             {
             //                 Item r = Item.get(160, 14);
-            //                 r.setCustomName(TextFormat.RED + "Not Enough Money \n" + TextFormat.YELLOW +
-            //                                 " Your Balance : " + cp.getMoney() + "\n" + TextFormat.AQUA +
+            //                 r.setCustomName(ChatColors.Red + "Not Enough Money \n" + ChatColors.Yellow +
+            //                                 " Your Balance : " + cp.getMoney() + "\n" + ChatColors.AQUA +
             //                                 "Item Cost : " + aid.getCost());
             //                 setItem(key, r, true);
             //             }
@@ -557,7 +557,7 @@ namespace CyberCore.Manager.AuctionHouse
             //             else if (i == 0)
             //             {
             //                 Item g = si.Gold.Clone();
-            //                 g.setCustomName(TextFormat.GOLD + " Your money: " + cp.getMoney());
+            //                 g.setCustomName(ChatColors.GOLD + " Your money: " + cp.getMoney());
             //                 setItem(key, g, true);
             //             }
             //             else
@@ -567,7 +567,7 @@ namespace CyberCore.Manager.AuctionHouse
             //         }
             //         else
             //         {
-            //             //GREEN
+            //             //Green
             //             setItem(key, confrim.Clone(), true);
             //         }
             //     }

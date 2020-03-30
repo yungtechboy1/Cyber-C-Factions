@@ -16,15 +16,20 @@
         <e p="CorePlayer.cs" t="Include" />
         <e p="CoreSettings.cs" t="Include" />
         <e p="Custom" t="Include">
+          <e p="CustomEnums" t="Include">
+            <e p="ChatFormats.cs" t="Include" />
+            <e p="CustomDamageCause.cs" t="Include" />
+            <e p="PowerEnum.cs" t="Include" />
+            <e p="RankList.cs" t="Include" />
+          </e>
+          <e p="Events" t="Include">
+            <e p="CustomEntityDamageEvent.cs" t="Include" />
+            <e p="PlayerTakeDamageEvent.cs" t="Include" />
+          </e>
           <e p="Items" t="Include">
             <e p="ItemEmerald.cs" t="Include" />
             <e p="NetherStar.cs" t="Include" />
           </e>
-        </e>
-        <e p="CustomEnums" t="Include">
-          <e p="ChatFormats.cs" t="Include" />
-          <e p="PowerEnum.cs" t="Include" />
-          <e p="RankList.cs" t="Include" />
         </e>
         <e p="CyberCore.csproj" t="IncludeRecursive" />
         <e p="CyberCoreMain.cs" t="Include" />

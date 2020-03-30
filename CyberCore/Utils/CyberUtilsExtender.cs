@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 using Jose;
 using MiNET;
 using MiNET.Blocks;
+using MiNET.Effects;
 using MiNET.Items;
 using MiNET.UI;
 using MiNET.Utils;
@@ -99,32 +100,27 @@ namespace CyberCore.Utils
             return setLore(i, lines.ToArray());
         }
 
-        public static NbtCompound getLore(this Item i)
+        public static NbtList getLoreList(this NbtCompound i)
+        {
+            NbtCompound tag = i;
+            if (tag.Contains("Lore")) return (NbtList) tag["Lore"];
+            NbtList lore = new NbtList("Lore");
+            tag.Add(lore);
+            return (NbtList) tag["Lore"];
+        }
+        public static NbtList getLoreList(this Item i)
         {
             NbtCompound tag = getDisplayCompound(i);
-
+            if (tag.Contains("Lore")) return (NbtList) tag["Lore"];
             NbtList lore = new NbtList("Lore");
-            String[] var4 = lines;
-            int var5 = lines.Length;
-
-            for (int var6 = 0; var6 < var5; ++var6)
-            {
-                String line = var4[var6];
-                //OR Maybe try ""
-                lore.Add(new NbtString(line));
-            }
-
-            if(tag.Contains("Lore"))tag.Remove("Lore");
             tag.Add(lore);
-            
-            return i;
+            return (NbtList) tag["Lore"];
         }
-        {
         public static Item addLore(this Item i, String[] lines)
         {
             NbtCompound tag = getDisplayCompound(i);
 
-            NbtList lore = new NbtList("Lore");
+            NbtList lore = i.getLoreList();
             String[] var4 = lines;
             int var5 = lines.Length;
 
@@ -140,7 +136,6 @@ namespace CyberCore.Utils
             
             return i;
         }
-        {
         public static Item setLore(this Item i, String[] lines)
         {
             NbtCompound tag = getDisplayCompound(i);
@@ -311,8 +306,11 @@ namespace CyberCore.Utils
             return CyberUtils.getExtraPlayerData(p);
         }
 
-        [
-            CanBeNull]
+        public static Effect getEffect(this CorePlayer p, EffectType name)
+        {
+            return p.Effects.ContainsKey(name) ? p.Effects[name] : null;
+        }
+        [CanBeNull]
         public static OpenPlayer getPlayer(this OpenPlayerManager p, String name)
         {
             foreach (OpenPlayer players in p.GetPlayers())

@@ -99,7 +99,7 @@ namespace CyberCore.Utils
                 ChatColors.Green + "Can also use " + ChatColors.DarkGreen + "/ah expired"
             );
 
-            Grayglass = new ItemBlock(new StainedGlassPane() {Color = "gray"});
+            Grayglass = new ItemBlock(new StainedGlassPane() {Color = "Gray"});
             Grayglass.setCompoundTag(T);
             Grayglass.setCustomName(
                 ChatColors.DarkGreen + "" + ChatFormatting.Bold + "-------------"
@@ -109,7 +109,7 @@ namespace CyberCore.Utils
             Redglass.setCustomName(
                 ChatColors.Yellow + "" + ChatFormatting.Bold + "Previous Page"
             );
-            Greenglass = new ItemBlock(new StainedGlassPane() {Color = "green"});
+            Greenglass = new ItemBlock(new StainedGlassPane() {Color = "Green"});
             Greenglass.setCompoundTag(T);
             Greenglass.setCustomName(
                 ChatColors.Yellow + "" + ChatFormatting.Bold + "Next Page"

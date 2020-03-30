@@ -326,7 +326,7 @@ namespace CyberCore
                                                 ah.ConfirmPurchaseSlot);
                                             break;
                                         }
-                                        else if (si.getId() == BlockID.REDSTONE_BLOCK)
+                                        else if (si.getId() == BlockID.RedSTONE_BLOCK)
                                         {
                                             CyberCoreMain.Log.Error("Was LOG ||"+"DENCLINE PURCHASE!!!!!!!!");
                                             ah.setPage(1);
@@ -440,7 +440,7 @@ namespace CyberCore
                                                     ah.ConfirmPurchaseSlot, si.getCount());
                                                 break;
                                             }
-                                            else if (si.getId() == BlockID.REDSTONE_BLOCK)
+                                            else if (si.getId() == BlockID.RedSTONE_BLOCK)
                                             {
                                                 CyberCoreMain.Log.Error("Was LOG ||"+"DENCLINE PURCHASE!!!!!!!!");
                                                 ah.setPage(1);
@@ -592,7 +592,7 @@ namespace CyberCore
                                         ah.ConfirmPurchaseSlot, si.getCount(), ah.AdminMode);
                                     return;
                                 }
-                                else if (si.getId() == BlockID.REDSTONE_BLOCK)
+                                else if (si.getId() == BlockID.RedSTONE_BLOCK)
                                 {
                                     CyberCoreMain.Log.Error("Was LOG ||"+"DENCLINE PURCHASE!!!!!!!!");
                                     ah.setPage(1);
@@ -755,11 +755,11 @@ namespace CyberCore
                 //SHouldnt need thins @TODO^^
                 event.setCancelled(true);
             if (plugin.MuteChat && (!event.getPlayer().hasPermission("CyberTech.CyberChat.op"))) {
-                event.getPlayer().sendMessage(TextFormat.YELLOW + "All Chat Is Muted! Try again later!");
+                event.getPlayer().sendMessage(ChatColors.Yellow + "All Chat Is Muted! Try again later!");
                 return;
             }
             if (plugin.isMuted(event.getPlayer())) {
-                event.getPlayer().sendMessage(TextFormat.YELLOW + "You are Muted! Try again later!");
+                event.getPlayer().sendMessage(ChatColors.Yellow + "You are Muted! Try again later!");
                 return;
             }
             String FinalChat = formatForChat(event.getPlayer(), event.getMessage());
@@ -798,11 +798,11 @@ namespace CyberCore
             if (pf != null)
             {
                 faction = pf.getDisplayName();
-                //FactionFormat = TextFormat.GRAY+FactionFormat.replace("{value}",fp.getFaction().getTag())+TextFormat.WHITE;
+                //FactionFormat = ChatColors.Gray+FactionFormat.replace("{value}",fp.getFaction().getTag())+ChatColors.WHITE;
             }
             else
             {
-                faction = TextFormat.GRAY + "[NF]" + TextFormat.WHITE;
+                faction = ChatColors.Gray + "[NF]" + ChatColors.WHITE;
             }
 
             //ANTI BADWORDS

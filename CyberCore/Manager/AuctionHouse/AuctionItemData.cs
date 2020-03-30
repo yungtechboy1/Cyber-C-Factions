@@ -103,7 +103,7 @@ namespace CyberCore.Manager.AuctionHouse
                   "-------------" + ChatFormatting.Reset + "\n" +
                   ChatColors.Green + "$" + Cost + ChatFormatting.Reset + "\n" +
                   ChatColors.Gold+ "Sold By: " + Soldbyn
-                // + TextFormat.RESET + "\n" +TextFormat.BLACK+"{#"+id;
+                // + ChatColors.RESET + "\n" +ChatColors.BLACK+"{#"+id;
                 ;
 
             titem.setCustomName(cn);

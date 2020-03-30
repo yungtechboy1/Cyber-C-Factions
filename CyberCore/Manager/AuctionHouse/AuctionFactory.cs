@@ -129,11 +129,11 @@ namespace CyberCore.Manager.AuctionHouse
 //
 //                    if (cn.equalsIgnoreCase("")) cn = i.getName();
 //
-//                    cn += TextFormat.RESET + "\n" + TextFormat.AQUA +
-//                            "-------------" + TextFormat.RESET + "\n" +
-//                            TextFormat.GREEN + "$" + cost + TextFormat.RESET + "\n" +
-//                            TextFormat.GOLD + "Sold By: " + soldby
-//                    // + TextFormat.RESET + "\n" +TextFormat.BLACK+"{#"+id;
+//                    cn += ChatColors.RESET + "\n" + ChatColors.AQUA +
+//                            "-------------" + ChatColors.RESET + "\n" +
+//                            ChatColors.Green + "$" + cost + ChatColors.RESET + "\n" +
+//                            ChatColors.GOLD + "Sold By: " + soldby
+//                    // + ChatColors.RESET + "\n" +ChatColors.BLACK+"{#"+id;
 //                    ;
 //
 //                    i.setCustomName(cn);
@@ -508,7 +508,7 @@ namespace CyberCore.Manager.AuctionHouse
 //                                if (si.getId() == BlockID.EMERALD_BLOCK) {
 //                                    CyberCoreMain.Log.Error("Was LOG ||"+"CONFIRM PURCHASE!!!!!!!");
 ////                                    ah.SF.PurchaseItem((CorePlayer) ah.getHolder(), Page, slot);
-//                                } else if (si.getId() == BlockID.REDSTONE_BLOCK) {
+//                                } else if (si.getId() == BlockID.RedSTONE_BLOCK) {
 //                                    CyberCoreMain.Log.Error("Was LOG ||"+"DENCLINE PURCHASE!!!!!!!!");
 //                                }
 //                            }
@@ -612,7 +612,7 @@ namespace CyberCore.Manager.AuctionHouse
 //                                        CyberCoreMain.Log.Error("Was LOG ||"+"CONFIRM PURCHASE!!!!!!!");
 //                                        ah.SF.PurchaseItem((CorePlayer) ah.getHolder(), ah.getPage(), ah.ConfirmPurchaseSlot);
 //                                        break;
-//                                    } else if (si.getId() == BlockID.REDSTONE_BLOCK) {
+//                                    } else if (si.getId() == BlockID.RedSTONE_BLOCK) {
 //                                        CyberCoreMain.Log.Error("Was LOG ||"+"DENCLINE PURCHASE!!!!!!!!");
 //                                        ah.setPage(1);
 //                                        ah.ClearConfirmPurchase();
