@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CyberCore.Utils;
@@ -119,6 +120,19 @@ namespace CyberCore.CustomEnums
         public LockedSlot(int slt = -1)
         {
             Slot = slt;
+        }
+
+        
+        public override bool Equals(Object obj)
+        {
+            if (obj is LockedSlot)
+            {
+                return Slot == ((LockedSlot) obj).Slot;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public int getSlot()

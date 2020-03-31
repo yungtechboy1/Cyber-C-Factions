@@ -56,6 +56,17 @@ namespace CyberCore
             new List<CyberFloatingTextContainer>();
 
 
+        public bool isInSpawn(CorePlayer p)
+        {
+            return isInSpawn(p.KnownPosition, p.Level);
+        }
+        public bool isInSpawn(PlayerLocation pl, Level l)
+        {
+            var sp = l.SpawnPoint;
+            var a = sp.DistanceTo(pl);
+            return (a < 300);
+        }
+
         public static CyberCoreMain GetInstance()
         {
             return instance;

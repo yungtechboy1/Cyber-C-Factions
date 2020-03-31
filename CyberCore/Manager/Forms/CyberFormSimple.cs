@@ -30,7 +30,19 @@ namespace CyberCore.Manager.Forms
             Buttons = bl;
             Content = desc;
         }
+        public CyberFormSimple(MainForm ttype, String desc = "")
+        {
+            FT = ttype;
+            Buttons = new List<Button>();
+            Content = desc;
+        }
 
+        public void addButton(Button b)
+        {
+            if(Buttons == null)Buttons = new List<Button>();
+            Buttons.Add(b);
+        }
+        
         public CyberFormSimple(MainForm ttype, MainForm attype, List<Button> bl, String desc = "") 
         {
             FT = ttype;

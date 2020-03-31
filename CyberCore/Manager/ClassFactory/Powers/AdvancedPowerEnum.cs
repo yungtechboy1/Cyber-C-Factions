@@ -12,6 +12,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         StageEnum SE = StageEnum.NA;
         int XP = -1;
         LevelingType tt = None;
+
         public AdvancedPowerEnum(PowerEnum PE)
         {
             this.PE = PE;
@@ -26,7 +27,8 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public AdvancedPowerEnum(PowerEnum PE, StageEnum SE)
         {
-            if (SE.getValue() == StageEnum.NA.getValue()) CyberCoreMain.Log.Error("APEEE>>>   Error! CAN NOT SEND NA!!!!");
+            if (SE.getValue() == StageEnum.NA.getValue())
+                CyberCoreMain.Log.Error("APEEE>>>   Error! CAN NOT SEND NA!!!!");
 //            throw new Exception("Error! Can not pass StageEnum.NA to AdvancedPowerEnum Constructor!");
             this.PE = PE;
             this.SE = SE;
@@ -45,7 +47,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
                 return null;
             }
 
-            PowerEnum pe = PowerEnum.fromstr(ss[1],new PowerEnum());
+            PowerEnum pe = PowerEnum.fromstr(ss[1], new PowerEnum());
             if (pe.ID == PowerEnum.Unknown.ID)
             {
                 CyberCoreMain.Log.Error("Error! Invalid PowerEnu Name from Save > " + s);
@@ -62,10 +64,10 @@ namespace CyberCore.Manager.ClassFactory.Powers
                 }
                 catch (Exception e)
                 {
-                    CyberCoreMain.Log.Error("APEEE>>>>>>>> ",e);
+                    CyberCoreMain.Log.Error("APEEE>>>>>>>> ", e);
                 }
 
-            CyberCoreMain.Log.Error("Was LOG ||"+"Error! Why did this go all the way!?!?!? E110393");
+            CyberCoreMain.Log.Error("Was LOG ||" + "Error! Why did this go all the way!?!?!? E110393");
             return null;
         }
 
@@ -182,29 +184,25 @@ namespace CyberCore.Manager.ClassFactory.Powers
             }
             else
             {
-                if (ape.getAllowedClasses() == null || ape.getAllowedClasses().isEmpty())
+                if (ape.getAllowedClasses() == null || ape.getAllowedClasses().Count == 0)
                 {
                     s = "== ANY CLASS ==";
                 }
                 else
                 {
+                    var c = CyberCoreMain.GetInstance();
                     s = "== Available Classes ==\n";
-                    foreach (var v in ape.getAllowedClasses())
+                    foreach (Type v in ape.getAllowedClasses())
                     {
-                        
-                    }
-                    for (Class v :
-                    ape.getAllowedClasses()) {
                         try
                         {
-                            var bc = (BaseClass) v.getConstructor(CyberCoreMain.class).newInstance(
-                                CyberCoreMain.getInstance());
+                            BaseClass bc = (BaseClass) Activator.CreateInstance(v, c);
                             s += " - " + bc.getDisplayName() + "\n";
                         }
                         catch (Exception e)
                         {
-                            e.printStackTrace();
-                            s += v.getName() + "\n";
+                            CyberCoreMain.Log.Error($"APE: {getValue()} HAD ERROR CREATING CLASS >", e);
+                            s += v.Name + "\n";
                         }
                     }
                 }
@@ -229,3 +227,4 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //        }
 //    }
     }
+}

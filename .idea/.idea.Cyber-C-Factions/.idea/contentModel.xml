@@ -46,6 +46,7 @@
             <e p="BuffOrigin.cs" t="Include" />
             <e p="BuffType.cs" t="Include" />
             <e p="ClassFactory.cs" t="Include" />
+            <e p="ClassSettingsObj.cs" t="Include" />
             <e p="Leveling" t="Include">
               <e p="ClassLevelingManager.cs" t="Include" />
               <e p="ClassLevelingManagerStage.cs" t="Include" />
@@ -55,12 +56,19 @@
               <e p="AdvancedPowerEnum.cs" t="Include" />
               <e p="AdvancedXPPowerEnum.cs" t="Include" />
               <e p="PowerAbstract.cs" t="Include" />
+              <e p="PowerData.cs" t="Include" />
               <e p="PowerManager.cs" t="Include" />
               <e p="PowerSettings.cs" t="Include" />
               <e p="Stage" t="Include">
                 <e p="AdvancedStagePowerEnum.cs" t="Include" />
                 <e p="StagePowerAbstract.cs" t="Include" />
               </e>
+            </e>
+            <e p="Window" t="Include">
+              <e p="MainClassSettingsWindow.cs" t="Include" />
+              <e p="MainClassSettingsWindowActivePowers.cs" t="Include" />
+              <e p="MainClassSettingsWindowChooseLockedSlot.cs" t="Include" />
+              <e p="MainClassWindowLearnedPowers.cs" t="Include" />
             </e>
           </e>
           <e p="Crate" t="Include">

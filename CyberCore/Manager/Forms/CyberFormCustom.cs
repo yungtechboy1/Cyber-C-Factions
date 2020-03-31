@@ -25,6 +25,12 @@ namespace CyberCore.Manager.Forms
             FT = ttype;
             Content = elements;
         }
+
+        public void addElement(CustomElement e)
+        {
+            if(Content == null)Content = new List<CustomElement>();
+            Content.Add(e);
+        }
         
         
     }

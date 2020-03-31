@@ -116,7 +116,8 @@ namespace CyberCore.Utils
             tag.Add(lore);
             return (NbtList) tag["Lore"];
         }
-        public static Item addLore(this Item i, String[] lines)
+
+        public static Item addLore(this Item i,params String[] lines)
         {
             NbtCompound tag = getDisplayCompound(i);
 

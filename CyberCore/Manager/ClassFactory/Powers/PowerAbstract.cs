@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CyberCore.Custom.Events;
 using CyberCore.Custom.Items;
 using CyberCore.CustomEnums;
+using CyberCore.Manager.ClassFactory.Window;
 using CyberCore.Utils;
 using CyberCore.Utils.Cooldowns;
 using fNbt;
@@ -17,7 +18,7 @@ using static CyberCore.CustomEnums.HotbarStatus;
 
 namespace CyberCore.Manager.ClassFactory.Powers
 {
-    public class PowerAbstract
+    public abstract class PowerAbstract
     {
         public static readonly String PowerHotBarNBTTag = "PowerHotBar";
 
@@ -389,8 +390,8 @@ namespace CyberCore.Manager.ClassFactory.Powers
             PlayerClass.getClassSettings().delLearnedPowerAndLearnIfNotEqual(getAPE());
 //        PlayerClass.getClassSettings().delLearnedPower(getType());
 //        PlayerClass.getClassSettings().learnNewPower(getAPE(),true);
-            if (!PlayerClass.getClassSettings().getEnabledPowers().contains(getType()))
-                PlayerClass.getClassSettings().getEnabledPowers().add(getType());
+            if (!PlayerClass.getClassSettings().getEnabledPowers().Contains(getType()))
+                PlayerClass.getClassSettings().getEnabledPowers().Add(getType());
             PlayerClass.getClassSettings().setPreferedSlot(getLS(), getType());
             onEnable();
         }
@@ -774,7 +775,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public Effect getEffect()
         {
-            return Effect.getEffect(Effect.FATAL_POISON);
+            return new Poison();
         }
 
         public String getSuccessUsageMessage()
@@ -798,24 +799,23 @@ namespace CyberCore.Manager.ClassFactory.Powers
             return null;
         }
 
-        public bool CanRun(bool force, Object[] args)
+        public bool CanRun(bool force, Object[] args =  null)
         {
             if (!PlayerClass.CCM.isInSpawn(getPlayer()))
             {
-                getPlayer().sendMessage(ChatColors.Red + "Error! can not use " + getDispalyName() + " while in spawn!");
+                getPlayer().SendMessage(ChatColors.Red + "Error! can not use " + getDispalyName() + " while in spawn!");
                 return false;
             }
 
             if (force) return true;
             if (PlayerClass.getPowerSourceCount() < PowerSourceCost)
             {
-                getPlayer().sendMessage(ChatColors.Red + "Not enough " + PlayerClass.getPowerSourceType().name() +
-                                        " Energy!");
+                getPlayer().SendMessage(ChatColors.Red + "Not enough " + PlayerClass.getPowerSourceType() +" Energy!");
                 return false;
             }
 
-            NukkitRandom nr = new NukkitRandom();
-            int r = nr.nextRange(0, 100);
+            Random nr = new Random();
+            int r = nr.Next(0, 100);
             if (r <= getPowerSuccessChance())
             {
                 //Success
@@ -842,12 +842,12 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public bool isAbility()
         {
-            return getPowerSettings().isAbility();
+            return getPowerSettings().isAbility;
         }
 
         public bool isHotbar()
         {
-            return getPowerSettings().isHotbar();
+            return getPowerSettings().isHotbar;
         }
 
         public HotbarStatus getCurrentHotbarStatus()
@@ -923,7 +923,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public CoolDown addCooldown(int secs)
         {
-            Cooldown = new CoolDown(getType().name(), secs * 20);
+            Cooldown = new CoolDown(getType().Name, secs * 20);
             return Cooldown;
         }
 
