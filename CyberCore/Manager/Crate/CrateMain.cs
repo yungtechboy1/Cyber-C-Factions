@@ -19,7 +19,7 @@ namespace CyberCore.Manager.Crate
         public Dictionary<Vector3, CrateObject> CrateChests = new Dictionary<Vector3, CrateObject>();
         public Dictionary<String, KeyData> CrateKeys = new Dictionary<String, KeyData>();
 
-        public Dictionary<String, Long> eids = new Dictionary<String, Long>();
+        public Dictionary<String, long> eids = new Dictionary<String, long>();
 
         //    private Dictionary<String,Object> CrateLocations = new Dictionary<String,Object>();
         public Dictionary<String,Object> cratetxt = new Dictionary<String,Object>();
@@ -302,7 +302,7 @@ namespace CyberCore.Manager.Crate
             if (cratetxt.containsKey(p.getName()))
             {
                 RemoveEntityPacket pk2 = new RemoveEntityPacket();
-                pk2.eid = cratetxt.getLong(p.getName());
+                pk2.eid = cratetxt.getlong(p.getName());
                 p.dataPacket(pk2);
                 cratetxt.remove(p.getName());
             }

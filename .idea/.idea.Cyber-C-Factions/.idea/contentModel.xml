@@ -79,6 +79,7 @@
             <e p="CrateMain.cs" t="Include" />
             <e p="CrateObject.cs" t="Include" />
             <e p="ItemChanceData.cs" t="Include" />
+            <e p="KeyData.cs" t="Include" />
           </e>
           <e p="Factions" t="Include">
             <e p="Data" t="Include">

@@ -200,6 +200,13 @@ namespace CyberCore.Utils
             return i.ExtraData;
         }
 
+        public static Item setCompoundTag(this Item i, byte[] n)
+        {
+            var a = new NbtFile();
+            a.LoadFromBuffer(n, 0, n.Length, NbtCompression.ZLib);
+            i.ExtraData = (NbtCompound) a.RootTag;
+            return i;
+        }
         public static Item setCompoundTag(this Item i, NbtCompound n)
         {
             i.ExtraData = n;

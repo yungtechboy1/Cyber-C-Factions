@@ -434,7 +434,7 @@ namespace CyberCore.Manager.AuctionHouse
                 {
                     BigEndian = false,
                     UseVarInt = true,
-                    RootTag =  data
+                    RootTag = data
                 }
             };
             var nbt2 = new Nbt
@@ -443,10 +443,10 @@ namespace CyberCore.Manager.AuctionHouse
                 {
                     BigEndian = false,
                     UseVarInt = true,
-                    RootTag =  new NbtCompound()
+                    RootTag = new NbtCompound()
                     {
-                        new NbtInt("pairx",(int)a.X),
-                        new NbtInt("pairxz",(int)a.Z),
+                        new NbtInt("pairx", (int) a.X),
+                        new NbtInt("pairxz", (int) a.Z),
                     }
                 }
             };
@@ -458,7 +458,7 @@ namespace CyberCore.Manager.AuctionHouse
             bedp.namedtag = nbt;
             bedp2.coordinates = l2;
             bedp2.namedtag = nbt2;
-            
+
             to.SendPacket(bedp);
             to.SendPacket(bedp2);
         }
@@ -669,7 +669,7 @@ namespace CyberCore.Manager.AuctionHouse
 
 //        SetBought(aid.getMasterid());
             holder.TakeMoney(aid.getCost());
-            holder.Inventory.AddItem(aid.getKeepItem(),true);
+            holder.Inventory.AddItem(aid.getKeepItem(), true);
             holder.AH.ClearConfirmPurchase();
             holder.AH.setPage(1);
         }
@@ -699,31 +699,33 @@ namespace CyberCore.Manager.AuctionHouse
             AuctionItemData aid = new AuctionItemData(i, cost, p);
             AddItemForSale(aid);
         }
-        
-        
-        public AuctionItemData AddItemForSale(AuctionItemData data) {
-           
-                if (data.getMasterid() != -1)
-                    CCM.SQL.Insert($"DELETE FROM `AuctionHouse` WHERE `master_id` == ' {data.getMasterid()}'");
-                String fnt = "";
-                var a = new NbtFile();
-                a.RootTag = data.getItem().ExtraData;
-                // byte[] bytes = NBTCompressionSteamTool.NBTCompressedStreamTools.a(a);
-        var aa = (new MemoryStream());
-        a.SaveToStream(aa, NbtCompression.AutoDetect);
-        var aaa = new StreamReader(aa).ReadToEnd();
 
-        if (data.getItem().ExtraData.HasValue) fnt = aaa;
-        CCM.SQL.Insert(
-                    $"INSERT INTO `AuctionHouse` VALUES (null,{data.getItem().Id},{data.getItem().Metadata},{data.getItem().Count},@data,{data.Cost}, {data.Soldby},{data.Soldbyn} ,false)","@data",Encoding.ASCII.GetBytes(aaa));
 
-                CyberCoreMain.Log.Info("AH saved for " + data.toString());
-                // ExecuteQuerySQLite("SELECT * FROM `AuctionHouse` ");
+        public AuctionItemData AddItemForSale(AuctionItemData data)
+        {
+            if (data.getMasterid() != -1)
+                CCM.SQL.Insert($"DELETE FROM `AuctionHouse` WHERE `master_id` == ' {data.getMasterid()}'");
+            String fnt = "";
+            var a = new NbtFile();
+            a.BigEndian = false;
+            a.UseVarInt = true;
+            a.RootTag = data.getItem().ExtraData;
+            // byte[] bytes = NBTCompressionSteamTool.NBTCompressedStreamTools.a(a);
+            var aa = (new MemoryStream());
+            a.SaveToStream(aa, NbtCompression.AutoDetect);
+            var aaa = new StreamReader(aa).ReadToEnd();
 
-            
+            if (data.getItem().ExtraData.HasValue) fnt = aaa;
+            CCM.SQL.Insert(
+                $"INSERT INTO `AuctionHouse` VALUES (null,{data.getItem().Id},{data.getItem().Metadata},{data.getItem().Count},@data,{data.Cost}, {data.Soldby},{data.Soldbyn} ,false)",
+                "@data", Encoding.ASCII.GetBytes(fnt));
+
+            CyberCoreMain.Log.Info("AH saved for " + data.toString());
+            // ExecuteQuerySQLite("SELECT * FROM `AuctionHouse` ");
+
+
             return data;
         }
-        
     }
 
     public class AFSettings
