@@ -5,6 +5,7 @@ using CyberCore.Manager.ClassFactory.Powers;
 using CyberCore.Manager.TypeFactory.Powers;
 using CyberCore.Utils;
 using LibNoise.Combiner;
+using MiNET.Utils;
 using static CyberCore.CustomEnums.LockedSlot;
 
 namespace CyberCore.Manager.ClassFactory
@@ -169,13 +170,13 @@ namespace CyberCore.Manager.ClassFactory
 //            System.out.println("GPDL >>>>>>>> "+pe.getPowerEnum());
             PowerAbstract ppa = PowerManager.getPowerfromAPE(pe,BC);
             if(ppa == null){
-                System.out.println("EEEEEE1342342 234423334 !!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("EEEEEE1342342 234423334 !!!!!!!!!!!!!!!!!!!!!!!!");
                 continue;
             }
-            boolean a = false;
+            bool a = false;
             if(ppa.getAllowedClasses() != null) {
-                for (Class b : ppa.getAllowedClasses()) {
-                    if (BC.getClass().isAssignableFrom(b)) {
+                foreach (Type b in ppa.getAllowedClasses()) {
+                    if (BC.GetType().IsAssignableFrom(b)) {
                         a = true;
                         break;
                     }
@@ -184,21 +185,21 @@ namespace CyberCore.Manager.ClassFactory
             }
 //            PowerAbstract pa = BC.getPossiblePower(pe, false);
             PowerData p = new PowerData(ppa);
-            if (getPreferedSlot7() == pe.getPowerEnum()) p.setLS(SLOT_7);
-            if (getPreferedSlot8() == pe.getPowerEnum()) p.setLS(SLOT_8);
-            if (getPreferedSlot9() == pe.getPowerEnum()) p.setLS(SLOT_9);
-            if(getEnabledPowers().contains(ppa.getType()))p.setEnabled(true);
-            pd.add(p);
+            if (Equals(getPreferedSlot7(), pe.getPowerEnum())) p.setLS(SLOT_7);
+            if (Equals(getPreferedSlot8(), pe.getPowerEnum())) p.setLS(SLOT_8);
+            if (Equals(getPreferedSlot9(), pe.getPowerEnum())) p.setLS(SLOT_9);
+            if(getEnabledPowers().Contains(ppa.getType()))p.setEnabled(true);
+            pd.Add(p);
         }
-        return pd.toArray(new PowerData[0]);
+        return pd.ToArray();
     }
 
     public void addActivePower(PowerEnum pe) {
-        if (!ActivatedPowers.contains(pe)) ActivatedPowers.add(pe);
+        if (!ActivatedPowers.Contains(pe)) ActivatedPowers.Add(pe);
     }
 
     public void delActivePower(PowerEnum pe) {
-        ActivatedPowers.remove(pe);
+        ActivatedPowers.Remove(pe);
     }
 
     public void clearSlot7() {
@@ -215,9 +216,9 @@ namespace CyberCore.Manager.ClassFactory
 
     //Ran to Activate Powers from InternalPlayerSettings
     public void check() {
-        for (PowerData pd : getPowerDataList()) {
+        foreach (PowerData pd in getPowerDataList()) {
             if(pd.getPA() == null){
-                System.out.println("ERRROO3333333R!!! "+pd.getPowerID());
+                Console.WriteLine("ERRROO3333333R!!! "+pd.getPowerID());
                 return;
             }
             BC.addPossiblePower(pd.getPA());
@@ -232,49 +233,49 @@ namespace CyberCore.Manager.ClassFactory
     public void learnNewPower(PowerEnum pe) {
         learnNewPower(new AdvancedPowerEnum(pe));
     }
-    public void learnNewPower(PowerEnum pe, boolean silentfail) {
+    public void learnNewPower(PowerEnum pe, bool silentfail) {
         learnNewPower(new AdvancedPowerEnum(pe), silentfail);
     }
-    public boolean canLearnNewPower(AdvancedPowerEnum a){
-        for(AdvancedPowerEnum ape: getLearnedPowers()){
-            if(ape.getPowerEnum() == a.getPowerEnum() && ape.isValid())return false;
+    public bool canLearnNewPower(AdvancedPowerEnum a){
+        foreach(AdvancedPowerEnum ape in getLearnedPowers()){
+            if(Equals(ape.getPowerEnum(), a.getPowerEnum()) && ape.isValid())return false;
         }
         return true;
     }
     public void learnNewPower(AdvancedPowerEnum advancedPowerEnum) {
         learnNewPower(advancedPowerEnum,false);
     }
-    public void learnNewPower(AdvancedPowerEnum advancedPowerEnum, boolean silentfail) {
-        if(!canLearnNewPower(advancedPowerEnum) && !silentfail)BC.getPlayer().sendMessage(TextFormat.YELLOW+"ClassSettings > WARNING > Can not re-learn"+advancedPowerEnum.getPowerEnum()+" Power has already been learned!");
-        LearnedPowers.add(advancedPowerEnum);
-        BC.getPlayer().sendMessage(TextFormat.GREEN+"ClassSettings > "+advancedPowerEnum.getPowerEnum()+" Power has now been learned!");
+    public void learnNewPower(AdvancedPowerEnum advancedPowerEnum, bool silentfail) {
+        if(!canLearnNewPower(advancedPowerEnum) && !silentfail)BC.getPlayer().SendMessage(ChatColors.Yellow+"ClassSettings > WARNING > Can not re-learn"+advancedPowerEnum.getPowerEnum()+" Power has already been learned!");
+        LearnedPowers.Add(advancedPowerEnum);
+        BC.getPlayer().SendMessage(ChatColors.Green+"ClassSettings > "+advancedPowerEnum.getPowerEnum()+" Power has now been learned!");
     }
 
     public void delLearnedPower(PowerEnum pe) {
-        if(pe == null)return;
+        if(Equals(pe, PowerEnum.Unknown))return;
         int k = 0;
-        System.out.println("LFFFF >>> "+pe);
-        for(AdvancedPowerEnum ape: LearnedPowers){
-            System.out.println("|||||"+ape);
-            if(ape.getPowerEnum() == pe)break;
+        Console.WriteLine("LFFFF >>> "+pe);
+        foreach(AdvancedPowerEnum ape in LearnedPowers){
+            Console.WriteLine("|||||"+ape);
+            if(Equals(ape.getPowerEnum(), pe))break;
             k++;
         }
-        if(k < LearnedPowers.size())LearnedPowers.remove(k);
+        if(k < LearnedPowers.Count)LearnedPowers.Remove(LearnedPowers[k]);
     }
 
-    public boolean isPowerLearned(AdvancedPowerEnum pe) {
+    public bool isPowerLearned(AdvancedPowerEnum pe) {
         return isPowerLearned(pe.getPowerEnum());
     }
-    public boolean isPowerLearned(PowerEnum pe) {
-        for(AdvancedPowerEnum ape: LearnedPowers){
-            if(ape.getPowerEnum() == pe)return true;
+    public bool isPowerLearned(PowerEnum pe) {
+        foreach(AdvancedPowerEnum ape in LearnedPowers){
+            if(Equals(ape.getPowerEnum(), pe))return true;
         }
         return false;
     }
 
     public void delLearnedPowerAndLearnIfNotEqual(AdvancedPowerEnum ape) {
-        boolean rl = false;
-        for(AdvancedPowerEnum aa: LearnedPowers){
+        bool rl = false;
+        foreach(AdvancedPowerEnum aa in LearnedPowers){
             if(aa.sameType(ape)) {
                 if(!aa.checkEquals(ape)) {
                     rl = true;

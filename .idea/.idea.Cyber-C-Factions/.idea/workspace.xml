@@ -2,24 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassSettingsObj.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Window/MainClassSettingsWindow.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Window/MainClassSettingsWindowActivePowers.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Window/MainClassSettingsWindowChooseLockedSlot.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Window/MainClassWindowLearnedPowers.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Custom/CustomEnums/PowerEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Custom/CustomEnums/PowerEnum.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/AdvancedPowerEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/AdvancedPowerEnum.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerAbstract.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerAbstract.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassSettingsObj.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassSettingsObj.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormCustom.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormCustom.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormSimple.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormSimple.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +54,31 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="CJ" />
+                    <option name="lastUsedInstant" value="1585624039" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1585624038" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/38/fffc6363/StainedGlass.cs" root0="SKIP_HIGHLIGHTING" />
@@ -285,14 +296,14 @@
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Window/MainClassSettingsWindow.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Ability/Ability.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Custom/CustomEnums/PowerEnum.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassSettingsObj.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerManager.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Window/MainClassSettingsWindowChooseLockedSlot.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Window/MainClassSettingsWindowActivePowers.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerAbstract.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/AdvancedPowerEnum.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerManager.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassSettingsObj.cs" />
       </list>
     </option>
   </component>
@@ -328,7 +339,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="reference.settings.project.statistic.project.settings" />
+    <property name="settings.editor.selected.configurable" value="tasks.timeTracking" />
   </component>
   <component name="RunManager">
     <configuration name="Testing" type="DotNetProject" factoryName=".NET Project">
@@ -354,12 +365,12 @@
     <configuration />
   </component>
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
+    <task id="Default" summary="Default task">
       <changelist id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="" />
       <created>1582863423985</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1582863423985</updated>
+      <updated>1585624049433</updated>
       <workItem from="1582863425424" duration="344000" />
       <workItem from="1582863865172" duration="345000" />
       <workItem from="1582865454816" duration="718000" />
@@ -386,9 +397,30 @@
       <workItem from="1585281893612" duration="9054000" />
       <workItem from="1585427928867" duration="348000" />
       <workItem from="1585428818816" duration="29580000" />
-      <workItem from="1585613572335" duration="8717000" />
+      <workItem from="1585613572335" duration="9023000" />
+      <workItem from="1585623414473" />
     </task>
-    <servers />
+    <task active="true" id="Cyber-C-Factions-1" summary="Remove all bugs">
+      <changelist id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="" />
+      <created>1585641917000</created>
+      <option name="issue" value="true" />
+      <url>https://github.com/yungtechboy1/Cyber-C-Factions/issues/1</url>
+      <option name="number" value="1" />
+      <option name="presentableId" value="Cyber-C-Factions-1" />
+      <option name="project" value="Cyber-C-Factions" />
+      <option name="type" value="BUG" />
+      <updated>1585641931000</updated>
+      <workItem from="1585624049764" duration="782000" />
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <option name="createChangelist" value="false" />
+    <option name="createBranch" value="false" />
+    <servers>
+      <GitHub url="https://github.com">
+        <option name="repoAuthor" value="yungtechboy1" />
+        <option name="repoName" value="Cyber-C-Factions" />
+      </GitHub>
+    </servers>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -418,6 +450,10 @@
     </state>
     <state x="-1943" y="216" key="#SQL_Dialects/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584222633685" />
     <state x="771" y="201" key="#SQL_Dialects/0.0.2560.1040@0.0.2560.1040" timestamp="1585282777585" />
+    <state x="1512" y="178" key="#Servers" timestamp="1585623584196">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state x="1512" y="178" key="#Servers/0.0.2560.1040@0.0.2560.1040" timestamp="1585623584196" />
     <state x="771" y="201" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1585283147562">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -510,21 +546,25 @@
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
     <state x="-1713" y="268" key="RollbackChangesDialog/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584232196669" />
-    <state x="1131" y="189" key="SettingsEditor" timestamp="1585613797349">
+    <state x="1131" y="189" key="SettingsEditor" timestamp="1585623100161">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="500" y="186" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1584581081187" />
     <state x="-2027" y="200" key="SettingsEditor/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583551206878" />
-    <state x="1131" y="189" key="SettingsEditor/0.0.2560.1040@0.0.2560.1040" timestamp="1585613797349" />
+    <state x="1131" y="189" key="SettingsEditor/0.0.2560.1040@0.0.2560.1040" timestamp="1585623100161" />
+    <state x="1681" y="345" key="SimpleOpenTaskDialog" timestamp="1585624049637">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state x="1681" y="345" key="SimpleOpenTaskDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1585624049637" />
     <state width="623" height="457" key="SwitcherDM" timestamp="1585622182385">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583637631126" />
     <state width="623" height="457" key="SwitcherDM/0.0.2560.1040@0.0.2560.1040" timestamp="1585622182385" />
-    <state x="1731" y="142" key="VCS.ChangeListViewerDialog" timestamp="1585436837547">
+    <state x="1731" y="142" key="VCS.ChangeListViewerDialog" timestamp="1585624972789">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="1731" y="142" key="VCS.ChangeListViewerDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1585436837547" />
+    <state x="1731" y="142" key="VCS.ChangeListViewerDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1585624972789" />
     <state x="1711" y="333" width="418" height="369" key="com.intellij.database.psi.DbRenamePsiElementProcessor.DbRenameDialog" timestamp="1585285915309">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -569,11 +609,11 @@
     </state>
     <state x="-1902" y="1" width="1404" height="765" key="dock-window-5/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584417823734" />
     <state x="1280" y="0" width="1280" height="1040" key="dock-window-5/0.0.2560.1040@0.0.2560.1040" timestamp="1585619705822" />
-    <state x="0" y="0" width="1280" height="1040" key="dock-window-6" timestamp="1585622867425">
+    <state x="0" y="0" width="1280" height="1040" key="dock-window-6" timestamp="1585623438812">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="0" y="0" width="1404" height="765" key="dock-window-6/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584417823734" />
-    <state x="0" y="0" width="1280" height="1040" key="dock-window-6/0.0.2560.1040@0.0.2560.1040" timestamp="1585622867425" />
+    <state x="0" y="0" width="1280" height="1040" key="dock-window-6/0.0.2560.1040@0.0.2560.1040" timestamp="1585623438812" />
     <state x="0" y="433" width="1404" height="765" key="dock-window-7" timestamp="1584417823734">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -582,12 +622,12 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="0" y="0" width="1406" height="765" key="dock-window-8/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584230358805" />
-    <state x="869" y="144" width="936" height="752" key="find.popup" timestamp="1585622130955">
+    <state x="869" y="144" width="936" height="752" key="find.popup" timestamp="1585624868004">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="662" y="144" width="692" height="752" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584584090275" />
     <state x="-1854" y="155" width="738" height="804" key="find.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584417682271" />
-    <state x="869" y="144" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1585622130955" />
+    <state x="869" y="144" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1585624868004" />
     <state x="1461" y="244" key="run.anything.popup" timestamp="1585436525775">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -1969,6 +2009,7 @@
             <option name="internal" value="false" />
           </properties>
         </breakpoint>
+        <breakpoint type="dart-exception" />
       </default-breakpoints>
     </breakpoint-manager>
   </component>

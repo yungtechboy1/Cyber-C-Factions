@@ -637,7 +637,7 @@ namespace CyberCore.Manager.ClassFactory
             if (getClassSettings().getPreferedSlot9() == p) getClassSettings().clearSlot9();
         }
 
-        public final void addPossiblePower(PowerAbstract power)
+        public void addPossiblePower(PowerAbstract power)
         {
             PowerSettings ps = power.getPowerSettings();
             if (ps == null)
