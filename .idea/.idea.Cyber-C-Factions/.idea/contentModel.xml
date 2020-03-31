@@ -47,6 +47,7 @@
             <e p="BuffType.cs" t="Include" />
             <e p="ClassFactory.cs" t="Include" />
             <e p="ClassSettingsObj.cs" t="Include" />
+            <e p="ClassType.cs" t="Include" />
             <e p="Leveling" t="Include">
               <e p="ClassLevelingManager.cs" t="Include" />
               <e p="ClassLevelingManagerStage.cs" t="Include" />

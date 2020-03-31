@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassSettingsObj.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassSettingsObj.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassFactory.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,10 +99,13 @@
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/StaticItems.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Custom/CustomEnums/CustomDamageCause.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassType.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/61/628d2a33/ItemFactory.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/MasterListener.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2ED30C42-D264-4E76-9878-1F8626241A6F/1F/Enum.CoreCLR.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Crate/CrateObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/5e/b3baf95f/ItemGoldIngot.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2ED30C42-D264-4E76-9878-1F8626241A6F/3B/Type.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Rank/RankFactory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Crate/ItemChanceData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F89A5FD4-CCB8-4801-A208-20B200659395/17/2b7ee96a/StainedGlassPane.cs" root0="SKIP_HIGHLIGHTING" />
@@ -253,7 +256,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/CyberCore/Utils/NBTCompressionSteamTool.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/AuctionHouse/AuctionItemData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Custom/Items/NetherStar.cs" />
@@ -288,7 +290,6 @@
         <option value="$PROJECT_DIR$/CyberCore/Custom/CustomEnums/CustomDamageCause.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Custom/Events/CustomEntityDamageEvent.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassFactory.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormCustom.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormSimple.cs" />
@@ -304,6 +305,8 @@
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerManager.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassSettingsObj.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassType.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassFactory.cs" />
       </list>
     </option>
   </component>
@@ -410,7 +413,7 @@
       <option name="project" value="Cyber-C-Factions" />
       <option name="type" value="BUG" />
       <updated>1585641931000</updated>
-      <workItem from="1585624049764" duration="782000" />
+      <workItem from="1585624049764" duration="789000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />
