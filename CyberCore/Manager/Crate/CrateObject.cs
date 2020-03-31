@@ -57,15 +57,15 @@ namespace CyberCore.Manager.Crate
             return ft;
         }
 
-        //    public CrateObject(ConfigSection c) {
+        //    public CrateObject(Dictionary<String,Object> c) {
 //        if (c.containsKey("Key")) CD = CyberCoreMain.getInstance().CrateMain.getCrateMap().get(c.getString("Key"));
 //        if (c.containsKey("Loc")) Location = (Position) c.get("Loc");
 ////        super(c);
 //    }
 
-        public ConfigSection toConfig()
+        public Dictionary<String,Object> toConfig()
         {
-            ConfigSection cf = new ConfigSection();
+            Dictionary<String,Object> cf = new Dictionary<String,Object>();
             CyberCoreMain.Log.Error("Was LOG ||"+"1111" + Location);
             cf.put("x", Location.x);
             cf.put("y", Location.y);

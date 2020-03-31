@@ -57,7 +57,7 @@ namespace CyberCore.Manager.ClassFactory.Window
 //        for (PowerData pd : _BC.getClassSettings().getPowerDataList()) {
 //            k++;
 //            if (!pd.getNeedsLockedSlot()) {
-//                System.out.println(pd.getPowerID()+" NO LOCKED SLOT!!!");
+//                Console.WriteLine(pd.getPowerID()+" NO LOCKED SLOT!!!");
 //                continue;//Can not Enable NOT LockedSlot Powers here
 //            }
 //            boolean e = pd.getEnabled();

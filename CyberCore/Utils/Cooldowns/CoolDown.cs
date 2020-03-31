@@ -35,7 +35,7 @@ namespace CyberCore.Utils.Cooldowns
             setTimeSecs(secs, mins);
         }
 
-        public CoolDown(String name, int secs)
+        public CoolDown(String name, long secs)
         {
 //        t = tick;
             Key = name;
@@ -74,7 +74,7 @@ namespace CyberCore.Utils.Cooldowns
             return setTimeSecs(secs + (60 * mins));
         }
 
-        public CoolDown setTimeSecs(int secs)
+        public CoolDown setTimeSecs(long secs)
         {
             setTime(CyberUtils.getLongTime() + secs);
             return this;

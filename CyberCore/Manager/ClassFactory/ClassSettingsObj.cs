@@ -151,8 +151,8 @@ namespace CyberCore.Manager.ClassFactory
         }
         return c;
     }
-//    private ConfigSection ListAPEtoConfigSection(List<AdvancedPowerEnum> learnedPowers) {
-//        ConfigSection c = new ConfigSection();
+//    private Dictionary<String,Object> ListAPEtoDictionary<String,Object>(List<AdvancedPowerEnum> learnedPowers) {
+//        Dictionary<String,Object> c = new Dictionary<String,Object>();
 //        for(AdvancedPowerEnum ape: learnedPowers){
 //            if(!ape.isValid() || ape.toConfig().isEmpty())continue;
 //        c.put(ape.getPowerEnum().name(),ape.toConfig());
@@ -167,7 +167,7 @@ namespace CyberCore.Manager.ClassFactory
     public PowerData[] getPowerDataList() {
         List<PowerData> pd = new List<PowerData>();
         foreach (AdvancedPowerEnum pe in getLearnedPowers()) {
-//            System.out.println("GPDL >>>>>>>> "+pe.getPowerEnum());
+//            Console.WriteLine("GPDL >>>>>>>> "+pe.getPowerEnum());
             PowerAbstract ppa = PowerManager.getPowerfromAPE(pe,BC);
             if(ppa == null){
                 Console.WriteLine("EEEEEE1342342 234423334 !!!!!!!!!!!!!!!!!!!!!!!!");

@@ -682,12 +682,12 @@ namespace CyberCore.Manager.ClassFactory.Powers
         {
         }
 
-//    public void importConfig(ConfigSection cs) {
+//    public void importConfig(Dictionary<String,Object> cs) {
 //        if (LM != null) LM.importConfig(cs);
 //    }
 //
-//    public ConfigSection exportConfig() {
-//        ConfigSection c = new ConfigSection();
+//    public Dictionary<String,Object> exportConfig() {
+//        Dictionary<String,Object> c = new Dictionary<String,Object>();
 //        if (LM != null) c.put("LM", LM.exportConfig());
 //        return c;
 //    }
@@ -784,7 +784,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
                    " has been activated!";
         }
 
-        public Object usePower(Object[] args)
+        public Object usePower(params Object[] args)
         {
             setActive();
             if (isAbility())

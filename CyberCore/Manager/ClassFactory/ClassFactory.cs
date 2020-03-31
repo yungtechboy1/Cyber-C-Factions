@@ -59,7 +59,7 @@ namespace CyberCore.Manager.ClassFactory
 //                 Gson gson = builder.create();
 // //            Type listOfMyClassObject = new TypeToken<List<MyClass>>() {}.getType();
 //                 string content = readFileAsString(new File(CCM.getDataFolder().toString(), "MMOSave.yml").toString());
-// //            this.config = new ConfigSection(gson.fromJson(content, new TypeToken<LinkedDictionary<String, Object>>() {
+// //            this.config = new Dictionary<String,Object>(gson.fromJson(content, new TypeToken<LinkedDictionary<String, Object>>() {
 // //            }.getType()));
 //             }
 //             catch (Exception e)
@@ -131,7 +131,7 @@ namespace CyberCore.Manager.ClassFactory
             if (o != null)
             {
                 int a = (int) (o["TYPE"]);
-                BaseClass data = null; //new BaseClass(CCM, p, (ConfigSection) o);
+                BaseClass data = null; //new BaseClass(CCM, p, (Dictionary<String,Object>) o);
                 switch (ClassTypeExtender.fromInt(a))
                 {
                     case Unknown:

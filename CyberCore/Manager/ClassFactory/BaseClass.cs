@@ -31,7 +31,7 @@ namespace CyberCore.Manager.ClassFactory
 
         //    public List<PowerEnum> DefaultPowers = new List<>();
         public Dictionary<PowerEnum, PowerAbstract> PossiblePowerList = new Dictionary<PowerEnum, PowerAbstract>();
-        public List<AdvancedPowerEnum> DefaultPowers1 = new List<>();
+        public List<AdvancedPowerEnum> DefaultPowers1 = new List<AdvancedPowerEnum>();
         public CyberCoreMain CCM;
         protected int MainID = 0;
 
@@ -60,32 +60,34 @@ namespace CyberCore.Manager.ClassFactory
             {new Grass().Id, 40},
             {
                 110, 40
-            },//MYCELIUM
+            }, //MYCELIUM
             {
                 3, 40
-            },//DIRT
+            }, //DIRT
             {
                 13, 40
-            },//GRAVEL
+            }, //GRAVEL
             {
                 12, 40
-            },//SAND
+            }, //SAND
             {
                 88, 40
-            },//SOUL_SAND
+            }, //SOUL_SAND
             {
                 82, 40
-            }//CLAY_BLOCK
+            } //CLAY_BLOCK
         };
 
         private CorePlayer P;
 
         //    private ClassType TYPE;
         private int LVL = 0;
+
         private int XP = 0;
+
         // private Ability ActiveAbility;
         private Dictionary<BuffType, Buff> Buffs = new Dictionary<BuffType, Buff>();
-        private Dictionary<BuffType, DeBuff> DeBuffs = new Dictionary<BuffType,DeBuff>();
+        private Dictionary<BuffType, DeBuff> DeBuffs = new Dictionary<BuffType, DeBuff>();
         private List<LockedSlot> LockedSlots = new List<LockedSlot>();
         private double PowerSourceCount = 0;
         private ClassSettingsObj ClassSettings = null; //new ClassSettingsObj(this);
@@ -93,43 +95,59 @@ namespace CyberCore.Manager.ClassFactory
         //Get all the Powers that the player has Learned
         //Next Filter By the Class Currently Choosen
         //Then Add all aplicable Powers
-        public BaseClass(CyberCoreMain main, CorePlayer player, ConfigSection data)
+        public BaseClass(CyberCoreMain main, CorePlayer player, Dictionary<String, Object> data = null)
         {
-            this(main, player);
+            CCM = main;
+
+//        MainID = mid;
+            P = player;
+
+//        TYPE = rank;
+//        LVL = XPToLevel(XP);
+            ClassSettings = new ClassSettingsObj(this);
+            startbuffs();
+            startSetPowers();
+
+
             if (data != null)
             {
-                if (data.containsKey("COOLDONWS"))
+                if (data.ContainsKey("COOLDONWS"))
                 {
-                    ConfigSection css = data.getSection("COOLDONWS");
+                    Dictionary<String, Object> css = (Dictionary<string, object>) data["COOLDONWS"];
                     if (css == null)
                     {
                         CyberCoreMain.Log.Error("Was LOG ||" + "ERROROORR COOLDOWNS NOT IN CORRECT FOPRMT");
                     }
                     else
                     {
-                        css.getAllMap().forEach((key, value)-> {
+                        foreach (var a in css)
+                        {
+                            var key = a.Key;
+                            var value = a.Value;
                             CyberCoreMain.Log.Error("Was LOG ||" + value + " <<<<<<<<<<<<<<<<<<<<<< ");
                             AddCooldown(key, (int) value);
-                        });
+                        }
+
+                        ;
                     }
                 }
 
-                if (data.containsKey("XP"))
+                if (data.ContainsKey("XP"))
                 {
-                    int xpi = data.getInt("XP", 0);
+                    int xpi = (int) data["XP"];
                     addXP(xpi);
                 }
 
-                if (data.containsKey("PowerSourceCount"))
+                if (data.ContainsKey("PowerSourceCount"))
                 {
-                    int psc = data.getInt("PowerSourceCount", 0);
+                    int psc = (int) data["PowerSourceCount"];
                     addPowerSourceCount(psc);
                 }
 
-                if (data.containsKey("CS"))
+                if (data.ContainsKey("CS"))
                 {
 //                int psc = data.getInt("PowerSourceCount", 0);
-                    ClassSettings = new ClassSettingsObj(this, ((ConfigSection) data.get("CS")));
+                    ClassSettings = new ClassSettingsObj(this, ((Dictionary<String, Object>) data["CS"]));
                 }
                 else
                 {
@@ -142,20 +160,6 @@ namespace CyberCore.Manager.ClassFactory
             }
 
             learnPlayerDefaultPowers();
-            startbuffs();
-            startSetPowers();
-        }
-
-        public BaseClass(CyberCoreMain main, CorePlayer player)
-        {
-            CCM = main;
-
-//        MainID = mid;
-            P = player;
-
-//        TYPE = rank;
-//        LVL = XPToLevel(XP);
-            ClassSettings = new ClassSettingsObj(this);
             startbuffs();
             startSetPowers();
         }
@@ -226,8 +230,8 @@ namespace CyberCore.Manager.ClassFactory
 
         public void learnPlayerDefaultPowers()
         {
-            for (AdvancedPowerEnum pe :
-            getDefaultPowers()) {
+            foreach (AdvancedPowerEnum pe in getDefaultPowers())
+            {
                 if (!getClassSettings().isPowerLearned(pe))
                 {
                     CyberCoreMain.Log.Error("Was LOG ||" + "SEND LEARN TO " + pe);
@@ -249,12 +253,12 @@ namespace CyberCore.Manager.ClassFactory
 
         public void onLeaveClass()
         {
-            if (this instanceof PowerHotBarInt) {
-                if (getLockedSlots().size() > 0)
+            if (this is PowerHotBarInt)
+            {
+                if (getLockedSlots().Count > 0)
                 {
-                    for (LockedSlot ls :
-                    getLockedSlots()) getPlayer().getInventory().clear(ls.getSlot());
-                    LockedSlots.clear();
+                    foreach (LockedSlot ls in getLockedSlots()) getPlayer().Inventory.clear(ls.getSlot());
+                    LockedSlots.Clear();
                 }
             }
         }
@@ -263,10 +267,10 @@ namespace CyberCore.Manager.ClassFactory
         {
             PlayerInventory pi = new PlayerInventory(getPlayer());
 
-            Map<int, Item> s = getPlayer().getInventory().slots;
-            if (getLockedSlots().size() > 0)
-                for (LockedSlot ls :
-            getLockedSlots()) s.put(ls.getSlot(), Item.get(0));
+            List<Item> s = getPlayer().Inventory.Slots;
+            if (getLockedSlots().Count > 0)
+                foreach (LockedSlot ls in getLockedSlots())
+                    s[ls.getSlot()] = new ItemAir();
             pi.setContents(s);
             return pi;
         }
@@ -292,16 +296,16 @@ namespace CyberCore.Manager.ClassFactory
             }
             else
             {
-                PowerSourceCount += Math.abs(a);
+                PowerSourceCount += Math.Abs(a);
             }
         }
 
         public List<AdvancedPowerEnum> getDefaultPowers()
         {
-            return new List<>();
+            return new List<AdvancedPowerEnum>();
         }
 
-        public ChatColors getColor()
+        public String getColor()
         {
             return ChatColors.Gray;
         }
@@ -315,21 +319,18 @@ namespace CyberCore.Manager.ClassFactory
 
         public double getMaxPowerSourceCount()
         {
-            return Math.round(
-                (Math.abs(Math.pow(57 * (getLVL() + 1), 2)) / Math.sqrt(Math.pow(20 * (getLVL() + 1), 3))) + ((
-                                                                                                                  getLVL() +
-                                                                                                                  1) *
-                                                                                                              10));
+            return Math.Abs(Math.Pow(57 * (getLVL() + 1), 2)) / Math.Sqrt(Math.Pow(20 * (getLVL() + 1), 3)) +
+                   (getLVL() + 1) * 10;
         }
 
         public void tickPowerSource(int tick)
         {
             addPowerSourceCount(); //From Server Every 20 Secs
-            double t = Math.abs(Math.pow(27 * (getLVL() + 1), 2));
-            double b = Math.sqrt(Math.pow(18 * (getLVL() + 1), 3));
-            int f = (int) Math.round((t / b) * .2);
+            double t = Math.Abs(Math.Pow(27 * (getLVL() + 1), 2));
+            double b = Math.Sqrt(Math.Pow(18 * (getLVL() + 1), 3));
+            int f = (int) ((t / b) * .2);
 
-            addPowerSourceCount(Math.abs(f));
+            addPowerSourceCount(Math.Abs(f));
             //TODO
             //ISSUE
             //Maybe TIck player power here too??
@@ -348,8 +349,8 @@ namespace CyberCore.Manager.ClassFactory
 
         public ClassTeir getTeir()
         {
-            int d = (int) Math.floor(getLVL() / 10);
-            return ClassTeir.values()[d];
+            int d = (int) (getLVL() / 10);
+            return (ClassTeir) Enum.Parse(typeof(ClassTeir), "Class" + d);
         }
 
         public abstract ClassType getTYPE();
@@ -358,32 +359,34 @@ namespace CyberCore.Manager.ClassFactory
 
         public int getMainID()
         {
-            return getTYPE().getKey();
+            return (int) getTYPE();
         }
 
         public abstract void initBuffs();
 
         private void registerAllBuffsToCorePlayer(CorePlayer cp)
         {
-//        for (Buff b : getBuffs().values()) {
-            for (Buff b :
-            getBuffs().values()) {
+//        for (Buff bingetBuffs().values()) {
+            foreach (Buff b in getBuffs().Values)
+            {
                 cp.addBuffFromClass(b);
             }
-            for (DeBuff b :
-            getDeBuffs().values()) {
+
+            foreach (DeBuff b in getDeBuffs().Values)
+            {
                 cp.addDeBuffFromClass(b);
             }
+
             cp.initAllClassBuffs();
         }
 
         private void recheckAllBuffs(int tick)
         {
             //No Need to Keep resending :/
-//        for (Buff b : getBuffs().values()) {
+//        for (Buff bingetBuffs().values()) {
 //            getPlayer().addBuffFromClass(b);
 //        }
-//        for (DeBuff b : getDeBuffs().values()) {
+//        for (DeBuff bingetDeBuffs().values()) {
 //            getPlayer().addDeBuffFromClass(b);
 //        }
             getPlayer().initAllClassBuffs();
@@ -396,46 +399,46 @@ namespace CyberCore.Manager.ClassFactory
 
         public Dictionary<BuffType, Buff> addBuff(Buff o)
         {
-            Buffs.put(o.getBt(), o);
-            return (Dictionary<BuffType, Buff>) Buffs.clone();
+            Buffs[o.getBt()] = o;
+            return getBuffs();
         }
 
         public Dictionary<BuffType, Buff> removeBuffs(Buff o)
         {
-            Buffs.remove(o.getBt().ordinal());
-            return (Dictionary<BuffType, Buff>) Buffs.clone();
+            Buffs.Remove(o.getBt());
+            return getBuffs();
         }
 
         public Dictionary<BuffType, Buff> getBuffs()
         {
-            return (Dictionary<BuffType, Buff>) Buffs.clone();
+            return new Dictionary<BuffType, Buff>(Buffs);
         }
 
         public Buff getBuff(BuffType o)
         {
-            return Buffs.get(o);
+            return Buffs[o];
         }
 
         public Dictionary<BuffType, DeBuff> removeDeBuff(DeBuff o)
         {
-            DeBuffs.remove(o.getBt().ordinal());
-            return (Dictionary<BuffType, DeBuff>) DeBuffs.clone();
+            DeBuffs.Remove(o.getBt());
+            return getDeBuffs();
         }
 
         public Dictionary<BuffType, DeBuff> addDeBuff(DeBuff o)
         {
-            DeBuffs.put(o.getBt(), o);
-            return (Dictionary<BuffType, DeBuff>) DeBuffs.clone();
+            DeBuffs[o.getBt()] = o;
+            return getDeBuffs();
         }
 
         public Dictionary<BuffType, DeBuff> getDeBuffs()
         {
-            return (Dictionary<BuffType, DeBuff>) DeBuffs.clone();
+            return new Dictionary<BuffType, DeBuff>(DeBuffs);
         }
 
-        public DeBuff getDeBuff(int o)
+        public DeBuff getDeBuff(BuffType o)
         {
-            return DeBuffs.get(o);
+            return DeBuffs[o];
         }
 
         public float getDamageBuff()
@@ -470,10 +473,9 @@ namespace CyberCore.Manager.ClassFactory
 
         public List<PowerAbstract> getActivePowers()
         {
-            List<PowerAbstract> pp = new List<>();
-            for (PowerEnum pe :
-            getEnabledPowersList()) {
-                pp.add(getPossiblePower(pe));
+            List<PowerAbstract> pp = new List<PowerAbstract>();
+            foreach (PowerEnum pe in getEnabledPowersList()) {
+                pp.Add(getPossiblePower(pe));
             }
             return pp;
         }
@@ -481,7 +483,7 @@ namespace CyberCore.Manager.ClassFactory
         public PowerAbstract getPossiblePower(PowerEnum key, bool active)
         {
 //        if(active)return ActivePowers.get(key);
-            return PossiblePowerList.get(key);
+            return PossiblePowerList[key];
         }
 
         public PowerAbstract getPossiblePower(PowerEnum key)
@@ -496,7 +498,7 @@ namespace CyberCore.Manager.ClassFactory
             PowerAbstract p = getPossiblePower(pe, false);
             if (p == null)
             {
-                getPlayer().sendMessage("Error DeActivating " + pe.name());
+                getPlayer().SendMessage("Error DeActivating " + pe.Name);
             }
 
             p.setActive(false);
@@ -504,7 +506,7 @@ namespace CyberCore.Manager.ClassFactory
 //        getClassSettings().delActiveGPDLPower(pe);
             onPowerDeActivate(p); //callback
             delActivePower(p);
-            getPlayer().sendMessage(ChatColors.Red + "POWER > " + p.getDispalyName() + " has been DEactivated!");
+            getPlayer().SendMessage(ChatColors.Red + "POWER > " + p.getDispalyName() + " has been DEactivated!");
         }
 
 //
@@ -512,37 +514,33 @@ namespace CyberCore.Manager.ClassFactory
 //        CyberCoreMain.Log.Error("Was LOG ||"+"Attempting to activate "+pe.getPowerID());
 //        PowerAbstract p = pe.getPA();
 //        if (p == null) {
-//            getPlayer().sendMessage("E:221S: Error attempting to Activating " + pe.getPowerID());
+//            getPlayer().SendMessage("E:221S: Error attempting to Activating " + pe.getPowerID());
 //            return;
 //        }
 //        PossiblePowerList.put(pe.getPowerID(),p);
 //        p.enablePower();
 //        onPowerEnabled(p);//callback
 ////        addActivePower(p);
-//        getPlayer().sendMessage(ChatColors.Green + "POWER > " + p.getDispalyName() + " has been activated!");
+//        getPlayer().SendMessage(ChatColors.Green + "POWER > " + p.getDispalyName() + " has been activated!");
 //    }
-        public void enablePower(AdvancedPowerEnum pe)
-        {
-            enablePower(pe, null);
-        }
 
-        public void enablePower(AdvancedPowerEnum pe, LockedSlot ls)
+        public void enablePower(AdvancedPowerEnum pe, LockedSlot ls = new LockedSlot())
         {
             CyberCoreMain.Log.Error("Was LOG ||" + "Attempting to activate222 " + pe);
 
             PowerAbstract p = PowerManager.getPowerfromAPE(pe, this);
             if (p == null)
             {
-                getPlayer().sendMessage("E:221S: Error attempting to Activating " + pe.getPowerID());
+                getPlayer().SendMessage("E:221S: Error attempting to Activating " + pe.getPowerID());
                 return;
             }
 
             if (p.isHotbar())
             {
-                if (ls == null)
+                if (ls.Equals(LockedSlot.NA))
                 {
                     CyberCoreMain.Log.Error("Was LOG ||" + "Error! Did not set Locked Slot!");
-                    getPlayer().sendMessage("E:2ww21S: Error attempting to Activating " + pe.getPowerID());
+                    getPlayer().SendMessage("E:2ww21S: Error attempting to Activating " + pe.getPowerID());
                     return;
                 }
                 else
@@ -551,25 +549,25 @@ namespace CyberCore.Manager.ClassFactory
                 }
             }
 
-            PossiblePowerList.put(pe.getPowerID(), p);
+            PossiblePowerList[pe.getPowerID()] = p;
             p.enablePower();
             onPowerEnabled(p); //callback
 
 //        addActivePower(p);
-            getPlayer().sendMessage(ChatColors.Green + "POWER > " + p.getDispalyName() + " has been activated!");
+            getPlayer().SendMessage(ChatColors.Green + "POWER > " + p.getDispalyName() + " has been activated!");
         }
 //    public void enablePower(PowerEnum pe) {
 //        CyberCoreMain.Log.Error("Was LOG ||"+"Attempting to activate222 "+pe);
 //        PowerAbstract p = PowerManager.getPowerfromAPE(pe,this);
 //        if (p == null) {
-//            getPlayer().sendMessage("E:221S: Error attempting to Activating " + pe);
+//            getPlayer().SendMessage("E:221S: Error attempting to Activating " + pe);
 //            return;
 //        }
 ////        if(ls != null && ls != LockedSlot.NA)p.setLS(ls);
 //        p.enablePower();
 //        onPowerEnabled(p);//callback
 //        addActivePower(p);
-//        getPlayer().sendMessage(ChatColors.Green + "POWER2 > " + p.getDispalyName() + " has been activated!");
+//        getPlayer().SendMessage(ChatColors.Green + "POWER2 > " + p.getDispalyName() + " has been activated!");
 //    }
 
         private void onPowerEnabled(PowerAbstract p)
@@ -581,7 +579,7 @@ namespace CyberCore.Manager.ClassFactory
             PowerAbstract p = getPossiblePower(pe, false);
             if (p == null)
             {
-                getPlayer().sendMessage("Error Activating " + pe.name());
+                getPlayer().SendMessage("Error Activating " + pe.Name);
                 return;
             }
 
@@ -589,7 +587,7 @@ namespace CyberCore.Manager.ClassFactory
             onPowerActivate(p); //callback
 
 //        addActivePower(p);
-            getPlayer().sendMessage(ChatColors.Green + "POWER > " + p.getDispalyName() + " has been activated!");
+            getPlayer().SendMessage(ChatColors.Green + "POWER > " + p.getDispalyName() + " has been activated!");
         }
 
         public void onPowerDeActivate(PowerAbstract p)
@@ -608,7 +606,7 @@ namespace CyberCore.Manager.ClassFactory
 
         private void addActivePower(PowerEnum p)
         {
-            if (!getClassSettings().getEnabledPowers().contains(p)) getClassSettings().addActivePower(p);
+            if (!getClassSettings().getEnabledPowers().Contains(p)) getClassSettings().addActivePower(p);
         }
 
         private void delActivePower(PowerAbstract p)
@@ -631,10 +629,10 @@ namespace CyberCore.Manager.ClassFactory
 
         private void delActivePower(PowerEnum p)
         {
-            if (getClassSettings().getEnabledPowers().contains(p)) getClassSettings().delActivePower(p);
-            if (getClassSettings().getPreferedSlot7() == p) getClassSettings().clearSlot7();
-            if (getClassSettings().getPreferedSlot8() == p) getClassSettings().clearSlot8();
-            if (getClassSettings().getPreferedSlot9() == p) getClassSettings().clearSlot9();
+            if (getClassSettings().getEnabledPowers().Contains(p)) getClassSettings().delActivePower(p);
+            if (getClassSettings().getPreferedSlot7().Equals(p)) getClassSettings().clearSlot7();
+            if (getClassSettings().getPreferedSlot8().Equals(p)) getClassSettings().clearSlot8();
+            if (getClassSettings().getPreferedSlot9().Equals(p)) getClassSettings().clearSlot9();
         }
 
         public void addPossiblePower(PowerAbstract power)
@@ -642,25 +640,24 @@ namespace CyberCore.Manager.ClassFactory
             PowerSettings ps = power.getPowerSettings();
             if (ps == null)
             {
-                CyberCoreMain.Log.error("CAN NOT ADD POWER " + power.getName() + "! No PowerSetting Set!");
-                getPlayer().sendMessage(ChatColors.Red + "Error > Plugin > Power > " + power.getName() +
+                CyberCoreMain.Log.Error("CAN NOT ADD POWER " + power.getName() + "! No PowerSetting Set!");
+                getPlayer().SendMessage(ChatColors.Red + "Error > Plugin > Power > " + power.getName() +
                                         " | Error activating power! No Power Setting Set!!!!");
                 return;
             }
 
-            if (!getLearnedPowersPE().contains(power.getType()))
+            if (!getLearnedPowersPE().Contains(power.getType()))
             {
-                getPlayer().sendMessage("Error! Could not Add Possible Power " + power.getDispalyName() +
+                getPlayer().SendMessage("Error! Could not Add Possible Power " + power.getDispalyName() +
                                         " because you have not learned that power yet!");
                 CyberCoreMain.Log.Error("Was LOG ||" + "ERror! " + getPlayer().getName() + " has not learned " +
                                         power.getDispalyName() + " Yet!");
                 return;
             }
 
-            if (ClassSettings.getEnabledPowers().isEmpty() ||
-                !ClassSettings.getEnabledPowers().contains(power.getType()))
+            if (ClassSettings.getEnabledPowers().Count == 0 || !ClassSettings.getEnabledPowers().Contains(power.getType()))
             {
-                getPlayer().sendMessage("Error! Could not Add non enabled Power to Possible Power " +
+                getPlayer().SendMessage("Error! Could not Add non enabled Power to Possible Power " +
                                         power.getDispalyName() +
                                         " because you have not learned that power yet!");
                 CyberCoreMain.Log.Error("Was LOG ||" + "ERror! " + getPlayer().getName() + " has not learned " +
@@ -676,14 +673,14 @@ namespace CyberCore.Manager.ClassFactory
 //        }
 //        if(ClassSettings.getLearnedPowers().contains(power.getType())){
 //Add to Power List to Pick From!
-            PossiblePowerList.put(power.getType(), power);
+            PossiblePowerList[power.getType()] = power;
 //Power is Learned
 //Power Active
-            if (ps.isHotbar())
+            if (ps.isHotbar)
             {
-                if (ClassSettings.getPreferedSlot7() == power.getType()) power.setLS(LockedSlot.SLOT_7);
-                if (ClassSettings.getPreferedSlot8() == power.getType()) power.setLS(LockedSlot.SLOT_8);
-                if (ClassSettings.getPreferedSlot9() == power.getType()) power.setLS(LockedSlot.SLOT_9);
+                if (ClassSettings.getPreferedSlot7().Equals(power.getType())) power.setLS(LockedSlot.SLOT_7);
+                if (ClassSettings.getPreferedSlot8().Equals(power.getType())) power.setLS(LockedSlot.SLOT_8);
+                if (ClassSettings.getPreferedSlot9().Equals(power.getType())) power.setLS(LockedSlot.SLOT_9);
             }
 
 //            power.enablePower();
@@ -691,9 +688,8 @@ namespace CyberCore.Manager.ClassFactory
 
         private List<PowerEnum> getLearnedPowersPE()
         {
-            List<PowerEnum> p = new List<>();
-            for (AdvancedPowerEnum pe :
-            getLearnedPowers()) p.add(pe.getPowerEnum());
+            List<PowerEnum> p = new List<PowerEnum>();
+            foreach (AdvancedPowerEnum pe in getLearnedPowers()) p.Add(pe.getPowerEnum());
             return p;
         }
 
@@ -730,28 +726,27 @@ namespace CyberCore.Manager.ClassFactory
 
         public abstract String getName();
 
-        public ConfigSection export()
+        public Dictionary<String, Object> export()
         {
-            return new ConfigSection()
+            var a = new Dictionary<String, Object>()
             {
-                {
-                    put("COOLDOWNS", getCOOLDOWNStoConfig());
-                    put("PowerSourceCount", PowerSourceCount);
-                    if (getClassSettings() != null) put("CS", getClassSettings().export());
-                    else put("CS", "{}");
-                    put("XP", getXP());
-                    put("TYPE", getTYPE().ordinal());
-                }
+                    {"COOLDOWNS", getCOOLDOWNStoConfig()},
+                    {"PowerSourceCount", PowerSourceCount},
+                    
+                    {"XP", getXP()},
+                    {"TYPE", (int) getTYPE()},
             };
+            if (getClassSettings() != null) a["CS"] = getClassSettings().export();
+            else a["CS"] = "{}";
+            return a;
         }
 
-        public ConfigSection getCOOLDOWNStoConfig()
+        public Dictionary<String, Object> getCOOLDOWNStoConfig()
         {
-            ConfigSection conf = new ConfigSection();
-            for (CoolDown c :
-            getCOOLDOWNS()) {
+            Dictionary<String, Object> conf = new Dictionary<String, Object>();
+            foreach (CoolDown c in getCOOLDOWNS()) {
                 CyberCoreMain.Log.Error("Was LOG ||" + c.toString() + "|||| AND " + c.isValid());
-                if (c.isValid()) conf.set(c.getKey(), c.getTime());
+                if (c.isValid()) conf[c.getKey()] = c.getTime();
             }
             return conf;
         }
@@ -761,10 +756,10 @@ namespace CyberCore.Manager.ClassFactory
             return P;
         }
 
-        public void setActiveAbility(Ability activeAbility)
-        {
-            ActiveAbility = activeAbility;
-        }
+        // public void setActiveAbility(Ability activeAbility)
+        // {
+        //     ActiveAbility = activeAbility;
+        // }
 
         public void addXP(int xp)
         {
@@ -807,9 +802,9 @@ namespace CyberCore.Manager.ClassFactory
 //        a.PrimeEvent();
         }
 
-        public void AddCooldown(String perk, int value)
+        public void AddCooldown(String perk, long value)
         {
-            COOLDOWNS.add(new CoolDown(perk, CCM.GetIntTime() + value));
+            COOLDOWNS.Add(new CoolDown(perk, value));
         }
 
         public void RemoveCooldown(String perk)
@@ -817,8 +812,7 @@ namespace CyberCore.Manager.ClassFactory
             if (!HasCooldown(perk)) return;
 
             CoolDown cr = null;
-            for (CoolDown c :
-            COOLDOWNS) {
+            foreach (CoolDown c in COOLDOWNS) {
                 if (c.getKey().equalsIgnoreCase(perk))
                 {
                     cr = c;
@@ -827,7 +821,7 @@ namespace CyberCore.Manager.ClassFactory
             }
             if (cr != null)
             {
-                COOLDOWNS.remove(cr);
+                COOLDOWNS.Remove(cr);
             }
             else
             {
@@ -840,8 +834,7 @@ namespace CyberCore.Manager.ClassFactory
             if (!HasCooldown(perk)) return;
 
             CoolDown cr = null;
-            for (CoolDown c :
-            COOLDOWNS) {
+            foreach (CoolDown c in COOLDOWNS) {
                 if (c.getKey().equalsIgnoreCase(perk))
                 {
                     cr = c;
@@ -850,8 +843,8 @@ namespace CyberCore.Manager.ClassFactory
             }
             if (cr != null)
             {
-                COOLDOWNS.remove(cr);
-                AddCooldown(perk, cr.getTime() - value);
+                COOLDOWNS.Remove(cr);
+                AddCooldown(perk, cr.getTime() - CyberUtils.getLongTime() - value);
             }
             else
             {
@@ -862,8 +855,7 @@ namespace CyberCore.Manager.ClassFactory
         public CoolDown GetCooldown(String key)
         {
             if (!HasCooldown(key)) return null;
-            for (CoolDown c :
-            COOLDOWNS) {
+            foreach (CoolDown c in COOLDOWNS) {
                 if (c.getKey().equalsIgnoreCase(key))
                 {
                     return c;
@@ -874,13 +866,12 @@ namespace CyberCore.Manager.ClassFactory
 
         public bool HasCooldown(String perk)
         {
-            for (CoolDown c :
-            (List<CoolDown>) COOLDOWNS.clone()) {
+            foreach (CoolDown c in (List<CoolDown>) COOLDOWNS) {
                 if (c.getKey().equalsIgnoreCase(perk))
                 {
                     if (!c.isValid())
                     {
-                        COOLDOWNS.remove(c);
+                        COOLDOWNS.Remove(c);
                         return false;
                     }
 
@@ -900,77 +891,77 @@ namespace CyberCore.Manager.ClassFactory
             }
 
 //        Event ee = e;
-            for (PowerAbstract p :
-            getActivePowers()) {
-                p.handelEvent(e);
+            foreach (PowerAbstract p in getActivePowers()) {
+                //TODO
+                // p.handelEvent(e);
             }
             return e;
         }
 
-        public Event PlayerTakeDamageEvent(PlayerTakeDamageEvent event) {
-            return event;
-        }
+        // public Event PlayerTakeDamageEvent(PlayerTakeDamageEvent event) {
+        //     return event;
+        // }
 
 //TODO
-        public Event HandelEvent(Event event) {
-            event = PowerHandelEvent(event);
-            if (event instanceof PlayerTakeDamageEvent) {
-                event = PlayerTakeDamageEvent((PlayerTakeDamageEvent) event);
-//            if (ActiveAbility != null) event = ActiveAbility.CustomEntityDamageByEntityEvent((CustomEntityDamageByEntityEvent) event);
-                return event;
-            } else if (event instanceof CustomEntityDamageByEntityEvent) {
-                event = CustomEntityDamageByEntityEvent((CustomEntityDamageByEntityEvent) event);
-//            if (ActiveAbility != null) event = ActiveAbility.CustomEntityDamageByEntityEvent((CustomEntityDamageByEntityEvent) event);
-                return event;
-            } else if (event instanceof BlockBreakEvent) {
-                event = BlockBreakEvent((BlockBreakEvent) event);
-                if (ActiveAbility != null) event = ActiveAbility.BlockBreakEvent((BlockBreakEvent) event);
-                return event;
-            } else if (event instanceof PlayerToggleSprintEvent) {
-                event = PlayerToggleSprintEvent((PlayerToggleSprintEvent) event);
-                if (ActiveAbility != null) event = ActiveAbility.PlayerToggleSprintEvent((PlayerToggleSprintEvent) event
-                    );
-                return event;
-            } else if (event instanceof PlayerInteractEvent) {
-                event = PlayerInteractEvent((PlayerInteractEvent) event);
-                if (ActiveAbility != null) event = ActiveAbility.PlayerInteractEvent((PlayerInteractEvent) event);
-                return event;
-            } else if (event instanceof EntityRegainHealthEvent) {
-                event = EntityRegainHealthEvent((EntityRegainHealthEvent) event);
-                if (ActiveAbility != null) event = ActiveAbility.EntityRegainHealthEvent((EntityRegainHealthEvent) event
-                    );
-                return event;
-            } else if (event instanceof BlockPlaceEvent) {
-                event = BlockPlaceEvent((BlockPlaceEvent) event);
-                if (ActiveAbility != null) event = ActiveAbility.BlockPlaceEvent((BlockPlaceEvent) event);
-                return event;
-            } else if (event instanceof EntityDamageEvent) {
-                event = EntityDamageEvent((EntityDamageEvent) event);
-                if (ActiveAbility != null) event = ActiveAbility.EntityDamageEvent((EntityDamageEvent) event);
-                return event;
-            } else if (event instanceof CraftItemEvent) {
-                event = CraftItemEvent((CraftItemEvent) event);
-                if (ActiveAbility != null) event = ActiveAbility.CraftItemEvent((CraftItemEvent) event);
-                return event;
-            } else if (event instanceof PlayerJumpEvent) {
-                event = PlayerJumpEvent((PlayerJumpEvent) event);
-                if (ActiveAbility != null) event = ActiveAbility.PlayerJumpEvent((PlayerJumpEvent) event);
-                return event;
-            } else if (event instanceof EntityInventoryChangeEvent) {
-                event = EntityInventoryChangeEvent((EntityInventoryChangeEvent) event);
-//            if (ActiveAbility != null) event = ActiveAbility.PlayerJumpEvent((PlayerJumpEvent) event);
-                return event;
-            }
-            return event;
-        }
+//         public Event HandelEvent(Event event) {
+//             event = PowerHandelEvent(event);
+//             if (event instanceof PlayerTakeDamageEvent) {
+//                 event = PlayerTakeDamageEvent((PlayerTakeDamageEvent) event);
+// //            if (ActiveAbility != null) event = ActiveAbility.CustomEntityDamageByEntityEvent((CustomEntityDamageByEntityEvent) event);
+//                 return event;
+//             } else if (event instanceof CustomEntityDamageByEntityEvent) {
+//                 event = CustomEntityDamageByEntityEvent((CustomEntityDamageByEntityEvent) event);
+// //            if (ActiveAbility != null) event = ActiveAbility.CustomEntityDamageByEntityEvent((CustomEntityDamageByEntityEvent) event);
+//                 return event;
+//             } else if (event instanceof BlockBreakEvent) {
+//                 event = BlockBreakEvent((BlockBreakEvent) event);
+//                 if (ActiveAbility != null) event = ActiveAbility.BlockBreakEvent((BlockBreakEvent) event);
+//                 return event;
+//             } else if (event instanceof PlayerToggleSprintEvent) {
+//                 event = PlayerToggleSprintEvent((PlayerToggleSprintEvent) event);
+//                 if (ActiveAbility != null) event = ActiveAbility.PlayerToggleSprintEvent((PlayerToggleSprintEvent) event
+//                     );
+//                 return event;
+//             } else if (event instanceof PlayerInteractEvent) {
+//                 event = PlayerInteractEvent((PlayerInteractEvent) event);
+//                 if (ActiveAbility != null) event = ActiveAbility.PlayerInteractEvent((PlayerInteractEvent) event);
+//                 return event;
+//             } else if (event instanceof EntityRegainHealthEvent) {
+//                 event = EntityRegainHealthEvent((EntityRegainHealthEvent) event);
+//                 if (ActiveAbility != null) event = ActiveAbility.EntityRegainHealthEvent((EntityRegainHealthEvent) event
+//                     );
+//                 return event;
+//             } else if (event instanceof BlockPlaceEvent) {
+//                 event = BlockPlaceEvent((BlockPlaceEvent) event);
+//                 if (ActiveAbility != null) event = ActiveAbility.BlockPlaceEvent((BlockPlaceEvent) event);
+//                 return event;
+//             } else if (event instanceof EntityDamageEvent) {
+//                 event = EntityDamageEvent((EntityDamageEvent) event);
+//                 if (ActiveAbility != null) event = ActiveAbility.EntityDamageEvent((EntityDamageEvent) event);
+//                 return event;
+//             } else if (event instanceof CraftItemEvent) {
+//                 event = CraftItemEvent((CraftItemEvent) event);
+//                 if (ActiveAbility != null) event = ActiveAbility.CraftItemEvent((CraftItemEvent) event);
+//                 return event;
+//             } else if (event instanceof PlayerJumpEvent) {
+//                 event = PlayerJumpEvent((PlayerJumpEvent) event);
+//                 if (ActiveAbility != null) event = ActiveAbility.PlayerJumpEvent((PlayerJumpEvent) event);
+//                 return event;
+//             } else if (event instanceof EntityInventoryChangeEvent) {
+//                 event = EntityInventoryChangeEvent((EntityInventoryChangeEvent) event);
+// //            if (ActiveAbility != null) event = ActiveAbility.PlayerJumpEvent((PlayerJumpEvent) event);
+//                 return event;
+//             }
+//             return event;
+//         }
 
-        public PlayerJumpEvent PlayerJumpEvent(PlayerJumpEvent event) {
-            return event;
-        }
-
-        public EntityInventoryChangeEvent EntityInventoryChangeEvent(EntityInventoryChangeEvent event) {
-            return event;
-        }
+        // public PlayerJumpEvent PlayerJumpEvent(PlayerJumpEvent event) {
+        //     return event;
+        // }
+        //
+        // public EntityInventoryChangeEvent EntityInventoryChangeEvent(EntityInventoryChangeEvent event) {
+        //     return event;
+        // }
 
 //TODO Change to MainClassSettingsWindow return tyoe
         public CyberFormSimple getSettingsWindow()
@@ -983,7 +974,7 @@ namespace CyberCore.Manager.ClassFactory
         public void activateAbility()
         {
 //        if (HasCooldown(PrimeKey)) {
-//            getPlayer().sendMessage("This Has a CoolDown!");
+//            getPlayer().SendMessage("This Has a CoolDown!");
 //            return;
 //        } else if (PrimeKey <= PossibleAbillity().size() - 1) {
 //            Ability a = PossibleAbillity().get(PrimeKey);
@@ -993,82 +984,82 @@ namespace CyberCore.Manager.ClassFactory
 //        }
         }
 
-        public void activateAbility(Vector3 pos)
-        {
-            activateAbility(pos, 0);
-        }
+        // public void activateAbility(Vector3 pos)
+        // {
+        //     activateAbility(pos, 0);
+        // }
 
-        public void activateAbility(int id)
-        {
-            activateAbility(null, id);
-        }
+        // public void activateAbility(int id)
+        // {
+        //     activateAbility(null, id);
+        // }
 
-        public void activateAbility(Vector3 pos, int id)
-        {
-        }
+        // public void activateAbility(Vector3 pos, int id)
+        // {
+        // }
 
-        public void disableAbility()
-        {
-            ActiveAbility.deactivate();
-        }
+        // public void disableAbility()
+        // {
+        //     ActiveAbility.deactivate();
+        // }
 
-        public EntityDamageEvent EntityDamageEvent(EntityDamageEvent event) {
-            return event;
-        }
+        // public EntityDamageEvent EntityDamageEvent(EntityDamageEvent event) {
+        //     return event;
+        // }
+        //
+        // public PlayerToggleSprintEvent PlayerToggleSprintEvent(PlayerToggleSprintEvent event) {
+        //     return event;
+        // }
+        //
+        // public BlockPlaceEvent BlockPlaceEvent(BlockPlaceEvent event) {
+        //     return event;
+        // }
+        //
+        // public EntityRegainHealthEvent EntityRegainHealthEvent(EntityRegainHealthEvent event) {
+        //     return event;
+        // }
+        //
+        // public PlayerInteractEvent PlayerInteractEvent(PlayerInteractEvent event) {
+        //     return event;
+        // }
+        //
+        // public BlockBreakEvent BlockBreakEvent(BlockBreakEvent event) {
+        //     return event;
+        // }
+        //
+        // public CraftItemEvent CraftItemEvent(CraftItemEvent event) {
+        //     return event;
+        // }
 
-        public PlayerToggleSprintEvent PlayerToggleSprintEvent(PlayerToggleSprintEvent event) {
-            return event;
-        }
-
-        public BlockPlaceEvent BlockPlaceEvent(BlockPlaceEvent event) {
-            return event;
-        }
-
-        public EntityRegainHealthEvent EntityRegainHealthEvent(EntityRegainHealthEvent event) {
-            return event;
-        }
-
-        public PlayerInteractEvent PlayerInteractEvent(PlayerInteractEvent event) {
-            return event;
-        }
-
-        public BlockBreakEvent BlockBreakEvent(BlockBreakEvent event) {
-            return event;
-        }
-
-        public CraftItemEvent CraftItemEvent(CraftItemEvent event) {
-            return event;
-        }
-
-        public CustomEntityDamageByEntityEvent CustomEntityDamageByEntityEvent(CustomEntityDamageByEntityEvent event) {
-//        for (PowerAbstract p : getActivePowers()) p.CustomEntityDamageByEntityEvent(event);
-            float bd = event.getOriginalDamage();
-
-            Buff b = getBuff(BuffType.Damage);
-            if (event.getEntity() instanceof Player && getBuff(BuffType.DamageToPlayer) != null) {
-                b = getBuff(BuffType.DamageToPlayer);
-            } else if (getBuff(BuffType.DamageToEntity) != null)
-            {
-                b = getBuff(BuffType.DamageToEntity);
-            }
-
-            if (b != null)
-                bd *= b.getAmount();
-                    event.
-            setDamage(bd);
-            return event;
-        }
-
-        public CustomEntityDamageEvent CustomEntityDamageEvent(CustomEntityDamageEvent event) {
-            float bd = event.getOriginalDamage();
-
-            Buff b = getBuff(BuffType.Damage);
-            if (b != null)
-                bd *= b.getAmount();
-                    event.
-            setDamage(bd);
-            return event;
-        }
+//         public CustomEntityDamageByEntityEvent CustomEntityDamageByEntityEvent(CustomEntityDamageByEntityEvent event) {
+// //        for (PowerAbstract pingetActivePowers()) p.CustomEntityDamageByEntityEvent(event);
+//             float bd = event.getOriginalDamage();
+//
+//             Buff b = getBuff(BuffType.Damage);
+//             if (event.getEntity() instanceof Player && getBuff(BuffType.DamageToPlayer) != null) {
+//                 b = getBuff(BuffType.DamageToPlayer);
+//             } else if (getBuff(BuffType.DamageToEntity) != null)
+//             {
+//                 b = getBuff(BuffType.DamageToEntity);
+//             }
+//
+//             if (b != null)
+//                 bd *= b.getAmount();
+//                     event.
+//             setDamage(bd);
+//             return event;
+//         }
+//
+//         public CustomEntityDamageEvent CustomEntityDamageEvent(CustomEntityDamageEvent event) {
+//             float bd = event.getOriginalDamage();
+//
+//             Buff b = getBuff(BuffType.Damage);
+//             if (b != null)
+//                 bd *= b.getAmount();
+//                     event.
+//             setDamage(bd);
+//             return event;
+//         }
 
         public int XPRemainder()
         {
@@ -1079,8 +1070,7 @@ namespace CyberCore.Manager.ClassFactory
         {
 //        CyberCoreMain.Log.Error("Was LOG ||"+"Tring to TICKING POWER "+getActivePowers().size());
 //        CyberCoreMain.Log.Error("Was LOG ||"+"Tring to TICKING POWER "+getActivePowers());
-            for (PowerAbstract p :
-            getActivePowers()) {
+            foreach (PowerAbstract p in getActivePowers()) {
 //            CyberCoreMain.Log.Error("Was LOG ||"+"TICKING POWER " + p.getName());
                 try
                 {
@@ -1089,7 +1079,7 @@ namespace CyberCore.Manager.ClassFactory
                 }
                 catch (Exception e)
                 {
-                    e.printStackTrace();
+                    CyberCoreMain.Log.Error("ERror in BC 33es: ",e);
                 }
             }
         }
@@ -1112,29 +1102,29 @@ namespace CyberCore.Manager.ClassFactory
 
         public List<String> FormatHudText()
         {
-            List<String> f = new List<>();
+            List<String> f = new List<String>();
             int lvl = XPToLevel(getXP());
             String pclass = getName();
             int pxp = XPRemainder(getXP());
             int pxpof = calculateRequireExperience(lvl + 1);
             int plvl = lvl;
-            f.add(ChatColors.AQUA + pclass);
-            f.add("" + ChatColors.Green + pxp + ChatColors.AQUA + " / " + ChatColors.GOLD + pxpof);
-            f.add(ChatColors.Green + "Level: " + ChatColors.Yellow + plvl);
-            f.add(ChatColors.AQUA + getPowerSourceType().name() + " PowerAbstract : " + getPowerSourceCount() + " / "
+            f.Add(ChatColors.Aqua + pclass);
+            f.Add("" + ChatColors.Green + pxp + ChatColors.Aqua + " / " + ChatColors.Gold + pxpof);
+            f.Add(ChatColors.Green + "Level: " + ChatColors.Yellow + plvl);
+            f.Add(ChatColors.Aqua + getPowerSourceType() + " PowerAbstractin" + getPowerSourceCount() + " / "
                   + getMaxPowerSourceCount());
             return f;
         }
 
-        public CyberForm getHowToUseClassWindow()
+        public CyberFormSimple getHowToUseClassWindow()
         {
             return null;
         }
 
-        public FormWindow getClassMerchantWindow()
+        public CyberFormSimple getClassMerchantWindow()
         {
-            return new CyberFormSimpleClassMerchant(this);
-//        return null;
+            // return new CyberFormSimpleClassMerchant(this);
+        return null;
         }
 
         /**
@@ -1158,23 +1148,22 @@ namespace CyberCore.Manager.ClassFactory
 
         public List<AdvancedPowerEnum> getLearnedPowers()
         {
-            return (List<AdvancedPowerEnum>) getClassSettings().getLearnedPowers().clone();
+            return  new List<AdvancedPowerEnum>(getClassSettings().getLearnedPowers());
         }
 
         public List<PowerAbstract> getLearnedPowersAbstract()
         {
-            List<PowerAbstract> pa = new List<>();
-            for (AdvancedPowerEnum e :
-            getClassSettings().getLearnedPowers()) {
-                pa.add(PowerManager.getPowerfromAPE(e, this));
+            List<PowerAbstract> pa = new List<PowerAbstract>();
+            foreach (AdvancedPowerEnum e in getClassSettings().getLearnedPowers()) {
+                pa.Add(PowerManager.getPowerfromAPE(e, this));
             }
             return pa;
         }
 
         public void disablePower(AdvancedPowerEnum ape)
         {
-            getClassSettings().getEnabledPowers().remove(ape.getPowerEnum());
-            PossiblePowerList.remove(ape.getPowerEnum());
+            getClassSettings().getEnabledPowers().Remove(ape.getPowerEnum());
+            PossiblePowerList.Remove(ape.getPowerEnum());
         }
 
 

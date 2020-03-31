@@ -22,7 +22,7 @@ namespace CyberCore.Manager.Crate
             Name = name;
         }
 
-//     public CrateData(ConfigSection c) {
+//     public CrateData(Dictionary<String,Object> c) {
 //         if (c.containsKey("Key")) Key = c.getString("Key");
 //         if (c.containsKey("Name")) Name = c.getString("Name");
 //         if (c.containsKey("SubName")) SubName = c.getString("SubName");
@@ -45,16 +45,16 @@ namespace CyberCore.Manager.Crate
             return JsonConvert.SerializeObject(this);
         }
 
-        // public ConfigSection getPossibleItemsToConfig() {
-        //     ConfigSection c = new ConfigSection();
+        // public Dictionary<String,Object> getPossibleItemsToConfig() {
+        //     Dictionary<String,Object> c = new Dictionary<String,Object>();
         //     int k = 0;
         //     for (ItemChanceData icd : PossibleItems) {
         //         c.put(k++ + "", icd.export());
         //     }
         //     return c;
         // }
-//    public List<ConfigSection> getPossibleItemsToConfig() {
-//        List<ConfigSection> c = new  List<>();
+//    public List<Dictionary<String,Object>> getPossibleItemsToConfig() {
+//        List<Dictionary<String,Object>> c = new  List<>();
 //       int k = 0;
 //       for(ItemChanceData icd : PossibleItems){
 //           c.add(icd.export());
@@ -62,11 +62,11 @@ namespace CyberCore.Manager.Crate
 //       return c;
 //    }
 
-        // public List<ItemChanceData> PossibleItemsFromConfig(ConfigSection j) {
+        // public List<ItemChanceData> PossibleItemsFromConfig(Dictionary<String,Object> j) {
         //     List<ItemChanceData> a = new List<>();
         //     for (Object o : j.getAllMap().values()) {
-        //         if (o instanceof ConfigSection) {
-        //             ConfigSection c = (ConfigSection) o;
+        //         if (o instanceof Dictionary<String,Object>) {
+        //             Dictionary<String,Object> c = (Dictionary<String,Object>) o;
         //             ItemChanceData icd = new ItemChanceData(c);
         //             a.add(icd);
         //         }
@@ -88,8 +88,8 @@ namespace CyberCore.Manager.Crate
         }
 
 
-//     public ConfigSection toConfig() {
-//         ConfigSection c = new ConfigSection();
+//     public Dictionary<String,Object> toConfig() {
+//         Dictionary<String,Object> c = new Dictionary<String,Object>();
 // //        c.put("Key", Key.getId() + ":" + Key.getDamage());
 // //        c.put("Key_ID", Key_ID);
 // //        c.put("Key_Meta", Key_Meta);

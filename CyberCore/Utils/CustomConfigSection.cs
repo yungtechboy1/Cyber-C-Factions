@@ -23,12 +23,12 @@
 //         public String Path { get; set; }
 //     }
 //
-//     public class CustomConfigSection
+//     public class CustomDictionary<String,Object>
 //     {
 //         public DataHolder CFG { get; set; } = null;
 //         // public Dictionary<String,Object> Data { get; private set; }= new Dictionary<string, object>();
 //
-//         private static readonly ILog Log = LogManager.GetLogger(typeof(CustomConfigSection));
+//         private static readonly ILog Log = LogManager.GetLogger(typeof(CustomDictionary<String,Object>));
 //
 //         private void LoadValues(string data)
 //         {
@@ -91,7 +91,7 @@
 //
 //         string directoryName = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 //
-//         public CustomConfigSection()
+//         public CustomDictionary<String,Object>()
 //         {
 //             if (CFG == null) return;
 //             //Or GetProperties()
@@ -132,7 +132,7 @@
 //                     field.set(this, CFG.getDouble(path, field.getDouble(this)));
 //                     else if (field.getType() == String.class)
 //                         field.set(this, CFG.GetString(path, (String) field.get(this)));
-//                     else if (field.getType() == ConfigSection.class)
+//                     else if (field.getType() == Dictionary<String,Object>.class)
 //                         field.set(this, CFG.getSection(path));
 //                     else if (field.getType() == List.class)
 //                     {
@@ -193,9 +193,9 @@
 //             return path;
 //         }
 //
-//         public ConfigSection save()
+//         public Dictionary<String,Object> save()
 //         {
-//             ConfigSection cfg = new ConfigSection();
+//             Dictionary<String,Object> cfg = new Dictionary<String,Object>();
 //             for (Field field :
 //             this.getClass().getDeclaredFields()) {
 //                 if (skipSave(field)) continue;

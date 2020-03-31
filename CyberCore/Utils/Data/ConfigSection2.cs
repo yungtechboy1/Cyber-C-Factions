@@ -5,18 +5,18 @@ using MySqlX.XDevAPI;
 
 namespace CyberCore.Utils.Data
 {
-    public class ConfigSection2 : Dictionary<string, object>
+    public class Dictionary<String,Object>2 : Dictionary<string, object>
     {
-        public ConfigSection2()
+        public Dictionary<String,Object>2()
         {
         }
 
-        public ConfigSection2(string key, object value)
+        public Dictionary<String,Object>2(string key, object value)
         {
             set(key, value);
         }
 
-        public ConfigSection2(Dictionary<string, object> map)
+        public Dictionary<String,Object>2(Dictionary<string, object> map)
         {
             if (map != null && map.Count == 0)
             {
@@ -26,7 +26,7 @@ namespace CyberCore.Utils.Data
                     var k = entry.Key;
                     if (v is Dictionary<String, Object> vv)
                     {
-                        Add(k, new ConfigSection2(vv));
+                        Add(k, new Dictionary<String,Object>2(vv));
                     }
                     else if (v is List<object> list)
                     {
@@ -48,7 +48,7 @@ namespace CyberCore.Utils.Data
             foreach (var l in list)
             {
                 if (l is Dictionary<String, Object>) {
-                    newList.Add(new ConfigSection2((Dictionary<String, Object>) l));
+                    newList.Add(new Dictionary<String,Object>2((Dictionary<String, Object>) l));
                 } else {
                     newList.Add(l);
                 }
@@ -62,9 +62,9 @@ namespace CyberCore.Utils.Data
             return new Dictionary<string, object>(this);
         }
 
-        public ConfigSection2 getAll()
+        public Dictionary<String,Object>2 getAll()
         {
-            return new ConfigSection2(this);
+            return new Dictionary<String,Object>2(this);
         }
 
         public object get(string key)
@@ -84,8 +84,8 @@ namespace CyberCore.Utils.Data
                 if (!ContainsKey(keys[0])) return defaultValue;
 
                 object value = bsae[(keys[0]);
-                if (value instanceof ConfigSection2) {
-                    var section = (ConfigSection2) value;
+                if (value instanceof Dictionary<String,Object>2) {
+                    var section = (Dictionary<String,Object>2) value;
                     return section.get(keys[1], defaultValue);
                 } else {
                     return defaultValue;
@@ -100,9 +100,9 @@ namespace CyberCore.Utils.Data
             string[] subKeys = key.split("\\.", 2);
             if (subKeys.length > 1)
             {
-                var childSection = new ConfigSection2();
-                if (this.containsKey(subKeys[0]) && super.get(subKeys[0]) instanceof ConfigSection2) {
-                    childSection = (ConfigSection2) super.get(subKeys[0]);
+                var childSection = new Dictionary<String,Object>2();
+                if (this.containsKey(subKeys[0]) && super.get(subKeys[0]) instanceof Dictionary<String,Object>2) {
+                    childSection = (Dictionary<String,Object>2) super.get(subKeys[0]);
                 }
 
                 childSection.set(subKeys[1], value);
@@ -117,27 +117,27 @@ namespace CyberCore.Utils.Data
         public boolean isSection(string key)
         {
             var value = get(key);
-            return value instanceof ConfigSection2;
+            return value instanceof Dictionary<String,Object>2;
         }
 
-        public ConfigSection2 getSection(string key)
+        public Dictionary<String,Object>2 getSection(string key)
         {
-            return (ConfigSection2) this.get(key, new ConfigSection2());
+            return (Dictionary<String,Object>2) this.get(key, new Dictionary<String,Object>2());
         }
 
-        public ConfigSection2 getSections()
+        public Dictionary<String,Object>2 getSections()
         {
             return getSections(null);
         }
 
-        public ConfigSection2 getSections(string key)
+        public Dictionary<String,Object>2 getSections(string key)
         {
-            var sections = new ConfigSection2();
+            var sections = new Dictionary<String,Object>2();
             var parent = key != null && !key.isEmpty() ? getSection(key) : getAll();
             if (parent == null) return sections;
 
             parent.forEach((key1, value)-> {
-                if (value instanceof ConfigSection2) {
+                if (value instanceof Dictionary<String,Object>2) {
                     sections.put(key1, value);
                 }
             });
@@ -550,8 +550,8 @@ namespace CyberCore.Utils.Data
                 else if (this.containsKey("."))
                 {
                     string[] keys = key.split("\\.", 2);
-                    if (super.get(keys[0]) instanceof ConfigSection2) {
-                        var section = (ConfigSection2) super.get(keys[0]);
+                    if (super.get(keys[0]) instanceof Dictionary<String,Object>2) {
+                        var section = (Dictionary<String,Object>2) super.get(keys[0]);
                         section.remove(keys[1]);
                     }
                 }
@@ -563,8 +563,8 @@ namespace CyberCore.Utils.Data
             Set<string> keys = new LinkedHashSet();
             this.forEach((key, value)-> {
                 keys.add(key);
-                if (value instanceof ConfigSection2 && child) {
-                    ((ConfigSection2) value).getKeys(true).forEach(childKey-> {
+                if (value instanceof Dictionary<String,Object>2 && child) {
+                    ((Dictionary<String,Object>2) value).getKeys(true).forEach(childKey-> {
                         keys.add(key + "." + childKey);
                     });
                 }

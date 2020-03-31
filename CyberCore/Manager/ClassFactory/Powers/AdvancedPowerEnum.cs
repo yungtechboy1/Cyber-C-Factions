@@ -216,8 +216,8 @@ namespace CyberCore.Manager.ClassFactory.Powers
             return getPowerEnum();
         }
 
-//    public ConfigSection toConfig() {
-//        ConfigSection c = new ConfigSection();
+//    public Dictionary<String,Object> toConfig() {
+//        Dictionary<String,Object> c = new Dictionary<String,Object>();
 //        if (tt == LevelingType.None) return c;
 //        if (tt == LevelingType.XPLevel) {
 //            if (XP == -1) return false;

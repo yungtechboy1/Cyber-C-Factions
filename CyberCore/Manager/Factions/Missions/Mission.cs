@@ -40,18 +40,18 @@ namespace CyberCore.Manager.Factions.Missions
         Main = main;
     }
 /*
-    public Mission(FactionsMain main, ConfigSection config) {
+    public Mission(FactionsMain main, Dictionary<String,Object> config) {
         Main = main;
         name = (String)config.get("name");
         desc = (String)config.get("desc");
         id = (int)config.get("id");
         enabled = (bool) config.get("enabled");
-        ConfigSection requirement = (ConfigSection) config.get("requirement");
-        ConfigSection reward = (ConfigSection) config.get("reward");
+        Dictionary<String,Object> requirement = (Dictionary<String,Object>) config.get("requirement");
+        Dictionary<String,Object> reward = (Dictionary<String,Object>) config.get("reward");
         if (requirement != null) {
             //break
             if (requirement.containsKey("break")) {
-                ConfigSection brk = (ConfigSection) requirement.get("break");
+                Dictionary<String,Object> brk = (Dictionary<String,Object>) requirement.get("break");
                 if (brk != null && brk.entrySet().size() > 0) {
                     for (Map.Entry<String, Object> a : brk.entrySet()) {
                         String key = a.getKey() + "";
@@ -62,7 +62,7 @@ namespace CyberCore.Manager.Factions.Missions
             }
             //place
             if (requirement.containsKey("place")) {
-                ConfigSection plc = (ConfigSection) requirement.get("place");
+                Dictionary<String,Object> plc = (Dictionary<String,Object>) requirement.get("place");
                 if (plc != null && plc.entrySet().size() > 0) {
                     for (Map.Entry<String, Object> a : plc.entrySet()) {
                         String key = a.getKey() + "";
@@ -73,7 +73,7 @@ namespace CyberCore.Manager.Factions.Missions
             }
             //item
             if (requirement.containsKey("item")) {
-                ConfigSection itm = requirement.getSection("item");
+                Dictionary<String,Object> itm = requirement.getSection("item");
                 if (itm.entrySet().size() > 0) {
                     for (Map.Entry<String, Object> a : itm.entrySet()) {
                         String key = a.getKey();
@@ -103,7 +103,7 @@ namespace CyberCore.Manager.Factions.Missions
             MoneyReward = reward.getInt("money");
             //item
             if (reward.containsKey("item")) {
-                ConfigSection itm = reward.getSection("item");
+                Dictionary<String,Object> itm = reward.getSection("item");
                 if (itm.entrySet().size() > 0) {
                     for (Map.Entry<String, Object> a : itm.entrySet()) {
                         String key = a.getKey();

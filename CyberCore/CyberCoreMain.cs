@@ -43,7 +43,7 @@ namespace CyberCore
         
         private static CyberCoreMain instance { get; set; }
 
-        // public ConfigSection MasterConfig { get; }
+        // public Dictionary<String,Object> MasterConfig { get; }
         public CustomConfig MasterConfig { get; set; }
         public FactionsMain FM { get; private set; }
         public SqlManager SQL { get; private set; }
@@ -78,7 +78,7 @@ namespace CyberCore
             instance = this;
             ServerSQL = new ServerSqlite(this);
             WarpManager = new WarpManager(this);
-            // MasterConfig = new ConfigSection() {ConfigFileName = "MasterConfig.conf"};
+            // MasterConfig = new Dictionary<String,Object>() {ConfigFileName = "MasterConfig.conf"};
         }
 
         private void OnPlayerJoin(object o, PlayerEventArgs eventArgs)

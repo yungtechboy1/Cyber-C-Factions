@@ -28,6 +28,7 @@
           </e>
           <e p="Items" t="Include">
             <e p="ItemEmerald.cs" t="Include" />
+            <e p="ItemSlimeBall.cs" t="Include" />
             <e p="NetherStar.cs" t="Include" />
           </e>
         </e>
@@ -58,6 +59,7 @@
               <e p="AdvancedXPPowerEnum.cs" t="Include" />
               <e p="PowerAbstract.cs" t="Include" />
               <e p="PowerData.cs" t="Include" />
+              <e p="PowerHotBarInt.cs" t="Include" />
               <e p="PowerManager.cs" t="Include" />
               <e p="PowerSettings.cs" t="Include" />
               <e p="Stage" t="Include">
@@ -145,9 +147,9 @@
         <e p="PlayerSettingsData.cs" t="Include" />
         <e p="Utils" t="Include">
           <e p="CacheChecker.cs" t="Include" />
-          <e p="ConfigSection.cs" t="Include" />
           <e p="Cooldowns" t="Include">
             <e p="CoolDown.cs" t="Include" />
+            <e p="CoolDownTick.cs" t="Include" />
           </e>
           <e p="CustomConfig.cs" t="Include" />
           <e p="CustomConfigSection.cs" t="Include" />

@@ -21,7 +21,7 @@ namespace CyberCore.Manager.Crate
         //         i.hasCompoundTag() ? Binary.bytesToHexString(i.getCompoundTag()) : "");
         // }
 
-        // public ItemChanceData(ConfigSection c)
+        // public ItemChanceData(Dictionary<String,Object> c)
         // {
         //     super(c);
         //     importcs(c);
