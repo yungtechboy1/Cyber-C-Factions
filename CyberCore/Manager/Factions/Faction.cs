@@ -778,7 +778,7 @@ namespace CyberCore.Manager.Factions
 //                        YamlReader reader = new YamlReader(new FileReader(Main.getDataFolder().toString()+"/missions/"+getName()+".yml"),yamlConfig);
 //                        ActiveMission activeMission = reader.read(ActiveMission.class);
 //                        Console.WriteLine(activeMission.name)*/;
-//                        ActiveMission activeMission = new ActiveMission(Main, this,(ConfigSection) Main.AM.get(getName()));
+//                        ActiveMission activeMission = new ActiveMission(Main, this,(Dictionary<String,Object>) Main.AM.get(getName()));
 //                        SetActiveMission(activeMission);
 //                        //SetActiveMission(new ActiveMission(Main,this,mission));
 //                        BroadcastMessage(FactionsMain.NAME+ChatColors.AQUA+mission.name+ChatColors.Green+" Faction mission accepted!");
@@ -1160,11 +1160,11 @@ namespace CyberCore.Manager.Factions
             War = null;
         }
 
-        public ConfigSection GetWarData()
+        public Dictionary<String,Object> GetWarData()
         {
             if (War != null && Main.War.containsKey(War))
             {
-                return (ConfigSection) Main.War.get(War);
+                return (Dictionary<String,Object>) Main.War.get(War);
             }
 
             return null;
@@ -1179,7 +1179,7 @@ namespace CyberCore.Manager.Factions
         {
             if (War != null)
             {
-                return ((ConfigSection) Main.War.get(War)).GetString("defenders").equalsIgnoreCase(fac);
+                return ((Dictionary<String,Object>) Main.War.get(War)).GetString("defenders").equalsIgnoreCase(fac);
             }
 
             return false;

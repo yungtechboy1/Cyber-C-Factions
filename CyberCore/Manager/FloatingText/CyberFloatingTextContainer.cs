@@ -149,10 +149,10 @@ namespace CyberCore.Manager.FloatingText
             return e;
         }
 
-        // public ConfigSection getSave()
+        // public Dictionary<String,Object> getSave()
         // {
         //     //todo
-        //     return new ConfigSection()
+        //     return new Dictionary<String,Object>()
         //     {
         //         {
         //             put("Syntax", Syntax);
@@ -168,11 +168,11 @@ namespace CyberCore.Manager.FloatingText
         //     };
         // }
 
-//    public class CFTCS extends CustomConfigSection {
+//    public class CFTCS extends CustomDictionary<String,Object> {
 //        public CFTCS() {
 //        }
 //
-//        public CFTCS(ConfigSection c){
+//        public CFTCS(Dictionary<String,Object> c){
 //            super(c);
 //        }
 //

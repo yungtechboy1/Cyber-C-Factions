@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CyberCore.CustomEnums;
+using CyberCore.Manager.ClassFactory;
 using CyberCore.Manager.ClassFactory.Powers;
 
 namespace CyberCore.Manager.TypeFactory.Powers
@@ -29,7 +30,7 @@ namespace CyberCore.Manager.TypeFactory.Powers
             return getPowerfromAPE(pe, null);
         }
 
-        public static PowerAbstract getPowerfromAPE(AdvancedPowerEnum pe, Type b)
+        public static PowerAbstract getPowerfromAPE(AdvancedPowerEnum pe, BaseClass b)
         {
             Type cpa = PowerList[pe.getPowerEnum()];
             if (cpa == null)

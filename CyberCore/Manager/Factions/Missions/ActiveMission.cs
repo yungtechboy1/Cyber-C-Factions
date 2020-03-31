@@ -16,9 +16,9 @@ namespace CyberCore.Manager.Factions.Missions
     public int KillCount = 0;
 
     public ActiveMission() {
-        super(null, new ConfigSection());
+        super(null, new Dictionary<String,Object>());
     }
-    public ActiveMission(FactionsMain main, Faction fac, ConfigSection cfg) {
+    public ActiveMission(FactionsMain main, Faction fac, Dictionary<String,Object> cfg) {
         super(main, cfg);
         if(cfg.containsKey("BreakCount")){
             BreakCount = (Dictionary<String, int>) cfg.get("BreakCount");
@@ -319,22 +319,22 @@ namespace CyberCore.Manager.Factions.Missions
         if (PointReward != 0) faction.getSettings().addPoints(PointReward);
     }
 
-    public ConfigSection ToDictionary() {
-        ConfigSection config = new ConfigSection();
+    public Dictionary<String,Object> ToDictionary() {
+        Dictionary<String,Object> config = new Dictionary<String,Object>();
         config.set("name", name);
         config.set("desc", desc);
         config.set("id", id);
         config.set("enabled", enabled);
-        ConfigSection bb = new ConfigSection();
-        ConfigSection ii = new ConfigSection();
-        ConfigSection iii = new ConfigSection();
-        ConfigSection pp = new ConfigSection();
-        ConfigSection requirement = new ConfigSection() {{
+        Dictionary<String,Object> bb = new Dictionary<String,Object>();
+        Dictionary<String,Object> ii = new Dictionary<String,Object>();
+        Dictionary<String,Object> iii = new Dictionary<String,Object>();
+        Dictionary<String,Object> pp = new Dictionary<String,Object>();
+        Dictionary<String,Object> requirement = new Dictionary<String,Object>() {{
             put("break", bb);
             put("place", pp);
             put("item", ii);
         }};
-        ConfigSection reward = new ConfigSection();
+        Dictionary<String,Object> reward = new Dictionary<String,Object>();
 
         config.set("requirement", requirement);
         config.set("reward", reward);

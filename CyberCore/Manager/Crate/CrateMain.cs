@@ -21,8 +21,8 @@ namespace CyberCore.Manager.Crate
 
         public Dictionary<String, Long> eids = new Dictionary<String, Long>();
 
-        //    private ConfigSection CrateLocations = new ConfigSection();
-        public ConfigSection cratetxt = new ConfigSection();
+        //    private Dictionary<String,Object> CrateLocations = new Dictionary<String,Object>();
+        public Dictionary<String,Object> cratetxt = new Dictionary<String,Object>();
         public CyberCoreMain CCM;
         public List<String> ViewCrateItems = new List<String>();
 
@@ -47,8 +47,8 @@ namespace CyberCore.Manager.Crate
 //        ck.save();
 //        cc.save();
 
-            ConfigSection cl = c.getRootSection();
-            ConfigSection cd = cc.getRootSection();
+            Dictionary<String,Object> cl = c.getRootSection();
+            Dictionary<String,Object> cd = cc.getRootSection();
             CyberCoreMain.Log.Error("Was LOG ||"+cd);
             CyberCoreMain.Log.Error("Was LOG ||"+"Loading Crate Data");
             Map<String, Object> cdd = cd.getAllMap();
@@ -64,8 +64,8 @@ namespace CyberCore.Manager.Crate
                 CyberCoreMain.Log.Error("Was LOG ||"+"CD SIZE +=====>>" + cd.size());
                 for (Object o :
                 cdd.values()) {
-                    if (o instanceof ConfigSection) {
-                        ConfigSection c = (ConfigSection) o;
+                    if (o instanceof Dictionary<String,Object>) {
+                        Dictionary<String,Object> c = (Dictionary<String,Object>) o;
                         String nme = c.getString("Name");
                         String key = c.getString("Key");
                         if (nme == null || nme.length() == 0)
@@ -89,11 +89,11 @@ namespace CyberCore.Manager.Crate
                 CyberCoreMain.Log.Error("Was LOG ||"+"CL SIZE +=====>>" + cl.size());
                 for (Object o :
                 cl.getAllMap().values()) {
-                    if (o instanceof ConfigSection) {
-                        ConfigSection c = (ConfigSection) o;
+                    if (o instanceof Dictionary<String,Object>) {
+                        Dictionary<String,Object> c = (Dictionary<String,Object>) o;
                         String nme = c.getString("Key");
                         CrateData cda = CrateMap.getOrDefault(nme, null);
-//                    ConfigSection cccc = c.getSection("Loc");;
+//                    Dictionary<String,Object> cccc = c.getSection("Loc");;
                         Position po = new Position(c.getDouble("x"), c.getDouble("y"), c.getDouble("z"),
                             Server.getInstance().getLevelByName(c.getString("level")));
 //                    Position po = (Position) c.get("Loc");
@@ -111,7 +111,7 @@ namespace CyberCore.Manager.Crate
             }
 
             CyberCoreMain.Log.Error("Was LOG ||"+"Loading Crate Keys");
-            ConfigSection CKC = ck.getRootSection();
+            Dictionary<String,Object> CKC = ck.getRootSection();
             if (cl.isEmpty())
             {
             }
@@ -120,8 +120,8 @@ namespace CyberCore.Manager.Crate
                 CyberCoreMain.Log.Error("Was LOG ||"+"CKC SIZE +=====>>" + CKC.size());
                 for (Object o :
                 CKC.getAllMap().values()) {
-                    if (o instanceof ConfigSection) {
-                        ConfigSection c = (ConfigSection) o;
+                    if (o instanceof Dictionary<String,Object>) {
+                        Dictionary<String,Object> c = (Dictionary<String,Object>) o;
                         String nme = c.getString("Key_Name");
                         if (nme == null || nme.length() == 0)
                         {
@@ -155,13 +155,13 @@ namespace CyberCore.Manager.Crate
 
         public void save()
         {
-            ConfigSection config = new ConfigSection();
+            Dictionary<String,Object> config = new Dictionary<String,Object>();
             for (Object o :
             CrateMap.values()) {
                 CrateData cd = (CrateData) o;
                 config.put(cd.Name, cd.toConfig());
             }
-            ConfigSection config2 = new ConfigSection();
+            Dictionary<String,Object> config2 = new Dictionary<String,Object>();
             int k = 0;
             for (Object o :
             CrateChests.values()) {
@@ -169,7 +169,7 @@ namespace CyberCore.Manager.Crate
                 config2.put("" + k++, cd.toConfig());
             }
             k = 0;
-            ConfigSection config3 = new ConfigSection();
+            Dictionary<String,Object> config3 = new Dictionary<String,Object>();
             for (Object o :
             CrateKeys.values()) {
                 KeyData zd = (KeyData) o;
@@ -195,7 +195,7 @@ namespace CyberCore.Manager.Crate
                 {
                 });
 
-            ConfigSection cd = cc.getRootSection();
+            Dictionary<String,Object> cd = cc.getRootSection();
             Map<String, Object> cdd = cd.getAllMap();
             if (cd.isEmpty())
             {
@@ -208,8 +208,8 @@ namespace CyberCore.Manager.Crate
                 CyberCoreMain.Log.Error("Was LOG ||"+"CD SIZE +=====>>" + cd.size());
                 for (Object o :
                 cdd.values()) {
-                    if (o instanceof ConfigSection) {
-                        ConfigSection c = (ConfigSection) o;
+                    if (o instanceof Dictionary<String,Object>) {
+                        Dictionary<String,Object> c = (Dictionary<String,Object>) o;
 //                    CyberCoreMain.Log.Error("Was LOG ||"+"THIS IS A >>>>" + o + "+" + o.getClass());
                         String nme = c.getString("Name");
                         if (nme == null || nme.length() == 0)
@@ -322,7 +322,7 @@ namespace CyberCore.Manager.Crate
                 List<Item> items = co.getPossibleItems();
 
 
-                ConfigSection data = new ConfigSection()
+                Dictionary<String,Object> data = new Dictionary<String,Object>()
                 {
                     {
                         put("PlayerName", player.getName());

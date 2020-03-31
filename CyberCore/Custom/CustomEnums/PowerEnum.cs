@@ -175,6 +175,17 @@ namespace CyberCore.CustomEnums
         // public static readonly PowerEnum Unknown = new PowerEnum(a++,"Unknown");
         // public static readonly PowerEnum Unknown = new PowerEnum(a++,"Unknown");
 
+
+        public override bool Equals(object? obj)
+        {
+            if (obj != null && obj is PowerEnum)
+            {
+                return ((PowerEnum) obj).ID == ID;
+            }
+
+            return false;
+        }
+
         public static Dictionary<string, PowerEnum> GetFieldValues(PowerEnum obj)
         {
             return obj.GetType()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.Forms;
 using fNbt;
@@ -117,6 +118,42 @@ namespace CyberCore.Utils
             return (NbtList) tag["Lore"];
         }
 
+        public static void clear(this PlayerInventory i,int slot)
+        {
+            i.Slots[slot] = new ItemAir();
+        }
+        public static bool isNull(this Item i)
+        {
+            return (i == null || i.Id == -1 || i.Id == 0 || i.Count == 0);
+        }
+        
+        public static bool isFull(this PlayerInventory i, Item ii = null)
+        {
+            foreach (var s in i.Slots)
+            {
+                if (ii !=  null && s.Equals(ii)) return false;
+                if (s == null || s.Id == -1 || s.Id == 0) return false;
+            }
+
+            return true;
+        }
+
+        public static void setContents(this PlayerInventory i, List<Item> l)
+        {
+            if (l.Count == 0) return;
+            i.Clear();
+            int a = 0;
+            for (int ii = 0; ii < l.Count; ++ii)
+            {
+                if(a >= l.Count)return;
+                i.Slots[ii] = l[a++];
+            }
+        }
+        public static NbtCompound putString(this NbtCompound i, String k, string v)
+        {
+            i.Add(new NbtString(k,v));
+            return i;
+        }
         public static Item addLore(this Item i,params String[] lines)
         {
             NbtCompound tag = getDisplayCompound(i);
@@ -137,7 +174,7 @@ namespace CyberCore.Utils
             
             return i;
         }
-        public static Item setLore(this Item i, String[] lines)
+        public static Item setLore(this Item i, params String[] lines)
         {
             NbtCompound tag = getDisplayCompound(i);
 

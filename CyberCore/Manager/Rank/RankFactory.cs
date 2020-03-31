@@ -13,9 +13,9 @@ namespace CyberCore.Manager.Rank
 
         public Dictionary<String, int> RankCache = new Dictionary<String, int>();
         CyberCoreMain Main;
-        public ConfigSection GARC = new ConfigSection();
-        public ConfigSection MRC = new ConfigSection();
-        public ConfigSection SRC = new ConfigSection();
+        public Dictionary<String,Object> GARC = new Dictionary<String,Object>();
+        public Dictionary<String,Object> MRC = new Dictionary<String,Object>();
+        public Dictionary<String,Object> SRC = new Dictionary<String,Object>();
 
         public Dictionary<int, Rank> ranks = new Dictionary<int, Rank>();
 
