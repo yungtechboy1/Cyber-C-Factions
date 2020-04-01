@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using CyberCore.Manager.Crate.Data;
 using CyberCore.Utils;
 using fNbt;
 using MiNET.Items;
@@ -13,9 +14,9 @@ namespace CyberCore.Manager.Crate
     {
         //    int Item_ID = 0;
 //    int Item_Meta = 0;
-        Item ItemKey = null;
-        String NBT_Key = "";
-        String Key_Name = "";
+        public Item ItemKey = null;
+        public String NBT_Key = "";
+        public String Key_Name = "";
 
         public Item getItemKey()
         {
@@ -51,6 +52,26 @@ namespace CyberCore.Manager.Crate
 //    Item_NBT
         }
 
+        public KeyData(CrateKeyData c)
+        {
+            short iid =  c.Item_ID;
+            short meta =  c.Item_Meta;
+            String nbt =  c.Item_NBT;
+            Key_Name =  c.Key_Name;
+            NBT_Key =  c.NBT_Key;
+            ItemKey = ItemFactory.GetItem(iid, meta);
+            Console.WriteLine("ITEMKEYTYYYYYYYYYYYY >>>>>>>>>>>> " + ItemKey);
+
+            if (ItemKey == null)
+            {
+                Console.WriteLine("ERROROROROOROROQWEQ WEQE!~~!!@##@123123414");
+                return;
+            }
+
+            if (nbt.Length != 0) ItemKey.setCompoundTag(Encoding.ASCII.GetBytes(nbt));
+        }
+        
+        [ObsoleteAttribute("This method is obsolete. Call CallNewMethod instead.", true)]
         public KeyData(Dictionary<String,Object> c)
         {
             if (!c.ContainsKey("Item-ID") || !c.ContainsKey("Item-Meta") || !c.ContainsKey("Item-NBT") ||
@@ -77,41 +98,30 @@ namespace CyberCore.Manager.Crate
             if (nbt.Length != 0) ItemKey.setCompoundTag(Encoding.ASCII.GetBytes(nbt));
         }
 
-        public Dictionary<String,Object> toConfig()
+        public CrateKeyData toConfig()
         {
-//    if(ItemKey.hasCompoundTag())ItemKey.setNamedTag(ItemKey.getNamedTag());
-            Dictionary<String,Object> c = new Dictionary<String,Object>();
             
-            var nbt = new Nbt
-            {
-                NbtFile = new NbtFile
-                {
-                    BigEndian = false,
-                    UseVarInt = true,
-                    RootTag =  ItemKey.ExtraData
-                }
-            };
-            
+
             String fnt = "";
             var a = new NbtFile();
             a.BigEndian = false;
             a.UseVarInt = true;
             a.RootTag = ItemKey.ExtraData;
-            // byte[] bytes = NBTCompressionSteamTool.NBTCompressedStreamTools.a(a);
             var aa = (new MemoryStream());
             a.SaveToStream(aa, NbtCompression.AutoDetect);
             var aaa = new StreamReader(aa).ReadToEnd();
 
             if (ItemKey.ExtraData.HasValue) fnt = aaa;
             
-            
-            
-            c.Add("Item-ID", ItemKey.Id);
-            c.Add("Item-Meta", ItemKey.Metadata);
-            c.Add("Item-NBT", ItemKey.hasCompoundTag() ? fnt : "");
-            c.Add("Key_Name", Key_Name);
-            c.Add("NBT_Key", NBT_Key);
-            return c;
+            var z = new CrateKeyData()
+            {
+                Item_ID = ItemKey.Id,
+                Item_Meta = ItemKey.Metadata,
+                NBT_Key = NBT_Key,
+                Item_NBT = ItemKey.hasCompoundTag() ? fnt : "",
+                Key_Name = Key_Name
+            };
+            return z;
         }
     }
 }

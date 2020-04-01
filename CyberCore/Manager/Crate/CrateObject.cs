@@ -1,20 +1,38 @@
-﻿using MiNET.Utils;
+﻿using System;
+using System.Collections.Generic;
+using CyberCore.Manager.Crate.Data;
+using CyberCore.Manager.FloatingText;
+using CyberCore.Utils;
+using MiNET.Items;
+using MiNET.Utils;
+using MiNET.Worlds;
 
 namespace CyberCore.Manager.Crate
 {
     public class CrateObject
     {
         public PlayerLocation Location;
+        public Level Lvl;
         public CrateData CD;
         private bool isinit = false;
         private bool ftloaded = false;
         private CyberFloatingTextContainer ft = null;
 
 
-        public CrateObject(Position p, CrateData cd)
+        public CrateObject(PlayerLocation p,Level l, CrateData cd)
         {
             Location = p;
             CD = cd;
+            Lvl = l;
+            if (cd != null) init();
+        }
+        public CrateObject(PlayerLocation p,String l, CrateData cd)
+        {
+            Location = p;
+            CD = cd;
+            var ll = CyberCoreMain.GetInstance().getAPI().LevelManager.GetLevel(null,l);
+            if(ll == null) CyberCoreMain.Log.Error("Crate Object could not find Level > "+l);
+            Lvl = ll;
             if (cd != null) init();
         }
 
@@ -32,7 +50,7 @@ namespace CyberCore.Manager.Crate
         {
             isinit = true;
             ftloaded = true;
-            ft = new CyberFloatingTextContainer(CyberCoreMain.getInstance().FTM, Location, getDisplayText());
+            ft = new CyberFloatingTextContainer(CyberCoreMain.GetInstance().FTM, Location, Lvl,getDisplayText());
             FloatingTextFactory.AddFloatingText(ft);
 //        FloatingTextParticle
         }
@@ -63,21 +81,16 @@ namespace CyberCore.Manager.Crate
 ////        super(c);
 //    }
 
-        public Dictionary<String,Object> toConfig()
+        public CrateLocationData toConfig()
         {
-            Dictionary<String,Object> cf = new Dictionary<String,Object>();
-            CyberCoreMain.Log.Error("Was LOG ||"+"1111" + Location);
-            cf.put("x", Location.x);
-            cf.put("y", Location.y);
-            cf.put("z", Location.z);
-            CyberCoreMain.Log.Error("Was LOG ||"+"1111");
-            if (Location.getLevel() != null) cf.put("level", Location.getLevel().getName());
-            CyberCoreMain.Log.Error("Was LOG ||"+"1111");
-            if (CD != null) cf.put("Key", CD.Key);
-            CyberCoreMain.Log.Error("Was LOG ||"+"1111");
-//        cf.put("Loc", Location);
-//        cf.put("Loc", .put.put("y",));
-            return cf;
+            var a = new CrateLocationData()
+            {
+                X = (int) Location.X,
+                Y = (int) Location.Y,
+                Z = (int) Location.Z,
+                Level = Lvl.LevelName
+            };
+            return a;
         }
 
         public List<String> getPossibleKeys()
@@ -88,19 +101,18 @@ namespace CyberCore.Manager.Crate
         public bool checkKey(Item hand)
         {
             List<String> pk = getPossibleKeys();
-            if (pk == null || pk.size() == 0 || !hand.hasCompoundTag()) return false;
-            String n = hand.getNamedTag().getString(CrateMain.CK);
-            return pk.contains(n);
+            if (pk == null || pk.Count == 0 || !hand.hasCompoundTag()) return false;
+            String n = hand.getNamedTag().Get(CrateMain.CK).StringValue;
+            return pk.Contains(n);
         }
 
         public List<Item> getPossibleItems()
         {
-            List<Item> pi = new List<>();
-            for (ItemChanceData icd :
-            CD.PossibleItems) {
+            List<Item> pi = new List<Item>();
+            foreach (ItemChanceData icd in CD.PossibleItems) {
                 Item i = icd.check();
                 if (i == null || i.isNull()) continue;
-                pi.add(i);
+                pi.Add(i);
             }
             return pi;
         }

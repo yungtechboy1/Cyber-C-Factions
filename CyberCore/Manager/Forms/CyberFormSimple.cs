@@ -50,6 +50,23 @@ namespace CyberCore.Manager.Forms
             Buttons = bl;
             Content = desc;
         }
+
+        [JsonIgnore]
+        public int ClickedID = -1;
+        public override void FromJson(string json, Player player)
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings()
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.None,
+                Formatting = Formatting.Indented
+            };
+            int? nullable = JsonConvert.DeserializeObject<int?>(json);
+            Log.Debug((object) ("Form JSON\n" + JsonConvert.SerializeObject((object) nullable, settings)));
+            if (!nullable.HasValue)
+                return;
+            ClickedID = nullable.Value;
+            this.Buttons[nullable.Value].Execute(player, this);
+        }
         
     }
 }

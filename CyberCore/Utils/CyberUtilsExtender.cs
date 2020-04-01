@@ -101,9 +101,24 @@ namespace CyberCore.Utils
             return setLore(i, lines.ToArray());
         }
 
+        public static String[] getLore(this Item i)
+        {
+            NbtCompound tag = getDisplayCompound(i);
+            if (tag.Contains("Lore")) {
+                List<String> a = new List<String>();
+                foreach (NbtTag v in (NbtList)tag["Lore"])
+                {
+                    a.Add(v.StringValue);
+                }
+                return a.ToArray();
+            };
+            NbtList lore = new NbtList("Lore");
+            tag.Add(lore);
+            return new String[0];
+        }
         public static NbtList getLoreList(this NbtCompound i)
         {
-            NbtCompound tag = i;
+            NbtCompound tag = getDisplayCompound(i);
             if (tag.Contains("Lore")) return (NbtList) tag["Lore"];
             NbtList lore = new NbtList("Lore");
             tag.Add(lore);

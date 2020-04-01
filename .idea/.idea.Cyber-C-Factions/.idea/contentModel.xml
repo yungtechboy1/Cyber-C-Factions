@@ -16,6 +16,7 @@
         <e p="CorePlayer.cs" t="Include" />
         <e p="CoreSettings.cs" t="Include" />
         <e p="Custom" t="Include">
+          <e p="Block" t="Include" />
           <e p="CustomEnums" t="Include">
             <e p="ChatFormats.cs" t="Include" />
             <e p="CustomDamageCause.cs" t="Include" />
@@ -75,11 +76,22 @@
             </e>
           </e>
           <e p="Crate" t="Include">
-            <e p="CrateData.cs" t="Include" />
             <e p="CrateMain.cs" t="Include" />
             <e p="CrateObject.cs" t="Include" />
+            <e p="CrateTickThread.cs" t="Include" />
+            <e p="Data" t="Include">
+              <e p="CrateData.cs" t="Include" />
+              <e p="CrateDataManager.cs" t="Include" />
+              <e p="CrateKeyData.cs" t="Include" />
+              <e p="CrateKeyDataManager.cs" t="Include" />
+              <e p="CrateLocationData.cs" t="Include" />
+              <e p="CrateLocationDataManager.cs" t="Include" />
+              <e p="KeyData.cs" t="Include" />
+            </e>
+            <e p="Form" t="Include">
+              <e p="AdminCrateChooseCrateWindow.cs" t="Include" />
+            </e>
             <e p="ItemChanceData.cs" t="Include" />
-            <e p="KeyData.cs" t="Include" />
           </e>
           <e p="Factions" t="Include">
             <e p="Data" t="Include">
@@ -109,6 +121,7 @@
             </e>
           </e>
           <e p="FloatingText" t="Include">
+            <e p="CustomFloatingTextParticle.cs" t="Include" />
             <e p="CyberFloatingTextContainer.cs" t="Include" />
             <e p="FloatingTextEntity.cs" t="Include" />
             <e p="FloatingTextFactory.cs" t="Include" />
@@ -148,6 +161,7 @@
         <e p="PlayerSettingsData.cs" t="Include" />
         <e p="Utils" t="Include">
           <e p="CacheChecker.cs" t="Include" />
+          <e p="CenterText.cs" t="Include" />
           <e p="Cooldowns" t="Include">
             <e p="CoolDown.cs" t="Include" />
             <e p="CoolDownTick.cs" t="Include" />
@@ -158,10 +172,11 @@
           <e p="CyberUtils.cs" t="Include" />
           <e p="CyberUtilsExtender.cs" t="Include" />
           <e p="Data" t="Include">
-            <e p="ConfigSection2.cs" t="Include" />
+            <e p="JsonDataManager.cs" t="Include" />
             <e p="PlayerDetailedInfo.cs" t="Include" />
             <e p="ServerSqlite.cs" t="Include" />
           </e>
+          <e p="DefaultFontInfo.cs" t="Include" />
           <e p="ExtraPlayerData.cs" t="Include" />
           <e p="FactionErrorString.cs" t="Include" />
           <e p="InternalPlayerSettings.cs" t="Include" />

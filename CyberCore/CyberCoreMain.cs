@@ -51,6 +51,8 @@ namespace CyberCore
         public WarpManager WarpManager { get; set; }
         public ClassFactory ClassFactory { get; set; }
         public RankFactory RF { get; set; }
+        
+        public FloatingTextFactory FTM { get; set; }
 
         public List<CyberFloatingTextContainer> SavedFloatingText { get; set; } =
             new List<CyberFloatingTextContainer>();

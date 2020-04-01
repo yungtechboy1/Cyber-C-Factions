@@ -1,56 +1,58 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using CyberCore.Utils;
 using MiNET;
 using MiNET.Entities;
-using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Worlds;
-using Newtonsoft.Json;
 using OpenAPI.Player;
 
 namespace CyberCore.Manager.FloatingText
 {
     public class CyberFloatingTextContainer : Entity
     {
-        public FloatingTextType TYPE = FloatingTextType.FT_Standard;
-        public String Syntax;
-        public bool PlayerUnique = false;
-        public bool Active = false;
-        public bool Formated = false;
-        public int UpdateTicks = 20;
-        public int LastUpdate = 0;
-
-        public int Range = 64;
-        // public long EntityId = -1;
-
-
-        public Level _Level { get; set; } = null;
-
-        [JsonIgnore]
-        public new Level Level
-        {
-            get { return _Level; }
-            set
-            {
-                _Level = value;
-                Lvl = value.LevelName;
-            }
-        }
-
-        // public PlayerLocation Pos;
-        public String Lvl;
+        public bool _CE_Done;
 
 
 //    public Level Lvl;
-        public bool _CE_Lock = false;
-        public bool _CE_Done = false;
-        public bool Vertical = false;
+        public bool _CE_Lock;
+        public bool Active;
+        public bool Formated = false;
         public FloatingTextFactory FTF;
+
+        private string lastSyntax;
+
+        public int LastUpdate;
+        // public long EntityId = -1;
+
+
+        // public PlayerLocation Pos;
+        public string Lvl;
+        public bool PlayerUnique = false;
+
+        public int Range = 64;
+        public string Syntax;
+        public FloatingTextType TYPE = FloatingTextType.FT_Standard;
+        public int UpdateTicks = 20;
+        public bool Vertical = false;
+
+        public CyberFloatingTextContainer(FloatingTextFactory ftf, PlayerLocation pos, Level l, string syntax) : base(
+            EntityType.Villager, l)
+        {
+            EntityId = generateEntityId();
+            KnownPosition = pos;
+            LastSentPosition = pos;
+            setFlags();
+            Width = .01f;
+            Height = .01f;
+            Scale = .01f;
+            FTF = ftf;
+            //TODO No Need?
+            // EntityId = generateEntityId();
+            Syntax = syntax;
+//        Lvl = pos.level;
+        }
 
 
 //         public String toString()
@@ -122,22 +124,6 @@ namespace CyberCore.Manager.FloatingText
             CanPowerJump = false;
         }
 
-        public CyberFloatingTextContainer(FloatingTextFactory ftf, PlayerLocation pos, Level l, String syntax) : base(
-            EntityType.Villager, l)
-        {
-            KnownPosition = pos;
-            LastSentPosition = pos;
-            setFlags();
-            Width = .01f;
-            Height = .01f;
-            Scale = .01f;
-            FTF = ftf;
-            //TODO No Need?
-            // EntityId = generateEntityId();
-            Syntax = syntax;
-//        Lvl = pos.level;
-        }
-
         protected override BitArray GetFlags()
         {
             return base.GetFlags();
@@ -145,7 +131,7 @@ namespace CyberCore.Manager.FloatingText
 
         public long generateEntityId()
         {
-            long e = 1095216660480L + CyberUtils.LongRandom(0L, 2147483647L);
+            var e = 1095216660480L + CyberUtils.LongRandom(0L, 2147483647L);
             return e;
         }
 
@@ -178,17 +164,17 @@ namespace CyberCore.Manager.FloatingText
 //
 //    }
 
-        public String GetText(Player p, bool vertical = false)
+        public string GetText(Player p, bool vertical = false)
         {
             return FTF.FormatText(Syntax, p, vertical);
         }
 
         //Generate Flaoting Text for following players
-        public void HaldleSend(List<String> ap)
+        public void HaldleSend(List<string> ap)
         {
 //        CyberCoreMain.Log.Error("Was LOG ||"+"HS");
 //        List<Packet> tosend = new List<>();
-            Dictionary<String, List<Packet>> tosend;
+            Dictionary<string, List<Packet>> tosend;
 //        sync(_CE_Lock)//TODO
             if (_CE_Lock || _CE_Done) return;
             _CE_Lock = true;
@@ -196,16 +182,11 @@ namespace CyberCore.Manager.FloatingText
             {
                 OpenPlayer p;
                 if (FTF.API.PlayerManager.TryGetPlayer(pn, out p)) continue;
-                foreach (var dp in encode(p))
-                {
-                    p.SendPacket(dp);
-                }
+                foreach (var dp in encode(p)) p.SendPacket(dp);
             }
 
             _CE_Lock = false;
         }
-
-        private String lastSyntax = null;
 
         public bool _CE_NeedToResend()
         {
@@ -215,10 +196,7 @@ namespace CyberCore.Manager.FloatingText
                 return true;
             }
 
-            if (lastSyntax == Syntax)
-            {
-                return false;
-            }
+            if (lastSyntax == Syntax) return false;
 
             lastSyntax = Syntax;
             return true;
@@ -234,7 +212,7 @@ namespace CyberCore.Manager.FloatingText
         {
 //        CyberCoreMain.Log.Error("Was LOG ||"+"HS");
 //        List<Packet> tosend = new List<>();
-            Dictionary<String, List<Packet>> tosend;
+            Dictionary<string, List<Packet>> tosend;
 //        sync(_CE_Lock)//TODO
             if (_CE_Lock || _CE_Done) return;
             _CE_Lock = true;
@@ -244,8 +222,9 @@ namespace CyberCore.Manager.FloatingText
                 {
 //            Player p = Server.getInstance().getPlayerExact(pn);
                     if (p == null) continue;
-                    foreach (var dp in encode(p))p.SendPacket(dp);
+                    foreach (var dp in encode(p)) p.SendPacket(dp);
                 }
+
                 _CE_Lock = false;
             }
         }
@@ -254,7 +233,7 @@ namespace CyberCore.Manager.FloatingText
         {
             if (Level != null)
             {
-                McpeSetEntityData packet = new McpeSetEntityData();
+                var packet = new McpeSetEntityData();
                 packet.runtimeEntityId = EntityId;
 
 //            if (!Strings.isNullOrEmpty(text)) {
@@ -267,18 +246,18 @@ namespace CyberCore.Manager.FloatingText
 
         public List<Packet> encode(Player p)
         {
-            List<Packet> packets = new List<Packet>();
+            var packets = new List<Packet>();
 
             if (Active)
             {
-                McpeRemoveEntity pk = new McpeRemoveEntity();
+                var pk = new McpeRemoveEntity();
                 pk.entityIdSelf = EntityId;
 
                 packets.Add(pk);
             }
 
             NameTag = GetText(p, Vertical);
-            McpeAddEntity addEntity = McpeAddEntity.CreateObject();
+            var addEntity = McpeAddEntity.CreateObject();
             addEntity.entityType = EntityTypeId;
             addEntity.entityIdSelf = EntityId;
             addEntity.runtimeEntityId = EntityId;
@@ -314,7 +293,7 @@ namespace CyberCore.Manager.FloatingText
             _CE_Done = true;
         }
 
-        public String getKeyPos()
+        public string getKeyPos()
         {
             return KnownPosition.X + "|" + KnownPosition.Y + "|" + KnownPosition.Z + "|" + Lvl;
         }

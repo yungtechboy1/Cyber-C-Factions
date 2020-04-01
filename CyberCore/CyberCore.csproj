@@ -9,4 +9,8 @@
       <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.63" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Custom\Block" />
+    </ItemGroup>
+
 </Project>
