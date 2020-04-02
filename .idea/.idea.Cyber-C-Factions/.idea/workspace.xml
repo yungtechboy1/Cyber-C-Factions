@@ -2,29 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateTickThread.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/CrateDataManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/CrateKeyData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/CrateKeyDataManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/CrateLocationData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/CrateLocationDataManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateChooseCrateWindow.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CustomFloatingTextParticle.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Utils/CenterText.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Utils/Data/JsonDataManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Utils/DefaultFontInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/CyberCore.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCore.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/CrateData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateMain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/KeyData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/KeyData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormSimple.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormSimple.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/Data/ConfigSection2.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/Data/FactionInviteData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Data/FactionInviteData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/Data/RelationshipManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Data/RelationshipManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -240,6 +224,7 @@
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Data/FactionInviteData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2ED30C42-D264-4E76-9878-1F8626241A6F/49/DateTime.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Data/RelationshipManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Windows/FactionChatFactionWindow.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Windows/FactionInvited.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Missions/ActiveMission.cs" root0="FORCE_HIGHLIGHTING" />
@@ -298,11 +283,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Leveling/ClassLevelingManagerXPLevel.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerSettings.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/CustomEnums/PowerEnum.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Custom/Items/ItemEmerald.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Custom/Events/PlayerTakeDamageEvent.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Custom/CustomEnums/CustomDamageCause.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Custom/Events/CustomEntityDamageEvent.cs" />
@@ -349,6 +329,11 @@
         <option value="$PROJECT_DIR$/CyberCore/Custom/Block/BlockCobWeb.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateTickThread.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateMain.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Data/FactionInviteData.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Data/RelationshipManager.cs" />
       </list>
     </option>
   </component>
@@ -455,7 +440,8 @@
       <option name="project" value="Cyber-C-Factions" />
       <option name="type" value="BUG" />
       <updated>1585641931000</updated>
-      <workItem from="1585624049764" duration="20376000" />
+      <workItem from="1585624049764" duration="20854000" />
+      <workItem from="1585802930081" duration="237000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />

@@ -70,7 +70,7 @@ namespace CyberCore.Manager.Factions
             if (!peace)
             {
                 CyberCoreMain.Log.Info("Peace Faction Being Created!");
-                Faction fac = new Faction(this, "peace", ChatColors.Green + "peaceful", false);
+                Faction fac = new Faction(this, "peace", false,ChatColors.Green + "peaceful");
                 FFactory.LocalFactionCache.Add("peace", fac);
             }
 
@@ -78,7 +78,7 @@ namespace CyberCore.Manager.Factions
             if (!wilderness)
             {
                 CyberCoreMain.Log.Info("Wilderness Faction Being Created!");
-                Faction fac = new Faction(this, "wilderness", ChatColors.Red + "wilderness", false);
+                Faction fac = new Faction(this, "wilderness", false,ChatColors.Red + "wilderness");
                 FFactory.LocalFactionCache.Add("wilderness", fac);
             }
         }
@@ -172,7 +172,7 @@ namespace CyberCore.Manager.Factions
                                 fac.getSettings().getDisplayName() + " by " + Sender.getName() + "\n" +
                                 ChatColors.Green + "Type '/f accept' or '/f deny' into chat to accept or deny!");
 
-            int time = CyberUtils.getLongTime() + 60 * 5; //5 Mins
+            long time = CyberUtils.getLongTime() + 60 * 5; //5 Mins
             fac.AddInvite(invited, time, Sender, fr);
 
             var fid = new FactionInviteData(invited.getName(), fac.getName(), time, Sender.getName(),

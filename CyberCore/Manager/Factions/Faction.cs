@@ -1304,7 +1304,7 @@ namespace CyberCore.Manager.Factions
             return FactionsMain.GetInstance().FFactory.RM.isAllys(getName(), fac);
         }
 
-        public void AddInvite(Player player, int value, Player sender, FactionRank fr)
+        public void AddInvite(Player player, long value, Player sender, FactionRank fr)
         {
             if (!addRequest(RequestType.Faction_Invite, null, player, value, sender))
             {
@@ -1795,7 +1795,7 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public bool addRequest(RequestType rt, Faction fac, Player player, int timeout, Player sender)
+        public bool addRequest(RequestType rt, Faction fac, Player player, long timeout, Player sender)
         {
             Connection c = CyberCoreMain.GetInstance().FM.FFactory.getMySqlConnection();
             String sn = null;

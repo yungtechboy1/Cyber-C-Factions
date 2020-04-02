@@ -37,9 +37,9 @@ namespace CyberCore.Manager.Factions.Data
             return (EnemyList.Contains(a1) || EnemyList.Contains(a2));
         }
 
-        public int TimeToInt()
+        public long TimeToInt()
         {
-            return CyberUtils.getLongTime();
+            return CyberUtils.getTick();
         }
 
         public void update()
@@ -84,7 +84,7 @@ namespace CyberCore.Manager.Factions.Data
 
             String k1 = FactionNamesToKey(fac1, fac2);
             String k2 = FactionNamesToKey(fac2, fac1);
-            int time = CyberUtils.getLongTime();
+            long time = CyberUtils.getLongTime();
             SqlManager c = CyberCoreMain.GetInstance().SQL;
             try
             {
@@ -92,8 +92,8 @@ namespace CyberCore.Manager.Factions.Data
                 //0 = Friend Requestw
                 //2 = ?????
                 //CyberCoreMain.getInstance().getIntTime
-                c.Insert("DELETE FROM `Ally` WHERE `key` LIKE k1");
-                c.Insert("DELETE FROM `Ally` WHERE `key` LIKE k2");
+                c.Insert($"DELETE FROM `Ally` WHERE `key` LIKE {k1}");
+                c.Insert($"DELETE FROM `Ally` WHERE `key` LIKE {k2}");
 //            s.executeQuery(String.format("INSERT INTO `plots` VALUES ('%s','%s',2)", k, faction));
                 return true;
 //        Main.FFactory.allyrequest.put(getName(), fac.getName());
@@ -114,7 +114,7 @@ namespace CyberCore.Manager.Factions.Data
             }
 
             String k = FactionNamesToKey(fac1, fac2);
-            int time = CyberUtils.getLongTime();
+            long time = CyberUtils.getLongTime();
             SqlManager c = CyberCoreMain.GetInstance().SQL;
             try
             {
@@ -122,7 +122,7 @@ namespace CyberCore.Manager.Factions.Data
                 //0 = Friend Requestw
                 //2 = ?????
                 //CyberCoreMain.getInstance().getIntTime
-                c.Query("INSERT INTO `Ally` VALUES (null,'{k}',{time})");
+                c.Query($"INSERT INTO `Ally` VALUES (null,'{k}',{time})");
 //            s.executeQuery(String.format("INSERT INTO `plots` VALUES ('%s','%s',2)", k, faction));
                 return true;
 //        Main.FFactory.allyrequest.put(getName(), fac.getName());
@@ -149,7 +149,7 @@ namespace CyberCore.Manager.Factions.Data
 
             String k1 = FactionNamesToKey(fac1, fac2);
             String k2 = FactionNamesToKey(fac2, fac1);
-            int time = CyberUtils.getLongTime();
+            long time = CyberUtils.getLongTime();
             SqlManager c = CyberCoreMain.GetInstance().SQL;
             try
             {
@@ -173,7 +173,7 @@ namespace CyberCore.Manager.Factions.Data
             }
 
             String k = FactionNamesToKey(fac1, fac2);
-            int time = CyberUtils.getLongTime();
+            long time = CyberUtils.getLongTime();
             SqlManager c = CyberCoreMain.GetInstance().SQL;
             try
             {

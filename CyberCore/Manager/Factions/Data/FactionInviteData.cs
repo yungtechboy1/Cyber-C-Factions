@@ -8,12 +8,12 @@ namespace CyberCore.Manager.Factions.Data
     public class FactionInviteData
     {
         String PlayerName;
-        int TimeStamp = -1;
+        long TimeStamp = -1;
         String Faction;
         String InvitedBy;
         FactionRank FacRank;
 
-        public FactionInviteData(String playerName, String faction, int timeStamp = -1, String invitedBy = null,
+        public FactionInviteData(String playerName, String faction, long timeStamp = -1, String invitedBy = null,
             FactionRank fr = FactionRank.Recruit)
         {
             PlayerName = playerName;
@@ -28,7 +28,7 @@ namespace CyberCore.Manager.Factions.Data
             return PlayerName;
         }
 
-        public int getTimeStamp()
+        public long getTimeStamp()
         {
             return TimeStamp;
         }
@@ -48,7 +48,7 @@ namespace CyberCore.Manager.Factions.Data
             return cp.Username.Equals(PlayerName, StringComparison.CurrentCultureIgnoreCase);
         }
 
-        public bool isValid(int time)
+        public bool isValid(long time)
         {
             return time < TimeStamp;
         }
