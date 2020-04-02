@@ -9,7 +9,7 @@ namespace CyberCore.Manager.Factions
         private String PlayerName;
         private String InvitedBy;
         private FactionRank Rank = FactionRank.Recruit;
-        private int Timeout;
+        private long Timeout;
 
 //    public Invitation(Faction f, String playerName, int timeout, FactionRank r) {
 //        fac = f.getName();
@@ -32,7 +32,7 @@ namespace CyberCore.Manager.Factions
 //        Rank = r;
 //    }
 
-        public Invitation(String faction, String player, String invitedby, int value, FactionRank r)
+        public Invitation(String faction, String player, String invitedby, long value, FactionRank r)
         {
             fac = faction;
             InvitedBy = invitedby;
@@ -86,7 +86,7 @@ namespace CyberCore.Manager.Factions
             PlayerName = playerName;
         }
 
-        public int getTimeout()
+        public long getTimeout()
         {
             return Timeout;
         }

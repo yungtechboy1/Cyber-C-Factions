@@ -5,28 +5,31 @@ using MiNET.Utils;
 
 namespace CyberCore.Manager.Factions
 {
-    public enum FactionRank
+    public struct FactionRank
     {
-        Recruit = 0,
-        Member = 1,
-        Officer = 2,
-        General = 3,
-        Leader = 4,
-        All = -1
-    }
+        public static readonly FactionRank Recruit = new FactionRank(0);
+        public static readonly FactionRank Member = new FactionRank(1);
+        public static readonly FactionRank Officer = new FactionRank(2);
+        public static readonly FactionRank General = new FactionRank(3);
+        public static readonly FactionRank Leader = new FactionRank(4);
+        public static readonly FactionRank All = new FactionRank(-1);
+        private static readonly ILog Log = LogManager.GetLogger(typeof(FactionRank));
 
-    static class FactionRankMethods
-    {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FactionRankMethods));
+        public int Id;
 
-        public static FactionRank getRankFromString(String a)
+        public FactionRank(int id)
+        {
+            Id = id;
+        }
+
+        public FactionRank getRankFromString(String a)
         {
             try
             {
                 int i = int.Parse(a);
                 foreach (FactionRank f in Enum.GetValues(typeof(FactionRank)))
                 {
-                    if ((int) f == i) return f;
+                    if (f.Id == i) return f;
                 }
 
                 CyberCoreMain.Log.Error("Error Parsing ");
@@ -38,14 +41,16 @@ namespace CyberCore.Manager.Factions
                 return FactionRank.Recruit;
             }
         }
-        public static FactionRank getRankFromString(FactionRank a)
+
+        public FactionRank getRankFromString(FactionRank a)
         {
             try
             {
-                int i = (int)(a);
+                int i = a.Id;
+                //TODO might give error!
                 foreach (FactionRank f in Enum.GetValues(typeof(FactionRank)))
                 {
-                    if ((int) f == i) return f;
+                    if (f.Id == i) return f;
                 }
 
                 CyberCoreMain.Log.Error("Error Parsing ");
@@ -58,7 +63,7 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public static FactionRank getRankFromForm(int a)
+        public FactionRank getRankFromForm(int a)
         {
             switch (a)
             {
@@ -77,34 +82,25 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public static int getFormPower(FactionRank r)
+        public int getFormPower(FactionRank r)
         {
-            if ((int)r == -1) return (int)r;
-            switch (r)
-            {
-                case FactionRank.Leader:
-                    return 0;
-                case FactionRank.General:
-                    return 1;
-                case FactionRank.Officer:
-                    return 2;
-                case FactionRank.Member:
-                    return 3;
-                case FactionRank.Recruit:
-                    return 4;
-                default:
-                    return 0;
-            }
+            if (r.Id == -1) return r.Id;
+            if (Leader.Id == r.Id) return 0;
+            if (General.Id == r.Id) return 1;
+            if (Officer.Id == r.Id) return 2;
+            if (Member.Id == r.Id) return 3;
+            if (Recruit.Id == r.Id) return 4;
+            return 0;
         }
 
-        public static int getPower(FactionRank r)
+        public int getPower(FactionRank r)
         {
-            return (int)r;
+            return r.Id;
         }
 
-        public static string getChatColor(FactionRank r)
+        public string getChatColor(FactionRank r)
         {
-            switch ((int)r)
+            switch (r.Id)
             {
                 case 0:
                     return ChatColors.Gray;
@@ -122,21 +118,20 @@ namespace CyberCore.Manager.Factions
         }
 
 //FactionCommandWindow.java:40
-        public static bool hasPerm(FactionRank src,FactionRank target)
+        public bool hasPerm(FactionRank target)
         {
-            if (target == null) return false;
-            return (int)src >= (int)target;
+            return Id >= target.Id;
         }
 
 
-        public static void SendFailReason(FactionRank target, Player p)
+        public void SendFailReason(FactionRank target, Player p)
         {
             p.SendMessage(ChatColors.Red + "Error! You must be a " + getName(target) + " to use this command!");
         }
 
-        public static String getName(FactionRank t)
+        public String getName(FactionRank t)
         {
-            switch ((int)t)
+            switch (t.Id)
             {
                 case 0:
                     return "Recruit";
@@ -149,13 +144,13 @@ namespace CyberCore.Manager.Factions
                 case 4:
                     return "Leader";
                 default:
-                    return "Unknown-" + (int)t;
+                    return "Unknown-" + t.Id;
             }
         }
 
-        public static String GetChatPrefix(FactionRank t)
+        public String GetChatPrefix(FactionRank t)
         {
-            switch ((int)t)
+            switch (t.Id)
             {
                 case 0:
                     return ChatColors.Gray + "R";

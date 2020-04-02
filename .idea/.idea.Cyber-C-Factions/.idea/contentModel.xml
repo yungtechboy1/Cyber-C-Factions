@@ -116,6 +116,7 @@
             </e>
             <e p="PlayerFactionSettings.cs" t="Include" />
             <e p="PlotManager.cs" t="Include" />
+            <e p="RequestType.cs" t="Include" />
             <e p="Windows" t="Include">
               <e p="FactionChatFactionWindow.cs" t="Include" />
               <e p="FactionInvited.cs" t="Include" />
