@@ -22,7 +22,7 @@ namespace CyberCore.Manager.Factions.Windows
         }
 
 
-        private void onRun(Player player, ModalForm modal)
+        private void onRun(Player player, ModalForm modal, bool b)
         {
             var a = player.GetExtraPlayerData();
             var aa = a.FactionInviteData;

@@ -41,7 +41,7 @@ namespace CyberCore.Manager.Factions
 
         }
 
-        public int getTimeToInt(){
+        public long getTimeToInt(){
             return CyberUtils.getLongTime();
         }
     }

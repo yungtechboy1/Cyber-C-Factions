@@ -1,44 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using CyberCore.Utils;
+﻿using System.Collections.Generic;
 using MiNET.Items;
 
 namespace CyberCore.Manager.Factions.Missions
 {
     public class Mission
     {
+        public Dictionary<string, int> Break = new Dictionary<string, int>();
+        public string desc;
+        public bool enabled;
+        public int id;
+        public List<MissionItemData> ItemReq = new List<MissionItemData>();
+        public List<MissionItemData> ItemReward = new List<MissionItemData>();
+        public int Kill;
         public FactionsMain Main;
-    public String name;
-    public String desc;
-    public int id;
-    public bool enabled;
-    public Dictionary<String, int> Break = new Dictionary<String, int>();
-    public Dictionary<String, int> Place = new Dictionary<String, int>();
-    public List<Item> ItemReq = new List<Item>();
-    public int Kill = 0;
-    public int XPReward = 0;
-    public int MoneyReward = 0;
-    public List<Item> ItemReward = new List<Item>();
-    public List<MissionTask> Tasks = new List<MissionTask>();
-    public int PointReward = 0;
+        public int MoneyReward;
+        public string name;
+        public Dictionary<string, int> Place = new Dictionary<string, int>();
+        public int PointReward;
+        public List<MissionTask> Tasks = new List<MissionTask>();
+        public int XPReward;
 
 
-    public Mission(FactionsMain main, Mission mission) {
-        Main = mission.Main;
-        name = mission.name;
-        desc = mission.desc;
-        id = mission.id;
-        enabled = mission.enabled;
-        Break = mission.Break;
-        Place = mission.Place;
-        ItemReq = mission.ItemReq;
-        Kill = mission.Kill;
-        XPReward = mission.XPReward;
-        MoneyReward = mission.MoneyReward;
-        ItemReward = mission.ItemReward;
-        PointReward = mission.PointReward;
-        Main = main;
-    }
+        public Mission(FactionsMain main, MissionData mission = null)
+        {
+            if (mission != null)
+            {
+                name = mission.name;
+                desc = mission.desc;
+                id = mission.id;
+                enabled = mission.enabled;
+                Break = mission.Break;
+                Place = mission.Place;
+                ItemReq = mission.ItemReq;
+                Kill = mission.Kill;
+                XPReward = mission.XPReward;
+                MoneyReward = mission.MoneyReward;
+                ItemReward = mission.ItemReward;
+                PointReward = mission.PointReward;
+            }
+
+            Main = main;
+        }
+
+        public Mission(FactionsMain main, Mission mission)
+        {
+            name = mission.name;
+            desc = mission.desc;
+            id = mission.id;
+            enabled = mission.enabled;
+            Break = mission.Break;
+            Place = mission.Place;
+            ItemReq = mission.ItemReq;
+            Kill = mission.Kill;
+            XPReward = mission.XPReward;
+            MoneyReward = mission.MoneyReward;
+            ItemReward = mission.ItemReward;
+            PointReward = mission.PointReward;
+            Main = main;
+        }
 /*
     public Mission(FactionsMain main, Dictionary<String,Object> config) {
         Main = main;
@@ -130,12 +149,50 @@ namespace CyberCore.Manager.Factions.Missions
     
     */
 
-    public List<Item> getItemReward() {
-        return ItemReward;
-    }
+        public List<MissionItemData> getItemReqData()
+        {
+            return ItemReq;
+        }
 
-    public void setItemReward(List<Item> itemReward) {
-        ItemReward = itemReward;
-    }
+        public List<Item> getItemReq()
+        {
+            var a = new List<Item>();
+            foreach (var i in getItemReqData()) a.Add(i.toItem());
+
+            return a;
+        }
+
+        public void setItemReqData(List<MissionItemData> itemReq)
+        {
+            ItemReq = itemReq;
+        }
+
+        public void setItemReq(List<Item> itemReward)
+        {
+            setItemReqData(MissionItemData.fromItemList(itemReward));
+        }
+
+        public List<MissionItemData> getItemRewardData()
+        {
+            return ItemReward;
+        }
+
+        public List<Item> getItemReward()
+        {
+            var a = new List<Item>();
+            foreach (var i in getItemRewardData()) a.Add(i.toItem());
+
+            return a;
+        }
+
+        public void setItemRewardData(List<MissionItemData> itemReward)
+        {
+            ItemReward = itemReward;
+        }
+
+        public void setItemReward(List<Item> itemReward)
+        {
+            setItemRewardData(MissionItemData.fromItemList(itemReward));
+        }
     }
 }

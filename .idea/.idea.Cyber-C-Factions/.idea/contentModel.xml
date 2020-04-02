@@ -108,8 +108,10 @@
             <e p="Invitation.cs" t="Include" />
             <e p="Missions" t="Include">
               <e p="ActiveMission.cs" t="Include" />
+              <e p="ActiveMissionData.cs" t="Include" />
               <e p="Mission.cs" t="Include" />
               <e p="MissionData.cs" t="Include" />
+              <e p="MissionItemData.cs" t="Include" />
               <e p="MissionTask.cs" t="Include" />
             </e>
             <e p="PlayerFactionSettings.cs" t="Include" />

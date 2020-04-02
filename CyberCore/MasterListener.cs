@@ -22,9 +22,10 @@ namespace CyberCore
     {
         public static CyberCoreMain plugin = CyberCoreMain.GetInstance();
 
-        public static void joinEvent(object o, PlayerEventArgs eventArgs)
+        [EventHandler]
+        public void OnPlayerJoin(PlayerJoinEvent e)
         {
-            Player p = (Player) o;
+            Player p =  e.Player;
             if (p == null)
             {
                 CyberCoreMain.Log.Error("Error With Join Event! Object is not player");
@@ -161,7 +162,6 @@ namespace CyberCore
             }
         }
 
-        @EventHandler()
 
         public void BlockBreakEvent(BlockBreakEvent e)
         {

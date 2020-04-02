@@ -19,6 +19,7 @@ using MiNET.Effects;
 using MiNET.Entities;
 using MiNET.Items;
 using MiNET.Sounds;
+using MiNET.Worlds;
 using MySqlX.XDevAPI;
 using OpenAPI;
 using OpenAPI.Events.Entity;
@@ -142,6 +143,29 @@ namespace CyberCore
         {
             if (!getBufflist().ContainsKey(BuffOrigin.Class)) return new Dictionary<BuffType, DeBuff>();
             return new Dictionary<BuffType, DeBuff>(getDeBufflist()[BuffOrigin.Class]);
+        }
+        
+        public class DeathEventArgs
+        {
+            public CorePlayer Player { get;}
+            public Level Level { get;}
+    public EntityDamageEvent
+            public DamageCause Cause {get;}
+            
+            
+        }
+        
+        public event EventHandler<PlayerEventArgs> DamageEventHandler;
+
+        protected virtual void onDamage(PlayerEventArgs e)
+        {
+            DamageEventHandler?.Invoke(this, e);
+        }
+        public event EventHandler<PlayerEventArgs> MoveEventHandler;
+
+        protected virtual void onMove(PlayerEventArgs e)
+        {
+            MoveEventHandler?.Invoke(this, e);
         }
 
         public Dictionary<BuffType, Buff> getClassBuffList()
