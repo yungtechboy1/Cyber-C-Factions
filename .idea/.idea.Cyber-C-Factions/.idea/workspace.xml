@@ -3,14 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/Data/FactionInviteData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Data/FactionInviteData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionPermSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionPermSettings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionRank.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionRank.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionSettings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/RequestType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/RequestType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextEntity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -288,8 +283,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/CyberCore/Utils/Cooldowns/CoolDownTick.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Custom/Items/ItemSlimeBall.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerHotBarInt.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Custom/CustomEnums/PowerEnum.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerAbstract.cs" />
@@ -310,7 +303,6 @@
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateObject.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/CrateLocationData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/CrateData.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CustomFloatingTextParticle.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/KeyData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/DefaultFontInfo.cs" />
@@ -339,6 +331,9 @@
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionPermSettings.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionSettings.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionsMain.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextEntity.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" />
       </list>
     </option>
   </component>
@@ -448,7 +443,7 @@
       <workItem from="1585624049764" duration="20854000" />
       <workItem from="1585802930081" duration="4015000" />
       <workItem from="1585809408060" duration="3494000" />
-      <workItem from="1585870904198" duration="3247000" />
+      <workItem from="1585870904198" duration="4017000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />

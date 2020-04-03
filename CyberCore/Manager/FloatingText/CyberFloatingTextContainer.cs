@@ -23,7 +23,7 @@ namespace CyberCore.Manager.FloatingText
 
         private string lastSyntax;
 
-        public int LastUpdate;
+        public long LastUpdate;
         // public long EntityId = -1;
 
 
@@ -283,7 +283,7 @@ namespace CyberCore.Manager.FloatingText
             return packets.ToArray();
         }
 
-        public void OnUpdate(int tick)
+        public void OnUpdate(long tick)
         {
             LastUpdate = tick;
         }

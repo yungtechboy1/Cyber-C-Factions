@@ -113,10 +113,10 @@ namespace CyberCore.Manager.FloatingText
 
         public void run()
         {
-            int lasttick = -1;
+            long lasttick = -1;
 //        CyberCoreMain.Log.Error("Was LOG ||"+"11111111111111111111");
 //CyberCoreMain.Log.Error("Was LOG ||"+"======");
-            int tick = CyberUtils.getLongTime();
+            long tick = CyberUtils.getLongTime();
             if (tick != lasttick)
             {
 //                CyberCoreMain.Log.Error("Was LOG ||"+"||||||||======");
