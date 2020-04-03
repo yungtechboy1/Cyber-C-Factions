@@ -5,31 +5,43 @@ using MiNET.Utils;
 
 namespace CyberCore.Manager.Factions
 {
+    public enum FactionRankEnum
+    {
+        Recruit = 0,
+        Member = 1,
+        Officer = 2,
+        General = 3,
+        Leader = 4,
+        All = -1,
+        None = -2,
+    }
+
     public struct FactionRank
     {
-        public static readonly FactionRank Recruit = new FactionRank(0);
-        public static readonly FactionRank Member = new FactionRank(1);
-        public static readonly FactionRank Officer = new FactionRank(2);
-        public static readonly FactionRank General = new FactionRank(3);
-        public static readonly FactionRank Leader = new FactionRank(4);
-        public static readonly FactionRank All = new FactionRank(-1);
+        public static readonly FactionRank None = new FactionRank(FactionRankEnum.None);
+        public static readonly FactionRank Recruit = new FactionRank(FactionRankEnum.Recruit);
+        public static readonly FactionRank Member = new FactionRank(FactionRankEnum.Member);
+        public static readonly FactionRank Officer = new FactionRank(FactionRankEnum.Officer);
+        public static readonly FactionRank General = new FactionRank(FactionRankEnum.General);
+        public static readonly FactionRank Leader = new FactionRank(FactionRankEnum.Leader);
+        public static readonly FactionRank All = new FactionRank(FactionRankEnum.All);
         private static readonly ILog Log = LogManager.GetLogger(typeof(FactionRank));
 
-        public int Id;
+        public FactionRankEnum Id;
 
-        public FactionRank(int id)
+        public FactionRank(FactionRankEnum id)
         {
             Id = id;
         }
 
-        public FactionRank getRankFromString(String a)
+        public static FactionRank getRankFromString(String a)
         {
             try
             {
                 int i = int.Parse(a);
                 foreach (FactionRank f in Enum.GetValues(typeof(FactionRank)))
                 {
-                    if (f.Id == i) return f;
+                    if ((int) f.Id == i) return f;
                 }
 
                 CyberCoreMain.Log.Error("Error Parsing ");
@@ -46,11 +58,11 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                int i = a.Id;
+                int i = (int) a.Id;
                 //TODO might give error!
                 foreach (FactionRank f in Enum.GetValues(typeof(FactionRank)))
                 {
-                    if (f.Id == i) return f;
+                    if ((int) f.Id == i) return f;
                 }
 
                 CyberCoreMain.Log.Error("Error Parsing ");
@@ -82,9 +94,29 @@ namespace CyberCore.Manager.Factions
             }
         }
 
+        public static FactionRank getRankFromFactionRankEnum(FactionRankEnum a)
+        {
+            switch (a)
+            {
+                case FactionRankEnum.Leader:
+                    return FactionRank.Leader;
+                case FactionRankEnum.General:
+                    return FactionRank.General;
+                case FactionRankEnum.Officer:
+                    return FactionRank.Officer;
+                case FactionRankEnum.Member:
+                    return FactionRank.Member;
+                case FactionRankEnum.Recruit:
+                    return FactionRank.Recruit;
+                default:
+                    Log.Error("Error tring to Parse " + a + " TO FactionRank");
+                    return FactionRank.None;
+            }
+        }
+
         public int getFormPower(FactionRank r)
         {
-            if (r.Id == -1) return r.Id;
+            if ((int) r.Id == -1) return (int) r.Id;
             if (Leader.Id == r.Id) return 0;
             if (General.Id == r.Id) return 1;
             if (Officer.Id == r.Id) return 2;
@@ -93,14 +125,14 @@ namespace CyberCore.Manager.Factions
             return 0;
         }
 
-        public int getPower(FactionRank r)
+        public int getPower()
         {
-            return r.Id;
+            return (int) Id;
         }
 
         public string getChatColor(FactionRank r)
         {
-            switch (r.Id)
+            switch ((int) r.Id)
             {
                 case 0:
                     return ChatColors.Gray;
@@ -131,7 +163,7 @@ namespace CyberCore.Manager.Factions
 
         public String getName(FactionRank t)
         {
-            switch (t.Id)
+            switch ((int) t.Id)
             {
                 case 0:
                     return "Recruit";
@@ -148,9 +180,9 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public String GetChatPrefix(FactionRank t)
+        public String GetChatPrefix()
         {
-            switch (t.Id)
+            switch ((int)Id)
             {
                 case 0:
                     return ChatColors.Gray + "R";
@@ -165,6 +197,11 @@ namespace CyberCore.Manager.Factions
                 default:
                     return ChatColors.LightPurple + "-";
             }
+        }
+
+        public FactionRankEnum toEnum()
+        {
+            return Id;
         }
     }
 }

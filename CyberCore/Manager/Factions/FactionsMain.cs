@@ -176,7 +176,7 @@ namespace CyberCore.Manager.Factions
             fac.AddInvite(invited, time, Sender, fr);
 
             var fid = new FactionInviteData(invited.getName(), fac.getName(), time, Sender.getName(),
-                fr);
+                fr.toEnum());
 
             ExtraPlayerData epd = CyberUtils.getExtraPlayerData(invited);
             epd.FactionInviteData.Add(fid);

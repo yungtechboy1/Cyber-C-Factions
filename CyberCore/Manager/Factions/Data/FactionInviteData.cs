@@ -14,13 +14,13 @@ namespace CyberCore.Manager.Factions.Data
         FactionRank FacRank;
 
         public FactionInviteData(String playerName, String faction, long timeStamp = -1, String invitedBy = null,
-            FactionRank fr = FactionRank.Recruit)
+            FactionRankEnum fr = FactionRankEnum.Recruit)
         {
             PlayerName = playerName;
             TimeStamp = timeStamp;
             Faction = faction;
             InvitedBy = invitedBy;
-            FacRank = fr;
+            FacRank = fr.toFactionRank();
         }
 
         public String getPlayerName()

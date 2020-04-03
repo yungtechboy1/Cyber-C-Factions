@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MiNET.Utils;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto.Digests;
 
 namespace CyberCore.Manager.Factions
@@ -269,8 +270,7 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                getF().Main.CCM.SQL.Insert("UPDATE `Settings` SET " + key + " = " + val + " WHERE `Name` LIKE '" +
-                                           getFaction() + "'");
+                getF().Main.CCM.SQL.Insert($"UPDATE `Settings` SET {key} = {val} WHERE `Name` LIKE '{getFaction()}'");
                 CyberCoreMain.Log.Info("SUCCESS with Faction PermSettings Cache E39942!BBwwwwwwwwwBssBBB");
                 return;
             }
@@ -285,8 +285,7 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                getF().Main.CCM.SQL.Insert("UPDATE `Settings` SET " + key + " = " + val + " WHERE `Name` LIKE '" +
-                                           getFaction() + "'");
+                getF().Main.CCM.SQL.Insert($"UPDATE `Settings` SET {key} = {val} WHERE `Name` LIKE '{getFaction()}'");
                 CyberCoreMain.Log.Info("SUCCESSSSSSSSSSS with Faction PermSettings Cache E39942!BBBqzxcccBBB");
                 return;
             }
@@ -516,19 +515,24 @@ namespace CyberCore.Manager.Factions
 
         public void setPermSettings(String a)
         {
-            setPermSettings(a, false);
+            setPermSettings(JsonConvert.DeserializeObject<FactionPermSettingsData>(a), false);
         }
 
         public void setPermSettings(FactionPermSettings permSettings, bool update)
         {
             PermSettings = permSettings;
-            if (update) UpdateSettingsValue("Perm", permSettings.export());
+            if (update) UpdateSettingsValue("Perm", JsonConvert.SerializeObject(PermSettings.export()));
         }
 
         public void setPermSettings(String a, bool update)
         {
             PermSettings = new FactionPermSettings(a);
-            if (update) UpdateSettingsValue("Perm", PermSettings.export());
+            if (update) UpdateSettingsValue("Perm", JsonConvert.SerializeObject(PermSettings.export()));
+        }
+        public void setPermSettings(FactionPermSettingsData a, bool update)
+        {
+            PermSettings = new FactionPermSettings(a);
+            if (update) UpdateSettingsValue("Perm", JsonConvert.SerializeObject(PermSettings.export()));
         }
 
         public void takeMoney(int money)

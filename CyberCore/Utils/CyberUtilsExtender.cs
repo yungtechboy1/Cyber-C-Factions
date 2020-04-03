@@ -116,6 +116,15 @@ namespace CyberCore.Utils
             tag.Add(lore);
             return new String[0];
         }
+
+        public static FactionRank toFactionRank(this FactionRankEnum e)
+        {
+            return FactionRank.getRankFromFactionRankEnum(e);
+        }
+        public static RequestType toFactionRank(this RequestTypeEnum e)
+        {
+            return RequestType.fromEnum(e);
+        }
         public static NbtList getLoreList(this NbtCompound i)
         {
             NbtCompound tag = getDisplayCompound(i);
