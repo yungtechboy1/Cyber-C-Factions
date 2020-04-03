@@ -4,7 +4,7 @@ namespace CyberCore.CustomEnums
 {
     public struct RankList
     {
-        public static readonly RankList sPERM_GUEST = new RankList(0, "Guest");
+        public static readonly RankList PERM_GUEST = new RankList(0, "Guest");
         public static readonly RankList PERM_MEMBER = new RankList(1, "Member");
         public static readonly RankList PERM_VIP = new RankList(3, "VIP");
         public static readonly RankList PERM_OP = new RankList(20, "SuperOP");

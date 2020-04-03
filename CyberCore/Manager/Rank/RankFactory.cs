@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using CyberCore.CustomEnums;
 using CyberCore.Utils;
 using log4net;
@@ -19,10 +20,11 @@ namespace CyberCore.Manager.Rank
 
         public Dictionary<int, Rank> ranks = new Dictionary<int, Rank>();
 
-        public RankFactory(CyberCoreMain main)
+        public RankFactory(CyberCoreMain main,RankFactoryData r = null)
         {
+            if(r == null)r = new RankFactoryData();
             Main = main;
-            loadRanks();
+            loadRanks(r);
         }
 
         public void loadDefault()
@@ -31,32 +33,11 @@ namespace CyberCore.Manager.Rank
         }
 
         public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(RankFactory));
-        public void loadRanks()
+        public void loadRanks(RankFactoryData r)
         {
             CyberCoreMain.Log.Info("Loading Ranks...");
-            loadDefault();
-            Config rankConf = new Config(new File(Main.getDataFolder(), "ranks.yml"));
-            Dictionary<String, Object> Dictionary = rankConf.getSection("Ranks").getAllDictionary();
-            for (String s :
-            Dictionary.keySet()) {
-                Main.getLogger().info("-===" + s + "===-");
-                int index = rankConf.getInt("Ranks." + s + ".rank");
-                String display = rankConf.getString("Ranks." + s + ".display_name");
-                String chat_prefix = rankConf.getString("Ranks." + s + ".chat_prefix");
-                if (!ranks.containsKey(index))
-                {
-//                Rank data = new Rank(index, display, chat_prefix);
-//                ranks.put(index, data);
-//                Main.getLogger().info("Rank: " + s + " [" + index + "]- loaded...");
-                }
-                else
-                {
-                    Rank rank = ranks.get(index);
-                    rank.display_name = display;
-                    rank.chat_prefix = chat_prefix;
-                    CyberCoreMain.Log.Info("RFF>> Rank: " + s + " [" + index + "]- Updated!...");
-                }
-            }
+            loadDefault(); 
+            ranks = r.ranks;
         }
 
         public Rank getPlayerRank(Player p)

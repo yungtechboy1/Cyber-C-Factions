@@ -21,7 +21,6 @@
             <e p="ChatFormats.cs" t="Include" />
             <e p="CustomDamageCause.cs" t="Include" />
             <e p="PowerEnum.cs" t="Include" />
-            <e p="RankList.cs" t="Include" />
           </e>
           <e p="Events" t="Include">
             <e p="CustomEntityDamageEvent.cs" t="Include" />
@@ -141,6 +140,8 @@
             <e p="Guest_Rank.cs" t="Include" />
             <e p="Rank.cs" t="Include" />
             <e p="RankFactory.cs" t="Include" />
+            <e p="RankFactoryData.cs" t="Include" />
+            <e p="RankList.cs" t="Include" />
           </e>
           <e p="Shop" t="Include">
             <e p="ShopInv.cs" t="Include" />
