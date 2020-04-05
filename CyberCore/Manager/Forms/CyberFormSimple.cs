@@ -37,6 +37,17 @@ namespace CyberCore.Manager.Forms
             Content = desc;
         }
 
+        public void addButton(String txt,Action<Player, SimpleForm> a = null)
+        {
+            if(Buttons == null)Buttons = new List<Button>();
+            var b = new Button()
+            {
+                Text = txt, 
+               
+            };
+            if (a != null) b.ExecuteAction = a;
+            Buttons.Add(b);
+        }
         public void addButton(Button b)
         {
             if(Buttons == null)Buttons = new List<Button>();

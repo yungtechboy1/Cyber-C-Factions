@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.IO;
 using CyberCore.Manager.Factions;
-using CyberCore.Manager.Forms;
 using fNbt;
 using JetBrains.Annotations;
-using Jose;
 using MiNET;
-using MiNET.Blocks;
 using MiNET.Effects;
 using MiNET.Items;
 using MiNET.UI;
@@ -18,7 +15,7 @@ namespace CyberCore.Utils
 {
     public static class CyberUtilsExtender
     {
-        public static String getMessage(this FactionErrorString c)
+        public static string getMessage(this FactionErrorString c)
         {
             return FactionErrorStringMethod.toString(c);
         }
@@ -28,16 +25,13 @@ namespace CyberCore.Utils
             return CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction(c);
         }
 
-        public static Object getOrDefault(this Dictionary<String, Object> d, String s, Object de)
+        public static object getOrDefault(this Dictionary<string, object> d, string s, object de)
         {
-            if (d.ContainsKey(s))
-            {
-                return d[s];
-            }
+            if (d.ContainsKey(s)) return d[s];
 
             return de;
         }
-        
+
 
         public static bool isEmpty(this PlayerInventory i, int k)
         {
@@ -92,66 +86,70 @@ namespace CyberCore.Utils
             return (NbtCompound) i["display"];
         }
 
-        public static Item setLore(this Item i, List<String> lines)
+        public static Item setLore(this Item i, List<string> lines)
         {
             return setLore(i, lines.ToArray());
         }
 
-        public static String[] getLore(this Item i)
+        public static string[] getLore(this Item i)
         {
-            NbtCompound tag = getDisplayCompound(i);
-            if (tag.Contains("Lore")) {
-                List<String> a = new List<String>();
-                foreach (NbtTag v in (NbtList)tag["Lore"])
-                {
-                    a.Add(v.StringValue);
-                }
+            var tag = getDisplayCompound(i);
+            if (tag.Contains("Lore"))
+            {
+                var a = new List<string>();
+                foreach (var v in (NbtList) tag["Lore"]) a.Add(v.StringValue);
                 return a.ToArray();
-            };
-            NbtList lore = new NbtList("Lore");
+            }
+
+            ;
+            var lore = new NbtList("Lore");
             tag.Add(lore);
-            return new String[0];
+            return new string[0];
         }
 
         public static FactionRank toFactionRank(this FactionRankEnum e)
         {
             return FactionRank.getRankFromFactionRankEnum(e);
         }
+
         public static RequestType toFactionRank(this RequestTypeEnum e)
         {
             return RequestType.fromEnum(e);
         }
+
         public static NbtList getLoreList(this NbtCompound i)
         {
-            NbtCompound tag = getDisplayCompound(i);
+            var tag = getDisplayCompound(i);
             if (tag.Contains("Lore")) return (NbtList) tag["Lore"];
-            NbtList lore = new NbtList("Lore");
-            tag.Add(lore);
-            return (NbtList) tag["Lore"];
-        }
-        public static NbtList getLoreList(this Item i)
-        {
-            NbtCompound tag = getDisplayCompound(i);
-            if (tag.Contains("Lore")) return (NbtList) tag["Lore"];
-            NbtList lore = new NbtList("Lore");
+            var lore = new NbtList("Lore");
             tag.Add(lore);
             return (NbtList) tag["Lore"];
         }
 
-        public static void clear(this PlayerInventory i,int slot)
+        public static NbtList getLoreList(this Item i)
+        {
+            var tag = getDisplayCompound(i);
+            if (tag.Contains("Lore")) return (NbtList) tag["Lore"];
+            var lore = new NbtList("Lore");
+            tag.Add(lore);
+            return (NbtList) tag["Lore"];
+        }
+
+        public static void clear(this PlayerInventory i, int slot)
         {
             i.Slots[slot] = new ItemAir();
         }
+
         public static bool isNull(this Item i)
         {
-            return (i == null || i.Id == -1 || i.Id == 0 || i.Count == 0);
+            return i == null || i.Id == -1 || i.Id == 0 || i.Count == 0;
         }
-        
+
         public static bool isFull(this PlayerInventory i, Item ii = null)
         {
             foreach (var s in i.Slots)
             {
-                if (ii !=  null && s.Equals(ii)) return false;
+                if (ii != null && s.Equals(ii)) return false;
                 if (s == null || s.Id == -1 || s.Id == 0) return false;
             }
 
@@ -162,56 +160,59 @@ namespace CyberCore.Utils
         {
             if (l.Count == 0) return;
             i.Clear();
-            int a = 0;
-            for (int ii = 0; ii < l.Count; ++ii)
+            var a = 0;
+            for (var ii = 0; ii < l.Count; ++ii)
             {
-                if(a >= l.Count)return;
+                if (a >= l.Count) return;
                 i.Slots[ii] = l[a++];
             }
         }
-        public static NbtCompound putString(this NbtCompound i, String k, string v)
+
+        public static NbtCompound putString(this NbtCompound i, string k, string v)
         {
-            i.Add(new NbtString(k,v));
+            i.Add(new NbtString(k, v));
             return i;
         }
-        public static Item addLore(this Item i,params String[] lines)
+
+        public static Item addLore(this Item i, params string[] lines)
         {
-            NbtCompound tag = getDisplayCompound(i);
+            var tag = getDisplayCompound(i);
 
-            NbtList lore = i.getLoreList();
-            String[] var4 = lines;
-            int var5 = lines.Length;
+            var lore = i.getLoreList();
+            var var4 = lines;
+            var var5 = lines.Length;
 
-            for (int var6 = 0; var6 < var5; ++var6)
+            for (var var6 = 0; var6 < var5; ++var6)
             {
-                String line = var4[var6];
+                var line = var4[var6];
                 //OR Maybe try ""
                 lore.Add(new NbtString(line));
             }
 
-            if(tag.Contains("Lore"))tag.Remove("Lore");
+            if (tag.Contains("Lore")) tag.Remove("Lore");
             tag.Add(lore);
-            
+
             return i;
         }
-        public static Item setLore(this Item i, params String[] lines)
+
+        public static Item setLore(this Item i, params string[] lines)
         {
-            NbtCompound tag = getDisplayCompound(i);
+            var tag = getDisplayCompound(i);
 
-            NbtList lore = new NbtList("Lore");
-            String[] var4 = lines;
-            int var5 = lines.Length;
+            var lore = new NbtList("Lore");
+            var var4 = lines;
+            var var5 = lines.Length;
 
-            for (int var6 = 0; var6 < var5; ++var6)
+            for (var var6 = 0; var6 < var5; ++var6)
             {
-                String line = var4[var6];
+                var line = var4[var6];
                 //OR Maybe try ""
                 lore.Add(new NbtString(line));
             }
 
-            if(tag.Contains("Lore"))tag.Remove("Lore");
+            if (tag.Contains("Lore")) tag.Remove("Lore");
             tag.Add(lore);
-            
+
             return i;
         }
 
@@ -227,60 +228,46 @@ namespace CyberCore.Utils
             i.ExtraData = (NbtCompound) a.RootTag;
             return i;
         }
+
         public static Item setCompoundTag(this Item i, NbtCompound n)
         {
             i.ExtraData = n;
             return i;
         }
 
-        public static bool equalsIgnoreCase(this String s, String ss)
+        public static bool equalsIgnoreCase(this string s, string ss)
         {
             return s.Equals(ss, StringComparison.CurrentCultureIgnoreCase);
         }
 
         public static bool hasCustomName(this Item i)
         {
-            if (i.ExtraData == null)
-            {
-                return false;
-            }
-            else
-            {
-                var tag = i.ExtraData;
-                if (!tag.Contains("display"))
-                {
-                    return false;
-                }
-                else
-                {
-                    var tag1 = tag.Get("display");
-                    if (tag1.StringValue != null) return true;
-                }
-            }
+            if (i.ExtraData == null) return false;
+
+            var tag = i.ExtraData;
+            if (!tag.Contains("display")) return false;
+
+            var tag1 = tag.Get("display");
+            if (tag1.StringValue != null) return true;
 
             return false;
         }
 
-        public static String getCustomName(this Item i)
+        public static string getCustomName(this Item i)
         {
-            if (i.ExtraData != null)
-            {
-                return i.GetType().Name;
-            }
-            else
-            {
-                var tag = i.ExtraData;
-                if (tag.Contains("display"))
-                {
-                    var tag1 = tag.Get("display");
-                    // if (tag1.Contains("Name") &&
-                    //     ((CompoundTag) tag1).get("Name") instanceof StringTag) {
-                    //     return ((CompoundTag) tag1).getString("Name");
-                    // }
-                }
+            if (i.ExtraData != null) return i.GetType().Name;
 
-                return "";
+            var tag = i.ExtraData;
+            if (tag.Contains("display"))
+            {
+                var tag1 = tag.Get("display");
+                // if (tag1.Contains("Name") &&
+                //     ((CompoundTag) tag1).get("Name") instanceof StringTag) {
+                //     return ((CompoundTag) tag1).getString("Name");
+                // }
             }
+
+            return "";
         }
 
         public static Item clearCustomName(this Item i)
@@ -292,10 +279,7 @@ namespace CyberCore.Utils
             {
                 var a = tag.Get<NbtCompound>("display");
                 a.Remove("Name");
-                if (a.Count == 0)
-                {
-                    tag.Remove("display");
-                }
+                if (a.Count == 0) tag.Remove("display");
 
                 i.ExtraData = tag;
             }
@@ -303,9 +287,9 @@ namespace CyberCore.Utils
             return i;
         }
 
-        public static Item setCustomName(this Item i, String name)
+        public static Item setCustomName(this Item i, string name)
         {
-            if (String.IsNullOrEmpty(name)) return i.clearCustomName();
+            if (string.IsNullOrEmpty(name)) return i.clearCustomName();
 
             var tag = i.ExtraData;
             if (tag.Contains("display") && tag.Get("display") is NbtCompound)
@@ -326,7 +310,7 @@ namespace CyberCore.Utils
         }
 
 
-        public static String getName(this Item i)
+        public static string getName(this Item i)
         {
             return i.hasCustomName() ? i.getCustomName() : i.GetType().Name;
         }
@@ -339,6 +323,51 @@ namespace CyberCore.Utils
         public static void showFormWindow(this OpenPlayer p, Form f)
         {
             p.SendForm(f);
+        }
+
+        public static void setItemInHand(this PlayerInventory pi, Item item)
+        {
+            var ci = pi.GetItemInHand();
+            var c = pi.GetItemSlot(ci);
+            if (c != -1) pi.Slots[c] = item;
+            pi.SendSetSlot(c);
+        }
+        public static int GetItemSlot(this PlayerInventory pi, Item item, bool checkNBT = true)
+        {
+            for (byte index = 0; (int) index < pi.Slots.Count; ++index)
+            {
+                var i = pi.Slots[index];
+
+                if (i.Id == item.Id && i.Metadata == item.Metadata)
+                {
+                    if (checkNBT)
+                    {
+                        if (i.ExtraData.NBTToString().equalsIgnoreCase(item.ExtraData.NBTToString())) return index;
+                        return -1;
+                    }
+
+                    return index;
+                }
+            }
+
+            return -1;
+        }
+
+        public static String NBTToString(this NbtCompound c)
+        {
+            String fnt = "";
+            var a = new NbtFile();
+            a.BigEndian = false;
+            a.UseVarInt = true;
+            a.RootTag = c;
+            // byte[] bytes = NBTCompressionSteamTool.NBTCompressedStreamTools.a(a);
+            var aa = (new MemoryStream());
+            a.SaveToStream(aa, NbtCompression.AutoDetect);
+            var aaa = new StreamReader(aa).ReadToEnd();
+
+            if (c.HasValue) fnt = aaa;
+            else CyberCoreMain.Log.Error("NBTTOSTRING C NO VALUIE!!");
+            return fnt;
         }
 
         public static ExtraPlayerData GetExtraPlayerData(this OpenPlayer p)
@@ -355,6 +384,7 @@ namespace CyberCore.Utils
         {
             return p.Effects.ContainsKey(name);
         }
+
         public static Effect getEffect(this CorePlayer p, EffectType name)
         {
             return p.Effects.ContainsKey(name) ? p.Effects[name] : null;
@@ -362,34 +392,36 @@ namespace CyberCore.Utils
 
         public static PlayerLocation Add(this PlayerLocation pl, PlayerLocation l)
         {
-            return new PlayerLocation(pl.X+l.X,pl.Y+l.Y,pl.Z+l.Z);
+            return new PlayerLocation(pl.X + l.X, pl.Y + l.Y, pl.Z + l.Z);
         }
+
         public static PlayerLocation Subtract(this PlayerLocation pl, PlayerLocation l)
         {
-            return new PlayerLocation(pl.X-l.X,pl.Y-l.Y,pl.Z-l.Z);
+            return new PlayerLocation(pl.X - l.X, pl.Y - l.Y, pl.Z - l.Z);
         }
+
         public static PlayerLocation Multiply(this PlayerLocation pl, PlayerLocation l)
         {
-            return new PlayerLocation(pl.X*l.X,pl.Y*l.Y,pl.Z*l.Z);
+            return new PlayerLocation(pl.X * l.X, pl.Y * l.Y, pl.Z * l.Z);
         }
+
         public static PlayerLocation Divide(this PlayerLocation pl, PlayerLocation l)
         {
-            return new PlayerLocation(pl.X/l.X,pl.Y/l.Y,pl.Z/l.Z);
+            return new PlayerLocation(pl.X / l.X, pl.Y / l.Y, pl.Z / l.Z);
         }
-        
-        
+
+
         [CanBeNull]
-        public static OpenPlayer getPlayer(this OpenPlayerManager p, String name)
+        public static OpenPlayer getPlayer(this OpenPlayerManager p, string name)
         {
-            foreach (OpenPlayer players in p.GetPlayers())
-            {
-                if (players.getName().equalsIgnoreCase(name)) return players;
-            }
+            foreach (var players in p.GetPlayers())
+                if (players.getName().equalsIgnoreCase(name))
+                    return players;
 
             return null;
         }
 
-        public static String getName(this Player p)
+        public static string getName(this Player p)
         {
             return p.Username;
         }

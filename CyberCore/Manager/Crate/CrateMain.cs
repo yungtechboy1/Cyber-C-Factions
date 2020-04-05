@@ -218,6 +218,10 @@ namespace CyberCore.Manager.Crate
             return i.getNamedTag().Contains( data.ItemNBTTag);
         }
 
+        public CrateObject isCrate(Block b)
+        {
+            return isCrate(b.Coordinates);
+        }
         public CrateObject isCrate(Vector3 b)
         {
             if (CrateChests.ContainsKey(b)) return CrateChests[b];

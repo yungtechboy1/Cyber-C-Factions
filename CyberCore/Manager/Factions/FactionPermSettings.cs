@@ -4,7 +4,7 @@ using static CyberCore.Manager.Factions.FactionRank;
 
 namespace CyberCore.Manager.Factions
 {
-    public class FactionPermSettingsData()
+    public class FactionPermSettingsData
     {
         public FactionRank AllowedToViewInbox { get; set; } = Officer;
         public FactionRank AllowedToAcceptAlly { get; set; } = General;

@@ -2,3 +2,8 @@ F:\Projects\Cyber-C-Factions\CyberCore\obj\Debug\netcoreapp3.1\CyberCore.csprojA
 F:\Projects\Cyber-C-Factions\CyberCore\obj\Debug\netcoreapp3.1\CyberCore.csproj.CoreCompileInputs.cache
 F:\Projects\Cyber-C-Factions\CyberCore\obj\Debug\netcoreapp3.1\CyberCore.AssemblyInfoInputs.cache
 F:\Projects\Cyber-C-Factions\CyberCore\obj\Debug\netcoreapp3.1\CyberCore.AssemblyInfo.cs
+F:\Projects\Cyber-C-Factions\CyberCore\bin\Debug\netcoreapp3.1\CyberCore.deps.json
+F:\Projects\Cyber-C-Factions\CyberCore\bin\Debug\netcoreapp3.1\CyberCore.dll
+F:\Projects\Cyber-C-Factions\CyberCore\bin\Debug\netcoreapp3.1\CyberCore.pdb
+F:\Projects\Cyber-C-Factions\CyberCore\obj\Debug\netcoreapp3.1\CyberCore.dll
+F:\Projects\Cyber-C-Factions\CyberCore\obj\Debug\netcoreapp3.1\CyberCore.pdb

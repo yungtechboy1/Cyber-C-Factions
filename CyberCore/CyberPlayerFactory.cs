@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using MiNET;
+using MiNET.Utils;
 using OpenAPI;
 using OpenAPI.Events;
 using OpenAPI.Events.Player;
@@ -15,7 +16,7 @@ namespace CyberCore
             api = plugin;
         }
         
-        public override CorePlayer CreatePlayer(MiNetServer server, IPEndPoint endPoint, PlayerInfo playerInfo)
+        public override Player CreatePlayer(MiNetServer server, IPEndPoint endPoint, PlayerInfo playerInfo)
         {
             var player = new CorePlayer(server, endPoint, api);
             player.ClientUuid = playerInfo.ClientUuid;

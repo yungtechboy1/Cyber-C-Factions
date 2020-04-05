@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using CyberCore.Manager.AuctionHouse;
 using CyberCore.Manager.ClassFactory;
+using CyberCore.Manager.Crate;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
@@ -52,6 +53,7 @@ namespace CyberCore
         public ClassFactory ClassFactory { get; set; }
         public RankFactory RF { get; set; }
         public UserSQL UserSQL { get; set; }
+        public CrateMain CrateMain { get; set; }
         
         public FloatingTextFactory FTM { get; set; }
 
@@ -161,22 +163,18 @@ namespace CyberCore
             FM = new FactionsMain(this);
             
             AF = new AuctionFactory(this);
+            api.EventDispatcher.RegisterEvents(new MasterListener());
 
             getServer().PlayerFactory.PlayerCreated += (sender, args) =>
             {
                 Player player = args.Player;
                 player.PlayerJoin += OnPlayerJoin;
-                player.PlayerJoin += MasterListener.joinEvent;
+                // player.PlayerJoin += MasterListener.joinEvent;
                 player.PlayerLeave += OnPlayerLeave;
                 player.Ticking += OnTicking;
             };
 
-            foreach (var l in getServer().LevelManager.Levels)
-            {
-                l.BlockBreak += MasterListener.
-            }
 
-            getServer().LevelManager.Levels
 
             // api.CommandManager.RegisterPermissionChecker(new FactionPermissionChecker(FactionManager));
             //

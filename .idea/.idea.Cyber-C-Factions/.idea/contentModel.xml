@@ -90,6 +90,12 @@
             </e>
             <e p="Form" t="Include">
               <e p="AdminCrateChooseCrateWindow.cs" t="Include" />
+              <e p="AdminCrateEditCrateItemDataWindow.cs" t="Include" />
+              <e p="AdminCrateGetCrateKey.cs" t="Include" />
+              <e p="AdminCrateKeyCreator.cs" t="Include" />
+              <e p="AdminCrateMainMenu.cs" t="Include" />
+              <e p="AdminCrateViewItemsWindow.cs" t="Include" />
+              <e p="CrateConfirmWindow.cs" t="Include" />
             </e>
             <e p="ItemChanceData.cs" t="Include" />
           </e>
