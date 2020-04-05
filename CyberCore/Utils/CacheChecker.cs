@@ -5,7 +5,7 @@ namespace CyberCore.Utils
     public class CacheChecker
     {
         private String Name;
-        private int LastUpdated = -1;
+        private long LastUpdated = -1;
         private int UpdateEverySecs = 60*15;//15 Mins
 
         public CacheChecker(String name) {
@@ -38,7 +38,7 @@ namespace CyberCore.Utils
             return Name;
         }
 
-        public int getLastUpdated() {
+        public long getLastUpdated() {
             return LastUpdated;
         }
 
@@ -46,7 +46,7 @@ namespace CyberCore.Utils
             return UpdateEverySecs;
         }
 
-        public int getTime(){
+        public long getTime(){
             return CyberUtils.getLongTime();
         }
 

@@ -42,6 +42,11 @@ namespace CyberCore.Utils.Cooldowns
             setTimeSecs(secs);
         }
 
+        public void Reset(int secs, int mins = 0, int hrs = 0)
+        {
+            setTimeSecs(secs, mins, hrs);
+        }
+
         public CoolDown(String name)
         {
 //        t = tick;
@@ -64,19 +69,14 @@ namespace CyberCore.Utils.Cooldowns
             Time = time;
         }
 
-        public CoolDown setTimeSecs(int hrs, int mins, int secs)
+        public CoolDown setTimeSecs(int secs, int mins = 0, int hrs = 0)
         {
-            return setTimeSecs(secs + (60 * mins) + (60 * 60 * hrs));
+            setTime(CyberUtils.getLongTime() + secs + (60 * mins) + (60 * 60 * hrs));
+            return this;
         }
-
-        public CoolDown setTimeSecs(int mins, int secs)
+        public CoolDown setTimeSecs(long secs, int mins = 0, int hrs = 0)
         {
-            return setTimeSecs(secs + (60 * mins));
-        }
-
-        public CoolDown setTimeSecs(long secs)
-        {
-            setTime(CyberUtils.getLongTime() + secs);
+            setTime(CyberUtils.getLongTime() + secs + (60 * mins) + (60 * 60 * hrs));
             return this;
         }
 

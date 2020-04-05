@@ -37,11 +37,7 @@ namespace CyberCore.Utils
 
             return de;
         }
-
-        public static String getName(this FactionRank s)
-        {
-            return FactionRankMethods.getName(s);
-        }
+        
 
         public static bool isEmpty(this PlayerInventory i, int k)
         {
@@ -237,26 +233,6 @@ namespace CyberCore.Utils
             return i;
         }
 
-        public static String getChatColor(this FactionRank s)
-        {
-            return FactionRankMethods.getChatColor(s);
-        }
-
-        public static int getFormPower(this FactionRank s)
-        {
-            return FactionRankMethods.getFormPower(s);
-        }
-
-        public static FactionRank getRankFromForm(this FactionRank s, int ss)
-        {
-            return FactionRankMethods.getRankFromForm(ss);
-        }
-
-        public static FactionRank getRankFromString(this FactionRank s, String ss)
-        {
-            return FactionRankMethods.getRankFromString(ss);
-        }
-
         public static bool equalsIgnoreCase(this String s, String ss)
         {
             return s.Equals(ss, StringComparison.CurrentCultureIgnoreCase);
@@ -375,10 +351,33 @@ namespace CyberCore.Utils
             return CyberUtils.getExtraPlayerData(p);
         }
 
+        public static bool hasEffect(this CorePlayer p, EffectType name)
+        {
+            return p.Effects.ContainsKey(name);
+        }
         public static Effect getEffect(this CorePlayer p, EffectType name)
         {
             return p.Effects.ContainsKey(name) ? p.Effects[name] : null;
         }
+
+        public static PlayerLocation Add(this PlayerLocation pl, PlayerLocation l)
+        {
+            return new PlayerLocation(pl.X+l.X,pl.Y+l.Y,pl.Z+l.Z);
+        }
+        public static PlayerLocation Subtract(this PlayerLocation pl, PlayerLocation l)
+        {
+            return new PlayerLocation(pl.X-l.X,pl.Y-l.Y,pl.Z-l.Z);
+        }
+        public static PlayerLocation Multiply(this PlayerLocation pl, PlayerLocation l)
+        {
+            return new PlayerLocation(pl.X*l.X,pl.Y*l.Y,pl.Z*l.Z);
+        }
+        public static PlayerLocation Divide(this PlayerLocation pl, PlayerLocation l)
+        {
+            return new PlayerLocation(pl.X/l.X,pl.Y/l.Y,pl.Z/l.Z);
+        }
+        
+        
         [CanBeNull]
         public static OpenPlayer getPlayer(this OpenPlayerManager p, String name)
         {

@@ -130,9 +130,9 @@ namespace CyberCore.Manager.Factions
             return (int) Id;
         }
 
-        public string getChatColor(FactionRank r)
+        public string getChatColor()
         {
-            switch ((int) r.Id)
+            switch ((int) Id)
             {
                 case 0:
                     return ChatColors.Gray;
@@ -158,12 +158,12 @@ namespace CyberCore.Manager.Factions
 
         public void SendFailReason(FactionRank target, Player p)
         {
-            p.SendMessage(ChatColors.Red + "Error! You must be a " + getName(target) + " to use this command!");
+            p.SendMessage(ChatColors.Red + "Error! You must be a " + target.getName() + " to use this command!");
         }
 
-        public String getName(FactionRank t)
+        public String getName()
         {
-            switch ((int) t.Id)
+            switch ((int) Id)
             {
                 case 0:
                     return "Recruit";
@@ -176,7 +176,7 @@ namespace CyberCore.Manager.Factions
                 case 4:
                     return "Leader";
                 default:
-                    return "Unknown-" + t.Id;
+                    return "Unknown-" + Id;
             }
         }
 

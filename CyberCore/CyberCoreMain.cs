@@ -51,6 +51,7 @@ namespace CyberCore
         public WarpManager WarpManager { get; set; }
         public ClassFactory ClassFactory { get; set; }
         public RankFactory RF { get; set; }
+        public UserSQL UserSQL { get; set; }
         
         public FloatingTextFactory FTM { get; set; }
 
@@ -208,9 +209,9 @@ namespace CyberCore
             Log.Info($"[TestPlugin] {(method.DeclaringType.FullName)}.{method.Name}: " + message);
         }
 
-        public OpenPlayer getPlayer(string name)
+        public CorePlayer getPlayer(string name)
         {
-            return getAPI().PlayerManager.getPlayer(name);
+            return (CorePlayer) getAPI().PlayerManager.getPlayer(name);
         }
 
             public double getTicksPerSecond()

@@ -37,7 +37,7 @@ namespace CyberCore.Utils
         //     InternalPlayerSettings = ips;
         // }
 
-        public int lastupdated = -1;
+        public long lastupdated = -1;
 
         public void update()
         {

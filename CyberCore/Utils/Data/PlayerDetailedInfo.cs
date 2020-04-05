@@ -41,7 +41,7 @@ namespace CyberCore.Utils.Data
 
     public class LoginData
     {
-        public int IntTime { get; set; }
+        public long Time { get; set; }
         public String IP { get; set; }
         public long ClientID { get; set; }
         public String ClientUUID { get; set; }
@@ -52,7 +52,7 @@ namespace CyberCore.Utils.Data
         }
         public LoginData(Player p)
         {
-            IntTime = CyberUtils.getLongTime();
+            Time = CyberUtils.getLongTime();
             IP = p.EndPoint.Address.ToString();
             ClientID = p.ClientId;
             ClientUUID = p.ClientUuid.ToString();

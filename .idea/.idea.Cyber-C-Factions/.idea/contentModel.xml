@@ -31,6 +31,7 @@
             <e p="ItemSlimeBall.cs" t="Include" />
             <e p="NetherStar.cs" t="Include" />
           </e>
+          <e p="Sound" t="Include" />
         </e>
         <e p="CyberCore.csproj" t="IncludeRecursive" />
         <e p="CyberCoreMain.cs" t="Include" />
@@ -179,6 +180,7 @@
             <e p="JsonDataManager.cs" t="Include" />
             <e p="PlayerDetailedInfo.cs" t="Include" />
             <e p="ServerSqlite.cs" t="Include" />
+            <e p="UserSQL.cs" t="Include" />
           </e>
           <e p="DefaultFontInfo.cs" t="Include" />
           <e p="ExtraPlayerData.cs" t="Include" />
