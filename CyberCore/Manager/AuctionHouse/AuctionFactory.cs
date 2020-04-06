@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 using CyberCore.Utils;
 using fNbt;
 using MiNET;
@@ -57,13 +59,15 @@ namespace CyberCore.Manager.AuctionHouse
             List<AuctionItemData> ils = new List<AuctionItemData>();
 
 
-            MySqlDataReader q = CCM.SQL.Query("select * from `AuctionHouse` where `purchased` != 1");
+            List<Dictionary<string, object>> q = CCM.SQL.executeSelect("select * from `AuctionHouse` where `purchased` != 1");
             if (q != null)
             {
-                while (q.Read())
+
+                foreach (var a in q)
                 {
-                    AuctionItemData aid = new AuctionItemData(q);
+                    AuctionItemData aid = new AuctionItemData(a);
                     ils.Add(aid);
+                    
                 }
             }
 
@@ -76,19 +80,18 @@ namespace CyberCore.Manager.AuctionHouse
         {
             List<AuctionItemData> ils = new List<AuctionItemData>();
 
-            MySqlDataReader r =
-                CCM.SQL.Query($"SELECT * FROM `AuctionHouse` WHERE `purchased` != true LIMIT {start},{stop}");
+            List<Dictionary<string, object>> r;
             ;
             if (seller != null)
-                r = CCM.SQL.Query(
+                r = CCM.SQL.executeSelect(
                     $"SELECT * FROM `AuctionHouse` WHERE `soldbyn` = '{seller}' AND `purchased` != true LIMIT {start},{stop}");
-
-            while (r.Read())
+            else r = CCM.SQL.executeSelect($"SELECT * FROM `AuctionHouse` WHERE `purchased` != true LIMIT {start},{stop}");
+            foreach (var a in r)
             {
-                AuctionItemData aid = new AuctionItemData(r);
+                AuctionItemData aid = new AuctionItemData(a);
                 ils.Add(aid);
+                
             }
-
             return ils;
         }
 

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Text;
 using CyberCore.Utils;
 using fNbt;
 using MiNET.Items;
 using MiNET.Utils;
-using MySql.Data.MySqlClient;
+
 
 namespace CyberCore.Manager.AuctionHouse
 {
@@ -25,15 +27,17 @@ namespace CyberCore.Manager.AuctionHouse
             Soldbyn = seller.DisplayName;
         }
 
-        public AuctionItemData(MySqlDataReader rs){
-            int item_id = rs.GetInt32("item-id");
-            int item_meta = rs.GetInt32("item-meta");
-            int item_count = rs.GetInt32("item-count");
-            byte[] namedtag = Encoding.ASCII.GetBytes(rs.GetString("namedtag"));
-            Cost = rs.GetInt32("cost");
-            String soldbyn = rs.GetString("soldbyn");
-            String soldby = rs.GetString("soldby");
-            int mid = rs.GetInt32("master_id");
+        public AuctionItemData(DbDataReader rs)
+        {
+            int item_id = rs.GetInt322("item-id");
+            // int item_id = rs.GetInt32("item-id");
+            int item_meta = rs.GetInt322("item-meta");
+            int item_count = rs.GetInt322("item-count");
+            byte[] namedtag = Encoding.ASCII.GetBytes(rs.GetString2("namedtag"));
+            Cost = rs.GetInt322("cost");
+            String soldbyn = rs.GetString2("soldbyn");
+            String soldby = rs.GetString2("soldby");
+            int mid = rs.GetInt322("master_id");
         
             item = ItemFactory.GetItem((short)item_id, (short)item_meta, item_count);
             var a = new NbtFile();

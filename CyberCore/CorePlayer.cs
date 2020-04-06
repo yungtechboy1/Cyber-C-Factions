@@ -26,7 +26,7 @@ using MiNET.Sounds;
 using MiNET.UI;
 using MiNET.Utils;
 using MiNET.Worlds;
-using MySqlX.XDevAPI;
+// using MySqlX.XDevAPI;
 using OpenAPI;
 using OpenAPI.Events.Entity;
 using OpenAPI.Events.Player;

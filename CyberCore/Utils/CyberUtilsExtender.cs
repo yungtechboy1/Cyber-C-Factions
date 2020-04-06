@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
 using CyberCore.Manager.Factions;
 using fNbt;
@@ -325,6 +326,30 @@ namespace CyberCore.Utils
             p.SendForm(f);
         }
 
+        public static string GetString(this DbDataReader r, String txt)
+        {
+            return r.GetString(r.GetOrdinal(txt));
+        }
+        public static string GetString2(this DbDataReader r, String txt)
+        {
+            return r.GetString(r.GetOrdinal(txt));
+        }
+        public static int GetInt32(this DbDataReader r, String txt)
+        {
+            return r.GetInt32(r.GetOrdinal(txt));
+        }
+        public static int GetInt322(this DbDataReader r, String txt)
+        {
+            return r.GetInt32(r.GetOrdinal(txt));
+        }
+        public static long GetInt64(this DbDataReader r, String txt)
+        {
+            return r.GetInt64(r.GetOrdinal(txt));
+        }
+        public static double GetDouble(this DbDataReader r, String txt)
+        {
+            return r.GetDouble(r.GetOrdinal(txt));
+        }
         public static void setItemInHand(this PlayerInventory pi, Item item)
         {
             var ci = pi.GetItemInHand();
@@ -424,6 +449,35 @@ namespace CyberCore.Utils
         public static string getName(this Player p)
         {
             return p.Username;
+        }
+
+        public static int GetInt32(this Dictionary<string, object> list, string player)
+        {
+            return (int) list[player];
+        }
+        public static String GetString(this Dictionary<string, object> list, string player)
+        {
+            return (String) list[player];
+        }
+        public static double getDouble(this List<Dictionary<string, object>> list, string player)
+        {
+            return (double) list[0][player];
+        }
+        public static int GetInt32(this List<Dictionary<string, object>> list, string player)
+        {
+            return (int) list[0][player];
+        }
+        public static bool Read(this List<Dictionary<string, object>> list)
+        {
+            return list.Count != 0;
+        }
+        public static string GetString(this List<Dictionary<string, object>> list, string player)
+        {
+            return (string) list[0][player];
+        }
+        public static long GetInt64(this List<Dictionary<string, object>> list, string player)
+        {
+            return (long) list[0][player];
         }
     }
 }

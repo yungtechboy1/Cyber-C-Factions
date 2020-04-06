@@ -6,13 +6,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MySql.Data" Version="8.0.19" />
+      <PackageReference Include="MySqlConnector" Version="0.63.1" />
       <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.63" />
+<!--        <PackageReference Include="System.Management" Version="4.0.0" />-->
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Custom\Block" />
       <Folder Include="Custom\Sound" />
     </ItemGroup>
+
 
 </Project>

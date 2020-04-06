@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using CyberCore.Utils;
 using MySql.Data.MySqlClient;
+
 
 namespace CyberCore.Manager.Factions.Data
 {
@@ -58,13 +60,14 @@ namespace CyberCore.Manager.Factions.Data
             SqlManager c = CyberCoreMain.GetInstance().SQL;
             try
             {
-                MySqlDataReader r = c.Query("SELECT * FROM `Ally`");
+                List<Dictionary<string, object>> r = c.executeSelect("SELECT * FROM `Ally`");
                 AllyList.Clear();
-                while (r.Read())
+                foreach (var aa in r)
                 {
-                    String k = r.GetString("key");
+                    String k = (string) aa["Key"];
                     AllyList.Add(k);
                 }
+                
 //        Main.FFactory.allyrequest.put(getName(), fac.getName());
             }
             catch (Exception e)
@@ -122,7 +125,7 @@ namespace CyberCore.Manager.Factions.Data
                 //0 = Friend Requestw
                 //2 = ?????
                 //CyberCoreMain.getInstance().getIntTime
-                c.Query($"INSERT INTO `Ally` VALUES (null,'{k}',{time})");
+                c.Insert($"INSERT INTO `Ally` VALUES (null,'{k}',{time})");
 //            s.executeQuery(String.format("INSERT INTO `plots` VALUES ('%s','%s',2)", k, faction));
                 return true;
 //        Main.FFactory.allyrequest.put(getName(), fac.getName());
@@ -177,7 +180,7 @@ namespace CyberCore.Manager.Factions.Data
             SqlManager c = CyberCoreMain.GetInstance().SQL;
             try
             {
-                c.Query($"INSERT INTO `Enemy` VALUES (null,'{k}',{time})");
+                c.Insert($"INSERT INTO `Enemy` VALUES (null,'{k}',{time})");
                 return true;
             }
             catch (Exception e)

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Numerics;
+using System.Threading.Tasks;
 using CyberCore.Manager.Factions.Missions;
 using CyberCore.Manager.Factions.Windows;
 using CyberCore.Utils;
@@ -199,12 +201,13 @@ namespace CyberCore.Manager.Factions
                 Console.WriteLine("Error 1111111111111111111111111111111111111111222222222222222222222222222");
             try
             {
-                MySqlDataReader q = Main.CCM.SQL.Query($"SELECT * FROM Master WHERE `faction` LIKE '{getName()}'");
+                List<Dictionary<string, object>> q =
+                    Main.CCM.SQL.executeSelect($"SELECT * FROM Master WHERE `faction` LIKE '{getName()}'");
                 PlayerRanks.Clear();
-                while (q.Read())
+                foreach (var a in q)
                 {
-                    String pn = q.GetString("player");
-                    FactionRank fr = getRankFromString(q.GetString("rank"));
+                    String pn = (string) a["player"];
+                    FactionRank fr = getRankFromString((string) a["rank"]);
                     PlayerRanks.Add(pn, fr);
                 }
 
@@ -229,10 +232,11 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                MySqlDataReader q = Main.CCM.SQL.Query($"select * from `PermSettings` where Name = '{getName()}'");
-                if (q.Read())
+                List<Dictionary<string, object>> q =
+                    Main.CCM.SQL.executeSelect($"select * from `PermSettings` where Name = '{getName()}'");
+                if (q.Count != 0)
                 {
-                    return q.GetInt32(key);
+                    return (int) q[0][key];
                 }
 
                 return Int32.MinValue;
@@ -247,10 +251,11 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                MySqlDataReader q = Main.CCM.SQL.Query($"select * from `PermSettings` where Name = '{getName()}'");
-                if (q.Read())
+                List<Dictionary<string, object>> q =
+                    Main.CCM.SQL.executeSelect($"select * from `PermSettings` where Name = '{getName()}'");
+                if (q.Count != 0)
                 {
-                    return q.GetString(key);
+                    return (string) q[0][key];
                 }
 
                 return null;
@@ -280,30 +285,33 @@ namespace CyberCore.Manager.Factions
                 Dictionary<String, Object> a = new Dictionary<String, Object>();
                 try
                 {
-                    MySqlDataReader q = Main.CCM.SQL.Query($"select * from `Settings` where `Name` = '{getName()}'");
+                    List<Dictionary<string, object>> q =
+                        Main.CCM.SQL.executeSelect($"select * from `Settings` where `Name` = '{getName()}'");
                     if (q == null)
                     {
                         SC_Map = null;
                         return null;
                     }
 
-                    if (q.Read())
+
+                    if (q.Count != 0)
                     {
+                        //TODO combine
                         foreach (var k in NeededfromsettingsString)
                         {
-                            Object v = q.GetString(k);
+                            Object v = q[0][k];
                             if (v != null) a.Add(k, v);
                         }
 
                         foreach (var k in NeededfromsettingsInt)
                         {
-                            Object v = q.GetInt32(k);
+                            Object v = q[0][k];
                             if (v != null) a.Add(k, v);
                         }
 
                         foreach (var k in NeededfromsettingsDouble)
                         {
-                            Object v = q.GetDouble(k);
+                            Object v = q[0][k];
                             if (v != null) a.Add(k, v);
                         }
 
@@ -351,7 +359,7 @@ namespace CyberCore.Manager.Factions
             try
             {
                 //Update PermSettings
-                CyberCoreMain.GetInstance().SQL.Query(
+                CyberCoreMain.GetInstance().SQL.Insert(
                     $"INSERT INTO `Settings` VALUES('{getName()}','{getSettings().getDisplayName()}'," +
                     getSettings().getMaxPlayers() + "," +
                     getSettings().getPowerBonus() +
@@ -977,16 +985,16 @@ namespace CyberCore.Manager.Factions
                 HomeCC.updateLastUpdated();
                 Dictionary<String, HomeData> f = new Dictionary<String, HomeData>();
 
-                var a = Main.CCM.SQL.Query($"SELECT * FROM `Homes` WHERE `faction` LIKE '{getName()}'");
-                while (a.Read())
+                var a = Main.CCM.SQL.executeSelect($"SELECT * FROM `Homes` WHERE `faction` LIKE '{getName()}'");
+                foreach (var aa in a)
                 {
-                    int hid = a.GetInt32("homeid");
-                    String name = a.GetString("name");
-                    String lvln = a.GetString("level");
-                    String faction = a.GetString("faction");
-                    int xx = a.GetInt32("x");
-                    int yy = a.GetInt32("y");
-                    int zz = a.GetInt32("z");
+                    int hid = (int) aa["homeid"];
+                    String name = (string) aa["name"];
+                    String lvln = (string) aa["level"];
+                    String faction = (string) aa["faction"];
+                    int xx = (int) aa["x"];
+                    int yy = (int) aa["y"];
+                    int zz = (int) aa["z"];
                     HomeData h = HomeData.phrase(new Vector3(xx, yy, zz), lvln, name, faction);
                     h.HomeID = hid;
                     if (h.isValid())
@@ -1353,12 +1361,14 @@ namespace CyberCore.Manager.Factions
 
         public Invitation HasInvite(String name)
         {
-            var q = Main.CCM.SQL.Query(
+            var q = Main.CCM.SQL.executeSelect(
                 $"select * from `Requests` where `faction` LIKE '{getName()}' AND `player` LIKE '{name}' AND `TYPE` = {RequestType.Faction_Invite};");
-            while (q.Read())
+
+            foreach (var a in q)
             {
-                return new Invitation(getName(), name, q.GetString("player"), (long) q.GetUInt64("expires"),
-                    getRankFromString(q.GetString("data")));
+                return new Invitation(getName(), name, q.GetString("player"),
+                    (long) q.GetInt64("expires"),
+                    getRankFromString(q.GetString("data")));  
             }
 
             return null;
@@ -1519,7 +1529,7 @@ namespace CyberCore.Manager.Factions
 //        PlayerRanks
             if (PlayerRanks.ContainsKey(p)) return PlayerRanks[p];
 
-            var q = Main.CCM.SQL.Query($"SELECT  * FROM Master WHERE player LIKE '{p}'");
+            var q = Main.CCM.SQL.executeSelect($"SELECT  * FROM Master WHERE player LIKE '{p}'");
             if (q.Read())
             {
                 FactionRank fr = getRankFromString(q.GetString("rank"));
@@ -1645,12 +1655,12 @@ namespace CyberCore.Manager.Factions
 
         public List<AllyRequest> getAllyRequests()
         {
-            var q = Main.CCM.SQL.Query(
+            var q = Main.CCM.SQL.executeSelect(
                 $"SELECT * FROM Requestes WHERE type LIKE '{RequestType.Ally.ToString()}' AND target = '{getName()}'");
 
             List<int> dellist = new List<int>();
             List<AllyRequest> list = new List<AllyRequest>();
-            if (q.Read())
+            if (q.Count != 0)
             {
                 String fn = q.GetString("faction");
                 Faction f = FactionsMain.GetInstance().FFactory.getFaction(fn);
@@ -1901,15 +1911,17 @@ namespace CyberCore.Manager.Factions
             {
                 return owner;
             }
+
             public String getOwnerUUID()
             {
                 return owneruuid;
             }
+
             public String getFactionName()
             {
                 return faction;
             }
-            
+
             public static HomeData phrase(Vector3 pos, string lvln, String name, string fac = null, Player p = null)
             {
                 if (fac != null)

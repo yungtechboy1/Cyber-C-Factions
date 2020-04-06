@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CyberCore.Utils;
 using MiNET.Utils;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto.Digests;
@@ -157,9 +158,9 @@ namespace CyberCore.Manager.Factions
             Dictionary<String, Object> a = new Dictionary<String, Object>();
             try
             {
-                var r = F.Main.CCM.SQL.Query($"select * from `Settings` where Name = '{getFaction()}'");
+                var r = F.Main.CCM.SQL.executeSelect($"select * from `Settings` where Name = '{getFaction()}'");
                 if (r == null) return null;
-                if (r.Read())
+                if (r.Count == 0)
                 {
                     foreach (var s in getF().NeededfromsettingsString)
                     {
@@ -173,7 +174,7 @@ namespace CyberCore.Manager.Factions
 
                     foreach (var s in getF().NeededfromsettingsDouble)
                     {
-                        a.Add(s, r.GetDouble(s));
+                        a.Add(s, r.getDouble(s));
                     }
 
                     return a;

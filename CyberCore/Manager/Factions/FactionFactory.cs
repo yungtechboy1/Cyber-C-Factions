@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using CyberCore.Manager.Factions.Data;
 using CyberCore.Utils;
 using log4net;
@@ -402,7 +405,7 @@ namespace CyberCore.Manager.Factions
         }
     }*/
 
-        public MySqlDataReader ExecuteQuerySQL(String s)
+        public List<Dictionary<string, object>> ExecuteQuerySQL(String s)
         {
             try
             {
@@ -413,7 +416,7 @@ namespace CyberCore.Manager.Factions
                     return null;
                 }
 
-                MySqlDataReader r = c.Query(s);
+                List<Dictionary<string, object>> r = c.executeSelect(s);
                 //this.getServer().getLogger().info( s );
 //            stmt.close();
                 return r;
@@ -425,14 +428,76 @@ namespace CyberCore.Manager.Factions
             }
         }
 
+        public List<Dictionary<string, object>> executeSelect(String query)
+        {
+            return executeSelecta(query).Result;
+        }
+        public async Task<List<Dictionary<string, object>>> executeSelecta(String query)
+        {
+            List<Dictionary<String, Object>> data = new List<Dictionary<String, Object>>();
+            List<String> cols = new List<string>();
+            DataTable schema = null;
+
+
+            Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1" + Main.CCM.SQL.ConnectionString);
+            using (var con = new MySqlConnection(Main.CCM.SQL.ConnectionString))
+            {
+                await con.OpenAsync();
+                Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.1");
+                using (var schemaCommand = new MySqlCommand(query, con))
+                {
+                    Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.2");
+                    using (var reader = await schemaCommand.ExecuteReaderAsync(CommandBehavior.SchemaOnly))
+                    {
+                        Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.3");
+                        schema = reader.GetSchemaTable();
+                        Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.4");
+                    }
+                }
+
+                Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 2");
+
+                foreach (DataRow col in schema.Rows)
+                {
+                    cols.Add(col.Field<String>("ColumnName"));
+                }
+
+
+                Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 3");
+
+                using (var schemaCommand = new MySqlCommand(query, con))
+                {
+                    using (var reader = await schemaCommand.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            // int i = 0;
+                            Dictionary<String, Object> aa = new Dictionary<string, object>();
+                            foreach (var co in cols)
+                            {
+                                aa.Add(co, reader[co]);
+                                // i++;
+                            }
+                            
+                            data.Add(aa);
+                        }
+                    }
+                }
+            }
+
+            Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 4");
+            return data;
+        }
+
+
         public bool factionExistsInDB(String name)
         {
             try
             {
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL($"select count(*) from `Settings` where `Name` LIKE '{name}'");
                 if (r == null) return false;
-                if (r.Read())
+                if (r.Count != 0)
                     // if (r.GetInt32(1) > 0)
                     return true;
                 return false;
@@ -447,10 +512,10 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL($"select * from `Settings` where `Name` = '{faction}'");
                 if (r == null) return null;
-                if (r.Read()) return r.GetString(key);
+                if (r.Count != 0) return (string) r[0][key];
                 return null;
             }
             catch (Exception e)
@@ -463,10 +528,10 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL($"select * from `Settings` where `Name` = '{faction}'");
                 if (r == null) return null;
-                if (r.Read()) return r.GetInt32(key);
+                if (r.Count != 0) return (int?) r[0][key];
                 return null;
             }
             catch (Exception e)
@@ -479,10 +544,10 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL($"select * from `Settings` where `Name` = '{faction}'");
                 if (r == null) return null;
-                if (r.Read()) return r.GetDouble(key);
+                if (r.Count != 0) return (double?) r[0][key];
                 return null;
             }
             catch (Exception e)
@@ -495,12 +560,12 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL($"select * from `settings` where faction = '{faction}'");
                 if (r == null) return null;
-                if (r.Read())
+                if (r.Count != 0)
                 {
-                    return r.GetString("DisplayName");
+                    return (string) r[0]["DisplayName"];
                 }
 
                 return null;
@@ -516,13 +581,13 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL(
                         $"select * from `Master` where `faction` = '{faction}' and `rank` LIKE 'leader'");
                 if (r == null) return null;
-                if (r.Read())
+                if (r.Count != 0)
                 {
-                    return r.GetString("player");
+                    return (string) CyberUtilsExtender.GetString(r, "player");
                 }
 
                 return null;
@@ -539,14 +604,14 @@ namespace CyberCore.Manager.Factions
             try
             {
                 List<String> result = new List<String>();
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL(
                         $"select * from `Master` where `faction` LIKE '{faction}' AND `rank` LIKE 'recruit'");
                 if (r == null) return null;
-                while (r.Read())
+                while (r.Count != 0)
                 {
-                    result.Add(r.GetString("player").ToLower());
-                    FacList.Add(r.GetString("player").ToLower(), faction);
+                    result.Add(CyberUtilsExtender.GetString(r, "player").ToLower());
+                    FacList.Add(CyberUtilsExtender.GetString(r, "player").ToLower(), faction);
                 }
 
                 return result;
@@ -563,14 +628,14 @@ namespace CyberCore.Manager.Factions
             try
             {
                 List<String> result = new List<String>();
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL(
                         $"select * from `Master` where `faction` LIKE '{faction}' AND `rank` LIKE 'Member'");
                 if (r == null) return null;
-                while (r.Read())
+                while (r.Count != 0)
                 {
-                    result.Add(r.GetString("player").ToLower());
-                    FacList.Add(r.GetString("player").ToLower(), faction);
+                    result.Add(CyberUtilsExtender.GetString(r, "player").ToLower());
+                    FacList.Add(CyberUtilsExtender.GetString(r, "player").ToLower(), faction);
                 }
 
                 return result;
@@ -587,14 +652,14 @@ namespace CyberCore.Manager.Factions
             try
             {
                 List<String> result = new List<String>();
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL(
                         $"select * from `Master` where `faction` LIKE '{faction}' AND `rank` LIKE 'Officer'");
                 if (r == null) return null;
-                while (r.Read())
+                while (r.Count != 0)
                 {
-                    result.Add(r.GetString("player").ToLower());
-                    FacList.Add(r.GetString("player").ToLower(), faction);
+                    result.Add(CyberUtilsExtender.GetString(r, "player").ToLower());
+                    FacList.Add(CyberUtilsExtender.GetString(r, "player").ToLower(), faction);
                 }
 
                 return result;
@@ -611,13 +676,13 @@ namespace CyberCore.Manager.Factions
             try
             {
                 List<String> result = new List<String>();
-                MySqlDataReader r = this.ExecuteQuerySQL(
+                List<Dictionary<string, object>> r = this.ExecuteQuerySQL(
                     "select * from `Master` where `faction` LIKE '%s' AND `rank` LIKE '%s'");
                 if (r == null) return null;
-                while (r.Read())
+                while (r.Count != 0)
                 {
-                    result.Add(r.GetString("player").ToLower());
-                    FacList.Add(r.GetString("player").ToLower(), faction);
+                    result.Add(CyberUtilsExtender.GetString(r, "player").ToLower());
+                    FacList.Add(CyberUtilsExtender.GetString(r, "player").ToLower(), faction);
                 }
 
                 return result;
@@ -632,7 +697,7 @@ namespace CyberCore.Manager.Factions
 //    public List<String> GetPlots(String faction) {
 //        try {
 //            List<String> results = new List<>();
-//            MySqlDataReader r = this.ExecuteQuerySQL(String.format("select * from `plots` where `faction` LIKE '%s'", faction));
+//            List<Dictionary<string, object>> r = this.ExecuteQuerySQL(String.format("select * from `plots` where `faction` LIKE '%s'", faction));
 //            if (r == null) return null;
 //            while (r.next()) {
 //                results.add(r.getInt("x") + "|" + r.getInt("z"));
@@ -641,33 +706,34 @@ namespace CyberCore.Manager.Factions
 //            return results;
 //        } catch (Exception e) {
 //            
-        // CyberCoreMain.Log.Error(e);
-        // return null;
+// CyberCoreMain.Log.Error(e);
+// return null;
 //        }
 //    }
 
         /**
-     * @param faction
-     * @return
-     * 
-     */
+* @param faction
+* @return
+* 
+*/
         public Dictionary<String, object> GetWars(String faction)
         {
             try
             {
                 Dictionary<string, object> results = new Dictionary<string, object>();
 
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL($"select * from `war` where `attackingfaction` LIKE '{faction}'");
                 if (r == null) return null;
-                while (r.Read())
+                while (r.Count != 0)
                 {
-                    War.Add(r.GetString("attackingfaction"), r.GetString("defendingfaction"));
-                    String df = r.GetString("defendingfaction");
-                    results.Add("attackingfaction", r.GetString("attackingfaction"));
-                    results.Add("defendingfaction", r.GetString("defendingfaction"));
-                    results.Add("start", r.GetInt32("start"));
-                    results.Add("stop", r.GetInt32("stop"));
+                    War.Add(CyberUtilsExtender.GetString(r, "attackingfaction"),
+                        CyberUtilsExtender.GetString(r, "defendingfaction"));
+                    String df = CyberUtilsExtender.GetString(r, "defendingfaction");
+                    results.Add("attackingfaction", CyberUtilsExtender.GetString(r, "attackingfaction"));
+                    results.Add("defendingfaction", CyberUtilsExtender.GetString(r, "defendingfaction"));
+                    results.Add("start", CyberUtilsExtender.GetInt32(r, "start"));
+                    results.Add("stop", CyberUtilsExtender.GetInt32(r, "stop"));
                 }
 
                 return results;
@@ -682,33 +748,39 @@ namespace CyberCore.Manager.Factions
         public List<String> GetAllFactionsNames()
         {
             CyberCoreMain.Log.Info("GETTINGALL FACS");
+
             List<String> results = new List<String>();
-            try
+            // try
+            //
+            // {
+            Log.Info("PASSSSSSSSS 1");
+            var r = executeSelect("select * from `Settings`");
+            // if (r.IsClosed)
+            // {
+            //     Log.Error("WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+            //     Console.WriteLine("WTF THIS IS NULL TOOOOOOO E33746!");
+            //     return null;
+            // }
+            Log.Info("PASSSSSSSSS 2");
+
+            foreach (var a in r)
             {
-                MySqlDataReader r = this.ExecuteQuerySQL("select * from `Settings`");
-                if (r == null)
-                {
-                    Console.WriteLine("WTF THIS IS NULL TOOOOOOO E33746!");
-                    return null;
-                }
+                String ff = (string) a["Name"];
+                CyberCoreMain.Log.Info("FOUNDDDDDDD FACCCCCCCCCCCCCCC" + ff);
+                if (!results.Contains(ff)) results.Add(ff);
+            }
 
-                while (r.Read())
-                {
-                    String ff = r.GetString("Name");
-                    CyberCoreMain.Log.Info("FOUNDDDDDDD FACCCCCCCCCCCCCCC" + ff);
-                    if (!results.Contains(ff)) results.Add(ff);
-                }
-
+            Log.Info("PASSSSSSSSS 3");
 //            r.getStatement().close();
-                return results;
-            }
-            catch (Exception e)
-            {
-                CyberCoreMain.Log.Info("EEE", e);
-                CyberCoreMain.Log.Error(e);
-                return null;
-                return results;
-            }
+            return results;
+            // }
+            // catch (Exception e)
+            // {
+            //     CyberCoreMain.Log.Info("EEE", e);
+            //     CyberCoreMain.Log.Error(e);
+            //     return null;
+            //     return results;
+            // }
         }
 
         public List<String> GetAllies(String faction)
@@ -716,15 +788,17 @@ namespace CyberCore.Manager.Factions
             try
             {
                 List<String> results = new List<String>();
-                MySqlDataReader r = this.ExecuteQuerySQL(
+                List<Dictionary<string, object>> r = this.ExecuteQuerySQL(
                     $"select * from `relationships` where `factiona` LIKE '{faction}' OR `factionb` LIKE '{faction}'");
                 if (r == null) return null;
-                while (r.Read())
+                while (r.Count != 0)
                 {
-                    if (r.GetString("factiona").Equals(faction, StringComparison.CurrentCultureIgnoreCase))
-                        results.Add(r.GetString("factionb"));
-                    if (r.GetString("factionb").Equals(faction, StringComparison.CurrentCultureIgnoreCase))
-                        results.Add(r.GetString("factiona"));
+                    if (CyberUtilsExtender.GetString(r, "factiona")
+                        .Equals(faction, StringComparison.CurrentCultureIgnoreCase))
+                        results.Add(CyberUtilsExtender.GetString(r, "factionb"));
+                    if (CyberUtilsExtender.GetString(r, "factionb")
+                        .Equals(faction, StringComparison.CurrentCultureIgnoreCase))
+                        results.Add(CyberUtilsExtender.GetString(r, "factiona"));
                 }
 
                 return results;
@@ -741,15 +815,17 @@ namespace CyberCore.Manager.Factions
             try
             {
                 List<String> results = new List<String>();
-                MySqlDataReader r = this.ExecuteQuerySQL(
+                List<Dictionary<string, object>> r = this.ExecuteQuerySQL(
                     $"select * from `enemies` where `factiona` LIKE '{faction}' OR `factionb` LIKE '{faction}'");
                 if (r == null) return null;
-                while (r.Read())
+                while (r.Count != 0)
                 {
-                    if (r.GetString("factiona").Equals(faction, StringComparison.CurrentCultureIgnoreCase))
-                        results.Add(r.GetString("factionb"));
-                    if (r.GetString("factionb").Equals(faction, StringComparison.CurrentCultureIgnoreCase))
-                        results.Add(r.GetString("factiona"));
+                    if (CyberUtilsExtender.GetString(r, "factiona")
+                        .Equals(faction, StringComparison.CurrentCultureIgnoreCase))
+                        results.Add(CyberUtilsExtender.GetString(r, "factionb"));
+                    if (CyberUtilsExtender.GetString(r, "factionb")
+                        .Equals(faction, StringComparison.CurrentCultureIgnoreCase))
+                        results.Add(CyberUtilsExtender.GetString(r, "factiona"));
                 }
 
                 return results;
@@ -765,10 +841,12 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL($"select * from `home` where `faction` LIKE '{faction}'");
                 if (r == null) return null;
-                if (r.Read()) return new Vector3(r.GetInt32("x"), r.GetInt32("y"), r.GetInt32("z"));
+                if (r.Count != 0)
+                    return new Vector3(CyberUtilsExtender.GetInt32(r, "x"), CyberUtilsExtender.GetInt32(r, "y"),
+                        CyberUtilsExtender.GetInt32(r, "z"));
             }
             catch (Exception e)
             {
@@ -784,16 +862,18 @@ namespace CyberCore.Manager.Factions
             try
             {
                 Dictionary<String, int> result = new Dictionary<String, int>();
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL($"select * from `confirm` where `faction` LIKE '{faction}'");
                 if (r == null) return null;
-                while (r.Read())
+                while (r.Count != 0)
                 {
                     FactionInviteData fid =
-                        new FactionInviteData(r.GetString("player"), faction, r.GetInt32("timestamp"));
-                    result.Add(r.GetString("player").ToLower(), r.GetInt32("timestamp"));
+                        new FactionInviteData(CyberUtilsExtender.GetString(r, "player"), faction,
+                            CyberUtilsExtender.GetInt32(r, "timestamp"));
+                    result.Add(CyberUtilsExtender.GetString(r, "player").ToLower(),
+                        CyberUtilsExtender.GetInt32(r, "timestamp"));
                     addFactionInvite(fid);
-//                InvList.put(r.GetString("player").ToLower(), fid);
+//                InvList.put(r.getData("player").ToLower(), fid);
                 }
 
                 return result;
@@ -807,22 +887,22 @@ namespace CyberCore.Manager.Factions
 
         public List<int> GetCompletedMissions(String faction)
         {
-            // List<int> a = new List<int>();
-            // String cmid = (String) GetFromSettingsString("cmid", faction);
-            // if (cmid == null || cmid.equalsIgnoreCase("")) return a;
-            // if (cmid.contains(","))
-            // {
-            //     for (String b :
-            //     cmid.split(",")) {
-            //         a.add(int.parseInt(b));
-            //     }
-            // }
-            // else
-            // {
-            //     a.add(int.parseInt(cmid));
-            // }
-            //
-            // return a;
+// List<int> a = new List<int>();
+// String cmid = (String) GetFromSettingsString("cmid", faction);
+// if (cmid == null || cmid.equalsIgnoreCase("")) return a;
+// if (cmid.contains(","))
+// {
+//     for (String b :
+//     cmid.split(",")) {
+//         a.add(int.parseInt(b));
+//     }
+// }
+// else
+// {
+//     a.add(int.parseInt(cmid));
+// }
+//
+// return a;
             return null;
         }
 
@@ -834,6 +914,7 @@ namespace CyberCore.Manager.Factions
         public FactionErrorString? CheckFactionName(String name)
         {
             Regex regex = new Regex(@"^[a-zA-Z0-9]*");
+
             Match match = regex.Match(name);
             if (!match.Success)
             {
@@ -882,7 +963,6 @@ namespace CyberCore.Manager.Factions
                 return null;
             }
 
-
             Faction fac = new Faction(Main, name, p);
             Console.WriteLine(fac + " <<<<<< FFFFFFFFFFFFFFFF");
             LocalFactionCache.Add(name.ToLower(), fac);
@@ -892,7 +972,8 @@ namespace CyberCore.Manager.Factions
             fac.getSettings().setDescription(desc, true);
             fac.getSettings().setPrivacy(privacy ? 1 : 0, true);
             p.SendMessage(FactionErrorString.Success_FactionCreated.getMessage());
-            // p.Faction = fac.getName();
+
+// p.Faction = fac.getName();
             RegitsterToRich(fac);
 //@Todo
             //        fac.save();
@@ -913,12 +994,12 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL($"select * from `Setting` where `Name`= '{name}%'");
                 if (r == null) return null;
-                if (r.Read())
+                if (r.Count != 0)
                 {
-                    return r.GetString("Name");
+                    return CyberUtilsExtender.GetString(r, "Name");
                 }
                 else
                 {
@@ -947,12 +1028,12 @@ namespace CyberCore.Manager.Factions
             try
             {
                 Console.WriteLine("select * from `Master` where `player` LIKE '{faction}'");
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL($"select * from `Master` where `player` LIKE '{faction}'");
                 if (r == null) return null;
-                while (r.Read())
+                while (r.Count != 0)
                 {
-                    return r.GetString("faction").ToLower();
+                    return CyberUtilsExtender.GetString(r, "faction").ToLower();
                 }
 
                 return null;
@@ -1020,13 +1101,14 @@ namespace CyberCore.Manager.Factions
         {
             List<Faction> found = new List<Faction>();
             try
+
             {
-                MySqlDataReader r = this.ExecuteQuerySQL("select * from `Settings` where `privacy`= '1'");
+                List<Dictionary<string, object>> r = this.ExecuteQuerySQL("select * from `Settings` where `privacy`= '1'");
                 if (r == null) return null;
-                while (r.Read())
+                while (r.Count != 0)
                 {
-//                return r.GetString("faction");
-                    Faction f = Main.FFactory.getFaction(r.GetString("faction"));
+//                return r.getData("faction");
+                    Faction f = Main.FFactory.getFaction(CyberUtilsExtender.GetString(r, "faction"));
                     if (f != null) found.Add(f);
                 }
             }
@@ -1042,14 +1124,15 @@ namespace CyberCore.Manager.Factions
         {
             List<Faction> found = new List<Faction>();
             try
+
             {
-                MySqlDataReader r =
+                List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL($"select * from `Settings` where `privacy`= '1' and `faction` LIKE '{name}'");
                 if (r == null) return null;
-                while (r.Read())
+                while (r.Count != 0)
                 {
-//                return r.GetString("faction");
-                    Faction f = Main.FFactory.getFaction(r.GetString("faction"));
+//                return r.getData("faction");
+                    Faction f = Main.FFactory.getFaction(CyberUtilsExtender.GetString(r, "faction"));
                     if (f != null) found.Add(f);
                 }
             }
@@ -1062,22 +1145,22 @@ namespace CyberCore.Manager.Factions
         }
 
         /**
-     * Returns if Faction if chunk is claimed and Null if not claimed
-     * @param x
-     * @param z
-     * @return Null | Faction
-     */
+* Returns if Faction if chunk is claimed and Null if not claimed
+* @param x
+* @param z
+* @return Null | Faction
+*/
         public Faction checkPlot(int x, int z)
         {
             try
             {
                 String pid = x + "|" + z;
-                MySqlDataReader r = this.ExecuteQuerySQL($"select * from plots where `plotid`= '{pid}'");
+                List<Dictionary<string, object>> r = this.ExecuteQuerySQL($"select * from plots where `plotid`= '{pid}'");
                 if (r == null) return null;
-                if (r.Read())
+                if (r.Count != 0)
                 {
-//                return r.GetString("faction");
-                    Faction f = Main.FFactory.getFaction(r.GetString("faction"));
+//                return r.getData("faction");
+                    Faction f = Main.FFactory.getFaction(CyberUtilsExtender.GetString(r, "faction"));
                     if (f == null) return null;
                     return f;
                 }
@@ -1104,9 +1187,9 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                MySqlDataReader r = this.ExecuteQuerySQL($"select * from Master where `player`= '{p}'");
+                List<Dictionary<string, object>> r = this.ExecuteQuerySQL($"select * from Master where `player`= '{p}'");
                 if (r == null) return false;
-                if (r.Read())
+                if (r.Count != 0)
                 {
                     return true;
                 }
