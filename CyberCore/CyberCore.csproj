@@ -7,6 +7,7 @@
     <ItemGroup>
       <PackageReference Include="MySql.Data" Version="8.0.19" />
       <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.63" />
+      <PackageReference Include="System.Security.Permissions" Version="5.0.0-preview.2.20160.6" />
     </ItemGroup>
 
     <ItemGroup>
