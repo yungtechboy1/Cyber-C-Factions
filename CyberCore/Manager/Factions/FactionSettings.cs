@@ -160,7 +160,7 @@ namespace CyberCore.Manager.Factions
             {
                 var r = F.Main.CCM.SQL.executeSelect($"select * from `Settings` where Name = '{getFaction()}'");
                 if (r == null) return null;
-                if (r.Count == 0)
+                if (r.Count != 0)
                 {
                     foreach (var s in getF().NeededfromsettingsString)
                     {
@@ -193,6 +193,10 @@ namespace CyberCore.Manager.Factions
         public void download()
         {
             Dictionary<String, Object> a = GetAllSettings();
+            foreach (var aa in a)
+            {
+                Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>"+aa.Key+"||"+aa.Value+"<<<<<<<<<<<<<<<<<<<<<<<");
+            }
             if (a == null) return;
             setDisplayName((String) a["DisplayName"]);
             setMaxPlayers((int) a["MaxPlayers"]);
@@ -514,10 +518,10 @@ namespace CyberCore.Manager.Factions
             setPermSettings(permSettings, false);
         }
 
-        public void setPermSettings(String a)
-        {
-            setPermSettings(JsonConvert.DeserializeObject<FactionPermSettingsData>(a), false);
-        }
+        // public void setPermSettings(String a)
+        // {
+        //     setPermSettings(JsonConvert.DeserializeObject<FactionPermSettingsData>(a), false);
+        // }
 
         public void setPermSettings(FactionPermSettings permSettings, bool update)
         {
@@ -525,9 +529,14 @@ namespace CyberCore.Manager.Factions
             if (update) UpdateSettingsValue("Perm", JsonConvert.SerializeObject(PermSettings.export()));
         }
 
-        public void setPermSettings(String a, bool update)
+        public void setPermSettings(String a, bool update = false)
         {
-            PermSettings = new FactionPermSettings(a);
+            if (a.Contains("|"))
+            {
+                CyberCoreMain.Log.Error("WARNING!!!!!! "+Faction+" IS USING OUTDATED PERMSETTING!!!!");
+                PermSettings = new FactionPermSettings(a);
+            }
+            else setPermSettings(JsonConvert.DeserializeObject<FactionPermSettingsData>(a), update);
             if (update) UpdateSettingsValue("Perm", JsonConvert.SerializeObject(PermSettings.export()));
         }
         public void setPermSettings(FactionPermSettingsData a, bool update)

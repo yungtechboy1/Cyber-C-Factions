@@ -55,7 +55,7 @@ namespace CyberCore.Manager.Factions
             {
                 List<String> results = new List<String>();
                  List<Dictionary<string, object>> r = getMYSQL().executeSelect("select * from `plots`");
-                if (r.Count == 0)
+                if (r.Count != 0)
                 {
                     Log.Error("NO PLOTS WERE FOUND |||| CLOSED!!!!!!");
                     return;
@@ -63,8 +63,19 @@ namespace CyberCore.Manager.Factions
 
                 foreach (var a in r)
                 {
-                    List.Add(a.GetInt32("x") + "|" + a.GetInt32("z"), a.GetString("faction"));
-                    Health.Add(a.GetInt32("x") + "|" + a.GetInt32("z"), a.GetInt32("health"));
+                    // if (!a.ContainsKey("x") || !a.ContainsKey("y") || !a.ContainsKey("faction") ||
+                    //     !a.ContainsKey("health"))
+                    // {
+                    //     Log.Error("Error Not all Keyzzz Prezent");
+                    //     foreach (var aa in a)
+                    //     {
+                    //         Log.Error(aa.Key+"|||||||||||||||"+aa.Value);
+                    //     }
+                    // }
+
+                    var pid = a.GetString("plotid");
+                    List.Add(pid, a.GetString("faction"));
+                    Health.Add(pid, a.GetInt32("health"));
                 }
             }
             catch (Exception e)

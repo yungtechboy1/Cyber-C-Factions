@@ -124,23 +124,23 @@ namespace CyberCore.Utils
             DataTable schema = null;
 
 
-            Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1" + ConnectionString);
+            // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1" + ConnectionString);
             using (var con = new MySqlConnection(ConnectionString))
             {
                 await con.OpenAsync();
-                Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.1");
+                // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.1");
                 using (var schemaCommand = new MySqlCommand(query, con))
                 {
-                    Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.2");
+                    // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.2");
                     using (var reader = await schemaCommand.ExecuteReaderAsync(CommandBehavior.SchemaOnly))
                     {
-                        Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.3");
+                        // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.3");
                         schema = reader.GetSchemaTable();
-                        Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.4");
+                        // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.4");
                     }
                 }
 
-                Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 2");
+                // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 2");
 
                 foreach (DataRow col in schema.Rows)
                 {
@@ -148,7 +148,7 @@ namespace CyberCore.Utils
                 }
 
 
-                Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 3");
+                // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 3");
 
                 using (var schemaCommand = new MySqlCommand(query, con))
                 {
@@ -160,7 +160,7 @@ namespace CyberCore.Utils
                             Dictionary<String, Object> aa = new Dictionary<string, object>();
                             foreach (var co in cols)
                             {
-                                aa.Add(co, reader[co]);
+                                if(reader.GetOrdinal(co) != -1)aa.Add(co, reader[co]);
                                 // i++;
                             }
                             
@@ -170,7 +170,7 @@ namespace CyberCore.Utils
                 }
             }
 
-            Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 4");
+            // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 4");
             return data;
         }
 

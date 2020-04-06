@@ -439,23 +439,23 @@ namespace CyberCore.Manager.Factions
             DataTable schema = null;
 
 
-            Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1" + Main.CCM.SQL.ConnectionString);
+            // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1" + Main.CCM.SQL.ConnectionString);
             using (var con = new MySqlConnection(Main.CCM.SQL.ConnectionString))
             {
                 await con.OpenAsync();
-                Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.1");
+                // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.1");
                 using (var schemaCommand = new MySqlCommand(query, con))
                 {
-                    Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.2");
+                    // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.2");
                     using (var reader = await schemaCommand.ExecuteReaderAsync(CommandBehavior.SchemaOnly))
                     {
-                        Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.3");
+                        // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.3");
                         schema = reader.GetSchemaTable();
-                        Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.4");
+                        // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.4");
                     }
                 }
 
-                Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 2");
+                // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 2");
 
                 foreach (DataRow col in schema.Rows)
                 {
@@ -463,7 +463,7 @@ namespace CyberCore.Manager.Factions
                 }
 
 
-                Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 3");
+                // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 3");
 
                 using (var schemaCommand = new MySqlCommand(query, con))
                 {
@@ -485,7 +485,7 @@ namespace CyberCore.Manager.Factions
                 }
             }
 
-            Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 4");
+            // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 4");
             return data;
         }
 
@@ -1056,8 +1056,8 @@ namespace CyberCore.Manager.Factions
             }
             else if (factionExistsInDB(name))
             {
-                Console.WriteLine("In DB11111111111111111111111111111");
-                CyberCoreMain.Log.Info("In DB11111111111111111111111111111");
+                // Console.WriteLine("In DB11111111111111111111111111111");
+                // CyberCoreMain.Log.Info("In DB11111111111111111111111111111");
                 //if (List.ContainsKey(name.ToLower())) return List.get(name.ToLower());
                 //No leader == No Faction!
                 if (GetLeader(name) == null && !name.equalsIgnoreCase("peace") && !name.equalsIgnoreCase("wilderness"))

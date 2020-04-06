@@ -54,8 +54,8 @@ namespace CyberCore.Manager.Factions
 
         public List<String> NeededfromsettingsInt = new List<String>()
         {
-            ("MaxPlayers"), ("Power"),
-            ("Money"), ("Points"), ("XP"), "Level", "Points"
+            ("MaxPlayers"), ("Power"),"Rich",
+            ("Money"), ("Points"), ("XP"), "Level","Privacy"
         };
 
         public List<String> NeededfromsettingsDouble = new List<String>()
