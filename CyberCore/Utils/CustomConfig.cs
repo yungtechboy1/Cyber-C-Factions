@@ -16,21 +16,26 @@ namespace CyberCore.Utils
         public string ConfigFileName = "server.conf";
 
         public bool loaded { get; private set; } = false;
+        public string FilePath { get; private set; } 
 
-        private IReadOnlyDictionary<string, string> KeyValues { get; set; }
-
+        private Dictionary<string, string> KeyValues { get; set; } = new Dictionary<string, string>();
+        //IReadOnlyDictionary
+        
         public CustomConfig(OpenPlugin plugin, string fileName = null)
         {
             if (fileName != null) ConfigFileName = fileName;
             try
             {
+                string path;
                 string userName = Environment.UserName;
                 string data = string.Empty;
                 string directoryName = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
                 Log.Info("DIRECTORY >> " + directoryName);
                 if (directoryName != null)
                 {
-                    string path = Path.Combine(directoryName, "server." + userName + ".conf");
+                    path = Path.Combine(directoryName, "Plugins");
+                    path = Path.Combine(path, ConfigFileName + ".conf");
+                    FilePath = path;
                     Log.Info((object) ("Trying to load config-file " + path));
                     if (File.Exists(path))
                     {
@@ -38,10 +43,9 @@ namespace CyberCore.Utils
                     }
                     else
                     {
-                        path = Path.Combine(directoryName, ConfigFileName);
-                        Log.Info((object) ("Trying to load config-file " + path));
-                        if (File.Exists(path))
-                            data = File.ReadAllText(path);
+                        
+                        Log.Info((object) ("NO File found at " + path));
+                        return;
                     }
 
                     Log.Info((object) ("Loading config-file " + path));
@@ -81,8 +85,15 @@ namespace CyberCore.Utils
 
             loaded = true;
             KeyValues =
-                (IReadOnlyDictionary<string, string>) new ReadOnlyDictionary<string, string>(
-                    (IDictionary<string, string>) dictionary);
+                new Dictionary<string, string>(dictionary);
+            Log.Info("Successfully loaded "+KeyValues.Count+" Values from "+FilePath);
+
+            foreach (var v in KeyValues)
+            {
+                var k = v.Key;
+                var vv = v.Value;
+                Log.Info($"=====> {k} = {vv} |");
+            }
         }
 
         public ServerRole GetProperty(string property, ServerRole defaultValue)
@@ -210,13 +221,17 @@ namespace CyberCore.Utils
 
         public string GetProperty(string property, string defaultValue)
         {
+            CyberCoreMain.Log.Info("CALLL 1111111111111111"+defaultValue);
             return ReadString(property) ?? defaultValue;
         }
 
         private string ReadString(string property)
         {
+            CyberCoreMain.Log.Info("CALLL 22222222222222222222"+property);
             property = property.ToLower();
-            return !KeyValues.ContainsKey(property) ? (string) null : KeyValues[property];
+            
+            CyberCoreMain.Log.Info("CALLL 3433333333333333333"+KeyValues.ContainsKey(property));
+            return KeyValues.ContainsKey(property) ? KeyValues[property] : null;
         }
     }
 }

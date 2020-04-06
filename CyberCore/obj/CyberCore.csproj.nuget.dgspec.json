@@ -48,10 +48,6 @@
             "OpenMiNET.OpenAPI": {
               "target": "Package",
               "version": "[1.0.63, )"
-            },
-            "System.Security.Permissions": {
-              "target": "Package",
-              "version": "[5.0.0-preview.2.20160.6, )"
             }
           },
           "imports": [

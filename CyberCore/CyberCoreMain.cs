@@ -79,7 +79,7 @@ namespace CyberCore
 
         public CyberCoreMain()
         {
-            MasterConfig = new CustomConfig(this, "config.cfg");
+            MasterConfig = new CustomConfig(this, "Master");
             instance = this;
             ServerSQL = new ServerSqlite(this);
             WarpManager = new WarpManager(this);

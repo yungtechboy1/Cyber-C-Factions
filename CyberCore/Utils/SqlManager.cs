@@ -30,7 +30,7 @@ namespace CyberCore.Utils
             Host = CCM.MasterConfig.GetProperty("Host", null);
             Username = CCM.MasterConfig.GetProperty("Username", null);
             Password = CCM.MasterConfig.GetProperty("Password", null);
-            Database = CCM.MasterConfig.GetProperty("Database", null);
+            Database = CCM.MasterConfig.GetProperty("db-Server", null);
             Port = CCM.MasterConfig.GetProperty("Port", 3360);
             String cs = "SERVER=" + Host + ";" + "DATABASE=" +
                         Database + ";" + "UID=" + Username + ";" + "PASSWORD=" + Password + ";";
