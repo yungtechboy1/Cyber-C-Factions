@@ -1,5 +1,6 @@
 ﻿using System;
 using CyberCore.Manager.Factions;
+using Newtonsoft.Json;
 using static CyberCore.Manager.Factions.FactionRank;
 
 namespace CyberCore.Manager.Factions
@@ -128,9 +129,9 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public FactionPermSettingsData export()
+        public String export()
         {
-            return new FactionPermSettingsData(this);
+            return JsonConvert.SerializeObject(new FactionPermSettingsData(this));
         }
 
         public int getWeeklyFactionTax()

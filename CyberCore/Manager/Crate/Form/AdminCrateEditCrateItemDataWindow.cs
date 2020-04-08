@@ -57,12 +57,12 @@ namespace CyberCore.Manager.Crate.Form
             } else {
                 ItemChanceData p = co.CD.PossibleItems[si];
                 if (p == null) {
-                    addLable(("You are currently attempting to edit: \n" +
+                    addLabel(("You are currently attempting to edit: \n" +
                                                 "----ITEM---\n" +
                                                 "Error Getting!"));
                 } else {
                     Item i = p.getItem();
-                    addLable("You are currently attempting to edit: \n" +
+                    addLabel("You are currently attempting to edit: \n" +
                                               "----ITEM---\n" +
                                               "ID: " +i.Id+" Meta: "+i.Metadata+"\n" +
                                               "Name: "+i.getName()+" Lore: "+i.getLore()+"\n" +

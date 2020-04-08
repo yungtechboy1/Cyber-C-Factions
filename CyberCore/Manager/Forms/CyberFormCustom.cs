@@ -31,11 +31,19 @@ namespace CyberCore.Manager.Forms
             return ((Input) Content[k]).Value;
         }
         
-        public void addLable(String txt)
+        public void addLabel(String txt)
         {
             addElement(new Label()
             {
                 Text = txt
+            });
+        }
+        public void addToggle(String txt, bool def = false)
+        {
+            addElement(new Toggle()
+            {
+                Text = txt,
+                Value = def
             });
         }
         public void addInput(String title,string placeholder = "",string defvalue = "")

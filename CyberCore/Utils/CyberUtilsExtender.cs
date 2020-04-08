@@ -16,16 +16,18 @@ namespace CyberCore.Utils
 {
     public static class CyberUtilsExtender
     {
-        public static string getMessage(this FactionErrorString c)
-        {
-            return FactionErrorStringMethod.toString(c);
-        }
+        
 
         public static Faction getFaction(this Player c)
         {
             return CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction(c);
         }
 
+        public static CorePlayer toCorePlayer(this Player p)
+        {
+            return CyberCoreMain.GetInstance().getPlayer(p);
+        }
+        
         public static object getOrDefault(this Dictionary<string, object> d, string s, object de)
         {
             if (d.ContainsKey(s)) return d[s];
@@ -169,6 +171,15 @@ namespace CyberCore.Utils
             }
         }
 
+        public static String getMsg(this FactionErrorString f)
+        {
+            return toString(f);
+        }
+        public static String toString(this FactionErrorString f)
+        {
+            return FactionErrorStringMethod.toString(f);
+        }
+        
         public static NbtCompound putString(this NbtCompound i, string k, string v)
         {
             i.Add(new NbtString(k, v));

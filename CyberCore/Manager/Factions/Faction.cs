@@ -39,7 +39,7 @@ namespace CyberCore.Manager.Factions
         public ActiveMission AM = null;
         public List<AllyRequest> AR = new List<AllyRequest>();
         public Dictionary<String, Object> SC_Map = new Dictionary<String, Object>();
-        public FactionSettings Settings;
+        public FactionSettings Settings ;
 
         public List<Type> NeededfromsettingsType = new List<Type>()
         {
@@ -125,12 +125,12 @@ namespace CyberCore.Manager.Factions
 
         public Faction(FactionsMain main, String name, Player p)
         {
+            Settings = new FactionSettings(this);
             Main = main;
             Name = name;
             onCreation();
             LC = new FactionLocalCache(this);
-            Settings = new FactionSettings(this, true);
-            getSettings().setDisplayName(name, true);
+            // getSettings().setDisplayName(name, true);
             addPlayer(p, FactionRankEnum.Leader);
         }
 
@@ -1579,7 +1579,7 @@ namespace CyberCore.Manager.Factions
             {
                 if (a.Value.hasPerm(r))
                 {
-                    Player p = Main.CCM.getPlayer(a.Key);
+                    CorePlayer p = Main.CCM.getPlayer(a.Key);
                     if (p == null) continue;
                     p.AddPopup(new Popup() {Message = message + "\n" + subtitle});
                 }

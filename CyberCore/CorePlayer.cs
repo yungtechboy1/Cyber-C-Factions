@@ -136,6 +136,11 @@ namespace CyberCore
 
         public CorePlayer(MiNetServer server, IPEndPoint endPoint, OpenApi api) : base(server, endPoint, api)
         {
+            CyberCoreMain.Log.Error("IMA AAAAAAAAAAALLLLLLLLLLLLLLLLLLLLIIIIIIIIIIIVVVVVVVVVVVVEEEEEEEEEEEE");
+            CyberCoreMain.Log.Error("IMA AAAAAAAAAAALLLLLLLLLLLLLLLLLLLLIIIIIIIIIIIVVVVVVVVVVVVEEEEEEEEEEEE");
+            CyberCoreMain.Log.Error("IMA AAAAAAAAAAALLLLLLLLLLLLLLLLLLLLIIIIIIIIIIIVVVVVVVVVVVVEEEEEEEEEEEE");
+            CyberCoreMain.Log.Error("IMA AAAAAAAAAAALLLLLLLLLLLLLLLLLLLLIIIIIIIIIIIVVVVVVVVVVVVEEEEEEEEEEEE");
+            CyberCoreMain.Log.Error("IMA AAAAAAAAAAALLLLLLLLLLLLLLLLLLLLIIIIIIIIIIIVVVVVVVVVVVVEEEEEEEEEEEE");
         }
 
         public Dictionary<BuffOrigin, Dictionary<BuffType, Buff>> getBufflist()

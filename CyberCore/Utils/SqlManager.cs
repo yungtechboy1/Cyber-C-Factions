@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Threading.Tasks;
 using log4net;
-using MiNET.Net;
-using MiNET.Plugins;
-using MiNET.Utils;
 using MySql.Data.MySqlClient;
 
 namespace CyberCore.Utils
@@ -14,17 +10,7 @@ namespace CyberCore.Utils
     public class SqlManager
     {
         private readonly ILog Log = LogManager.GetLogger(typeof(SqlManager));
-        public String Host { get; set; }
-        public int Port { get; set; }
-        public String Username { get; set; }
-        public String Password { get; set; }
-        public String Database { get; set; }
-
-
-        public CyberCoreMain CCM { get; }
-
-        private MySqlConnection MSC { get; set; } = null;
-        private bool Active = false;
+        private bool Active;
         public string ConnectionString;
 
         public SqlManager(CyberCoreMain ccm)
@@ -45,10 +31,7 @@ namespace CyberCore.Utils
                 {
                     MSC.Open();
                     CheckMSQLState();
-                    if (Active)
-                    {
-                        Log.Info("MySQL MySqlConnection to" + Host + " was successful!");
-                    }
+                    if (Active) Log.Info("MySQL MySqlConnection to" + Host + " was successful!");
                 }
                 catch (Exception e)
                 {
@@ -60,6 +43,17 @@ namespace CyberCore.Utils
                 Log.Error(e);
             }
         }
+
+        public string Host { get; set; }
+        public int Port { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Database { get; set; }
+
+
+        public CyberCoreMain CCM { get; }
+
+        private MySqlConnection MSC { get; }
 
         public MySqlConnection GetMySqlConnection()
         {
@@ -113,14 +107,15 @@ namespace CyberCore.Utils
         //         return null;
         //     }
         // }
-        public List<Dictionary<string, object>> executeSelect(String query)
+        public List<Dictionary<string, object>> executeSelect(string query)
         {
             return executeSelecta(query).Result;
         }
- public async Task<List<Dictionary<string, object>>> executeSelecta(String query)
+
+        public async Task<List<Dictionary<string, object>>> executeSelecta(string query)
         {
-            List<Dictionary<String, Object>> data = new List<Dictionary<String, Object>>();
-            List<String> cols = new List<string>();
+            var data = new List<Dictionary<string, object>>();
+            var cols = new List<string>();
             DataTable schema = null;
 
 
@@ -142,10 +137,7 @@ namespace CyberCore.Utils
 
                 // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 2");
 
-                foreach (DataRow col in schema.Rows)
-                {
-                    cols.Add(col.Field<String>("ColumnName"));
-                }
+                foreach (DataRow col in schema.Rows) cols.Add(col.Field<string>("ColumnName"));
 
 
                 // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 3");
@@ -157,13 +149,12 @@ namespace CyberCore.Utils
                         while (await reader.ReadAsync())
                         {
                             // int i = 0;
-                            Dictionary<String, Object> aa = new Dictionary<string, object>();
+                            var aa = new Dictionary<string, object>();
                             foreach (var co in cols)
-                            {
-                                if(reader.GetOrdinal(co) != -1)aa.Add(co, reader[co]);
-                                // i++;
-                            }
-                            
+                                if (reader.GetOrdinal(co) != -1)
+                                    aa.Add(co, reader[co]);
+                            // i++;
+
                             data.Add(aa);
                         }
                     }
@@ -176,10 +167,10 @@ namespace CyberCore.Utils
 
         public bool Insert(string q, string c, byte[] b)
         {
-            using (MySqlConnection con = GetMySqlConnection())
+            using (var con = GetMySqlConnection())
             {
-                string query = q;
-                using (MySqlCommand cmd = new MySqlCommand(query))
+                var query = q;
+                using (var cmd = new MySqlCommand(query))
                 {
                     cmd.Connection = con;
                     cmd.Parameters.AddWithValue(c, b);
@@ -195,29 +186,33 @@ namespace CyberCore.Utils
 
         public bool Insert(string q)
         {
-            MySqlConnection c = GetMySqlConnection();
-            if (c == null)
+            return Inserta(q).Result;
+        }
+
+        public async Task<bool> Inserta(string q)
+        {
+            using (var c = GetMySqlConnection())
             {
-                Log.Error("Attempt to Insert @ " + Host + " while connection was Invalid for Query:\n " + q);
+                await c.OpenAsync();
+                if (c == null)
+                {
+                    Log.Error("Attempt to Insert @ " + Host + " while connection was Invalid for Query:\n " + q);
+                    return false;
+                }
+
+
+                using (var cmd = new MySqlCommand())
+                {
+                    cmd.Connection = c;
+                    cmd.CommandText = q;
+                    await cmd.ExecuteNonQueryAsync();
+                    return true;
+                }
+
                 return false;
-            }
 
-            try
-            {
-                MySqlCommand cc = new MySqlCommand {Connection = c, CommandText = q};
-                cc.ExecuteNonQuery();
-                c.Close();
-                return true;
+                // throw new NotImplementedException();
             }
-            catch (Exception e)
-            {
-                Log.Error("SQL ERROR E334: \n" + e);
-            }
-
-            c.Close();
-            return false;
-
-            // throw new NotImplementedException();
         }
     }
 }

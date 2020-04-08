@@ -25,7 +25,7 @@ namespace CyberCore.Manager.Factions
         private int Points = 0;
         private int Privacy = 0;
 
-        public FactionSettings(Faction f, bool update)
+        public FactionSettings(Faction f, bool update = false)
         {
             F = f;
             setFaction(f.getName());

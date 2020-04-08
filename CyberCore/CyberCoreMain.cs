@@ -38,7 +38,7 @@ namespace CyberCore
         {
             // s.ServerManager = new CyberTechServerManager(s);
             s.PlayerFactory = new CyberPlayerFactory(API);
-            Log.Info("Executed startup successfully. Replaced identity managment.");
+            Log.Info("================Executed startup successfully. Replaced identity managment=========================");
             
         }
         
@@ -84,6 +84,11 @@ namespace CyberCore
             ServerSQL = new ServerSqlite(this);
             WarpManager = new WarpManager(this);
             // MasterConfig = new Dictionary<String,Object>() {ConfigFileName = "MasterConfig.conf"};
+        }
+
+        private void RegisterCommands()
+        {
+            // getAPI().CommandManager.LoadCommands();
         }
 
         private void OnPlayerJoin(object o, PlayerEventArgs eventArgs)
@@ -164,6 +169,8 @@ namespace CyberCore
             
             AF = new AuctionFactory(this);
             api.EventDispatcher.RegisterEvents(new MasterListener());
+            api.CommandManager.RegisterPermissionChecker(new FactionPermissionChecker(FM.FFactory));
+            api.CommandManager.LoadCommands(new FactionCommands(FM.FFactory));
 
             getServer().PlayerFactory.PlayerCreated += (sender, args) =>
             {
@@ -207,8 +214,13 @@ namespace CyberCore
             Log.Info($"[TestPlugin] {(method.DeclaringType.FullName)}.{method.Name}: " + message);
         }
 
+        public CorePlayer getPlayer(Player name)
+        {
+            return (CorePlayer) getAPI().PlayerManager.getPlayer(name.Username);
+        }
         public CorePlayer getPlayer(string name)
         {
+            Log.Info("GET CORE PLAYER USED)))))))))))))))))))))))))))))))))))))))))))))))))))))))))");
             return (CorePlayer) getAPI().PlayerManager.getPlayer(name);
         }
 

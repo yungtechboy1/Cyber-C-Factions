@@ -495,7 +495,7 @@ namespace CyberCore.Manager.Factions
             try
             {
                 List<Dictionary<string, object>> r =
-                    this.ExecuteQuerySQL($"select count(*) from `Settings` where `Name` LIKE '{name}'");
+                    this.ExecuteQuerySQL($"select * from `Settings` where `Name` LIKE '{name}'");
                 if (r == null) return false;
                 if (r.Count != 0)
                     // if (r.GetInt32(1) > 0)
@@ -953,13 +953,13 @@ namespace CyberCore.Manager.Factions
         {
             if (p.getFaction() != null)
             {
-                p.SendMessage(FactionErrorString.Error_InFaction.getMessage());
+                p.SendMessage(FactionErrorString.Error_InFaction.getMsg());
                 return null;
             }
 
             if (factionExistsInDB(name))
             {
-                p.SendMessage(FactionErrorString.Error_FactionExists.getMessage());
+                p.SendMessage(FactionErrorString.Error_FactionExists.getMsg());
                 return null;
             }
 
@@ -971,7 +971,7 @@ namespace CyberCore.Manager.Factions
             fac.getSettings().setMOTD(motd, true);
             fac.getSettings().setDescription(desc, true);
             fac.getSettings().setPrivacy(privacy ? 1 : 0, true);
-            p.SendMessage(FactionErrorString.Success_FactionCreated.getMessage());
+            p.SendMessage(FactionErrorString.Success_FactionCreated.getMsg());
 
 // p.Faction = fac.getName();
             RegitsterToRich(fac);

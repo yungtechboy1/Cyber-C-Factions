@@ -105,8 +105,10 @@
               <e p="RelationshipManager.cs" t="Include" />
             </e>
             <e p="Faction.cs" t="Include" />
+            <e p="FactionCommands.cs" t="Include" />
             <e p="FactionFactory.cs" t="Include" />
             <e p="FactionLocalCache.cs" t="Include" />
+            <e p="FactionPermissionChecker.cs" t="Include" />
             <e p="FactionPermSettings.cs" t="Include" />
             <e p="FactionRank.cs" t="Include" />
             <e p="FactionSettings.cs" t="Include" />
@@ -125,6 +127,9 @@
             <e p="RequestType.cs" t="Include" />
             <e p="Windows" t="Include">
               <e p="FactionChatFactionWindow.cs" t="Include" />
+              <e p="FactionCreate0.cs" t="Include" />
+              <e p="FactionCreate0Error.cs" t="Include" />
+              <e p="FactionInviteChooseRank.cs" t="Include" />
               <e p="FactionInvited.cs" t="Include" />
               <e p="HTP_0_Window.cs" t="Include" />
             </e>
