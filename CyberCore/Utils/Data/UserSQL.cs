@@ -33,7 +33,7 @@ namespace CyberCore.Utils.Data
             }
 
             psd = new PlayerSettingsData(a[0]);
-            if (!psd.UUIDS.Contains(corePlayer.ClientUuid)) psd.UUIDS.Add(corePlayer.ClientUuid);
+            if (!psd.UUIDS.Contains(corePlayer.ClientUuid.ToString())) psd.UUIDS.Add(corePlayer.ClientUuid.ToString());
             corePlayer.setPlayerSettingsData(psd);
             return psd;
         }
@@ -42,7 +42,7 @@ namespace CyberCore.Utils.Data
         {
             var psd = corePlayer.getPlayerSettingsData();
             if (psd == null) return false;
-            if (!psd.UUIDS.Contains(corePlayer.ClientUuid)) psd.UUIDS.Add(corePlayer.ClientUuid);
+            if (!psd.UUIDS.Contains(corePlayer.ClientUuid.ToString())) psd.UUIDS.Add(corePlayer.ClientUuid.ToString());
             Main.SQL.Insert("DELETE FROM `PlayerSettings` WHERE `Name` LIKE '" + corePlayer.getName() + "'");
 
             var q = $"INSERT INTO `PlayerSettings` VALUES (";

@@ -30,9 +30,9 @@ namespace CyberCore.Utils
             Player = p;
             if (load != null)
             {
-                if (load.ContainsKey("Player"))
+                if (load.ContainsKey("player"))
                 {
-                    String pp = (string) load["Player"];
+                    String pp = (string) load["player"];
                     if (!pp.equalsIgnoreCase(p.getName()))
                     {
                         CyberCoreMain.Log.Error($"ERROOR RETURNED DATA FOR PLAYER {Player.getName()} IS FOR {pp}");
@@ -42,15 +42,33 @@ namespace CyberCore.Utils
                 else
                 {
                     CyberCoreMain.Log.Error("EPD ERROR! PlAYER FIELD IS NULL!!!!");
+                    foreach (var zaa in load)
+                    {
+                        CyberCoreMain.Log.Error($"||||||||||||||||||||||||>>>>{zaa.Key} || {zaa.Value}");
+                    }
                     return;
                 }
 
                 var a = JsonConvert.DeserializeObject<List<FactionInviteData>>((string) load["FactionInviteData"]);
                 var aa = JsonConvert.DeserializeObject<InternalPlayerSettings>((string) load["InternalPlayerSettings"]);
                 var aaa = JsonConvert.DeserializeObject<PlayerDetailedInfo>((string) load["PlayerDetailedInfo"]);
-                if (a != null) FactionInviteData = a;
-                if (aa != null) InternalPlayerSettings = aa;
-                if (aaa != null) PlayerDetailedInfo = aaa;
+                if (a != null)
+                {
+                    CyberCoreMain.Log.Info("WAS LOADED 111111111111");
+                    FactionInviteData = a;
+                }
+
+                if (aa != null)
+                {
+                    CyberCoreMain.Log.Info("WAS LOADED 11111111111122222222222222");
+                    InternalPlayerSettings = aa;
+                }
+
+                if (aaa != null)
+                {
+                    CyberCoreMain.Log.Info("WAS LOADED 111111111111333333333333333");
+                    PlayerDetailedInfo = aaa;
+                }
                 else PlayerDetailedInfo = new PlayerDetailedInfo(p);
             }
             else

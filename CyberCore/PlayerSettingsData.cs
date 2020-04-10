@@ -20,10 +20,10 @@ namespace CyberCore
 
         //TODO Intergrate
         public List<PlayerWarningEvent> PlayerWarnings = new List<PlayerWarningEvent>();
-        public int Rank;
+        // public int Rank;
 
         public int UsedCredit;
-        public List<UUID> UUIDS = new List<UUID>();
+        public List<String> UUIDS = new List<String>();
 
         // Type uuidType = new TypeToken<List<UUID>>()
         // {
@@ -50,7 +50,7 @@ namespace CyberCore
             Cash = 1000;
             CreditLimit = 1000;
             CreditScore = 350; //Out of 1000
-            UUIDS.Add(p.ClientUuid);
+            UUIDS.Add(p.ClientUuid.ToString());
         }
 
         public PlayerSettingsData(Dictionary<string, object> a)
@@ -58,7 +58,7 @@ namespace CyberCore
             Name = (string) a["Name"];
             //https://stackoverflow.com/questions/27893342/how-to-convert-list-to-a-json-object-using-gson
 //        if (((String) a["PlayerWarnings")).equalsIgnoreCase("[]"))
-            UUIDS = JsonConvert.DeserializeObject<List<UUID>>((string) a["UUIDs"]);
+            UUIDS = JsonConvert.DeserializeObject<List<String>>((string) a["UUIDs"]);
             Cash = (int) a["Cash"];
             CreditScore = (int) a["CreditScore"];
             CreditLimit = (int) a["CreditLimit"];
@@ -73,14 +73,14 @@ namespace CyberCore
             if ((string) a["PlayerBans"] != "[]")
                 PlayerBans = JsonConvert.DeserializeObject<List<PlayerBanEvent>>((string) a["PlayerBans"]);
 //        PlayerBans = JsonConvert.DeserializeObject((String) a["PlayerBans"), uuidType);
-            try
-            {
-                Rank = int.Parse((string) a["Rank"]);
-            }
-            catch (Exception e)
-            {
-                CyberCoreMain.Log.Error("PSD ERROR E123122 :: ", e);
-            }
+            // try
+            // {
+            //     Rank = int.Parse((string) a["Rank"]);
+            // }
+            // catch (Exception e)
+            // {
+            //     CyberCoreMain.Log.Error("PSD ERROR E123122 :: ", e);
+            // }
         }
 
         public double getCash()

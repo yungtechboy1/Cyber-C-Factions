@@ -30,12 +30,16 @@ namespace CyberCore
                 return;
             }
 
+            p.loadEPD();
             var epd = p.EPD;
             if (epd == null)
             {
                 CyberCoreMain.Log.Error($"Extra Player Data for {p.getName()} is NULL?!?!?!");
                 return;
             }
+
+            if (epd.PlayerDetailedInfo == null)
+                CyberCoreMain.Log.Error("WHATTTTTTTTTTTT WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
 
             epd.PlayerDetailedInfo.onLogin(p);
 
@@ -743,9 +747,10 @@ namespace CyberCore
             // String Msg = (String) plugin.MainConfig.get("Leave-Message");
             // eeee.setQuitMessage(Msg.replace("{player}", eeee.getPlayer().getName()));
             Player p = eeee.Player;
-            if (p is CorePlayer) {
-                plugin.ClassFactory.save((CorePlayer) p);
-                ((CorePlayer)p).EPD.upload();
+            if (p is CorePlayer)
+            {
+                if (((CorePlayer) p).getPlayerClass() != null) plugin.ClassFactory.save((CorePlayer) p);
+                ((CorePlayer) p).EPD.upload();
             }
         }
 

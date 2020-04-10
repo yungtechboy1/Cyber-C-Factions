@@ -46,7 +46,7 @@ namespace CyberCore
         private readonly string Cooldown_EPD = "EPD";
         private readonly string Cooldown_EPD_Valid = "EPDValid";
         private readonly string Scoreboard_Class = "ScoreBoard";
-        public ExtraPlayerData EPD;
+        public ExtraPlayerData EPD = null;
         public AuctionHouse AH = null;
         public int banned = 0;
 
@@ -1777,6 +1777,11 @@ namespace CyberCore
         protected override void OnPlayerJoining(PlayerEventArgs e)
         {
             base.OnPlayerJoining(e);
+            if(EPD == null)loadEPD();
+        }
+
+        public void loadEPD()
+        {
             List<Dictionary<string, object>> a = CyberCoreMain.GetInstance().SQL
                 .executeSelect($"SELECT * FROM `EPD` WHERE player = '{Username}'");
             if (a.Count != 0)
