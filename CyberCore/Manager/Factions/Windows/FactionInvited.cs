@@ -25,7 +25,7 @@ namespace CyberCore.Manager.Factions.Windows
         private void onRun(Player player, ModalForm modal, bool b)
         {
             //TODO THIS DOES NOT CHECK BOOL
-            var a = player.GetExtraPlayerData();
+            var a = ((CorePlayer)player).EPD;
             var aa = a.FactionInviteData;
             var aac = aa.Count;
             if (aac != 0)

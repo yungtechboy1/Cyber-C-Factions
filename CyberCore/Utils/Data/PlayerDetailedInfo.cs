@@ -30,6 +30,9 @@ namespace CyberCore.Utils.Data
 
         public void addDetailsFromPlayer(Player p)
         {
+            if(p.EndPoint == null) CyberCoreMain.Log.Error("YOOOO ENDPOINT NULLLLLLLLLLLLLLLLLL");
+            if(p.ClientId == null) CyberCoreMain.Log.Error("YOOOO ClientIdDDDDDDDDDDDD NULLLLLLLLLLLLLLLLLL");
+                
             string ip = p.EndPoint.Address.ToString();
             long cid = p.ClientId;
             string uuid = p.ClientUuid.ToString();

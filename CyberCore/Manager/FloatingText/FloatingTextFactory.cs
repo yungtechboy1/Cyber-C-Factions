@@ -328,7 +328,7 @@ namespace CyberCore.Manager.FloatingText
                         .Replace("{players}", players)
                         .Replace("{max}", max)
                         .Replace("{money}", money)
-                        .Replace("\\|n", "\n")
+                        .Replace("|n", "\n")
                     ;
             }
             else
@@ -337,7 +337,7 @@ namespace CyberCore.Manager.FloatingText
                     .Replace("{faction}", "No Faction")
                     .Replace("{kills}", "N/A")
                     .Replace("{deaths}", "N/A")
-                    .Replace("\\|n", "\n")
+                    .Replace("|n", "\n")
                     .Replace("{kdr}", "N/A");
             }
 

@@ -1,4 +1,5 @@
-﻿using CyberCore.Manager.Crate;
+﻿using System;
+using CyberCore.Manager.Crate;
 using CyberCore.Manager.Crate.Form;
 using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.Forms;
@@ -20,17 +21,16 @@ namespace CyberCore
         public static CyberCoreMain plugin = CyberCoreMain.GetInstance();
 
         [EventHandler]
-        public void OnPlayerJoin(PlayerJoinEvent e)
+        public void OnPlayerJoin(PlayerSpawnedEvent e)
         {
-            Player p = e.Player;
+            CorePlayer p = (CorePlayer) e.Player;
             if (p == null)
             {
                 CyberCoreMain.Log.Error("Error With Join Event! Object is not player");
                 return;
             }
 
-            var isnew = CyberUtils.hasExtraPlayerData(p);
-            var epd = p.GetExtraPlayerData();
+            var epd = p.EPD;
             if (epd == null)
             {
                 CyberCoreMain.Log.Error($"Extra Player Data for {p.getName()} is NULL?!?!?!");
@@ -38,7 +38,7 @@ namespace CyberCore
             }
 
             epd.PlayerDetailedInfo.onLogin(p);
-            p.SendForm(new HTP_0_Window()); //TODO
+
             p.Level.BroadcastMessage(ChatColors.Aqua + "Welcome " + p.getName() +
                                      " to the community!!! They have logged in for the 1st time!");
 
@@ -51,13 +51,18 @@ namespace CyberCore
                 TitleType.Title, 30, 30, 10);
 
 //        _plugin.initiatePlayer(p);
+            CyberCoreMain.Log.Info("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS1111111");
             plugin.ServerSQL.LoadPlayer((CorePlayer) p);
-            var rank = plugin.RF.getPlayerRank(p).getDisplayName();
+            CyberCoreMain.Log.Info("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS1111111");
+            var rank = plugin.RF.getPlayerRank((CorePlayer) p).getDisplayName();
+            CyberCoreMain.Log.Info("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS1111111");
             p.SendMessage(CyberUtils.colorize("&2You Have Joined with the Rank: " + rank));
+            CyberCoreMain.Log.Info("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS1111111");
             if (rank != null && rank.equalsIgnoreCase("op"))
                 p.PermissionLevel = PermissionLevel.Operator;
             else
                 p.PermissionLevel = PermissionLevel.Visitor;
+            ((CorePlayer) p).ShowHTP = true;
 
             //        Scoreboard s = ScoreboardAPI.createScoreboard();
 //        ScoreboardDisplay sd = s.addDisplay(DisplaySlot.SIDEBAR,"Dummy","TESTTTT");
@@ -732,17 +737,17 @@ namespace CyberCore
 //    }
 
 
-        // @EventHandler(priority = EventPriority.LOWEST)
-        //
-        // public void quitEvent(PlayerQuitEvent eeee)
-        // {
-        //     String Msg = (String) plugin.MainConfig.get("Leave-Message");
-        //     eeee.setQuitMessage(Msg.replace("{player}", eeee.getPlayer().getName()));
-        //     Player p = eeee.getPlayer();
-        //     if (p instanceof CorePlayer) {
-        //         plugin.ClassFactory.save((CorePlayer) p);
-        //     }
-        // }
+        [EventHandler]
+        public void quitEvent(PlayerQuitEvent eeee)
+        {
+            // String Msg = (String) plugin.MainConfig.get("Leave-Message");
+            // eeee.setQuitMessage(Msg.replace("{player}", eeee.getPlayer().getName()));
+            Player p = eeee.Player;
+            if (p is CorePlayer) {
+                plugin.ClassFactory.save((CorePlayer) p);
+                ((CorePlayer)p).EPD.upload();
+            }
+        }
 
 
         //@TODO Check for BadWords!

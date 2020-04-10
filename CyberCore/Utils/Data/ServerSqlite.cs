@@ -135,7 +135,7 @@ namespace CyberCore.Utils.Data
             }
             else
             {
-                CyberCoreMain.Log.Info("Loading " + data.Count + " Warps!");
+                CyberCoreMain.Log.Info("Loading " + data.Count + " Homes!");
             }
 
             foreach (var v in data)

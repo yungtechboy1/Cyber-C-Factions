@@ -324,7 +324,7 @@ namespace CyberCore.Manager.Factions
 
 //                    stmt.executeUpdate("DELETE FROM `plots` WHERE `faction` LIKE '" + name + "';");
 //                    for (String plot : plots) {
-//                        String[] p = plot.split("\\|");
+//                        String[] p = plot.split("|");
 //                        stmt.executeUpdate(String.format("INSERT INTO `plots` VALUES (null,'%s','%s','%s');", name, p[0], p[1]));
 //                    }
 //                    stmt.executeUpdate("DELETE FROM `confirm` WHERE `faction` LIKE '" + name + "';");

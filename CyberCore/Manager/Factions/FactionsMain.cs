@@ -70,7 +70,8 @@ namespace CyberCore.Manager.Factions
             if (!peace)
             {
                 CyberCoreMain.Log.Info("Peace Faction Being Created!");
-                Faction fac = new Faction(this, "peace", false,ChatColors.Green + "peaceful");
+                Faction fac = new Faction(this, "peace", null);
+                fac.getSettings().setDisplayName(ChatColors.Green + "peaceful",true);
                 FFactory.LocalFactionCache.Add("peace", fac);
             }
 
@@ -78,7 +79,8 @@ namespace CyberCore.Manager.Factions
             if (!wilderness)
             {
                 CyberCoreMain.Log.Info("Wilderness Faction Being Created!");
-                Faction fac = new Faction(this, "wilderness", false,ChatColors.Red + "wilderness");
+                Faction fac = new Faction(this, "wilderness",null);
+                fac.getSettings().setDisplayName(ChatColors.Red + "wilderness");
                 FFactory.LocalFactionCache.Add("wilderness", fac);
             }
         }
@@ -178,11 +180,11 @@ namespace CyberCore.Manager.Factions
             var fid = new FactionInviteData(invited.getName(), fac.getName(), time, Sender.getName(),
                 fr.toEnum());
 
-            ExtraPlayerData epd = CyberUtils.getExtraPlayerData(invited);
+            ExtraPlayerData epd = ((CorePlayer)invited).EPD;
             epd.FactionInviteData.Add(fid);
-            CyberUtils.updateExtraPlayerData(invited, epd);
+            // CyberUtils.updateExtraPlayerData(invited, epd);
             FFactory.addFactionInvite(fid);
-            if (!invited.GetExtraPlayerData().InternalPlayerSettings.isAllowFactionRequestPopUps()) return;
+            if (!((CorePlayer)invited).EPD.InternalPlayerSettings.isAllowFactionRequestPopUps()) return;
             invited.showFormWindow(new FactionInvited(invited.Username, fac.getName()));
         }
     }

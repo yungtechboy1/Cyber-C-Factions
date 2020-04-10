@@ -40,7 +40,7 @@ namespace CyberCore.Manager.Rank
             ranks = r.ranks;
         }
 
-        public Rank getPlayerRank(Player p)
+        public Rank getPlayerRank(CorePlayer p)
         {
             String uuid = p.ClientUuid.ToString();
             if (uuid == null) return new Guest_Rank();

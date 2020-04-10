@@ -127,9 +127,9 @@ namespace CyberCore.Manager.ClassFactory
                 return p.getPlayerClass();
             }
 
-            Dictionary<string, object> o = (Dictionary<string, object>) MMOSave[p.getName().ToLower()];
-            if (o != null)
+            if (MMOSave.ContainsKey(p.getName().ToLower()))
             {
+                Dictionary<string, object> o = (Dictionary<string, object>) MMOSave[p.getName().ToLower()];
                 int a = (int) (o["TYPE"]);
                 BaseClass data = null; //new BaseClass(CCM, p, (Dictionary<String,Object>) o);
                 switch (ClassTypeExtender.fromInt(a))

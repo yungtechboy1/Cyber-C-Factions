@@ -9,6 +9,7 @@ using CyberCore.Manager.AuctionHouse;
 using CyberCore.Manager.ClassFactory;
 using CyberCore.Manager.ClassFactory.Powers;
 using CyberCore.Manager.Factions;
+using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.Forms;
 using CyberCore.Manager.Rank;
 using CyberCore.Manager.Shop;
@@ -42,7 +43,10 @@ namespace CyberCore
         private readonly string Cooldown_Class = "Class";
         private readonly string Cooldown_DTP = "DelayTP";
         private readonly string Cooldown_Faction = "Faction";
+        private readonly string Cooldown_EPD = "EPD";
+        private readonly string Cooldown_EPD_Valid = "EPDValid";
         private readonly string Scoreboard_Class = "ScoreBoard";
+        public ExtraPlayerData EPD;
         public AuctionHouse AH = null;
         public int banned = 0;
 
@@ -136,12 +140,10 @@ namespace CyberCore
 
         public CorePlayer(MiNetServer server, IPEndPoint endPoint, OpenApi api) : base(server, endPoint, api)
         {
-            CyberCoreMain.Log.Error("IMA AAAAAAAAAAALLLLLLLLLLLLLLLLLLLLIIIIIIIIIIIVVVVVVVVVVVVEEEEEEEEEEEE");
-            CyberCoreMain.Log.Error("IMA AAAAAAAAAAALLLLLLLLLLLLLLLLLLLLIIIIIIIIIIIVVVVVVVVVVVVEEEEEEEEEEEE");
-            CyberCoreMain.Log.Error("IMA AAAAAAAAAAALLLLLLLLLLLLLLLLLLLLIIIIIIIIIIIVVVVVVVVVVVVEEEEEEEEEEEE");
-            CyberCoreMain.Log.Error("IMA AAAAAAAAAAALLLLLLLLLLLLLLLLLLLLIIIIIIIIIIIVVVVVVVVVVVVEEEEEEEEEEEE");
-            CyberCoreMain.Log.Error("IMA AAAAAAAAAAALLLLLLLLLLLLLLLLLLLLIIIIIIIIIIIVVVVVVVVVVVVEEEEEEEEEEEE");
+            
         }
+
+        public bool ShowHTP { get; set; }
 
         public Dictionary<BuffOrigin, Dictionary<BuffType, Buff>> getBufflist()
         {
@@ -703,6 +705,21 @@ namespace CyberCore
         {
             if (Combat == null) SendMessage(ChatColors.Yellow + "You are now in combat!");
             Combat = new CombatData(CyberUtils.getTick());
+        }
+
+        protected override bool AcceptPlayerMove(McpeMovePlayer message, bool isOnGround, bool isFlyingHorizontally)
+        {
+            var a =  base.AcceptPlayerMove(message, isOnGround, isFlyingHorizontally);
+            if (a)
+            {
+                if (ShowHTP)
+                {
+                    ShowHTP = false;
+                    SendForm(new HTP_0_Window());
+                }
+            }
+
+            return a;
         }
 
         public bool isinCombat()
@@ -1710,7 +1727,7 @@ namespace CyberCore
 
         private void AddCoolDown(string key, int secs)
         {
-            CDL[key] = new CoolDown(key, secs * 20);
+            CDL[key] = new CoolDown(key, secs);
         }
 
         private CoolDown GetCooldown(string key)
@@ -1757,7 +1774,28 @@ namespace CyberCore
         }
 
 
-        public void onUpdate(int currentTick)
+        protected override void OnPlayerJoining(PlayerEventArgs e)
+        {
+            base.OnPlayerJoining(e);
+            List<Dictionary<string, object>> a = CyberCoreMain.GetInstance().SQL
+                .executeSelect($"SELECT * FROM `EPD` WHERE player = '{Username}'");
+            if (a.Count != 0)
+            {
+                CyberCoreMain.Log.Info($" Loading Extra Player Data for {Username}");
+                EPD = new ExtraPlayerData(this,a[0]);
+                return;
+            }
+            EPD = new ExtraPlayerData(this);
+            CyberCoreMain.Log.Info($" Extra Player Data NOTTTTTT FOUND DDDD for {Username}");
+        }
+
+        protected override void OnTicked(PlayerEventArgs e)
+        {
+            base.OnTicked(e);
+            onUpdate(CyberUtils.getTick());
+        }
+
+        public void onUpdate(long currentTick)
         {
             //Check for Faction!
             if (currentTick % 5 == 0) //Only allows 4 Ticks per Sec
@@ -1767,7 +1805,31 @@ namespace CyberCore
                     if (Combat != null)
                         if (Combat.getTick() < currentTick) //No Long in combat
                             leaveCombat();
-
+                    var epd = GetCooldown(Cooldown_EPD, true);
+                    if (epd == null)
+                    {
+                        AddCoolDown(Cooldown_EPD,60*5);//5 Mins
+                        if (EPD != null)
+                        {
+                            EPD.upload();
+                        }
+                        else
+                        {
+                            EPD = new ExtraPlayerData(this);
+                        }
+                    }var epd1 = GetCooldown(Cooldown_EPD_Valid, true);
+                    if (epd1 == null)
+                    {
+                        AddCoolDown(Cooldown_EPD_Valid,30);//5 Mins
+                        if (EPD != null)
+                        {
+                            EPD.update();
+                        }
+                        else
+                        {
+                            EPD = new ExtraPlayerData(this);
+                        }
+                    }
                     //            CyberCoreMain.Log.info("RUNNNING "+CDL.size());
                     var fc = GetCooldown(Cooldown_Faction, true);
                     if (fc == null)

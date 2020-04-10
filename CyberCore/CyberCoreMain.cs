@@ -38,6 +38,7 @@ namespace CyberCore
         {
             // s.ServerManager = new CyberTechServerManager(s);
             s.PlayerFactory = new CyberPlayerFactory(API);
+            Console.WriteLine("================Executed startup successfully. Replaced identity managment=========================");
             Log.Info("================Executed startup successfully. Replaced identity managment=========================");
             
         }
@@ -81,7 +82,10 @@ namespace CyberCore
         {
             MasterConfig = new CustomConfig(this, "Master");
             instance = this;
+            RF = new RankFactory(this);
             ServerSQL = new ServerSqlite(this);
+            UserSQL = new UserSQL(this);
+            ClassFactory = new ClassFactory(this);
             WarpManager = new WarpManager(this);
             // MasterConfig = new Dictionary<String,Object>() {ConfigFileName = "MasterConfig.conf"};
         }
@@ -164,6 +168,12 @@ namespace CyberCore
         public override void Enabled(OpenApi api)
         {
             API = api;
+            
+            API.OpenServer.PlayerFactory = new CyberPlayerFactory(API);
+            Console.WriteLine("================Executed startup successfully. Replaced identity managment=========================");
+            Log.Info("================Executed startup successfully. Replaced identity managment=========================");
+
+            
             SQL = new SqlManager(this);
             FM = new FactionsMain(this);
             
@@ -274,7 +284,7 @@ namespace CyberCore
         }
 
 
-        public Rank getPlayerRank(Player p) {
+        public Rank getPlayerRank(CorePlayer p) {
             return RF.getPlayerRank(p);
         }
     }

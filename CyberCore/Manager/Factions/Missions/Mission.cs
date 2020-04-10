@@ -102,8 +102,8 @@ namespace CyberCore.Manager.Factions.Missions
                         int bmeta = 0;
                         int bcount = 0;
                         if (key.contains("|")) {
-                            bid = int.parseInt(key.split("\\|")[0]);
-                            bmeta = int.parseInt(key.split("\\|")[1]);
+                            bid = int.parseInt(key.split("|")[0]);
+                            bmeta = int.parseInt(key.split("|")[1]);
                         } else {
                             bid = int.parseInt(key);
                         }
@@ -132,8 +132,8 @@ namespace CyberCore.Manager.Factions.Missions
                         int bmeta = 0;
                         int bcount = 0;
                         if (key.contains("|")) {
-                            bid = int.parseInt(key.split("\\|")[0]);
-                            bmeta = int.parseInt(key.split("\\|")[1]);
+                            bid = int.parseInt(key.split("|")[0]);
+                            bmeta = int.parseInt(key.split("|")[1]);
                         } else {
                             bid = int.parseInt(key);
                         }

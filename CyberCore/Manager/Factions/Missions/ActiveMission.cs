@@ -116,7 +116,7 @@ namespace CyberCore.Manager.Factions.Missions
             int min = a.Value;
             Item c;
             if(a.Key.Contains("|")){
-                c = ItemFactory.GetItem((short) int.Parse(a.Key.Split("\\|")[0]),(short) int.Parse(a.Key.Split("\\|")[1]));
+                c = ItemFactory.GetItem((short) int.Parse(a.Key.Split("|")[0]),(short) int.Parse(a.Key.Split("|")[1]));
             }else{
                 c = ItemFactory.GetItem((short) int.Parse(a.Key));
             }
@@ -152,7 +152,7 @@ namespace CyberCore.Manager.Factions.Missions
             int min = a.Value;
             Item c;
             if(a.Key.Contains("|")){
-                c = ItemFactory.GetItem((short) int.Parse(a.Key.Split("\\|")[0]),(short) int.Parse(a.Key.Split("\\|")[1]));
+                c = ItemFactory.GetItem((short) int.Parse(a.Key.Split("|")[0]),(short) int.Parse(a.Key.Split("|")[1]));
             }else{
                 c = ItemFactory.GetItem((short) int.Parse(a.Key));
             }

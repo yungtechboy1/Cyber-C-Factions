@@ -21,6 +21,10 @@ namespace CyberCore.Manager.Factions
         public FactionRank AllowedToWinthdraw { get; set; } = General;
         public FactionRank AllowedToSetHome { get; set; } = General;
 
+        public FactionPermSettingsData()
+        {
+            
+        }
         public FactionPermSettingsData(FactionPermSettings f)
         {
             AllowedToViewInbox = f.AllowedToClaim;
@@ -81,10 +85,10 @@ namespace CyberCore.Manager.Factions
 
         public FactionPermSettings(String i)
         {
-            String[] ii = i.Split("\\|");
-            if (ii.Length != 11)
+            String[] ii = i.Split("|");
+            if (ii.Length != 12)
             {
-                Console.WriteLine("Error importing factions settings! Expected length 10, got " + ii.Length);
+                Console.WriteLine("Error importing factions settings! Expected length 10, got " + ii.Length+"||"+ii);
                 return;
             }
 
@@ -118,6 +122,8 @@ namespace CyberCore.Manager.Factions
             FactionRank ash = getRankFromString(ii[9]);
             if (None.hasPerm(avi)) AllowedToViewInbox = ash;
 
+
+            
             try
             {
                 int iii = int.Parse(ii[10]);

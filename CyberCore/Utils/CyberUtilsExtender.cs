@@ -406,15 +406,6 @@ namespace CyberCore.Utils
             return fnt;
         }
 
-        public static ExtraPlayerData GetExtraPlayerData(this OpenPlayer p)
-        {
-            return CyberUtils.getExtraPlayerData(p);
-        }
-
-        public static ExtraPlayerData GetExtraPlayerData(this Player p)
-        {
-            return CyberUtils.getExtraPlayerData(p);
-        }
 
         public static bool hasEffect(this CorePlayer p, EffectType name)
         {

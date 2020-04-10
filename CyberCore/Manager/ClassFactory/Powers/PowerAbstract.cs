@@ -40,9 +40,9 @@ namespace CyberCore.Manager.ClassFactory.Powers
         private bool Active = false;
 
         //    private int PowerSuccessChance = 0;
-        private int _lasttick = -1;
+        private long _lasttick = -1;
         private double PowerSourceCost = 0;
-        private int DurationTick = -1;
+        private long DurationTick = -1;
         private bool Enabled = false;
         private bool AbilityActive = false;
         private ClassLevelingManagerStage SLM;
@@ -311,7 +311,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             if (lm.GetType() == typeof(ClassLevelingManagerXPLevel)) XLM = (ClassLevelingManagerXPLevel) lm;
         }
 
-        public int getDurationTick()
+        public long getDurationTick()
         {
             return DurationTick;
         }
@@ -692,7 +692,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //        return c;
 //    }
 
-        public  void handleTick(int tick)
+        public  void handleTick(long tick)
         {
 //        CyberCoreMain.Log.Error("Was LOG ||"+"PowerAbstract Call TICK");
 //        CyberCoreMain.Log.Error("Was LOG ||"+"PowerAbstract Call TICK 1");
@@ -862,7 +862,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             return PowerState.Idle;
         }
 
-        public void onTick(int tick)
+        public void onTick(long tick)
         {
             if (isHotbar())
             {

@@ -193,7 +193,7 @@ namespace CyberCore.Manager.Factions.Data
 
         public String[] splitKey(String key)
         {
-            return key.Split("\\|");
+            return key.Split("|");
         }
 
         public List<String> getFactionEnemy(String faction)

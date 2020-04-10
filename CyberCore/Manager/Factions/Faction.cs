@@ -131,7 +131,7 @@ namespace CyberCore.Manager.Factions
             onCreation();
             LC = new FactionLocalCache(this);
             // getSettings().setDisplayName(name, true);
-            addPlayer(p, FactionRankEnum.Leader);
+            if(p != null)addPlayer(p, FactionRankEnum.Leader);
         }
 
         public Faction(FactionsMain main, String name, bool newfac = false, String displayname = null)
@@ -911,9 +911,9 @@ namespace CyberCore.Manager.Factions
             /*int value = 0;
             if(lvl == null)return value;
             for(String plot: GetPlots()){
-            String key = plot.split("\\|")[0] + "|" + plot.split("\\|")[1];
-                int sx = int.parseInt(plot.split("\\|")[0]) << 4;
-                int sz = int.parseInt(plot.split("\\|")[1]) << 4;
+            String key = plot.split("|")[0] + "|" + plot.split("|")[1];
+                int sx = int.parseInt(plot.split("|")[0]) << 4;
+                int sz = int.parseInt(plot.split("|")[1]) << 4;
                 for (int x = 0; x < 64; x++) {
                     for (int y = 0; y < 128; y++) {
                         for (int z = 0; z < 64; z++) {
@@ -1027,7 +1027,7 @@ namespace CyberCore.Manager.Factions
         //     {
         //         String[] a = h.split("\\]");
         //         for (String aa in //         a) {
-        //             String[] h1 = aa.split("\\|");
+        //             String[] h1 = aa.split("|");
         //             if (h1.length == 5)
         //             {
         //                 try
@@ -1062,7 +1062,7 @@ namespace CyberCore.Manager.Factions
         //     }
         //     else
         //     {
-        //         String[] hhh = h.split("\\|");
+        //         String[] hhh = h.split("|");
         //         if (hhh.length == 5)
         //         {
         //             try

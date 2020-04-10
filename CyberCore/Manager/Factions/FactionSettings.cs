@@ -180,7 +180,8 @@ namespace CyberCore.Manager.Factions
                     return a;
                 }
 
-                CyberCoreMain.Log.Error("Error with Faction Settings Cache E39132!");
+                CyberCoreMain.Log.Error("Error with Faction Settings Cache E39132!>>"+r.Count);
+                // CyberCoreMain.Log.Error("Error with Faction Settings Cache E39132!>>"+r.Count+"|||"+r[0].Count);
                 return null;
             }
             catch (Exception e)
@@ -193,11 +194,15 @@ namespace CyberCore.Manager.Factions
         public void download()
         {
             Dictionary<String, Object> a = GetAllSettings();
-            foreach (var aa in a)
+            if (a == null)
             {
-                Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>"+aa.Key+"||"+aa.Value+"<<<<<<<<<<<<<<<<<<<<<<<");
+                CyberCoreMain.Log.Error($"Nothing to download for {getFaction()} From Settings!!!!!!E44345");
+                return;
             }
-            if (a == null) return;
+            // foreach (var aa in a)
+            // {
+            //     Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>"+aa.Key+"||"+aa.Value+"<<<<<<<<<<<<<<<<<<<<<<<");
+            // }
             setDisplayName((String) a["DisplayName"]);
             setMaxPlayers((int) a["MaxPlayers"]);
             Object p = a["PowerBonus"];
@@ -290,7 +295,7 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                getF().Main.CCM.SQL.Insert($"UPDATE `Settings` SET {key} = {val} WHERE `Name` LIKE '{getFaction()}'");
+                getF().Main.CCM.SQL.Insert($"UPDATE `Settings` SET {key} = '{val}' WHERE `Name` LIKE '{getFaction()}'");
                 CyberCoreMain.Log.Info("SUCCESSSSSSSSSSS with Faction PermSettings Cache E39942!BBBqzxcccBBB");
                 return;
             }
@@ -536,8 +541,13 @@ namespace CyberCore.Manager.Factions
                 CyberCoreMain.Log.Error("WARNING!!!!!! "+Faction+" IS USING OUTDATED PERMSETTING!!!!");
                 PermSettings = new FactionPermSettings(a);
             }
-            else setPermSettings(JsonConvert.DeserializeObject<FactionPermSettingsData>(a), update);
-            if (update) UpdateSettingsValue("Perm", JsonConvert.SerializeObject(PermSettings.export()));
+            else
+            {
+                var z = JsonConvert.DeserializeObject<FactionPermSettingsData>(a);
+                CyberCoreMain.Log.Error("TYPE >>>>>>>>> 123 >>>>>>>"+z+"|||||"+z.GetType());
+                setPermSettings(z, update);
+            }
+            // if (update) UpdateSettingsValue("Perm", JsonConvert.SerializeObject(PermSettings.export()));
         }
         public void setPermSettings(FactionPermSettingsData a, bool update)
         {

@@ -707,7 +707,7 @@ namespace CyberCore.Manager.AuctionHouse
         public AuctionItemData AddItemForSale(AuctionItemData data)
         {
             if (data.getMasterid() != -1)
-                CCM.SQL.Insert($"DELETE FROM `AuctionHouse` WHERE `master_id` == ' {data.getMasterid()}'");
+                CCM.SQL.Insert($"DELETE FROM `AuctionHouse` WHERE `master_id` = ' {data.getMasterid()}'");
             String fnt = "";
             var a = new NbtFile();
             a.BigEndian = false;
