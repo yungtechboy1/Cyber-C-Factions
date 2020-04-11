@@ -16,7 +16,7 @@ namespace CyberCore.Manager.Factions
         public override bool HasPermission(FactionPermissionAttribute attr, OpenPlayer player)
         {
             if (!Manager.isPlayerInFaction(player)) return false;
-            var r = Manager.getPlayerFaction(player).getPlayerRank(player);
+            var r = Manager.getPlayerRank(player.toCorePlayer());
             return r.hasPerm(attr.Permission.toFactionRank());
         }
     }

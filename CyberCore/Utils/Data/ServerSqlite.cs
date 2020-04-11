@@ -58,7 +58,7 @@ namespace CyberCore.Utils.Data
                 Faction f = Plugin.FM.FFactory.getPlayerFaction(p);
                 if (f != null)
                 {
-                    Plugin.FM.FFactory.FacList.Add(p.getName().ToLower(), f.getName());
+                    Plugin.FM.FFactory.FacList[p.getName().ToLower()]= f.getName();
                     // p. = f.getName();
                 }
             }

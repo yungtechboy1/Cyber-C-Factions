@@ -20,6 +20,10 @@ namespace CyberCore.Utils
 
         public static Faction getFaction(this Player c)
         {
+            return CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction((CorePlayer)c);
+        }
+        public static Faction getFaction(this CorePlayer c)
+        {
             return CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction(c);
         }
 

@@ -1013,14 +1013,25 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public Faction getPlayerFaction(Player p)
+        public FactionRank getPlayerRank(CorePlayer p)
         {
+            var f = getPlayerFaction(p);
+            if (f == null) return FactionRank.None;
+            var a = f.getPlayerRank(p);
+            return a;
+        }
+        public Faction getPlayerFaction(CorePlayer p)
+        {
+            p.Faction = null;
             String f = null;
             if (FacList.ContainsKey(p.Username.ToLower())) f = FacList[p.Username.ToLower()];
             if (f == null) f = GetFactionFromMember(p.Username);
             Console.WriteLine("FACCCCC >>>>>>> " + f);
             if (string.IsNullOrEmpty(f)) return null;
-            return getFaction(f);
+            FacList[p.Username.ToLower()] = f;
+            var ff = getFaction(f);
+            p.Faction = ff.getName();
+            return ff;
         }
 
         public String GetFactionFromMember(String faction)
@@ -1033,7 +1044,7 @@ namespace CyberCore.Manager.Factions
                 if (r == null) return null;
                 while (r.Count != 0)
                 {
-                    return CyberUtilsExtender.GetString(r, "faction").ToLower();
+                    return r.GetString("faction").ToLower();
                 }
 
                 return null;
