@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Numerics;
 using System.Threading.Tasks;
+using CyberCore.Manager.Factions.Data;
 using CyberCore.Manager.Factions.Missions;
 using CyberCore.Manager.Factions.Windows;
 using CyberCore.Utils;
@@ -100,7 +101,7 @@ namespace CyberCore.Manager.Factions
         private FactionLocalCache LC;
         private String War = null;
 
-        private Dictionary<String, Invitation> Invites = new Dictionary<String, Invitation>();
+        public Dictionary<String, FactionInviteData> Invites = new Dictionary<String, FactionInviteData>();
 
         //    private int MaxPlayers = 15;
 //    private Double PowerBonus = 1d;
@@ -1274,21 +1275,17 @@ namespace CyberCore.Manager.Factions
             return FactionsMain.GetInstance().FFactory.RM.isAllys(getName(), fac);
         }
 
-        public void AddInvite(Player player, long value, Player sender, FactionRank fr)
+        public void AddFactionInvite(CorePlayer player,FactionInviteData fid)
         {
-            if (!addRequest(RequestType.Faction_Invite, null, player, value, sender))
+            if (!addFactionInviteRequest(fid))
             {
                 player.SendMessage(
                     "Error sending Faction Invite Request! Please report Error 'E332FI' to an admin");
                 return;
             }
 
-            Invites[player.getName().ToLower()] =
-                new Invitation(getName(), player.getName(), sender.getName(), value, fr);
-
-
-            Main.CCM.SQL.Insert($"INSERT INTO `Requests` VALUES (null,{RequestType.Faction_Invite},'{getName()}'" +
-                                $",'{sender.getName()}','{player.getName()}','{fr.getName()}')");
+            Invites[fid.getPlayerName().ToLower()] = fid;
+            
         }
 
 //    public void SetInvite(Map<String, int> Invs) {
@@ -1302,15 +1299,14 @@ namespace CyberCore.Manager.Factions
         public void DelInvite(String name)
         {
             Main.CCM.SQL.Insert(
-                $"DELETE * from `Requests` where `faction` LIKE ' {getName()} ' AND `player` LIKE '{name}' AND `TYPE` = {RequestType.Faction_Invite};");
-
+                $"DELETE * from `FactionInvites` where `faction` LIKE '{getName()}' AND `target` LIKE '{name}';");
             Invites.Remove(name);
         }
 
         public bool AcceptInvite(Player p)
         {
             String name = p.getName();
-            Invitation i = HasInvite(name);
+            FactionInviteData i = HasInvite(name);
             if (i == null)
             {
                 //No Invite
@@ -1327,23 +1323,26 @@ namespace CyberCore.Manager.Factions
             }
 
             DelInvite(name);
-            FactionRank r = i.getRank();
-            switch (r.toEnum())
-            {
-                case FactionRankEnum.General:
-                    addPlayer(p, FactionRankEnum.General, i.getInvitedBy());
-                    break;
-                case FactionRankEnum.Member:
-                    addPlayer(p, FactionRankEnum.Member, i.getInvitedBy());
-                    break;
-                case FactionRankEnum.Officer:
-                    addPlayer(p, FactionRankEnum.Officer, i.getInvitedBy());
-                    break;
-                default:
-                case FactionRankEnum.Recruit:
-                    addPlayer(p, FactionRankEnum.Recruit, i.getInvitedBy());
-                    break;
-            }
+            FactionRank r = i.FacRank;
+            var rr = r.toEnum();
+            if (rr == FactionRankEnum.None || rr == FactionRankEnum.All) rr = FactionRankEnum.Recruit;
+            addPlayer(p, rr, i.getInvitedBy());
+            // switch (r.toEnum())
+            // {
+            //     case FactionRankEnum.General:
+            //         addPlayer(p, FactionRankEnum.General, i.getInvitedBy());
+            //         break;
+            //     case FactionRankEnum.Member:
+            //         addPlayer(p, FactionRankEnum.Member, i.getInvitedBy());
+            //         break;
+            //     case FactionRankEnum.Officer:
+            //         addPlayer(p, FactionRankEnum.Officer, i.getInvitedBy());
+            //         break;
+            //     default:
+            //     case FactionRankEnum.Recruit:
+            //         addPlayer(p, FactionRankEnum.Recruit, i.getInvitedBy());
+            //         break;
+            // }
 
             BroadcastMessage(FactionsMain.NAME + ChatColors.Green + name + " Has joined your faction!");
             return true;
@@ -1354,21 +1353,39 @@ namespace CyberCore.Manager.Factions
             DelInvite(name);
         }
 
-        public Invitation HasInvite(Player name)
+        public FactionInviteData HasInvite(Player name)
         {
             return HasInvite(name.getName());
         }
 
-        public Invitation HasInvite(String name)
+        public FactionInviteData HasInvite(String name)
         {
+            if (Invites.ContainsKey(name.ToLower()))
+            {
+                var i = Invites[name.ToLower()];
+                if (i.isValid())
+                {
+                    if(i.DoubleCheckMysql())return i;
+                    else
+                    {
+                        CyberCoreMain.Log.Error($"ERROR! Faction {getName()}'s Local Invites Dictionary had Values not Present in MYSQL!");
+                        CyberCoreMain.Log.Error($"ERROR! DATA: {i.getFaction()} | {i.getInvitedBy()} | {i.getPlayerName()} | {i.getTimeStamp()} | {i.FacRank}");
+                        Invites.Remove(name.ToLower());
+                    }
+                }
+            }
             var q = Main.CCM.SQL.executeSelect(
-                $"select * from `Requests` where `faction` LIKE '{getName()}' AND `player` LIKE '{name}' AND `TYPE` = {RequestType.Faction_Invite};");
+                $"select * from `FactionInvites` where `faction` LIKE '{getName()}' AND `target` LIKE '{name}';");
 
             foreach (var a in q)
             {
-                return new Invitation(getName(), name, q.GetString("player"),
-                    (long) q.GetInt64("expires"),
-                    getRankFromString(q.GetString("data")));  
+                var aa = new FactionInviteData( name, getName(),long.Parse(q.GetString("expires")),q.GetString("sender"),getRankFromString(q.GetString("rank")).toEnum());
+                if (!aa.isValid())
+                {
+                    Main.CCM.SQL.Insert("DELETE FROM `FactionInvites` WHERE `id` = " + a.GetInt32("id"));
+                    continue;
+                }
+                return aa;
             }
 
             return null;
@@ -1645,12 +1662,12 @@ namespace CyberCore.Manager.Factions
 
         public void AddAllyRequest(Faction fac)
         {
-            AddAllyRequest(fac, null, -1);
+            AddAllyRequest(fac, null, CyberUtils.getLongTime()+60*10);
         }
 
         public void AddAllyRequest(Faction fac, Player cp)
         {
-            AddAllyRequest(fac, cp, -1);
+            AddAllyRequest(fac, cp, CyberUtils.getLongTime()+60*10);
         }
 
         public List<AllyRequest> getAllyRequests()
@@ -1679,16 +1696,27 @@ namespace CyberCore.Manager.Factions
             return null;
         }
 
-        public bool addRequest(RequestType rt, Faction fac, Player player, long timeout, Player sender)
+        public bool addFactionInviteRequest(FactionInviteData fid)
         {
-            String sn = null;
-            String pn = null;
-            if (sender != null) sn = sender.getName();
-            if (player != null) pn = player.getName();
+            String sn = "null";
+            String pn = "null";
+            if (fid.getInvitedBy() != null) sn = "'"+fid.getInvitedBy()+"'";
+            if (fid.getPlayerName() != null) pn = "'"+fid.getPlayerName()+"'";
             Main.CCM.SQL.Insert(
-                $"INSERT INTO `Requests` VALUES (null,{rt.toEnum()},'{fac.getName()}','{getName()}',{timeout},'{sn}')");
+                $"INSERT INTO `FactionInvites` VALUES (null,{pn},{sn},'{getName()}','{fid.getTimeStamp()}','{fid.FacRank.toEnum().ToString()}')");
             return true;
         }
+        
+        // private bool addRequest(RequestType rt, Faction fac, Player player, long timeout, Player sender)
+        // {
+        //     String sn = null;
+        //     String pn = null;
+        //     if (sender != null) sn = sender.getName();
+        //     if (player != null) pn = player.getName();
+        //     Main.CCM.SQL.Insert(
+        //         $"INSERT INTO `Requests` VALUES (null,'{rt.toEnum()}','{fac.getName()}','{getName()}',{timeout},'{sn}')");
+        //     return true;
+        // }
 
         /**
      * Adds ally request to this faction
@@ -1697,29 +1725,14 @@ namespace CyberCore.Manager.Factions
      * @param player  The Player who snet the Invite
      * @param timeout DateTimem to String when request expires
      */
-        public void AddAllyRequest(Faction fac, Player player, int timeout)
+        public void AddAllyRequest(Faction fac, Player player, long timeout)
         {
-            if (!addRequest(RequestType.Ally, fac, null, timeout, player))
-            {
-                player.SendMessage("Error sending Ally Request! Please report Error 'E332RA' to an admin");
-                return;
-            }
-
-            //        Connection c = CyberCoreMain.GetInstance().FM.FFactory.getMySqlConnection();
-//        try {
-//            Statement s = c.createStatement();
-//            //1 = Ally Request
-//            //0 = Friend Request
-//            //2 = ?????
-//            //CyberCoreMain.GetInstance().getIntTime
-//            s.executeQuery(String.format("INSERT INTO `Requests` VALUES (null,1,'%s',null,'%s'," + timeout + ")", fac.getName(), getName(), timeout));
-//            c.close();
-////        Main.FFactory.allyrequest.put(getName(), fac.getName());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            player.SendMessage("Error sending Ally Request! Please report Error 'E332R' to an admin");
-//            return;
-//        }
+            String pn = null;
+            if (player != null) pn = player.getName();
+            Main.CCM.SQL.Insert(
+                $"INSERT INTO `FactionInvitesAlly` VALUES (null,'{fac.getName()}','{getName()}','{timeout}','{pn}')");
+            // return true;
+            
 
 
             BroadcastMessage(ChatColors.Aqua + "[ArchFactions] " + fac.getSettings().getDisplayName() +

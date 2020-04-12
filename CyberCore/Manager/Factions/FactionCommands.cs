@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CyberCore.Manager.Factions.Windows;
@@ -33,7 +35,7 @@ namespace CyberCore.Manager.Factions
 
         [Command(Name = "f create", Description = "Create a new faction")]
         // [FactionPermission(FactionRankEnum.None)]
-        public void FCreate(OpenPlayer p)
+        public void FCreate(CorePlayer p)
         {
             if (p is CorePlayer)
             {
@@ -62,16 +64,57 @@ namespace CyberCore.Manager.Factions
             CyberCoreMain.Log.Error("==========================================");
             CyberCoreMain.Log.Error(m);
             CyberCoreMain.Log.Error(invited);
-            CyberCoreMain.Log.Error(invited.Entities.Length);
+            // CyberCoreMain.Log.Error(invited.Entities.Length);
             CyberCoreMain.Log.Error(invited.Players.Length);
             CyberCoreMain.Log.Error(invited.Rules.Length);
             CyberCoreMain.Log.Error(invited.Selector.Length);
             CyberCoreMain.Log.Error("==========================================");
         }
 
-        [Command(Name = "f invite", Description = "Create a new faction")]
-        public void FInvite(CorePlayer Sender, CorePlayer invited)
+        [Command(Name = "f accept",Aliases =  new String[]{
+            "f deny",
+            "f invites"
+        },Description = "View/Accept/Deny Faction Invites (Must not currently be in a faction)")]
+        public void OpenFactionInvites(CorePlayer Sender)
         {
+            if (Sender.getFaction() != null)
+            {
+                var fac = Manager.getPlayerFaction(Sender);
+            }
+            Sender.showFormWindow(new FactionInvitesWindow(Sender));
+        }
+        
+        // [Command]
+                    // public string CmdTarget(Target t)
+                    // {
+                    //     return $"{t}";
+                    // }
+                    // [Command]
+                    // public string TestTest2(OpenPlayer p, OpenPlayer pp)
+                    // {
+                    //     return $"{p} | {pp}";
+                    // }
+                    [Command]
+                    public string TestTest3(Player p, Player pp)
+                    {
+                        return $"{p} | {pp}";
+                    }
+                    [Command]
+                    public string TestTest4(CorePlayer p, Player pp)
+                    {
+                        return $"{p.Username} | {pp.Username}";
+                    }
+                    // [Command]
+                    // public string TestTest(CorePlayer p, CorePlayer pp)
+                    // {
+                    //     return $"{p} | {pp}";
+                    // }
+        
+        [Command(Name = "f invite", Description = "Create a new faction")]
+        public void FInvite(CorePlayer Sender, Target invite)
+        {
+            // var Sender = (CorePlayer) Sende;
+            var invited = (CorePlayer) invite.getPlayer();
             if (invited == null)
             {
                 Sender.SendMessage(FactionErrorString.Error_CMD_Invite_UnableToFindPlayer.getMsg() +
@@ -85,7 +128,20 @@ namespace CyberCore.Manager.Factions
                 Sender.SendMessage(FactionErrorString.Error_CMD_Invite_PlayerInFaction.getMsg());
                 return;
             }
+            
 
+            var fac = Sender.getFaction();
+            if (fac == null)
+            {
+                Sender.SendMessage(FactionErrorString.Error_NotInFaction.getMsg());
+                return;
+            }
+
+            if (!Sender.getFactionRank().hasPerm(fac.getPermSettings().AllowedToInvite))
+            {
+                Sender.SendMessage(FactionErrorString.Error_No_Permission.getMsg()+$" You must be {fac.getPermSettings().AllowedToInvite.Id.ToString()}");
+                return;
+            }
             Sender.showFormWindow(new FactionInviteChooseRank(Sender, invited));
         }
 

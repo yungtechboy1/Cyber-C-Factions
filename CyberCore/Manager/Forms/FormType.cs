@@ -66,7 +66,8 @@
         Faction_Leave_Confirm,
         Faction_Home,
         Faction_Settings_Window,
-        Faction_Invite_Choose_Rank
+        Faction_Invite_Choose_Rank,
+        Faction_View_Invites
     }
 
     public enum SubMenu

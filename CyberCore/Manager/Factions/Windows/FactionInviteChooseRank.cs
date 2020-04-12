@@ -16,7 +16,9 @@ namespace CyberCore.Manager.Factions.Windows
             Target = target;
             Content = "Now please choose what rank you would like to invite " + target.getName() +
                       " to your faction as:";
-            addButton("Recruit", delegate(Player player, SimpleForm form)
+            var fac = inviter.getFaction();
+            var pr = inviter.getFactionRank();
+            if(pr.hasPerm(FactionRank.Recruit))addButton("Recruit", delegate(Player player, SimpleForm form)
             {
                 var cp = (CorePlayer) player;
                 var f = (FactionInviteChooseRank) form;
@@ -28,7 +30,7 @@ namespace CyberCore.Manager.Factions.Windows
 
                 var _Fac = cp.getFaction();
                 CyberCoreMain.GetInstance().FM
-                    .PlayerInvitedToFaction(f.Target, (OpenPlayer) player, _Fac, FactionRank.Recruit);
+                    .PlayerInvitedToFaction(f.Target, (CorePlayer) player, _Fac, FactionRank.Recruit);
             });
             var p = inviter.getFaction().getPlayerRank(inviter);
             if (p.hasPerm(FactionRank.Member))
@@ -44,7 +46,7 @@ namespace CyberCore.Manager.Factions.Windows
 
                     var _Fac = cp.getFaction();
                     CyberCoreMain.GetInstance().FM
-                        .PlayerInvitedToFaction(f.Target, (OpenPlayer) player, _Fac, FactionRank.Member);
+                        .PlayerInvitedToFaction(f.Target, (CorePlayer) player, _Fac, FactionRank.Member);
                 });
 
             if (p.hasPerm(FactionRank.Officer))
@@ -60,7 +62,7 @@ namespace CyberCore.Manager.Factions.Windows
 
                     var _Fac = cp.getFaction();
                     CyberCoreMain.GetInstance().FM
-                        .PlayerInvitedToFaction(f.Target, (OpenPlayer) player, _Fac, FactionRank.Officer);
+                        .PlayerInvitedToFaction(f.Target, (CorePlayer) player, _Fac, FactionRank.Officer);
                 });
 
             if (p.hasPerm(FactionRank.General))
@@ -76,7 +78,7 @@ namespace CyberCore.Manager.Factions.Windows
 
                     var _Fac = cp.getFaction();
                     CyberCoreMain.GetInstance().FM
-                        .PlayerInvitedToFaction(f.Target, (OpenPlayer) player, _Fac, FactionRank.General);
+                        .PlayerInvitedToFaction(f.Target,  (CorePlayer) player, _Fac, FactionRank.General);
                 });
         }
 

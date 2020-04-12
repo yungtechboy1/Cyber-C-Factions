@@ -3,6 +3,8 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <Configurations>Debug;Release;LocalDebug</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

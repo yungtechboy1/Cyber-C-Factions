@@ -28,13 +28,13 @@ namespace CyberCore.Manager.Forms
         {
             FT = ttype;
             Buttons = bl;
-            Content = desc;
+            Title = desc;
         }
         public CyberFormSimple(MainForm ttype, String desc = "")
         {
             FT = ttype;
             Buttons = new List<Button>();
-            Content = desc;
+            Title = desc;
         }
 
         public void addButton(String txt,Action<Player, SimpleForm> a = null)

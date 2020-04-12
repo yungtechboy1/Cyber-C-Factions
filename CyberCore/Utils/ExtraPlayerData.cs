@@ -139,5 +139,16 @@ namespace CyberCore.Utils
                 main.SQL.Insert(
                     $"INSERT INTO `EPD` VALUES ('{Player.getName().ToLower()}','{z["FactionInviteData"]}','{z["InternalPlayerSettings"]}','{z["PlayerDetailedInfo"]}')");
             }
+
+        public void clearFactionInvites()
+        {
+            foreach (var fid in FactionInviteData)
+            {
+                CyberCoreMain.GetInstance().SQL
+                    .Insert(
+                        $"DELETE FROM `FactionInvites` WHERE expires LIKE '{fid.getTimeStamp()}' AND target LIKE '{fid.getPlayerName()}' AND faction LIKE '{fid.getFaction()}' AND rank LIKE '{fid.FacRank}'");
+            }
+            FactionInviteData.Clear();
         }
+    }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using CyberCore.Utils;
 using log4net;
 using MiNET;
 using MiNET.Utils;
@@ -38,18 +39,17 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                int i = int.Parse(a);
-                foreach (FactionRank f in Enum.GetValues(typeof(FactionRank)))
+                foreach (FactionRankEnum f in Enum.GetValues(typeof(FactionRankEnum)))
                 {
-                    if ((int) f.Id == i) return f;
+                    if (f.ToString().equalsIgnoreCase(a)) return f.toFactionRank();
                 }
 
-                CyberCoreMain.Log.Error("Error Parsing ");
+                CyberCoreMain.Log.Error("Error Parsing <<<<<<<<<<<<<<<<<<<<<<<<<<111");
                 return FactionRank.Recruit;
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error attempting to parse Rank String to Int to Rank");
+                Console.WriteLine("Error attempting to parse Rank String to Int to Rank<<<<<<<<<<<<<<<<22222");
                 return FactionRank.Recruit;
             }
         }
@@ -65,12 +65,12 @@ namespace CyberCore.Manager.Factions
                     if ((int) f.Id == i) return f;
                 }
 
-                CyberCoreMain.Log.Error("Error Parsing ");
+                CyberCoreMain.Log.Error("Error Parsing44444444444444 ");
                 return FactionRank.Recruit;
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error attempting to parse Rank String to Int to Rank");
+                Console.WriteLine("Error attempting to parse Rank String to Int to Rank22223333333333");
                 return FactionRank.Recruit;
             }
         }
@@ -182,7 +182,7 @@ namespace CyberCore.Manager.Factions
 
         public String GetChatPrefix()
         {
-            switch ((int)Id)
+            switch ((int) Id)
             {
                 case 0:
                     return ChatColors.Gray + "R";

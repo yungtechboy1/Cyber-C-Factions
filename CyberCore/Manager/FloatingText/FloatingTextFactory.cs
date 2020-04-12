@@ -116,7 +116,7 @@ namespace CyberCore.Manager.FloatingText
             long lasttick = -1;
 //        CyberCoreMain.Log.Error("Was LOG ||"+"11111111111111111111");
 //CyberCoreMain.Log.Error("Was LOG ||"+"======");
-            long tick = CyberUtils.getLongTime();
+            long tick = CyberUtils.getTick();
             if (tick != lasttick)
             {
 //                CyberCoreMain.Log.Error("Was LOG ||"+"||||||||======");
@@ -143,7 +143,7 @@ namespace CyberCore.Manager.FloatingText
 // if (ftlt >= tick) continue;
 
                     List<String> ap = new List<String>();
-                    List<Player> app = new List<Player>();
+                    List<CorePlayer> app = new List<CorePlayer>();
                     //For Each player with pos
 //                    for (String player : ppss.keySet()) {
 //                    CyberCoreMain.Log.Error("Was LOG ||"+"ERroror >> 1");
@@ -186,7 +186,7 @@ namespace CyberCore.Manager.FloatingText
                         if (!a.Lvl.equalsIgnoreCase(p.Level.LevelName)) //Not same World & 100+ Blocks away
                             continue;
                         ap.Add(player);
-                        app.Add(p);
+                        app.Add((CorePlayer) p);
 //                        CyberCoreMain.Log.Error("Was LOG ||"+"AP");
                         //Remove Player we just added cuz We dont need to remove the FT particle from them!
                         if (FTLastSentToRmv[a.EntityId].Count > 0) FTLastSentToRmv[a.EntityId].Remove(player);
@@ -262,12 +262,12 @@ namespace CyberCore.Manager.FloatingText
             }
         }
 
-        public String FormatText(String text, Player player)
+        public String FormatText(String text, CorePlayer player)
         {
             return FormatText(text, player, false);
         }
 
-        public String FormatText(String text, Player player, bool vertical)
+        public String FormatText(String text, CorePlayer player, bool vertical)
         {
 //        if(text == null)CyberCoreMain.Log.Error("Was LOG ||"+"----0");
 //        if(CCM == null)CyberCoreMain.Log.Error("Was LOG ||"+"----1");
@@ -277,7 +277,7 @@ namespace CyberCore.Manager.FloatingText
 //        CyberCoreMain.Log.Error("Was LOG ||"+"----5"+CCM.getServer().getTicksPerSecondAverage());
 //        CyberCoreMain.Log.Error("Was LOG ||"+"----6"+text);
             text = text.Replace("{online-players}", "" + CCM.getAPI().PlayerManager.GetPlayers().Length)
-                .Replace("{ticks}", 20 + "") //TODO
+                .Replace("{ticks}", CyberCoreMain.GetInstance().getTicksPerSecond()+"") //TODO
                 .Replace("`", "\n")
                 .Replace("{&}", ChatColors.LightPurple + "");
             if (player != null) text = text.Replace("{name}", player.getName());
@@ -288,7 +288,8 @@ namespace CyberCore.Manager.FloatingText
                 String pf = "No Faction";
                 if (CCM.FM != null)
                 {
-                    pf = CCM.FM.getPlayerFaction(player.getName());
+                    var ff = CCM.FM.FFactory.getPlayerFaction(player);
+                    if(ff != null)pf = ff.getDisplayName();
                     if (pf == null) pf = "No Faction";
                 }
 

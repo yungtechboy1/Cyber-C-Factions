@@ -177,8 +177,8 @@ namespace CyberCore.Utils
         }
         public static long getLongTime()
         {
-            return getTick();
-            // return DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
+            // return getTick();
+            return DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
         }
 
         // public static int convertBinaryToDecimal(String number) {

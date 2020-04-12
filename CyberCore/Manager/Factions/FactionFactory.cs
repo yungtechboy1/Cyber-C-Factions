@@ -1027,7 +1027,11 @@ namespace CyberCore.Manager.Factions
             if (FacList.ContainsKey(p.Username.ToLower())) f = FacList[p.Username.ToLower()];
             if (f == null) f = GetFactionFromMember(p.Username);
             Console.WriteLine("FACCCCC >>>>>>> " + f);
-            if (string.IsNullOrEmpty(f)) return null;
+            if (string.IsNullOrEmpty(f))
+            {
+                p.Faction = null;
+                return null;
+            }
             FacList[p.Username.ToLower()] = f;
             var ff = getFaction(f);
             p.Faction = ff.getName();

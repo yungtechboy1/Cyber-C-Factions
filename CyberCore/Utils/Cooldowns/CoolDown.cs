@@ -57,7 +57,7 @@ namespace CyberCore.Utils.Cooldowns
 
         public CoolDown setTimeSecs(long secs, int mins = 0, int hrs = 0)
         {
-            setTime(CyberUtils.getLongTime() + secs*20 + (60 * mins*20) + (60 * 60 * hrs*20));
+            setTime(CyberUtils.getLongTime() + secs + (60 * mins) + (60 * 60 * hrs));
             return this;
         }
 

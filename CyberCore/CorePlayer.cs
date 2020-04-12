@@ -2554,5 +2554,12 @@ namespace CyberCore
                 return getTick(CombatTime);
             }
         }
+
+        public FactionRank getFactionRank()
+        {
+            var f = getFaction();
+            if(f== null)return FactionRank.None;
+            return f.getPlayerRank(this);
+        }
     }
 }

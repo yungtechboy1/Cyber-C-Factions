@@ -11,7 +11,7 @@ namespace CyberCore.Manager.Factions.Data
         long TimeStamp = -1;
         String Faction;
         String InvitedBy;
-        FactionRank FacRank;
+        public FactionRank FacRank;
 
         public FactionInviteData(String playerName, String faction, long timeStamp = -1, String invitedBy = null,
             FactionRankEnum fr = FactionRankEnum.Recruit)
@@ -56,6 +56,48 @@ namespace CyberCore.Manager.Factions.Data
         public bool isValid()
         {
             return CyberUtils.getLongTime() < TimeStamp;
+        }
+
+        public FailReason failReason = FailReason.None;
+
+        public enum FailReason
+        {
+            None,
+            Request_Not_In_Faction,
+            Request_Not_In_MySQL
+        }
+        
+        public bool DoubleCheckFaction()
+        {
+            var f = CyberCoreMain.GetInstance().FM.FFactory.getFaction(Faction);
+            if (f != null)
+            {
+                var a = f.Invites[getPlayerName().ToLower()];
+                if (a != null)
+                {
+                    if (a.DoubleCheckMysql())
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        a.failReason = FailReason.Request_Not_In_MySQL;
+                        a.TimeStamp = 0;
+                    }
+                }
+                else
+                    return true;
+
+            }
+
+            return false;
+        }
+        public bool DoubleCheckMysql()
+        {
+            var a = CyberCoreMain.GetInstance().SQL
+                .executeSelect(
+                    $"SELECT * FROM `FactionInvites` WHERE expires LIKE '{TimeStamp}' AND target LIKE '{PlayerName}' AND faction LIKE '{Faction}' AND rank LIKE '{FacRank}'");
+            return (a.Count != 0);
         }
     }
 }

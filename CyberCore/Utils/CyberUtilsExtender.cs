@@ -11,6 +11,8 @@ using MiNET.Items;
 using MiNET.UI;
 using MiNET.Utils;
 using OpenAPI.Player;
+using Org.BouncyCastle.Asn1.X509;
+using Target = MiNET.Plugins.Target;
 
 namespace CyberCore.Utils
 {
@@ -190,6 +192,16 @@ namespace CyberCore.Utils
             return i;
         }
 
+        public static Player getPlayer(this Target t)
+        {
+            if (t.Players != null && t.Players.Length != 0)
+            {
+                return t.Players[0];
+            }
+
+            return null;
+        }
+        
         public static Item addLore(this Item i, params string[] lines)
         {
             var tag = getDisplayCompound(i);

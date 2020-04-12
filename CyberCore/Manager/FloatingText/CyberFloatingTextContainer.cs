@@ -164,7 +164,7 @@ namespace CyberCore.Manager.FloatingText
 //
 //    }
 
-        public string GetText(Player p, bool vertical = false)
+        public string GetText(CorePlayer p, bool vertical = false)
         {
             return FTF.FormatText(Syntax, p, vertical);
         }
@@ -181,8 +181,8 @@ namespace CyberCore.Manager.FloatingText
             foreach (var pn in ap)
             {
                 OpenPlayer p;
-                if (FTF.API.PlayerManager.TryGetPlayer(pn, out p)) continue;
-                foreach (var dp in encode(p)) p.SendPacket(dp);
+                if (!FTF.API.PlayerManager.TryGetPlayer(pn, out p)) continue;
+                foreach (var dp in encode((CorePlayer) p)) p.SendPacket(dp);
             }
 
             _CE_Lock = false;
@@ -208,7 +208,7 @@ namespace CyberCore.Manager.FloatingText
         }
 
         //Generate Flaoting Text for following players
-        public void HaldleSendP(List<Player> ap)
+        public void HaldleSendP(List<CorePlayer> ap)
         {
 //        CyberCoreMain.Log.Error("Was LOG ||"+"HS");
 //        List<Packet> tosend = new List<>();
@@ -244,7 +244,7 @@ namespace CyberCore.Manager.FloatingText
             }
         }
 
-        public List<Packet> encode(Player p)
+        public List<Packet> encode(CorePlayer p)
         {
             var packets = new List<Packet>();
 

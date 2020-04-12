@@ -113,7 +113,6 @@
             <e p="FactionRank.cs" t="Include" />
             <e p="FactionSettings.cs" t="Include" />
             <e p="FactionsMain.cs" t="Include" />
-            <e p="Invitation.cs" t="Include" />
             <e p="Missions" t="Include">
               <e p="ActiveMission.cs" t="Include" />
               <e p="ActiveMissionData.cs" t="Include" />
@@ -131,6 +130,7 @@
               <e p="FactionCreate0Error.cs" t="Include" />
               <e p="FactionInviteChooseRank.cs" t="Include" />
               <e p="FactionInvited.cs" t="Include" />
+              <e p="FactionInvitesWindow.cs" t="Include" />
               <e p="HTP_0_Window.cs" t="Include" />
             </e>
           </e>
@@ -168,7 +168,7 @@
         </e>
         <e p="MasterListener.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
+          <e p="LocalDebug" t="Include">
             <e p="netcoreapp3.1" t="Include">
               <e p="CyberCore.AssemblyInfo.cs" t="Include" />
             </e>
