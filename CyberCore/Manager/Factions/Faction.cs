@@ -1284,6 +1284,7 @@ namespace CyberCore.Manager.Factions
                 return;
             }
 
+
             Invites[fid.getPlayerName().ToLower()] = fid;
             
         }
@@ -1296,14 +1297,17 @@ namespace CyberCore.Manager.Factions
 //        return Invites;
 //    }
 
-        public void DelInvite(String name)
+        public void DelInvite(CorePlayer p)
         {
+            var name = p.getName();
             Main.CCM.SQL.Insert(
                 $"DELETE * from `FactionInvites` where `faction` LIKE '{getName()}' AND `target` LIKE '{name}';");
+            var aa = Invites[name];
+            p.EPD.DeleteFactionInvite(aa);
             Invites.Remove(name);
         }
 
-        public bool AcceptInvite(Player p)
+        public bool AcceptInvite(CorePlayer p)
         {
             String name = p.getName();
             FactionInviteData i = HasInvite(name);
@@ -1318,11 +1322,11 @@ namespace CyberCore.Manager.Factions
             {
                 //Invite Timed out
                 p.SendMessage("Error! You're invite has expired!");
-                DelInvite(name);
+                DelInvite(p);
                 return false;
             }
 
-            DelInvite(name);
+            DelInvite(p);
             FactionRank r = i.FacRank;
             var rr = r.toEnum();
             if (rr == FactionRankEnum.None || rr == FactionRankEnum.All) rr = FactionRankEnum.Recruit;
@@ -1348,7 +1352,7 @@ namespace CyberCore.Manager.Factions
             return true;
         }
 
-        public void DenyInvite(String name)
+        public void DenyInvite(CorePlayer name)
         {
             DelInvite(name);
         }

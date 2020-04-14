@@ -13,13 +13,14 @@ namespace CyberCore.Utils
         private bool Active;
         public string ConnectionString;
 
-        public SqlManager(CyberCoreMain ccm)
+        public SqlManager(CyberCoreMain ccm, String key = "")
         {
+            if(key.Length != 0)key = "-"+key;
             CCM = ccm;
-            Host = CCM.MasterConfig.GetProperty("Host", null);
-            Username = CCM.MasterConfig.GetProperty("Username", null);
-            Password = CCM.MasterConfig.GetProperty("Password", null);
-            Database = CCM.MasterConfig.GetProperty("db-Server", null);
+            Host = CCM.MasterConfig.GetProperty("Host"+key, null);
+            Username = CCM.MasterConfig.GetProperty("Username"+key, null);
+            Password = CCM.MasterConfig.GetProperty("Password"+key, null);
+            Database = CCM.MasterConfig.GetProperty("db-Server"+key, null);
             Port = CCM.MasterConfig.GetProperty("Port", 3360);
             ConnectionString = $"SERVER={Host};port={Port};DATABASE={Database};user id={Username};PASSWORD={Password};";
             try

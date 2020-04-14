@@ -131,6 +131,7 @@
               <e p="FactionInviteChooseRank.cs" t="Include" />
               <e p="FactionInvited.cs" t="Include" />
               <e p="FactionInvitesWindow.cs" t="Include" />
+              <e p="FactionLeaveConfirmWindow.cs" t="Include" />
               <e p="HTP_0_Window.cs" t="Include" />
             </e>
           </e>
@@ -149,11 +150,10 @@
             <e p="FormType.cs" t="Include" />
           </e>
           <e p="Rank" t="Include">
-            <e p="Guest_Rank.cs" t="Include" />
-            <e p="Rank.cs" t="Include" />
+            <e p="Rank2.cs" t="Include" />
             <e p="RankFactory.cs" t="Include" />
             <e p="RankFactoryData.cs" t="Include" />
-            <e p="RankList.cs" t="Include" />
+            <e p="RankList2.cs" t="Include" />
           </e>
           <e p="Shop" t="Include">
             <e p="ShopInv.cs" t="Include" />
@@ -168,13 +168,14 @@
         </e>
         <e p="MasterListener.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
-          <e p="LocalDebug" t="Include">
+          <e p="Debug" t="Include">
             <e p="netcoreapp3.1" t="Include">
               <e p="CyberCore.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
         </e>
         <e p="PlayerSettingsData.cs" t="Include" />
+        <e p="ServerRankChecker.cs" t="Include" />
         <e p="Utils" t="Include">
           <e p="CacheChecker.cs" t="Include" />
           <e p="CenterText.cs" t="Include" />

@@ -49,6 +49,7 @@ namespace CyberCore
         public CustomConfig MasterConfig { get; set; }
         public FactionsMain FM { get; private set; }
         public SqlManager SQL { get; private set; }
+        public SqlManager WebSQL { get; private set; }
         public ServerSqlite ServerSQL { get; set; }
         public WarpManager WarpManager { get; set; }
         public ClassFactory ClassFactory { get; set; }
@@ -82,6 +83,8 @@ namespace CyberCore
         {
             MasterConfig = new CustomConfig(this, "Master");
             instance = this;
+            SQL = new SqlManager(this);
+            WebSQL = new SqlManager(this,"web");
             RF = new RankFactory(this);
             ServerSQL = new ServerSqlite(this);
             UserSQL = new UserSQL(this);
@@ -174,12 +177,12 @@ namespace CyberCore
             Log.Info("================Executed startup successfully. Replaced identity managment=========================");
 
             
-            SQL = new SqlManager(this);
             FM = new FactionsMain(this);
             
             AF = new AuctionFactory(this);
             api.EventDispatcher.RegisterEvents(new MasterListener());
             api.CommandManager.RegisterPermissionChecker(new FactionPermissionChecker(FM.FFactory));
+            api.CommandManager.RegisterPermissionChecker(new ServerRankChecker(this));
             api.CommandManager.LoadCommands(new FactionCommands(FM.FFactory));
 
             getServer().PlayerFactory.PlayerCreated += (sender, args) =>
@@ -279,12 +282,12 @@ namespace CyberCore
 
             return amt;
         }
-        public Rank getPlayerRank(String p) {
+        public Rank2 getPlayerRank(String p) {
             return getPlayerRank(getPlayer(p));
         }
 
 
-        public Rank getPlayerRank(CorePlayer p) {
+        public Rank2 getPlayerRank(CorePlayer p) {
             return RF.getPlayerRank(p);
         }
     }

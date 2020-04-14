@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using CyberCore.CustomEnums;
+using CyberCore.Manager.Factions;
 using CyberCore.Utils;
+using CyberCore.Utils.Cooldowns;
 using log4net;
 using MiNET;
+using Newtonsoft.Json.Linq;
 
 namespace CyberCore.Manager.Rank
 {
@@ -12,46 +16,166 @@ namespace CyberCore.Manager.Rank
     {
         public String DB_TABLE = "mcpe";
 
-        public Dictionary<String, int> RankCache = new Dictionary<String, int>();
+        //TODO Remove on leave
+        public Dictionary<String, Rank2> RankCache = new Dictionary<String, Rank2>();
+        public Dictionary<String, CoolDown> RankCacheCooldown = new Dictionary<String, CoolDown>();
         CyberCoreMain Main;
-        public Dictionary<String,Object> GARC = new Dictionary<String,Object>();
-        public Dictionary<String,Object> MRC = new Dictionary<String,Object>();
-        public Dictionary<String,Object> SRC = new Dictionary<String,Object>();
+        public RankList2 List;
 
-        public Dictionary<int, Rank> ranks = new Dictionary<int, Rank>();
+        public Dictionary<int, Rank2> ranks = new Dictionary<int, Rank2>();
 
-        public RankFactory(CyberCoreMain main,RankFactoryData r = null)
+        public RankFactory(CyberCoreMain main, RankFactoryData r = null)
         {
-            if(r == null)r = new RankFactoryData();
+            if (r == null) r = new RankFactoryData();
             Main = main;
-            loadRanks(r);
+            List = new RankList2(main);
+            // loadRanks(r);
         }
-
-        public void loadDefault()
-        {
-            ranks[RankList.PERM_GUEST.getID()] =  new Guest_Rank();
-        }
+        //
+        // public void loadDefault()
+        // {
+        //     ranks[RankList.PERM_GUEST.getID()] =  RankList2.GuestRank;
+        // }
 
         public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(RankFactory));
+
         public void loadRanks(RankFactoryData r)
         {
             CyberCoreMain.Log.Info("Loading Ranks...");
-            loadDefault(); 
-            ranks = r.ranks;
         }
 
-        public Rank getPlayerRank(CorePlayer p)
+        /// <summary>
+        /// CAN NOT EQUAL 0
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>0 for No and any value above 1 for true</returns>
+        public int getUserIDFromMCPEName(String name)
         {
-            String uuid = p.ClientUuid.ToString();
-            if (uuid == null) return new Guest_Rank();
-            if (RankCache.ContainsKey(uuid))
+            var a = Main.WebSQL.executeSelect(
+                $"SELECT * FROM `xf_user_field_value` WHERE `field_value` LIKE '{name}' AND `field_id` = CAST(0x6d6370656964 AS BINARY)");
+            if (a.Count > 0)
             {
-                var rid = RankCache[uuid];
-                if(!ranks.ContainsKey(RankCache[uuid]))return new Guest_Rank();
-                var r = ranks[rid];
-                return r;
+                return a[0].GetInt32("user_id");
             }
-            return new Guest_Rank();
+
+            return 0;
+        }
+
+        public int getUserIDFromMCPEUUID(String name)
+        {
+            var a = Main.WebSQL.executeSelect(
+                $"SELECT * FROM `xf_user_field_value` WHERE `field_value` LIKE '{name}' AND `field_id` = CAST(0x6d63706575756964 AS BINARY)");
+            if (a.Count > 0)
+            {
+                return a[0].GetInt32("user_id");
+            }
+
+            return 0;
+        }
+
+        public List<int> getRankIDsFromUserID(int id)
+        {
+            var l = new List<int>();
+            if (id == 0) return l;
+            var a = Main.WebSQL.executeSelect("SELECT * FROM `xf_user` WHERE `user_id` = " + id);
+            if (a.Count != 0)
+            {
+                l.Add(a.GetInt32("user_group_id"));
+                var z = a.GetString("secondary_group_ids");
+                if (z.Length > 0)
+                {
+                    var zz = z.Split(",");
+                    foreach (var zzz in zz)
+                    {
+                        int outt;
+                        if (int.TryParse(zzz, out outt))
+                        {
+                            l.Add(outt);
+                        }
+                    }
+                }
+            }
+
+            return l;
+        }
+
+        public Rank2 getPlayerRank(CorePlayer p)
+        {
+            if (p == null) return RankList2.GuestRank;
+            String uuid = p.ClientUuid.ToString();
+            String name = p.getName().ToLower();
+            if (RankCache.ContainsKey(name))
+            {
+                if (RankCacheCooldown.ContainsKey(name))
+                {
+                    var r = RankCacheCooldown[name];
+                    if (r.isValid()) return RankCache[name];
+                    RankCacheCooldown.Remove(name);
+                    RankCache.Remove(name);
+                }
+                else
+                {
+                    addCooldownToPlayer(name);
+                    return RankCache[name];
+                }
+            }
+
+            var uid1 = getUserIDFromMCPEName(name);
+            var uid2 = getUserIDFromMCPEUUID(name);
+            var a = getRankIDsFromUserID(uid1);
+            if (uid1 != uid2 && uid2 != 0)
+            {
+                var aa = getRankIDsFromUserID(uid2);
+                a.AddRange(aa);
+            }
+
+            var aaa = a.Distinct().ToList(); //Removes Duplicates
+            var rr = getAllRanksFromIntList(aaa);
+            var hr = getHigestRankFromList(rr);
+            if (hr == null) hr = RankList2.GuestRank;
+            RankCache[name] = hr;
+            addCooldownToPlayer(name);
+            return hr;
+            
+        }
+
+        public Rank2 getHigestRankFromList(List<Rank2> l)
+        {
+            Rank2 fr = null;
+            foreach (var r in l)
+            {
+                if (fr == null)
+                {
+                    fr = r;
+                    continue;
+                }
+
+                if (fr.Weight < r.Weight) fr = r;
+            }
+
+            return fr;
+        }
+
+        public List<Rank2> getAllRanksFromIntList(List<int> l)
+        {
+            var r = new List<Rank2>();
+            foreach (int a in l)
+            {
+                var v = List.getRankFromID(a);
+                if (v != null) r.Add(v);
+            }
+
+            return r;
+        }
+
+        public void addCooldownToPlayer(String name)
+        {
+            RankCacheCooldown[name] = getDefaultCooldown();
+        }
+        
+        public CoolDown getDefaultCooldown()
+        {
+            return new CoolDown(60 * 5); //5 Mins
         }
 
         public String GetRankStringFromGroup(String group)
@@ -95,45 +219,26 @@ namespace CyberCore.Manager.Rank
      *
      * @param rank Rank Name String
      * @return int
-     */
-        public int RankAdminRank(String rank)
+         */
+        public int RankAdminRank(string rank)
         {
             if (rank == null)
-            {
                 return 0;
-            }
-            else if (rank.equalsIgnoreCase("TMOD"))
-            {
+            if (rank.equalsIgnoreCase("TMOD"))
                 return 1;
-            }
-            else if (rank.equalsIgnoreCase("MOD1") || rank.equalsIgnoreCase("yt"))
-            {
+            if (rank.equalsIgnoreCase("MOD1") || rank.equalsIgnoreCase("yt"))
                 return 2;
-            }
-            else if (rank.equalsIgnoreCase("MOD2"))
-            {
+            if (rank.equalsIgnoreCase("MOD2"))
                 return 3;
-            }
-            else if (rank.equalsIgnoreCase("MOD3"))
-            {
+            if (rank.equalsIgnoreCase("MOD3"))
                 return 4;
-            }
-            else if (rank.equalsIgnoreCase("ADMIN1"))
-            {
+            if (rank.equalsIgnoreCase("ADMIN1"))
                 return 5;
-            }
-            else if (rank.equalsIgnoreCase("ADMIN2"))
-            {
+            if (rank.equalsIgnoreCase("ADMIN2"))
                 return 6;
-            }
-            else if (rank.equalsIgnoreCase("ADMIN3"))
-            {
+            if (rank.equalsIgnoreCase("ADMIN3"))
                 return 7;
-            }
-            else if (rank.equalsIgnoreCase("OP"))
-            {
-                return 8;
-            }
+            if (rank.equalsIgnoreCase("OP")) return 8;
 
             return 0;
         }

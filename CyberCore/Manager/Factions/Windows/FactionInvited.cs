@@ -36,7 +36,7 @@ namespace CyberCore.Manager.Factions.Windows
                 if (f == null)
                 {
                     //Accept
-                    if (f.AcceptInvite(player))
+                    if (f.AcceptInvite((CorePlayer) player))
                         player.SendMessage("Welcome to " + f.getDisplayName());
                     else
                         player.SendMessage("Error! Invite timed out!");

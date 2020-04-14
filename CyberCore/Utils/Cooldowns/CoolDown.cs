@@ -13,7 +13,7 @@ namespace CyberCore.Utils.Cooldowns
 
         public CoolDown(int t)
         {
-            Time = t;
+            setTimeSecs(t);
         }
 
         /***

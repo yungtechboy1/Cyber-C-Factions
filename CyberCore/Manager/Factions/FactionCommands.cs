@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using CyberCore.CustomEnums;
 using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.Forms;
 using CyberCore.Utils;
@@ -148,6 +149,32 @@ namespace CyberCore.Manager.Factions
         private bool IsValid(string value)
         {
             return Regex.IsMatch(value, @"^[a-zA-Z0-9]*$");
+        }
+
+        [Command(Name = "f admin", Description = "Admin Command")]
+        [ServerRankAttr(RankList.PERM_OP)]
+        [Command(Name = "f leave", Description = "Leave the faction that you are currently in")]
+        public void FLeave(CorePlayer Sender)
+        {
+            var fac = getFactionFromPlayer(Sender);
+            if (fac == null) return;
+            if (!fac.GetLeader().equalsIgnoreCase(Sender.getName())) {
+                Sender.showFormWindow(new FactionLeaveConfirmWindow(fac));
+            } else {
+                Sender.SendMessage(FactionsMain.NAME+"You are the leader of the faction... Please Do `/f del` if you wish to leave or pass leadership on to someone else!");
+            }
+        }
+
+        private Faction getFactionFromPlayer(CorePlayer p)
+        {
+            var fac = p.getFaction();
+            if (fac == null)
+            {
+                p.SendMessage(ChatColors.Red+"Error! You must be in a faction to use this Command!");
+            }
+
+            return fac;
+
         }
 
         [Command(Name = "f info", Description = "Usage '/f info [faction]' | View your Faction Info or Others")]

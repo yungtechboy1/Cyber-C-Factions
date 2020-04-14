@@ -83,8 +83,8 @@ namespace CyberCore
         public Dictionary<string, object> extraData = new Dictionary<string, object>();
         public string Faction;
         private int FactionCheck = -1;
-        public string FactionInvite;
-        public int FactionInviteTimeout = -1;
+        // public string FactionInvite;
+        // public int FactionInviteTimeout = -1;
         public int fixcoins = 0;
 
         public PlayerFactionSettings fsettings = new PlayerFactionSettings();
@@ -1810,31 +1810,32 @@ namespace CyberCore
                     if (Combat != null)
                         if (Combat.getTick() < currentTick) //No Long in combat
                             leaveCombat();
-                    var epd = GetCooldown(Cooldown_EPD, true);
-                    if (epd == null)
-                    {
-                        AddCoolDown(Cooldown_EPD,60*5);//5 Mins
-                        if (EPD != null)
-                        {
-                            EPD.upload();
-                        }
-                        else
-                        {
-                            EPD = new ExtraPlayerData(this);
-                        }
-                    }var epd1 = GetCooldown(Cooldown_EPD_Valid, true);
-                    if (epd1 == null)
-                    {
-                        AddCoolDown(Cooldown_EPD_Valid,30);//5 Mins
-                        if (EPD != null)
-                        {
-                            EPD.update();
-                        }
-                        else
-                        {
-                            EPD = new ExtraPlayerData(this);
-                        }
-                    }
+                    // var epd = GetCooldown(Cooldown_EPD, true);
+                    // if (epd == null)
+                    // {
+                    //     AddCoolDown(Cooldown_EPD,60*5);//5 Mins
+                    //     if (EPD != null)
+                    //     {
+                    //         EPD.upload();
+                    //     }
+                    //     else
+                    //     {
+                    //         EPD = new ExtraPlayerData(this);
+                    //     }
+                    // }
+                    // var epd1 = GetCooldown(Cooldown_EPD_Valid, true);
+                    // if (epd1 == null)
+                    // {
+                    //     AddCoolDown(Cooldown_EPD_Valid,30);//5 Mins
+                    //     if (EPD != null)
+                    //     {
+                    //         EPD.update();
+                    //     }
+                    //     else
+                    //     {
+                    //         EPD = new ExtraPlayerData(this);
+                    //     }
+                    // }
                     //            CyberCoreMain.Log.info("RUNNNING "+CDL.size());
                     var fc = GetCooldown(Cooldown_Faction, true);
                     if (fc == null)
@@ -1851,17 +1852,7 @@ namespace CyberCore
                         }
 
                         //Check to See if Faction Invite Expired
-                        if (FactionInvite != null && FactionInviteTimeout > 0)
-                        {
-                            long t = CyberUtils.getTick();
-                            if (t < FactionInviteTimeout)
-                            {
-                                Faction fac = CyberCoreMain.GetInstance().FM.FFactory.getFaction(FactionInvite);
-                                fac.BroadcastMessage(ChatColors.Yellow + Username +
-                                                     " has declined your faction invite due to them not responding!");
-                                ClearFactionInvite(true);
-                            }
-                        }
+                        EPD.update();
                     }
 
                     //Delay Teleport
@@ -2289,21 +2280,6 @@ namespace CyberCore
 //
 //        return true;
 //    }
-
-        public void ClearFactionInvite(bool fromfac)
-        {
-            if (fromfac)
-            {
-                Faction f = CyberCoreMain.GetInstance().FM.FFactory.getFaction(FactionInvite);
-                if (f != null)
-                    f.DelInvite(Username.ToLower());
-                else
-                    CyberCoreMain.Log.Error("ERROR! Faction from CorePlayer invite not found! E3333");
-            }
-
-            FactionInvite = null;
-            FactionInviteTimeout = -1;
-        }
 
 
         public HungerManager getFoodData()

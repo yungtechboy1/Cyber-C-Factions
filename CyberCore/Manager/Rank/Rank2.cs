@@ -1,22 +1,26 @@
 ﻿using System;
 
-namespace CyberCore.CustomEnums
+namespace CyberCore.Manager.Rank
 {
-    public struct RankList
+    public class Rank2
     {
-        public static readonly RankList PERM_GUEST = new RankList(0, "Guest");
-        public static readonly RankList PERM_MEMBER = new RankList(1, "Member");
-        public static readonly RankList PERM_VIP = new RankList(3, "VIP");
-        public static readonly RankList PERM_OP = new RankList(20, "SuperOP");
-            
-        private RankList(int id, String name)
+        public String display_name = "";
+        public Rank2(int id, String name,int weight =-1)
         {
             Name = name;
+            Weight = weight;
             ID = id;
+            display_name = name;
             chat_prefix = "&7";
         }
 
+        public bool hasPerm(Rank2 r)
+        {
+            return Weight >= r.Weight;
+        }
+        
         public int ID { get; set; }
+        public int Weight { get; set; }
 
         public string Name { get; set; }
         public string chat_prefix { get; set; }
