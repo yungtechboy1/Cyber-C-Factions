@@ -58,7 +58,7 @@ namespace CyberCore
             CyberCoreMain.Log.Info("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS1111111");
             plugin.ServerSQL.LoadPlayer((CorePlayer) p);
             CyberCoreMain.Log.Info("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS1111111");
-            var rank = plugin.RF.getPlayerRank((CorePlayer) p).getDisplayName();
+            var rank = plugin.RF.getPlayerRank((CorePlayer) p).display_name;
             CyberCoreMain.Log.Info("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS1111111");
             p.SendMessage(CyberUtils.colorize("&2You Have Joined with the Rank: " + rank));
             CyberCoreMain.Log.Info("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS1111111");

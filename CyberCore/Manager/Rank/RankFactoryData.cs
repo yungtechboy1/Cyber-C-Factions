@@ -5,7 +5,7 @@ namespace CyberCore.Manager.Rank
 {
     public class RankFactoryData
     {
-        public Dictionary<int, Rank> ranks = new Dictionary<int, Rank>();
+        public Dictionary<int, Rank2> ranks = new Dictionary<int, Rank2>();
 
         public RankFactoryData(RankFactory r = null)
         {

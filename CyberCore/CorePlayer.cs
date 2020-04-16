@@ -113,7 +113,7 @@ namespace CyberCore
         public int money = 0;
 
         public bool MuteMessage = false;
-        private RankList rank = RankList.PERM_GUEST;
+        private Rank2 rank = RankList2.getInstance().getRankFromID(RankEnum.Guest);
         private PlayerSettingsData SettingsData;
         public ShopInv Shop = null;
         public SpawnerShop SpawnerShop = null;
@@ -638,12 +638,16 @@ namespace CyberCore
         }
 
 
-        public void SetRank(RankList r)
+        public void SetRank(RankEnum r)
+        {
+            rank = RankList2.getInstance().getRankFromID(r);
+        }
+        public void SetRank(Rank2 r)
         {
             rank = r;
         }
 
-        public RankList GetRank()
+        public Rank2 GetRank()
         {
             return rank;
         }
@@ -2174,11 +2178,11 @@ namespace CyberCore
             // TargetTeleporting = null;
             // TargetTeleportingLoc = pos;
         }
-
-        public void ClearFactionInvite()
-        {
-            ClearFactionInvite(false);
-        }
+        //
+        // public void ClearFactionInvite()
+        // {
+        //     ClearFactionInvite(false);
+        // }
 
 
 //

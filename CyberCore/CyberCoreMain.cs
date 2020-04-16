@@ -182,6 +182,7 @@ namespace CyberCore
             AF = new AuctionFactory(this);
             api.EventDispatcher.RegisterEvents(new MasterListener());
             api.CommandManager.RegisterPermissionChecker(new FactionPermissionChecker(FM.FFactory));
+            api.CommandManager.RegisterPermissionChecker(new FactionCommandChecker(this));
             api.CommandManager.RegisterPermissionChecker(new ServerRankChecker(this));
             api.CommandManager.LoadCommands(new FactionCommands(FM.FFactory));
 

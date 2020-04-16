@@ -306,7 +306,7 @@ namespace CyberCore.Manager.FloatingText
                 //KDR
                 Double kdr = kills / deaths; //Factions.GetKDR(player.getName());
                 String rank = "Guest|";
-                rank = CCM.getPlayerRank(player.getName()).getDisplayName();
+                rank = CCM.getPlayerRank(player.getName()).display_name;
                 if (rank == null) rank = "Guest";
 
                 String tps = "" + CCM.getTicksPerSecond();

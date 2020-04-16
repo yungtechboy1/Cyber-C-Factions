@@ -18,8 +18,12 @@ namespace CyberCore.Utils
 {
     public static class CyberUtilsExtender
     {
-        
 
+
+        public static bool IsNullOrEmpty(this String c)
+        {
+            return String.IsNullOrEmpty(c);
+        }
         public static Faction getFaction(this Player c)
         {
             return CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction((CorePlayer)c);

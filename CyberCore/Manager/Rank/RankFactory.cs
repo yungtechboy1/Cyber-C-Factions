@@ -101,7 +101,7 @@ namespace CyberCore.Manager.Rank
 
         public Rank2 getPlayerRank(CorePlayer p)
         {
-            if (p == null) return RankList2.GuestRank;
+            if (p == null) return RankList2.getInstance().getRankFromID(RankEnum.Guest);
             String uuid = p.ClientUuid.ToString();
             String name = p.getName().ToLower();
             if (RankCache.ContainsKey(name))
@@ -132,7 +132,7 @@ namespace CyberCore.Manager.Rank
             var aaa = a.Distinct().ToList(); //Removes Duplicates
             var rr = getAllRanksFromIntList(aaa);
             var hr = getHigestRankFromList(rr);
-            if (hr == null) hr = RankList2.GuestRank;
+            if (hr == null) hr = RankList2.getInstance().getRankFromID(RankEnum.Guest);
             RankCache[name] = hr;
             addCooldownToPlayer(name);
             return hr;

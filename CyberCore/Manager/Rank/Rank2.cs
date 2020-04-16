@@ -5,7 +5,7 @@ namespace CyberCore.Manager.Rank
     public class Rank2
     {
         public String display_name = "";
-        public Rank2(int id, String name,int weight =-1)
+        public Rank2(RankEnum id, String name,int weight =-1)
         {
             Name = name;
             Weight = weight;
@@ -18,16 +18,32 @@ namespace CyberCore.Manager.Rank
         {
             return Weight >= r.Weight;
         }
+        public bool hasPerm(RankEnum r)
+        {
+            var rr = RankList2.getInstance().getRankFromID(r);
+            if (rr == null) return true;
+            return Weight >= rr.Weight;
+        }
         
-        public int ID { get; set; }
+        
+        public Rank2 toRank2()
+        {
+            return (Rank2) this;
+        }
+        
+        public RankEnum ID { get; set; }
         public int Weight { get; set; }
 
         public string Name { get; set; }
         public string chat_prefix { get; set; }
 
-        public int getID()
+        public RankEnum getIdEnum()
         {
             return ID;
+        }
+        public int getID()
+        {
+            return (int) ID;
         }
 
         public string getName()

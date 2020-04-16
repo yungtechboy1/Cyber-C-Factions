@@ -992,26 +992,44 @@ namespace CyberCore.Manager.Factions
 
         public String factionPartialName(String name)
         {
-            try
+            String f = null;
+            int delta = Int32.MaxValue;
+            List<string> l = factionPartialNameList(name);
+            if (l == null || l.Count == 0) return f;
+            foreach (var n in l)
             {
-                List<Dictionary<string, object>> r =
-                    this.ExecuteQuerySQL($"select * from `Setting` where `Name`= '{name}%'");
-                if (r == null) return null;
-                if (r.Count != 0)
+                int cd = n.Length - name.Length;
+                if (cd < delta)
                 {
-                    return CyberUtilsExtender.GetString(r, "Name");
-                }
-                else
+                    f = n;
+                    delta = cd;
+                }else if (cd == 0)
                 {
-                    return null;
+                    return n;
                 }
+                
             }
-            catch (Exception e)
-            {
-                CyberCoreMain.Log.Error(e);
-                return null;
-            }
+
+            return f;
         }
+
+        public List<String> factionPartialNameList(String name)
+        {
+            var l = new List<String>();
+                List<Dictionary<string, object>> r =
+                    this.ExecuteQuerySQL($"select * from `Setting` where `Name` LIKE '{name}%'");
+                if (r != null && r.Count != 0)
+                {
+                    foreach (var v in r)
+                    {
+                        var fn = v.GetString("Name");
+                        l.Add(fn);
+                    }
+                }
+                return l;
+
+            }
+        
 
         public FactionRank getPlayerRank(CorePlayer p)
         {

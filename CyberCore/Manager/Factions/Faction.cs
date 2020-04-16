@@ -554,12 +554,16 @@ namespace CyberCore.Manager.Factions
 
         public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(Faction));
 
-        public void SendFactionChatWindow(Player cp)
+        public void SendFactionChatWindow(CorePlayer cp)
         {
             cp.SendForm(new FactionChatFactionWindow(CyberUtils.cloneListString(LastFactionChat)));
         }
+        public void SendFactionAllyChatWindow(CorePlayer cp)
+        {
+            cp.SendForm(new FactionAllyChatFactionWindow(CyberUtils.cloneListString(LastAllyChat)));
+        }
 
-        public void HandleFactionChatWindow(String frc, Player cp)
+        public void HandleFactionChatWindow(String frc, CorePlayer cp)
         {
             if (frc == null)
             {
@@ -568,15 +572,24 @@ namespace CyberCore.Manager.Factions
             }
 
             String msg = frc;
-            if (msg == null)
-            {
-                //No Message Send?
-                //CLose windows
-                return;
-            }
+            if (msg == null || msg.Length == 0)return;
 
             AddFactionChatMessage(msg, cp);
             SendFactionChatWindow(cp);
+        }
+        public void HandleAllyFactionChatWindow(String frc, CorePlayer cp)
+        {
+            if (frc == null)
+            {
+                Console.WriteLine("Error @ 12255");
+                return;
+            }
+
+            String msg = frc;
+            if (msg == null || msg.Length == 0)return;
+
+            AddAllyChatMessage(msg,cp);
+            SendFactionAllyChatWindow(cp);
         }
 
         //@todo LMAO THIS IS NOT EVEN CLOSE TO being correcty XD

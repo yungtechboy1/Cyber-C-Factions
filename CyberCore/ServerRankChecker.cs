@@ -1,4 +1,5 @@
-﻿using CyberCore.CustomEnums;
+﻿using System;
+using CyberCore.CustomEnums;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.Rank;
 using CyberCore.Utils;
@@ -19,15 +20,16 @@ namespace CyberCore
         public override bool HasPermission(ServerRankAttrAttribute attr, OpenPlayer player)
         {
             Rank2 rr =Manager.getPlayerRank((CorePlayer) player);
-            return true;//FIX
+            return rr.hasPerm(attr.Permission);
         }
     }
     
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class ServerRankAttrAttribute : CommandPermissionAttribute
     {
-        public Rank2 Permission { get; set; }
+        public RankEnum Permission { get; set; }
 
-        public ServerRankAttrAttribute(Rank2 permission)
+        public ServerRankAttrAttribute(RankEnum permission)
         {
             Permission = permission;
         }
