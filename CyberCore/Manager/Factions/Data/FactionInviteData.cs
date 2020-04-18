@@ -99,5 +99,22 @@ namespace CyberCore.Manager.Factions.Data
                     $"SELECT * FROM `FactionInvites` WHERE expires LIKE '{TimeStamp}' AND target LIKE '{PlayerName}' AND faction LIKE '{Faction}' AND rank LIKE '{FacRank}'");
             return (a.Count != 0);
         }
+
+        public void DenyInvite()
+        {
+            var f = FactionFactory.GetInstance().getFaction(Faction);
+            if (f != null)
+            {
+                
+                
+            }
+            else
+            {
+                CyberCoreMain.GetInstance().SQL.Insert(
+                    $"DELETE * from `FactionInvites` where `faction` LIKE '{Faction}' AND `target` LIKE '{getPlayerName()}';");
+                TimeStamp = -1;
+
+            }
+        }
     }
 }

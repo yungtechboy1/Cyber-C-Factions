@@ -24,17 +24,17 @@ namespace CyberCore.Manager.Forms
         private static readonly ILog Log = LogManager.GetLogger(typeof(CyberFormSimple));
 
 
-        public CyberFormSimple(MainForm ttype, List<Button> bl, String desc = "")
+        public CyberFormSimple(MainForm ttype, List<Button> bl, String title = "")
         {
             FT = ttype;
             Buttons = bl;
-            Title = desc;
+            Title = title;
         }
-        public CyberFormSimple(MainForm ttype, String desc = "")
+        public CyberFormSimple(MainForm ttype, String title = "")
         {
             FT = ttype;
             Buttons = new List<Button>();
-            Title = desc;
+            Title = title;
         }
 
         public void addButton(String txt,Action<Player, SimpleForm> a = null)

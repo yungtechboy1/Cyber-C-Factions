@@ -82,7 +82,9 @@ namespace CyberCore
         //    public String faction_id = null;
         public Dictionary<string, object> extraData = new Dictionary<string, object>();
         public string Faction;
+
         private int FactionCheck = -1;
+
         // public string FactionInvite;
         // public int FactionInviteTimeout = -1;
         public int fixcoins = 0;
@@ -131,16 +133,15 @@ namespace CyberCore
         protected Dictionary<BuffType, float> lastdata = null;
         private long uct;
         private bool uw;
-        private int WaitingForTP = -1;
+        private long WaitingForTP = -1;
 
-        public int WaitingForTPCD = 2;
+        public int WaitingForTPCancelDistance = 2;
         public bool WaitingForTPEffects;
         private PlayerLocation WaitingForTPPos;
         private PlayerLocation WaitingForTPStartPos;
 
         public CorePlayer(MiNetServer server, IPEndPoint endPoint, OpenApi api) : base(server, endPoint, api)
         {
-            
         }
 
         public bool ShowHTP { get; set; }
@@ -642,6 +643,7 @@ namespace CyberCore
         {
             rank = RankList2.getInstance().getRankFromID(r);
         }
+
         public void SetRank(Rank2 r)
         {
             rank = r;
@@ -713,7 +715,7 @@ namespace CyberCore
 
         protected override bool AcceptPlayerMove(McpeMovePlayer message, bool isOnGround, bool isFlyingHorizontally)
         {
-            var a =  base.AcceptPlayerMove(message, isOnGround, isFlyingHorizontally);
+            var a = base.AcceptPlayerMove(message, isOnGround, isFlyingHorizontally);
             if (a)
             {
                 if (ShowHTP)
@@ -1781,7 +1783,7 @@ namespace CyberCore
         protected override void OnPlayerJoining(PlayerEventArgs e)
         {
             base.OnPlayerJoining(e);
-            if(EPD == null)loadEPD();
+            if (EPD == null) loadEPD();
         }
 
         public void loadEPD()
@@ -1791,9 +1793,10 @@ namespace CyberCore
             if (a.Count != 0)
             {
                 CyberCoreMain.Log.Info($" Loading Extra Player Data for {Username}");
-                EPD = new ExtraPlayerData(this,a[0]);
+                EPD = new ExtraPlayerData(this, a[0]);
                 return;
             }
+
             EPD = new ExtraPlayerData(this);
             CyberCoreMain.Log.Info($" Extra Player Data NOTTTTTT FOUND DDDD for {Username}");
         }
@@ -1864,11 +1867,14 @@ namespace CyberCore
                     if (tc == null)
                     {
 //                    CyberCoreMain.Log.info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
-                        AddCoolDown(Cooldown_DTP, 1);
+                        AddCoolDown(Cooldown_DTP, 2);
                         if (isWaitingForTeleport())
                         {
-                            Teleport(WaitingForTPPos);
-                            clearWaitingForTP();
+                            if (isReadyToTeleport())
+                            {
+                                Teleport(WaitingForTPPos);
+                                clearWaitingForTP();
+                            }
                         }
                     }
                     //Class Check
@@ -2311,14 +2317,24 @@ namespace CyberCore
             return CyberCoreMain.GetInstance().FM.FFactory.getFaction(Faction);
         }
 
+        public bool isReadyToTeleport()
+        {
+            if (!(WaitingForTP == -1) && WaitingForTPPos != null)
+            {
+                return CyberUtils.getTick() >= WaitingForTP;
+            }
+
+            return false;
+        }
+
         public bool isWaitingForTeleport()
         {
             if (!(WaitingForTP == -1) && WaitingForTPPos != null)
             {
                 if (WaitingForTPStartPos != null &&
-                    WaitingForTPStartPos.DistanceTo(WaitingForTPPos) > WaitingForTPCD)
+                    WaitingForTPStartPos.DistanceTo(WaitingForTPPos) > WaitingForTPCancelDistance)
                 {
-                    SendMessage("Error! You moved too much so your Teleport was canceled");
+                    SendMessage("Error! You moved too much so your Teleport request was canceled");
                     clearWaitingForTP();
                     return false;
                 }
@@ -2336,17 +2352,7 @@ namespace CyberCore
             WaitingForTPPos = null;
         }
 
-        public bool delayTeleport(int i, Vector3 pos, bool giveeffects)
-        {
-            return delayTeleport(i, pos, giveeffects, 2);
-        }
-
-        public bool delayTeleport(int i, Vector3 pos)
-        {
-            return delayTeleport(i, pos, true, 2);
-        }
-
-        public bool delayTeleport(int i, Vector3 pos, bool giveeffects, int canceltpdistance)
+        public bool delayTeleport(Vector3 pos, int secs = 5, bool giveeffects = true, int canceltpdistance = 2)
         {
             if (isWaitingForTeleport())
             {
@@ -2354,11 +2360,11 @@ namespace CyberCore
                 return false;
             }
 
-            WaitingForTP = i;
+            WaitingForTP = CyberUtils.getTick() + (secs * 20);
             WaitingForTPStartPos = (PlayerLocation) KnownPosition.Clone();
             WaitingForTPPos = new PlayerLocation(pos);
             WaitingForTPEffects = giveeffects;
-            WaitingForTPCD = canceltpdistance;
+            WaitingForTPCancelDistance = canceltpdistance;
             if (WaitingForTPEffects)
             {
                 SetEffect(new Nausea()
@@ -2370,6 +2376,7 @@ namespace CyberCore
                     Duration = 20 * 5
                 });
             }
+            SendMessage(ChatColors.Yellow+$"Teleporting in {secs} Secs! Please stay still!");
 
             return true;
         }
@@ -2538,7 +2545,7 @@ namespace CyberCore
         public FactionRank getFactionRank()
         {
             var f = getFaction();
-            if(f== null)return FactionRank.None;
+            if (f == null) return FactionRank.None;
             return f.getPlayerRank(this);
         }
     }

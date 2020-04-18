@@ -68,7 +68,9 @@
         Faction_Settings_Window,
         Faction_Invite_Choose_Rank,
         Faction_View_Invites,
-        Faction_Ally_Select
+        Faction_Ally_Select,
+        Faction_Main_Window,
+        Faction_Home_Page
     }
 
     public enum SubMenu

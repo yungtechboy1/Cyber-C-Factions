@@ -20,6 +20,8 @@ namespace CyberCore.Manager.Factions
         public FactionRank AllowedToClaim { get; set; } = General;
         public FactionRank AllowedToWinthdraw { get; set; } = General;
         public FactionRank AllowedToSetHome { get; set; } = General;
+        
+        public bool AllowAlliesToTPToHomes = true;
 
         public FactionPermSettingsData()
         {
@@ -40,6 +42,7 @@ namespace CyberCore.Manager.Factions
             AllowedToClaim = f.AllowedToClaim;
             AllowedToWinthdraw = f.AllowedToWinthdraw;
             AllowedToSetHome = f.AllowedToSetHome;
+            AllowAlliesToTPToHomes = f.AllowAlliesToTPToHomes;
         }
     }
 
@@ -56,6 +59,7 @@ namespace CyberCore.Manager.Factions
         public int MaxFactionChat = 30;
         public int MaxAllyChat = 30;
         public int WeeklyFactionTax = 0;
+        public bool AllowAlliesToTPToHomes = true;
         public FactionRank AllowedToInvite = Member;
         public FactionRank DefaultJoinRank = Recruit;
         public FactionRank AllowedToClaim = General;
@@ -80,6 +84,7 @@ namespace CyberCore.Manager.Factions
             DefaultJoinRank = f.DefaultJoinRank;
             AllowedToClaim = f.AllowedToClaim;
             AllowedToWinthdraw = f.AllowedToWinthdraw;
+            AllowedToSetHome = f.AllowedToSetHome;
             AllowedToSetHome = f.AllowedToSetHome;
         }
 

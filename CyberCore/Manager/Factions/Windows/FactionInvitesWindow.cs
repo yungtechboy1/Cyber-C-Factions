@@ -12,15 +12,11 @@ namespace CyberCore.Manager.Factions.Windows
 {
     public class FactionInvitesWindow : CyberFormSimple
     {
-        public FactionInvitesWindow(MainForm ttype, List<Button> bl, string desc = "") : base(ttype, bl, desc)
-        {
-        }
-
         [JsonIgnore] public List<String> Options = new List<string>();
         [JsonIgnore] public String FN;
 
         public FactionInvitesWindow(CorePlayer p, String factionname = null) : base(MainForm.Faction_View_Invites,
-            "Faction Invite Manager ("+p.EPD.FactionInviteData.Count+")")
+            "Faction Invite Manager (" + p.EPD.FactionInviteData.Count + ")")
         {
             FN = factionname;
             Content = "Select a faction name below to Accept/Deny faction invites";
@@ -31,8 +27,9 @@ namespace CyberCore.Manager.Factions.Windows
                 {
                     if (!fid.isValid())
                     {
-                        addButton(ChatColors.Gray+"[TIMEDOUT]"+ChatColors.Yellow+fid.getFaction()+" | ");
-                        addButton(ChatColors.Gray+"[TIMEDOUT]"+ChatColors.Yellow+fid.getTimeStamp()+" |||| "+CyberUtils.getLongTime());
+                        addButton(ChatColors.Gray + "[TIMEDOUT]" + ChatColors.Yellow + fid.getFaction() + " | ");
+                        addButton(ChatColors.Gray + "[TIMEDOUT]" + ChatColors.Yellow + fid.getTimeStamp() + " |||| " +
+                                  CyberUtils.getLongTime());
                         r.Add(fid);
                         continue;
                     }
@@ -46,7 +43,7 @@ namespace CyberCore.Manager.Factions.Windows
                             player.SendForm(new FactionInvitesWindow((CorePlayer) player, a.Options[aa]));
                         });
                 }
-                
+
                 addButton("Deny All Faction Invites ",
                     delegate(Player player, SimpleForm form)
                     {
@@ -62,31 +59,35 @@ namespace CyberCore.Manager.Factions.Windows
             else
             {
                 FactionInviteData fid = p.EPD.getFactionInviteDataFromFaction(factionname);
-                if(fid != null)
+                if (fid != null)
                 {
-                    Content = ChatColors.Green+$"The Faction {CyberCoreMain.GetInstance().FM.FFactory.getFaction(fid.getFaction()).getDisplayName()} has invited you to join their faction!\n" +
+                    Content = ChatColors.Green +
+                              $"The Faction {CyberCoreMain.GetInstance().FM.FFactory.getFaction(fid.getFaction()).getDisplayName()} has invited you to join their faction!\n" +
                               $"If you choose to accept, you will enter the faction with Rank {ChatColors.Aqua}{fid.FacRank}";
                     addButton("Accept Invite", delegate(Player player, SimpleForm form)
                     {
-                        var a = (FactionInvitesWindow)form;
+                        var a = (FactionInvitesWindow) form;
                         var f = a.FN;
                         var fac = CyberCoreMain.GetInstance().FM.FFactory.getFaction(f);
                         fac.AcceptInvite((CorePlayer) player);
                     });
-                    addButton("Deny Invite");
-                    addButton("< Go Back", delegate(Player player, SimpleForm form) { 
-                    player.SendForm(new FactionInvitesWindow((CorePlayer)player));
-                     });
+                    addButton("Deny Invite", delegate(Player player, SimpleForm form)
+                    {
+                        var a = (FactionInvitesWindow) form;
+                        var f = a.FN;
+                        var fac = CyberCoreMain.GetInstance().FM.FFactory.getFaction(f);
+                        fac.DenyInvite((CorePlayer) player);
+                    });
+                    addButton("< Go Back",
+                        delegate(Player player, SimpleForm form)
+                        {
+                            player.SendForm(new FactionInvitesWindow((CorePlayer) player));
+                        });
                     //Options
                     //Accept
                     //Deny
                 }
             }
-        }
-
-        public FactionInvitesWindow(MainForm ttype, MainForm attype, List<Button> bl, string desc =
-            "") : base(ttype, attype, bl, desc)
-        {
         }
     }
 }
