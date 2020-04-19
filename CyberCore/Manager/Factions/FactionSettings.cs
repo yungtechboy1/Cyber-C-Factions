@@ -14,6 +14,13 @@ namespace CyberCore.Manager.Factions
         private string Faction;
         private int Level;
         private int MaxPlayers = 15;
+        private int MaxHomes = 3;
+
+        public int getMaxHomes()
+        {
+            return MaxHomes;
+        }
+
         private int Money;
         private string MOTD = "Welcome! A basic faction message!";
         private FactionPermSettings PermSettings = new FactionPermSettings();
@@ -202,6 +209,7 @@ namespace CyberCore.Manager.Factions
             setXP((int) a["XP"]);
             setLevel((int) a["Level"]);
             setPoints((int) a["Points"]);
+            setMaxHomes((int) a["MaxHomes"]);
         }
 
         public void upload()
@@ -209,7 +217,7 @@ namespace CyberCore.Manager.Factions
             var q =
                 $"INSERT INTO `Settings` VALUES('{getFaction()}','{getDisplayName()}', {getMaxPlayers()} ," +
                 $" {getPowerBonus()} ,' {getMOTD()}','{getDescription()}',{getPrivacy()} ,'{getPermSettings().export()}'" +
-                $", {getPower()} , {getMoney()} , {getRich()} , {getXP()} , {getLevel()} , {getPoints()} )";
+                $", {getPower()} , {getMoney()} , {getRich()} , {getXP()} , {getLevel()} , {getPoints()}, {getMaxHomes()} )";
             try
             {
                 //Update PermSettings
@@ -419,6 +427,11 @@ namespace CyberCore.Manager.Factions
             return Points;
         }
 
+        public void setMaxHomes(int m, bool update = false)
+        {
+            MaxHomes = m;
+            if (update) UpdateSettingsValue("MaxHomes", MaxHomes);
+        }
         public void setPoints(int points, bool update = false)
         {
             Points = points;

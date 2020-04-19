@@ -376,11 +376,59 @@ namespace CyberCore.Manager.Factions
 //        Main.FFactory.PlotsList.put(x + "|" + z, fac.getName());
         }
 
-        [Command(Name = "f home", Description = "Get Help with all Faction Commands")]
+        [Command(Name = "f home", Description = "View All Faction Homes")]
         [FactionCommand]
         public void fhome(CorePlayer Sender, int page = 1)
         {
             Sender.SendForm(new FactionHomesPage(Sender));
+        }
+        
+        
+        [Command(Name = "f delhome", Description = "Set a Faction Home")]
+        [FactionCommand]
+        public void fdelhome(CorePlayer Sender, string name)
+        {
+            var f = Sender.getFaction();
+            var a = f.GetHome();
+            var v = a[name];
+            if (v == null)
+            {
+                Sender.SendMessage($"{ChatColors.Red} Error! The home '{name}' Could not be found!");
+                return;
+            }
+
+            var perm = f.getPermSettings().AllowedToSetHome;
+            if (!f.getPlayerRank(Sender).hasPerm(perm))
+            {
+                Sender.SendMessage($"{ChatColors.Red} Error! You do not have permission to set homes for your faction!");
+                return;
+            }
+
+            f.DelHome(v.HomeID);
+        }
+        
+        
+        [Command(Name = "f sethome", Description = "Set a Faction Home")]
+        [FactionCommand]
+        public void fsethome(CorePlayer Sender, string name)
+        {
+            var f = Sender.getFaction();
+            var a = f.GetHome();
+            var max = f.getSettings().getMaxHomes();
+            if (a.Count >= max)
+            {
+                Sender.SendMessage($"{ChatColors.Red} Error! You faction has set the max amount of homes allowed already!");
+                return;
+            }
+
+            var perm = f.getPermSettings().AllowedToSetHome;
+            if (!f.getPlayerRank(Sender).hasPerm(perm))
+            {
+                Sender.SendMessage($"{ChatColors.Red} Error! You do not have permission to set homes for your faction!");
+                return;
+            }
+
+            f.addHome(new Faction.HomeData(Sender, name));
         }
 
         [Command(Name = "f help", Description = "Get Help with all Faction Commands")]
@@ -526,15 +574,30 @@ namespace CyberCore.Manager.Factions
                 return;
             }
 
+            fac.getSettings().addMoney(money);
+            Sender.SendMessage(FactionsMain.NAME + ChatColors.Green + "$" + money + " Money Added to your Faction!");
+            fac.BroadcastMessage(FactionsMain.NAME + ChatColors.Green + Sender.getName() + " has deposited $" + money +
+                                 " Money to the faction account!");
+        }
+        [Command(Name = "f withdraw", Description = "Deposit Money into Faction")]
+        [FactionCommand]
+        public void fwithdraw(CorePlayer Sender, int money)
+        {
+            var fac = Sender.getFaction();
+            if (money == null || money == 0)
+            {
+                Sender.SendMessage(FactionsMain.NAME + ChatColors.Gray + "Usage /f withdraw <amount>");
+                return;
+            }
+
             if (!Sender.MakeTransaction(money))
             {
                 Sender.SendMessage(FactionsMain.NAME + ChatColors.Red + "You don't have " + money + " Money!");
                 return;
             }
 
-            fac.getSettings().addMoney(money);
-            Sender.SendMessage(FactionsMain.NAME + ChatColors.Green + "$" + money + " Money Added to your Faction!");
-            fac.BroadcastMessage(FactionsMain.NAME + ChatColors.Green + Sender.getName() + " has deposited $" + money +
+            Sender.SendMessage(FactionsMain.NAME + ChatColors.Green + "$" + money + " Money Withdrawn from your Faction!");
+            fac.BroadcastMessage(FactionsMain.NAME + ChatColors.Green + Sender.getName() + " has Withdrawn $" + money +
                                  " Money to the faction account!");
         }
 
