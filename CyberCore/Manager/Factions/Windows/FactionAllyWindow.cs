@@ -18,8 +18,10 @@ namespace CyberCore.Manager.Factions.Windows
             var a = plugin.FM.FFactory.factionPartialNameList(fac);
             foreach (var aa in a)
             {
-                addButton(aa,delegate(Player player, SimpleForm form) {
-                    player.SendMessage(aa);
+                addButton(aa,delegate(Player player, SimpleForm form)
+                {
+                    var f = FactionFactory.GetInstance().getFaction(aa);
+                    f.AddAllyRequest(((CorePlayer)player).getFaction(),player);
                   });
             }
         }

@@ -1202,6 +1202,15 @@ namespace CyberCore.Manager.Factions
      * @param fac    Faction to be added as enemy
      * @param player Player who added the Faction as an Emeney
      */
+        public void resetNuetral(Faction fac, Player player)
+        {
+            FactionsMain.GetInstance().FFactory.RM.removeEnemyRelationship(getName(), fac.getName());
+            FactionsMain.GetInstance().FFactory.RM.removeAllyRelationship(getName(), fac.getName());
+
+            fac.BroadcastMessage(ChatColors.Aqua+getDisplayName() + $"'s {ChatColors.Yellow}faction has set their relationship to you as Neutral!");
+            BroadcastMessage(ChatColors.Aqua+fac.getSettings().getDisplayName() + $"'s {ChatColors.Yellow}relationship has been set back to Neutral by" +
+                             player.DisplayName);    
+        }
         public void AddEnemy(Faction fac, Player player)
         {
             if (!FactionsMain.GetInstance().FFactory.RM.addEnemyRelationship(getName(), fac.getName()))
@@ -1756,12 +1765,8 @@ namespace CyberCore.Manager.Factions
             Main.FFactory.Rich[getName()] = Settings.getRich();
         }
 
-        public void AddAllyRequest(Faction fac)
-        {
-            AddAllyRequest(fac, null, CyberUtils.getLongTime() + 60 * 10);
-        }
 
-        public void AddAllyRequest(Faction fac, Player cp)
+        public void AddAllyRequest(Faction fac, Player cp = null)
         {
             AddAllyRequest(fac, cp, CyberUtils.getLongTime() + 60 * 10);
         }
@@ -1814,6 +1819,7 @@ namespace CyberCore.Manager.Factions
         //     return true;
         // }
 
+
         /**
      * Adds ally request to this faction
      *
@@ -1823,6 +1829,16 @@ namespace CyberCore.Manager.Factions
      */
         public void AddAllyRequest(Faction fac, Player player, long timeout)
         {
+            foreach (AllyRequest al in getAllyRequests())
+            {
+                if (al.F.getName().equalsIgnoreCase(fac.getName()))
+                {
+                    if(player != null)player.SendMessage($"{ChatColors.Red}Error! Your faction already has a faction request with the faction {fac.getDisplayName()}");
+                    else fac.BroadcastMessage($"{ChatColors.Red}Error! Your faction already has a faction request with the faction {fac.getDisplayName()}");
+                    return;
+                }
+            }
+            
             String pn = null;
             if (player != null) pn = player.getName();
             Main.CCM.SQL.Insert(
@@ -2223,8 +2239,8 @@ namespace CyberCore.Manager.Factions
 
         public class AllyRequest
         {
-            long Timeout;
-            Faction F;
+            public long Timeout;
+            public Faction F;
 
 
             public AllyRequest(Faction f, long timeout = -1)

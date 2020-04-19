@@ -40,6 +40,17 @@ namespace CyberCore.Manager.Factions
         {
             p.SendForm(new FactionCreate0());
         }
+        [Command(Name = "f neutral", Description = "Re-set faction relationship back to neutral")]
+        [FactionPermission(FactionRankEnum.Recruit)]
+        public void fneutral(CorePlayer p, string fac)
+        {
+            var f = p.getFaction();
+            if(f.getPlayerRank(p).hasPerm(f.getPermSettings().AllowedToAcceptAlly))p.SendForm(new FactionNeutralWindow(fac));
+            else
+            {
+                p.SendMessage($"{ChatColors.Red} Error! You do not have permission to do this!");
+            }
+        }
 
         [Command(Name = "f leave", Description = "Use the command to leave your current faction!")]
         [FactionPermission(FactionRankEnum.Recruit)]

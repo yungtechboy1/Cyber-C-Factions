@@ -154,7 +154,8 @@ namespace CyberCore.Manager.Factions
 //FactionCommandWindow.java:40
         public bool hasPerm(FactionRank target)
         {
-            if (target.Id == FactionRankEnum.All) return true;
+            if (target.Id == FactionRankEnum.None || Id == FactionRankEnum.None) return false;
+            if (target.Id == FactionRankEnum.All)  return true;
             return Id >= target.Id;
         }
 

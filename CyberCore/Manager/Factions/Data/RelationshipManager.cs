@@ -1,42 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using CyberCore.Utils;
-using MySql.Data.MySqlClient;
-
 
 namespace CyberCore.Manager.Factions.Data
 {
     public class RelationshipManager
     {
         protected readonly int MustUpdateEvery = 60 * 5; //5 Mins
-        public List<String> AllyList = new List<String>();
-        public List<String> EnemyList = new List<String>();
-        public int LastUpdated = 0;
+        public List<string> AllyList = new List<string>();
+        public List<string> EnemyList = new List<string>();
         private FactionFactory FF;
+        public int LastUpdated = 0;
 
         public RelationshipManager(FactionFactory factionFactory)
         {
             FF = factionFactory;
         }
 
-        public String FactionNamesToKey(String fac1, String fac2)
+        public string FactionNamesToKey(string fac1, string fac2)
         {
             return fac1 + "|" + fac2;
         }
 
-        public bool isAllys(String fac1, String fac2)
+        public bool isAllys(string fac1, string fac2)
         {
-            String a1 = FactionNamesToKey(fac1, fac2);
-            String a2 = FactionNamesToKey(fac2, fac1);
-            return (AllyList.Contains(a1) || AllyList.Contains(a2));
+            var a1 = FactionNamesToKey(fac1, fac2);
+            var a2 = FactionNamesToKey(fac2, fac1);
+            return AllyList.Contains(a1) || AllyList.Contains(a2);
         }
 
-        public bool isEnemy(String fac1, String fac2)
+        public bool isEnemy(string fac1, string fac2, bool checkselfonly = false)
         {
-            String a1 = FactionNamesToKey(fac1, fac2);
-            String a2 = FactionNamesToKey(fac2, fac1);
-            return (EnemyList.Contains(a1) || EnemyList.Contains(a2));
+            var b1 = false;
+            var b2 = false;
+            var a1 = FactionNamesToKey(fac1, fac2);
+            b1 = EnemyList.Contains(a1);
+            if (!checkselfonly)
+            {
+                var a2 = FactionNamesToKey(fac2, fac1);
+                b2 = EnemyList.Contains(a2);
+            }
+
+            if (b1 && checkselfonly)
+                return true;
+            return b1 && b2;
         }
 
         public long TimeToInt()
@@ -53,30 +60,29 @@ namespace CyberCore.Manager.Factions.Data
         {
             //      100        + 600              <=   800
             if (LastUpdated + MustUpdateEvery <= TimeToInt())
-            {
-                if (!force) return;
-            }
+                if (!force)
+                    return;
 
-            SqlManager c = CyberCoreMain.GetInstance().SQL;
+            var c = CyberCoreMain.GetInstance().SQL;
             try
             {
-                List<Dictionary<string, object>> r = c.executeSelect("SELECT * FROM `Ally`");
+                var r = c.executeSelect("SELECT * FROM `Ally`");
                 AllyList.Clear();
                 foreach (var aa in r)
                 {
-                    String k = (string) aa["Key"];
+                    var k = (string) aa["Key"];
                     AllyList.Add(k);
                 }
-                
+
 //        Main.FFactory.allyrequest.put(getName(), fac.getName());
             }
             catch (Exception e)
             {
-             CyberCoreMain.Log.Error("Error UPDATING ALLY FROM DB!!! Please report Error 'E65DB' to an admin",e);
+                CyberCoreMain.Log.Error("Error UPDATING ALLY FROM DB!!! Please report Error 'E65DB' to an admin", e);
             }
         }
 
-        public bool removeAllyRelationship(String fac1, String fac2)
+        public bool removeAllyRelationship(string fac1, string fac2)
         {
             if (!isAllys(fac1, fac2))
             {
@@ -85,10 +91,10 @@ namespace CyberCore.Manager.Factions.Data
             }
 
 
-            String k1 = FactionNamesToKey(fac1, fac2);
-            String k2 = FactionNamesToKey(fac2, fac1);
-            long time = CyberUtils.getLongTime();
-            SqlManager c = CyberCoreMain.GetInstance().SQL;
+            var k1 = FactionNamesToKey(fac1, fac2);
+            var k2 = FactionNamesToKey(fac2, fac1);
+            var time = CyberUtils.getLongTime();
+            var c = CyberCoreMain.GetInstance().SQL;
             try
             {
                 //1 = Ally Request
@@ -103,12 +109,12 @@ namespace CyberCore.Manager.Factions.Data
             }
             catch (Exception e)
             {
-                CyberCoreMain.Log.Error("Error DELETING ALLY FROM DB!!! Please report Error 'E61DB' to an admin",e);
+                CyberCoreMain.Log.Error("Error DELETING ALLY FROM DB!!! Please report Error 'E61DB' to an admin", e);
                 return false;
             }
         }
 
-        public bool addAllyRelationship(String fac1, String fac2)
+        public bool addAllyRelationship(string fac1, string fac2)
         {
             if (isAllys(fac1, fac2))
             {
@@ -116,9 +122,9 @@ namespace CyberCore.Manager.Factions.Data
                 return false;
             }
 
-            String k = FactionNamesToKey(fac1, fac2);
-            long time = CyberUtils.getLongTime();
-            SqlManager c = CyberCoreMain.GetInstance().SQL;
+            var k = FactionNamesToKey(fac1, fac2);
+            var time = CyberUtils.getLongTime();
+            var c = CyberCoreMain.GetInstance().SQL;
             try
             {
                 //1 = Ally Request
@@ -132,7 +138,7 @@ namespace CyberCore.Manager.Factions.Data
             }
             catch (Exception e)
             {
-                CyberCoreMain.Log.Error("Error ALLY to DB!!! Please report Error 'E92DB' to an admin",e);
+                CyberCoreMain.Log.Error("Error ALLY to DB!!! Please report Error 'E92DB' to an admin", e);
                 return false;
             }
         }
@@ -141,110 +147,91 @@ namespace CyberCore.Manager.Factions.Data
         //ENEMY
 
 
-        public bool removeEnemyRelationship(String fac1, String fac2)
+        public bool removeEnemyRelationship(string fac1, string fac2)
         {
-            if (!isEnemy(fac1, fac2))
+            if (!isEnemy(fac1, fac2,true))
             {
-                CyberCoreMain.Log.Error("Error! Facctions are NOT already set as enemies!!!");
+                CyberCoreMain.Log.Error($"Error! Your faction is NOT already enemies with {fac2}!!!");
                 return false;
             }
 
 
-            String k1 = FactionNamesToKey(fac1, fac2);
-            String k2 = FactionNamesToKey(fac2, fac1);
-            long time = CyberUtils.getLongTime();
-            SqlManager c = CyberCoreMain.GetInstance().SQL;
+            var k1 = FactionNamesToKey(fac1, fac2);
+            // var k2 = FactionNamesToKey(fac2, fac1);
+            var time = CyberUtils.getLongTime();
+            var c = CyberCoreMain.GetInstance().SQL;
             try
             {
                 c.Insert($"DELETE FROM `Enemy` WHERE `key` LIKE {k1}");
-                c.Insert($"DELETE FROM `Enemy` WHERE `key` LIKE {k2}");
+                // c.Insert($"DELETE FROM `Enemy` WHERE `key` LIKE {k2}");
                 return true;
             }
             catch (Exception e)
             {
-                CyberCoreMain.Log.Error("Error DELETING ALLY FROM DB!!! Please report Error 'E61DB' to an admin",e);
+                CyberCoreMain.Log.Error("Error DELETING ALLY FROM DB!!! Please report Error 'E61DB' to an admin", e);
                 return false;
             }
         }
 
-        public bool addEnemyRelationship(String fac1, String fac2)
+        public bool addEnemyRelationship(string fac1, string fac2)
         {
-            if (isEnemy(fac1, fac2))
+            if (isEnemy(fac1, fac2, true))
             {
-                CyberCoreMain.Log.Error("Error! Facctions are already allied!!!");
+                CyberCoreMain.Log.Error($"Error! You Already Set {fac2} as an enemy!!!");
                 return false;
             }
 
-            String k = FactionNamesToKey(fac1, fac2);
-            long time = CyberUtils.getLongTime();
-            SqlManager c = CyberCoreMain.GetInstance().SQL;
-            try
-            {
-                c.Insert($"INSERT INTO `Enemy` VALUES (null,'{k}',{time})");
-                return true;
-            }
-            catch (Exception e)
-            {
-                CyberCoreMain.Log.Error("Error Adding Enemy to DB!!! Please report Error 'E182DB' to an admin",e);
-                return false;
-            }
+            var k = FactionNamesToKey(fac1, fac2);
+            var time = CyberUtils.getLongTime();
+            var c = CyberCoreMain.GetInstance().SQL;
+
+            c.Insert($"INSERT INTO `Enemy` VALUES (null,'{k}',{time})");
+            return true;
         }
 
 
-        public String[] splitKey(String key)
+        public string[] splitKey(string key)
         {
             return key.Split("|");
         }
 
-        public List<String> getFactionEnemy(String faction)
+        public List<string> getFactionEnemy(string faction)
         {
-            List<String> f = new List<String>();
-            foreach (String a in EnemyList) {
+            var f = new List<string>();
+            foreach (var a in EnemyList)
                 if (a.Contains(faction + "|"))
                 {
-                    String[] b = splitKey(a);
-                    String c1 = b[0];
-                    String c2 = b[1];
+                    var b = splitKey(a);
+                    var c1 = b[0];
+                    var c2 = b[1];
                     if (c1.equalsIgnoreCase(faction))
-                    {
                         f.Add(c2);
-                    }
                     else if (c2.equalsIgnoreCase(faction))
-                    {
                         f.Add(c1);
-                    }
                     else
-                    {
                         CyberCoreMain.Log.Error("Hun Error E3083 : " + a + " || " + faction);
-                    }
                 }
-            }
+
             return f;
         }
 
-        public List<String> getFactionAllies(String faction)
+        public List<string> getFactionAllies(string faction)
         {
-            List<String> f = new List<String>();
-            foreach (String a in AllyList) {
+            var f = new List<string>();
+            foreach (var a in AllyList)
                 if (a.Contains(faction + "|"))
                 {
-                    String[] b = splitKey(a);
-                    String c1 = b[0];
-                    String c2 = b[1];
+                    var b = splitKey(a);
+                    var c1 = b[0];
+                    var c2 = b[1];
                     if (c1.equalsIgnoreCase(faction))
-                    {
                         f.Add(c2);
-                    }
                     else if (c2.equalsIgnoreCase(faction))
-                    {
                         f.Add(c1);
-                    }
                     else
-                    {
                         CyberCoreMain.Log.Error("Hun Error E3224 : " + a + " || " + faction);
-                    }
                 }
-            }
+
             return f;
         }
     }
