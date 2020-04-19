@@ -171,7 +171,11 @@ namespace CyberCore
         public override void Enabled(OpenApi api)
         {
             API = api;
-            
+            api.LevelManager.LevelCreated += delegate(object? sender, LevelEventArgs args)
+            {
+                var a = args.Level;
+                a.SpawnPoint = new PlayerLocation(0,2,0);
+            };
             API.OpenServer.PlayerFactory = new CyberPlayerFactory(API);
             Console.WriteLine("================Executed startup successfully. Replaced identity managment=========================");
             Log.Info("================Executed startup successfully. Replaced identity managment=========================");
@@ -284,7 +288,7 @@ namespace CyberCore
             return amt;
         }
         public Rank2 getPlayerRank(String p) {
-            return getPlayerRank(getPlayer(p));
+            return RF.getPlayerRank(p);
         }
 
 

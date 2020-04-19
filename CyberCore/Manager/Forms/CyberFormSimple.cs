@@ -28,6 +28,7 @@ namespace CyberCore.Manager.Forms
         {
             FT = ttype;
             Buttons = bl;
+            Content = "";
             Title = title;
         }
         public CyberFormSimple(MainForm ttype, String title = "")
@@ -35,6 +36,7 @@ namespace CyberCore.Manager.Forms
             FT = ttype;
             Buttons = new List<Button>();
             Title = title;
+            Content = "";
         }
 
         public void addButton(String txt,Action<Player, SimpleForm> a = null)

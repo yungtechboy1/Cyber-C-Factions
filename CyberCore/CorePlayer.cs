@@ -715,17 +715,12 @@ namespace CyberCore
 
         protected override bool AcceptPlayerMove(McpeMovePlayer message, bool isOnGround, bool isFlyingHorizontally)
         {
-            var a = base.AcceptPlayerMove(message, isOnGround, isFlyingHorizontally);
-            if (a)
-            {
-                if (ShowHTP)
-                {
-                    ShowHTP = false;
-                    SendForm(new HTP_0_Window());
-                }
-            }
-
-            return a;
+            // if (ShowHTP)
+            // {
+            //     ShowHTP = false;
+            //     SendForm(new HTP_0_Window());
+            // }
+            return base.AcceptPlayerMove(message, isOnGround, isFlyingHorizontally);
         }
 
         public bool isinCombat()
@@ -1783,7 +1778,7 @@ namespace CyberCore
         protected override void OnPlayerJoining(PlayerEventArgs e)
         {
             base.OnPlayerJoining(e);
-            if (EPD == null) loadEPD();
+            // if (EPD == null) loadEPD();
         }
 
         public void loadEPD()
@@ -1807,8 +1802,18 @@ namespace CyberCore
             onUpdate(CyberUtils.getTick());
         }
 
+        private long tt = 0;
         public void onUpdate(long currentTick)
         {
+            tt++;
+            if (tt < 20 * 10) return;
+            if (tt > Int64.MaxValue - 1) tt = 0;
+            
+            if (ShowHTP)
+            {
+                ShowHTP = false;
+                SendForm(new HTP_0_Window());
+            }
             //Check for Faction!
             if (currentTick % 5 == 0) //Only allows 4 Ticks per Sec
                 if (!CooldownLock)

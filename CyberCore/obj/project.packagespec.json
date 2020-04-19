@@ -32,11 +32,11 @@
       "dependencies": {
         "MySqlConnector": {
           "target": "Package",
-          "version": "[0.63.1, )"
+          "version": "[0.64.0, )"
         },
         "OpenMiNET.OpenAPI": {
           "target": "Package",
-          "version": "[1.0.63, )"
+          "version": "[1.0.73, )"
         }
       },
       "imports": [

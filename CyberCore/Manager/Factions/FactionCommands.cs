@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Schema;
 using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.Forms;
 using CyberCore.Manager.Rank;
@@ -34,92 +35,87 @@ namespace CyberCore.Manager.Factions
         //typeof(OpenPlayer).IsAssignableFrom(parameter.ParameterType)
 
         [Command(Name = "f create", Description = "Create a new faction")]
-        // [FactionPermission(FactionRankEnum.None)]
         public void FCreate(CorePlayer p)
         {
-            if (p is CorePlayer)
-            {
-                CyberCoreMain.Log.Error("YOYOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-                CyberCoreMain.Log.Error("YOYOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-                CyberCoreMain.Log.Error("YOYOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-                CyberCoreMain.Log.Error(p.GetRank().Name + " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< WORKZ");
-                CyberCoreMain.Log.Error("YOYOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-                CyberCoreMain.Log.Error("YOYOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-            }
-            else
-            {
-                CyberCoreMain.Log.Error(
-                    "11111111111111111111111111111111111111111111111111YOYOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-            }
-
             p.SendForm(new FactionCreate0());
         }
 
-        [Command(Name = "f", Description = "Faction Base Command")]
+        [Command(Name = "faction", Aliases = new[]
+        {
+            "fac"
+        }, Description = "Faction Base Command")]
         public void F(CorePlayer Sender)
         {
             Sender.SendForm(new FactionMainForm(Sender));
         }
 
-        [Command(Name = "f invite2", Description = "Create a new faction")]
-        // [FactionPermission(FactionRankEnum.None)]
-        public void FInvite2(OpenPlayer Sender, Target invited)
-        {
-            var m = "";
-            Sender.SendMessage(m);
-            CyberCoreMain.Log.Error("==========================================");
-            CyberCoreMain.Log.Error(m);
-            CyberCoreMain.Log.Error(invited);
-            // CyberCoreMain.Log.Error(invited.Entities.Length);
-            CyberCoreMain.Log.Error(invited.Players.Length);
-            CyberCoreMain.Log.Error(invited.Rules.Length);
-            CyberCoreMain.Log.Error(invited.Selector.Length);
-            CyberCoreMain.Log.Error("==========================================");
-        }
-
-        [Command(Name = "f accept", Aliases = new[]
+        [FactionPermission(FactionRankEnum.Recruit)]
+        [Command(Name = "f invites", Aliases = new String[]
         {
             "f deny",
-            "f invites"
+            "f accept"
         }, Description = "View/Accept/Deny Faction Invites (Must not currently be in a faction)")]
-        public void OpenFactionInvites(CorePlayer Sender)
+        public void finvites(CorePlayer Sender)
         {
-            if (Sender.getFaction() != null)
+            var fac = Sender.getFaction();
+            if (fac.getPlayerRank(Sender).hasPerm(fac.getPermSettings().AllowedToInvite))
+                Sender.showFormWindow(new FactionInvitesWindow(Sender));
+        }
+
+
+        [Command(Name = "f leader",
+            Description =
+                "Transfer leadership of faction to another player in your faction (Target Player Must Be Online)")]
+        [FactionPermission(FactionRankEnum.Leader)]
+        public void fleader(CorePlayer p, Target t)
+        {
+            var currentleader = p;
+            var newleader = t.getPlayer();
+            var fac1 = currentleader.getFaction();
+            var fac2 = newleader.getFaction();
+            if (!fac1.getName().equalsIgnoreCase(fac2.getName()))
             {
-                var fac = Manager.getPlayerFaction(Sender);
+                currentleader.SendMessage(ChatColors.Red+"Error! You MUST BE IN THE SAME FACTION!");
+                return;
             }
-
-            Sender.showFormWindow(new FactionInvitesWindow(Sender));
+            
+                p.SendForm(new FactionChangeLeaderWindow(p,(CorePlayer) t.getPlayer()));
         }
-
-        // [Command]
-        // public string CmdTarget(Target t)
-        // {
-        //     return $"{t}";
-        // }
-        // [Command]
-        // public string TestTest2(OpenPlayer p, OpenPlayer pp)
-        // {
-        //     return $"{p} | {pp}";
-        // }
-        [Command]
-        public string TestTest3(Player p, Player pp)
+        
+        [Command(Name = "f join", Description = "View Open Factions and Join One")]
+        public void fjoin(CorePlayer p, string faction = null)
         {
-            return $"{p} | {pp}";
+            if (faction == null)
+            {
+                p.SendForm(new FactionJoinListWindow());
+            }
+            else
+            {
+                List<string> fl = Manager.factionPartialNameList(faction);
+                if (fl.Count == 0)
+                {
+                    p.SendMessage($"{ChatColors.Red} Error! No factions found with the name '{faction}'");
+                    return;
+                }else if (fl.Count == 1)
+                {
+                    var tf = Manager.getFaction(fl[0]);
+                    if (!tf.canJoin())
+                    {
+                        p.SendMessage($"{ChatColors.Red} Error! The faction {tf.getDisplayName()}{ChatColors.Red} is a private faction or full! You can not join, you must be invited by someone within the faction!");
+                        return;
+                    }
+                    p.SendForm(new FactionJoinConfirm(0,tf));
+                }
+                else
+                {
+                    
+                    p.SendForm(new FactionJoinListWindow(fl));
+                }
+            }
         }
-
-        [Command]
-        public string TestTest4(CorePlayer p, Player pp)
-        {
-            return $"{p.Username} | {pp.Username}";
-        }
-        // [Command]
-        // public string TestTest(CorePlayer p, CorePlayer pp)
-        // {
-        //     return $"{p} | {pp}";
-        // }
 
         [Command(Name = "f invite", Description = "Create a new faction")]
+        [FactionPermission(FactionRankEnum.Recruit)]
         public void FInvite(CorePlayer Sender, Target invite)
         {
             // var Sender = (CorePlayer) Sende;
@@ -334,72 +330,75 @@ namespace CyberCore.Manager.Factions
 
         [Command(Name = "f help", Description = "Get Help with all Faction Commands")]
         [FactionCommand]
-        public String fhelp(CorePlayer Sender, int page =1)
+        public String fhelp(CorePlayer Sender, int page = 1)
         {
             List<String> a = new List<String>();
-        a.Add("/f accept - Accept Faction Invite");
-        a.Add("/f admin - OP Only");
-        a.Add("/f balance - Faction Balance");
-        a.Add("/f chat [Message] | /f c [Message] - Send message to faction only");
-        a.Add("/f claim [radius] - Claim Land");
-        a.Add("/f create <name> - Create a Faction");
-        a.Add("/f del - Delete Faction");
-        a.Add("/f demote <player> - Demote player in faction");
-        a.Add("/f deny - Deny faction invite");
-        a.Add("/f deposit <amount> - Add money to faction ballance");
-        a.Add("/f desc [Description] - Set description for Faction");
-        a.Add("/f help [page] - View All Commands");
-        a.Add("/f home - Teleport to faction home");
-        a.Add("/f info <faction> - View faction's info");
-        a.Add("/f invite <player> - Invite player to join your faction");
-        a.Add("/f join <faction> - Join an open faction");
-        a.Add("/f kick <player> - Kick player from faction");
-        a.Add("/f kits - Coming Soons");
-        a.Add("/f leader <player> - Transfer leadership to another player");
-        a.Add("/f leave [Leave message]- Leave faction");
-        a.Add("/f leader <player> - Give another player leadership of faction");
-        a.Add("/f list [page] - List all factions");
-        a.Add("/f map - Show map of area");
-        a.Add("/f mission - Show all mission commands");
-        a.Add("/f motd <InternalPlayerSettings> - Set faction MOTD ");
-        a.Add("/f overclaim [radius] - Overclaim land ");
-        a.Add("/f perk - View All Faction Perks ");
-        a.Add("/f power - View faction's power");
-        a.Add("/f privacy - Change faction privacy between Open and Closed");
-        a.Add("/f Promote <player> - Promote a player");
-        a.Add("/f sethome - Set faction home");
-        a.Add("/f unclaim [radius] - Unclaim faction chunks");
-        a.Add("/f war <faction> - Declare War against faction");
-        a.Add("/f wartp - Teleport to the war zone");
-        a.Add("/f withdraw - Take money from faction's balance");
+            a.Add("/f accept - Accept Faction Invite");
+            a.Add("/f admin - OP Only");
+            a.Add("/f balance - Faction Balance");
+            a.Add("/f chat [Message] | /f c [Message] - Send message to faction only");
+            a.Add("/f claim [radius] - Claim Land");
+            a.Add("/f create <name> - Create a Faction");
+            a.Add("/f del - Delete Faction");
+            a.Add("/f demote <player> - Demote player in faction");
+            a.Add("/f deny - Deny faction invite");
+            a.Add("/f deposit <amount> - Add money to faction ballance");
+            a.Add("/f desc [Description] - Set description for Faction");
+            a.Add("/f help [page] - View All Commands");
+            a.Add("/f home - Teleport to faction home");
+            a.Add("/f info <faction> - View faction's info");
+            a.Add("/f invite <player> - Invite player to join your faction");
+            a.Add("/f join <faction> - Join an open faction");
+            a.Add("/f kick <player> - Kick player from faction");
+            a.Add("/f kits - Coming Soons");
+            a.Add("/f leader <player> - Transfer leadership to another player");
+            a.Add("/f leave [Leave message]- Leave faction");
+            a.Add("/f leader <player> - Give another player leadership of faction");
+            a.Add("/f list [page] - List all factions");
+            a.Add("/f map - Show map of area");
+            a.Add("/f mission - Show all mission commands");
+            a.Add("/f motd <InternalPlayerSettings> - Set faction MOTD ");
+            a.Add("/f overclaim [radius] - Overclaim land ");
+            a.Add("/f perk - View All Faction Perks ");
+            a.Add("/f power - View faction's power");
+            a.Add("/f privacy - Change faction privacy between Open and Closed");
+            a.Add("/f Promote <player> - Promote a player");
+            a.Add("/f sethome - Set faction home");
+            a.Add("/f unclaim [radius] - Unclaim faction chunks");
+            a.Add("/f war <faction> - Declare War against faction");
+            a.Add("/f wartp - Teleport to the war zone");
+            a.Add("/f withdraw - Take money from faction's balance");
 
-        int p = page;
-        int to = p * 5;
-        int from = to - 5;
-        // 5 -> 0 ||| 10 -> 5
-        int x = 0;
-        String t = "";
+            int p = page;
+            int to = p * 5;
+            int from = to - 5;
+            // 5 -> 0 ||| 10 -> 5
+            int x = 0;
+            String t = "";
 
-        t += ChatColors.Gray+"-----"+ChatColors.Gold+".<[Faction Command List]>."+ChatColors.Gray+"-----\n";
-        foreach(String value in a){
-            // 0 < 5 && 0 >= 0
-            //   YES     YES
-            //
-            //0
-            //1 2 3 4 5
-            //0 < 10 && 0 >= 5
-            if(!(x < to && x >= from)){
+            t += ChatColors.Gray + "-----" + ChatColors.Gold + ".<[Faction Command List]>." + ChatColors.Gray +
+                 "-----\n";
+            foreach (String value in a)
+            {
+                // 0 < 5 && 0 >= 0
+                //   YES     YES
+                //
+                //0
+                //1 2 3 4 5
+                //0 < 10 && 0 >= 5
+                if (!(x < to && x >= from))
+                {
+                    x++;
+                    continue;
+                }
+
+                if (x > to) break;
                 x++;
-                continue;
+                t += value + "\n";
             }
-            if(x > to)break;
-            x++;
-            t += value + "\n";
 
-        }
-        t += "------------------------------";
-        return (t);
-            
+            t += "------------------------------";
+            return (t);
         }
 
         [Command(Name = "f kick", Description = "Deposit Money into Faction")]
@@ -413,15 +412,18 @@ namespace CyberCore.Manager.Factions
                 Sender.SendMessage($"{ChatColors.Red}Error! You do not have permission to kick a player!");
                 return;
             }
+
             if (t != null && t.getPlayer() != null)
             {
                 var p = t.getPlayer();
                 var tp = f.getPlayerRank(p);
                 if (!perm.hasPerm(tp))
                 {
-                    Sender.SendMessage($"{ChatColors.Red}Error! You can not kick a higher ranked player! Your Rank: {perm.toEnum()} {p.Username}'s Rank: {tp.toEnum()}");
+                    Sender.SendMessage(
+                        $"{ChatColors.Red}Error! You can not kick a higher ranked player! Your Rank: {perm.toEnum()} {p.Username}'s Rank: {tp.toEnum()}");
                     return;
                 }
+
                 f.KickPlayer(p);
             }
             else
@@ -518,7 +520,7 @@ namespace CyberCore.Manager.Factions
         }
 
         [Command(Name = "f admin", Description = "Admin Command")]
-        [ServerRankAttr(RankEnum.JrServerAdmin)]
+        //[ServerRankAttr(RankEnum.JrServerAdmin)]
         public void fadmin(CorePlayer p)
         {
             p.SendForm(new FactionAdminPage1());
@@ -547,7 +549,7 @@ namespace CyberCore.Manager.Factions
 
             p.SendForm(new FactionAllyWindow(facname));
         }
-        
+
         [FactionCommand]
         [Command(Name = "f leave", Description = "Leave the faction that you are currently in")]
         public void FLeave(CorePlayer Sender)

@@ -130,6 +130,7 @@
               <e p="FactionAllyChatFactionWindow.cs" t="Include" />
               <e p="FactionAllyHomesPage.cs" t="Include" />
               <e p="FactionAllyWindow.cs" t="Include" />
+              <e p="FactionChangeLeaderWindow.cs" t="Include" />
               <e p="FactionChatChoose.cs" t="Include" />
               <e p="FactionChatFactionWindow.cs" t="Include" />
               <e p="FactionConfirmDelete.cs" t="Include" />
@@ -140,6 +141,8 @@
               <e p="FactionInviteChooseRank.cs" t="Include" />
               <e p="FactionInvited.cs" t="Include" />
               <e p="FactionInvitesWindow.cs" t="Include" />
+              <e p="FactionJoinConfirm.cs" t="Include" />
+              <e p="FactionJoinListWindow.cs" t="Include" />
               <e p="FactionKickListWindow.cs" t="Include" />
               <e p="FactionLeaveConfirmWindow.cs" t="Include" />
               <e p="FactionMainForm.cs" t="Include" />

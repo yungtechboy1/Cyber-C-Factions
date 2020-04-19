@@ -8,8 +8,8 @@
     ".NETCoreApp,Version=v3.1": {
       "CyberCore/1.0.0": {
         "dependencies": {
-          "MySqlConnector": "0.63.1",
-          "OpenMiNET.OpenAPI": "1.0.63"
+          "MySqlConnector": "0.64.0",
+          "OpenMiNET.OpenAPI": "1.0.73"
         },
         "runtime": {
           "CyberCore.dll": {}
@@ -147,7 +147,7 @@
           }
         }
       },
-      "MiNET/1.0.2071": {
+      "MiNET/1.0.2093": {
         "dependencies": {
           "LibNoise.NetStandart": "0.2.0",
           "MiNET.LevelDB": "1.0.14",
@@ -165,8 +165,8 @@
         },
         "runtime": {
           "lib/netcoreapp3.1/MiNET.dll": {
-            "assemblyVersion": "1.0.2071.0",
-            "fileVersion": "1.0.2071.0"
+            "assemblyVersion": "1.0.2093.0",
+            "fileVersion": "1.0.2093.0"
           }
         }
       },
@@ -220,11 +220,11 @@
           }
         }
       },
-      "MySqlConnector/0.63.1": {
+      "MySqlConnector/0.64.0": {
         "runtime": {
           "lib/netcoreapp3.0/MySqlConnector.dll": {
-            "assemblyVersion": "0.63.1.0",
-            "fileVersion": "0.63.1.0"
+            "assemblyVersion": "0.64.0.0",
+            "fileVersion": "0.64.0.0"
           }
         }
       },
@@ -241,27 +241,27 @@
           }
         }
       },
-      "OpenMiNET.OpenAPI/1.0.63": {
+      "OpenMiNET.OpenAPI/1.0.73": {
         "dependencies": {
-          "MiNET": "1.0.2071",
+          "MiNET": "1.0.2093",
           "Mono.Cecil": "0.11.2",
-          "OpenMiNET.OpenAPI.Locale": "1.0.63"
+          "OpenMiNET.OpenAPI.Locale": "1.0.73"
         },
         "runtime": {
           "lib/netcoreapp3.1/OpenAPI.dll": {
-            "assemblyVersion": "1.0.63.0",
-            "fileVersion": "1.0.63.0"
+            "assemblyVersion": "1.0.73.0",
+            "fileVersion": "1.0.73.0"
           }
         }
       },
-      "OpenMiNET.OpenAPI.Locale/1.0.63": {
+      "OpenMiNET.OpenAPI.Locale/1.0.73": {
         "dependencies": {
-          "MiNET": "1.0.2071"
+          "MiNET": "1.0.2093"
         },
         "runtime": {
           "lib/netcoreapp3.1/OpenAPI.Locale.dll": {
-            "assemblyVersion": "1.0.63.0",
-            "fileVersion": "1.0.63.0"
+            "assemblyVersion": "1.0.73.0",
+            "fileVersion": "1.0.73.0"
           }
         }
       },
@@ -1173,12 +1173,12 @@
       "path": "microsoft.win32.systemevents/4.7.0",
       "hashPath": "microsoft.win32.systemevents.4.7.0.nupkg.sha512"
     },
-    "MiNET/1.0.2071": {
+    "MiNET/1.0.2093": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Hwnx+QWzCV+8IVlSf1B1S5iFmbqZZMD7KKQz69sI51nBOjDq5scrUovSOfrWghwE2Odgk8ICmuQ3Kh52prvdhA==",
-      "path": "minet/1.0.2071",
-      "hashPath": "minet.1.0.2071.nupkg.sha512"
+      "sha512": "sha512-xjFDmnmqAq8bRFhrkNC7rq4R683ycWj1gHcOlEVj8bhjRq4tVOS05LrGz0mwuGPlOZdGxl50e1Q97JcztpxlcA==",
+      "path": "minet/1.0.2093",
+      "hashPath": "minet.1.0.2093.nupkg.sha512"
     },
     "MiNET.astar/1.0.14": {
       "type": "package",
@@ -1208,12 +1208,12 @@
       "path": "mono.cecil/0.11.2",
       "hashPath": "mono.cecil.0.11.2.nupkg.sha512"
     },
-    "MySqlConnector/0.63.1": {
+    "MySqlConnector/0.64.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-KwJYM/WLM0U/NvJ5y8jnQPNI9l01g0/ge4z9BezCKmprV7OejcMXDSJGKcLmomV8g0Q08T3SfyOADDT1CwMfWA==",
-      "path": "mysqlconnector/0.63.1",
-      "hashPath": "mysqlconnector.0.63.1.nupkg.sha512"
+      "sha512": "sha512-umQ4S4IH/rkH7hWeZBHXseDQTPdzobZAMIbzCbjYp1IOBThp0KGohGE1CrzuYfXjM7TqUN9/5RHmmkLvoLAS9Q==",
+      "path": "mysqlconnector/0.64.0",
+      "hashPath": "mysqlconnector.0.64.0.nupkg.sha512"
     },
     "NETStandard.Library/2.0.0": {
       "type": "package",
@@ -1229,19 +1229,19 @@
       "path": "newtonsoft.json/12.0.3",
       "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
     },
-    "OpenMiNET.OpenAPI/1.0.63": {
+    "OpenMiNET.OpenAPI/1.0.73": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-x3GnfSo9J44wTHXWv8Jj8NVMtQpcYeVh8WVFrI6D6AArIEsGsvVdID9FftZvDmSMoDPWNE96JHagrJiH8S5fAw==",
-      "path": "openminet.openapi/1.0.63",
-      "hashPath": "openminet.openapi.1.0.63.nupkg.sha512"
+      "sha512": "sha512-bioWu8afxoQXtHhFe+jT/qMsBUs5WAsFyFCdbEeH914S1/YYdaSomzDEkIOMyfXPrA5MAIXwJhx++TOo4rzgAA==",
+      "path": "openminet.openapi/1.0.73",
+      "hashPath": "openminet.openapi.1.0.73.nupkg.sha512"
     },
-    "OpenMiNET.OpenAPI.Locale/1.0.63": {
+    "OpenMiNET.OpenAPI.Locale/1.0.73": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-UKOfm2GtY+/4VJUYQwe6mtPL6G/DdhJldEKHueTq0WYylWTr9H1EckqbmkW+I00YYoW8WQadVb67wb21nLzdfg==",
-      "path": "openminet.openapi.locale/1.0.63",
-      "hashPath": "openminet.openapi.locale.1.0.63.nupkg.sha512"
+      "sha512": "sha512-BVYbfkLcrYKhvoLGF0xP+jy2qbQ8QcQjJzpB99P8+OvVn1+Sq2Ryf3WEk2NoH3e6aLxAE0H1ZVSdZ7Lz2xdgmw==",
+      "path": "openminet.openapi.locale/1.0.73",
+      "hashPath": "openminet.openapi.locale.1.0.73.nupkg.sha512"
     },
     "Portable.BouncyCastle/1.8.5": {
       "type": "package",

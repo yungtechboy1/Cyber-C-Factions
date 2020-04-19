@@ -34,6 +34,7 @@ namespace CyberCore.Manager.Factions.Windows
 
                 Faction f = _plugin.FM.FFactory.CreateFaction(fn, player, desc, motd, privacy);
                 if (f == null) player.SendMessage(FactionErrorString.Error_SA223.getMsg()+"!!!!!++11<<");
+                ((CorePlayer)player).RefreshCommands();
 
                 return;
             };

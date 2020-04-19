@@ -17,7 +17,6 @@ namespace CyberCore.Manager.Factions.Windows
             P = p;
             var f = p.getFaction();
 
-            var perm = f.getPlayerRank(p);
             if (f == null)
             {
                 addButton("View Faction Invites",delegate(Player player, SimpleForm form) {
@@ -29,6 +28,7 @@ namespace CyberCore.Manager.Factions.Windows
             }
             else
             {
+            var perm = f.getPlayerRank(p);
                 if(perm.hasPerm(f.getPermSettings().AllowedToEditSettings))addButton("Change MOTD");
                 if(perm.hasPerm(f.getPermSettings().AllowedToPromote))addButton("Promote Member");
                 if(perm.hasPerm(f.getPermSettings().AllowedToPromote))addButton("Demote Member");

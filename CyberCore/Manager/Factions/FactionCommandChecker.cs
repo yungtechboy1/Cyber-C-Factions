@@ -18,7 +18,7 @@ namespace CyberCore.Manager.Factions
         {
             var f = ((CorePlayer) player).getFaction();
             var b = f != null;
-            if(!b)player.SendMessage(ChatColors.Red+"Error! You must be in a Faction to run this command!");
+            if(!b && player.IsSpawned)player.SendMessage(ChatColors.Red+"Error! You must be in a Faction to run this command!");
             return b;
         }
     }

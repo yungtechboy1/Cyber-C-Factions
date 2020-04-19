@@ -19,6 +19,7 @@ namespace CyberCore
 
         public override bool HasPermission(ServerRankAttrAttribute attr, OpenPlayer player)
         {
+            if (!player.IsSpawned) return false;
             Rank2 rr =Manager.getPlayerRank((CorePlayer) player);
             return rr.hasPerm(attr.Permission);
         }

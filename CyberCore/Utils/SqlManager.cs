@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using CyberCore.Manager.Forms;
 using log4net;
 using MySql.Data.MySqlClient;
 
@@ -15,12 +16,12 @@ namespace CyberCore.Utils
 
         public SqlManager(CyberCoreMain ccm, String key = "")
         {
-            if(key.Length != 0)key = "-"+key;
+            if(key.Length != 0)key +="-";
             CCM = ccm;
-            Host = CCM.MasterConfig.GetProperty("Host"+key, null);
-            Username = CCM.MasterConfig.GetProperty("Username"+key, null);
-            Password = CCM.MasterConfig.GetProperty("Password"+key, null);
-            Database = CCM.MasterConfig.GetProperty("db-Server"+key, null);
+            Host = CCM.MasterConfig.GetProperty(key+"Host", null);
+            Username = CCM.MasterConfig.GetProperty(key+"Username", null);
+            Password = CCM.MasterConfig.GetProperty(key+"Password", null);
+            Database = CCM.MasterConfig.GetProperty(key+"db-Server", null);
             Port = CCM.MasterConfig.GetProperty("Port", 3360);
             ConnectionString = $"SERVER={Host};port={Port};DATABASE={Database};user id={Username};PASSWORD={Password};";
             try
@@ -32,6 +33,7 @@ namespace CyberCore.Utils
                 {
                     MSC.Open();
                     CheckMSQLState();
+                    // executeSelect("SELECT *");
                     if (Active) Log.Info("MySQL MySqlConnection to" + Host + " was successful!");
                 }
                 catch (Exception e)
@@ -110,11 +112,12 @@ namespace CyberCore.Utils
         // }
         public List<Dictionary<string, object>> executeSelect(string query)
         {
-            return executeSelecta(query).Result;
+            return executeSelecta(query);
         }
 
-        public async Task<List<Dictionary<string, object>>> executeSelecta(string query)
+        public List<Dictionary<string, object>> executeSelecta(string query)
         {
+            var startt = DateTime.Now.Ticks;
             var data = new List<Dictionary<string, object>>();
             var cols = new List<string>();
             DataTable schema = null;
@@ -123,12 +126,12 @@ namespace CyberCore.Utils
             // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1" + ConnectionString);
             using (var con = new MySqlConnection(ConnectionString))
             {
-                await con.OpenAsync();
+                con.Open();
                 // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.1");
                 using (var schemaCommand = new MySqlCommand(query, con))
                 {
                     // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.2");
-                    using (var reader = await schemaCommand.ExecuteReaderAsync(CommandBehavior.SchemaOnly))
+                    using (var reader = schemaCommand.ExecuteReader(CommandBehavior.SchemaOnly))
                     {
                         // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.3");
                         schema = reader.GetSchemaTable();
@@ -145,9 +148,9 @@ namespace CyberCore.Utils
 
                 using (var schemaCommand = new MySqlCommand(query, con))
                 {
-                    using (var reader = await schemaCommand.ExecuteReaderAsync())
+                    using (var reader = schemaCommand.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             // int i = 0;
                             var aa = new Dictionary<string, object>();
@@ -161,7 +164,9 @@ namespace CyberCore.Utils
                     }
                 }
             }
-
+            var stop = DateTime.Now.Ticks;
+            var final = stop - startt;
+            CyberCoreMain.Log.Info($"IT TOOK {final/500000} OR {final/10000000} Secs OR {final/100000} OR {final/1000} orr {final/10} TICKS TO EXECUTE SQL COMMAND : "+query);
             // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 4");
             return data;
         }

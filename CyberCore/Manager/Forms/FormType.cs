@@ -70,7 +70,9 @@
         Faction_View_Invites,
         Faction_Ally_Select,
         Faction_Main_Window,
-        Faction_Home_Page
+        Faction_Home_Page,
+        Faction_Join_Confirm,
+        Faction_Leader_Change
     }
 
     public enum SubMenu

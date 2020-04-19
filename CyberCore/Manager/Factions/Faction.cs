@@ -194,6 +194,7 @@ namespace CyberCore.Manager.Factions
 
         //CJ LOOK HERE
         //TODO ALSO FIX PROMOTE AND DEMOTE TO SEND DIRECTLY TO SERVER
+        //TDOD Make this also change their display name
         public void reloadPlayerRanks(bool force)
         {
             if (!PlayerRanksCC.needsUpdate() && !force) return;
@@ -394,6 +395,9 @@ namespace CyberCore.Manager.Factions
         public bool onTick(int tick)
         {
             reloadPlayerRanks(true);
+            
+            // PlayerRanks
+            
             return true;
         }
 
@@ -2237,6 +2241,17 @@ namespace CyberCore.Manager.Factions
             {
                 KickPlayer(p);
             }
+        }
+
+        public bool canJoin(bool checkprivacy = true )
+        {
+            if (checkprivacy && GetPrivacy() == 1)
+            {
+                return false;
+            }
+
+            var i = getPlayerCount();
+            return GetMaxPlayers() <= i;
         }
     }
 }

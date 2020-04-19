@@ -52,19 +52,21 @@ namespace CyberCore.Manager.Rank
         public int getUserIDFromMCPEName(String name)
         {
             var a = Main.WebSQL.executeSelect(
-                $"SELECT * FROM `xf_user_field_value` WHERE `field_value` LIKE '{name}' AND `field_id` = CAST(0x6d6370656964 AS BINARY)");
+                // $"SELECT * FROM `xf_user_field_value` WHERE `field_value` LIKE '{name}' AND `field_id` = CAST(6d6370656964 AS BINARY)");
+                $"SELECT * FROM `xf_user_field_value` WHERE `field_value` LIKE '{name}' AND `field_id` = 'mcpeid'");
+            // CyberCoreMain.Log.Error("WHOAAAA WTF IS THIS!!!::" + a.Count);
             if (a.Count > 0)
             {
                 return a[0].GetInt32("user_id");
             }
-
+            // CyberCoreMain.Log.Error("WHOAAAA WTF IS THIS!!!::" + a.Count);
             return 0;
         }
 
-        public int getUserIDFromMCPEUUID(String name)
+        public int getUserIDFromMCPEUUID(String uuid)
         {
             var a = Main.WebSQL.executeSelect(
-                $"SELECT * FROM `xf_user_field_value` WHERE `field_value` LIKE '{name}' AND `field_id` = CAST(0x6d63706575756964 AS BINARY)");
+                $"SELECT * FROM `xf_user_field_value` WHERE `field_value` LIKE '{uuid}' AND `field_id` = CAST(0x6d63706575756964 AS BINARY)");
             if (a.Count > 0)
             {
                 return a[0].GetInt32("user_id");
@@ -121,17 +123,64 @@ namespace CyberCore.Manager.Rank
             }
 
             var uid1 = getUserIDFromMCPEName(name);
-            var uid2 = getUserIDFromMCPEUUID(name);
-            var a = getRankIDsFromUserID(uid1);
-            if (uid1 != uid2 && uid2 != 0)
+            var uid2 = getUserIDFromMCPEUUID(uuid);
+            
+            Rank2 hr = null;
+            if (uid1 != 0 || uid2 != 0)
             {
-                var aa = getRankIDsFromUserID(uid2);
-                a.AddRange(aa);
+                CyberCoreMain.Log.Warn($"{uid1} ||||| {uid2}");
+                var a = getRankIDsFromUserID(uid1);
+                CyberCoreMain.Log.Warn($"{uid1} ||||| {uid2} ||||| {a.Count}");
+                if (uid1 != uid2 && uid2 != 0)
+                {
+                    var aa = getRankIDsFromUserID(uid2);
+                    a.AddRange(aa);
+                }
+
+                var aaa = a.Distinct().ToList(); //Removes Duplicates
+                var rr = getAllRanksFromIntList(aaa);
+                hr = getHigestRankFromList(rr);
             }
 
-            var aaa = a.Distinct().ToList(); //Removes Duplicates
-            var rr = getAllRanksFromIntList(aaa);
-            var hr = getHigestRankFromList(rr);
+            if (hr == null) hr = RankList2.getInstance().getRankFromID(RankEnum.Guest);
+            RankCache[name] = hr;
+            addCooldownToPlayer(name);
+            return hr;
+            
+        }
+        public Rank2 getPlayerRank(String p)
+        {
+            if (p == null) return RankList2.getInstance().getRankFromID(RankEnum.Guest);
+            String name = p.ToLower();
+            if (RankCache.ContainsKey(name))
+            {
+                if (RankCacheCooldown.ContainsKey(name))
+                {
+                    var r = RankCacheCooldown[name];
+                    if (r.isValid()) return RankCache[name];
+                    RankCacheCooldown.Remove(name);
+                    RankCache.Remove(name);
+                }
+                else
+                {
+                    addCooldownToPlayer(name);
+                    return RankCache[name];
+                }
+            }
+
+            var uid1 = getUserIDFromMCPEName(name);
+            Rank2 hr = null;
+            if (uid1 != 0)
+            {
+                var a = getRankIDsFromUserID(uid1);
+
+
+                var aaa = a.Distinct().ToList(); //Removes Duplicates
+                var rr = getAllRanksFromIntList(aaa);
+                hr = getHigestRankFromList(rr);
+
+            }
+
             if (hr == null) hr = RankList2.getInstance().getRankFromID(RankEnum.Guest);
             RankCache[name] = hr;
             addCooldownToPlayer(name);
