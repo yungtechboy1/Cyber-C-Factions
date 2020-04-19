@@ -40,6 +40,29 @@ namespace CyberCore.Manager.Factions
         {
             p.SendForm(new FactionCreate0());
         }
+
+        [Command(Name = "f settings", Description = "View your faction's power")]
+        [FactionPermission(FactionRankEnum.Recruit)]
+        public void fsettings(CorePlayer p)
+        {
+            var fac = p.getFaction();
+            FactionRank nr = fac.getPermSettings().getAllowedToEditSettings();
+            FactionRank pr = fac.getPlayerRank(p);
+            if (pr.hasPerm(nr)) {
+                p.showFormWindow(new FactionSettingsWindow(fac));
+            } else {
+                p.SendMessage(FactionErrorString.Error_Settings_No_Permission.getMsg());
+            }
+        }
+
+        [Command(Name = "f power", Description = "View your faction's power")]
+        [FactionPermission(FactionRankEnum.Recruit)]
+        public string fpower(CorePlayer p)
+        {
+            var f = p.getFaction();
+            return (FactionsMain.NAME+ChatColors.LightPurple + "Your Faction Has " + f.GetPower()+" Power!");
+        }
+
         [Command(Name = "f neutral", Description = "Re-set faction relationship back to neutral")]
         [FactionPermission(FactionRankEnum.Recruit)]
         public void fneutral(CorePlayer p, string fac)

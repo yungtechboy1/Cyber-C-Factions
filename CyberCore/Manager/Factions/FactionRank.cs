@@ -75,7 +75,7 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public FactionRank getRankFromForm(int a)
+        public static FactionRank getRankFromForm(int a)
         {
             switch (a)
             {
@@ -116,14 +116,14 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public int getFormPower(FactionRank r)
+        public int getFormPower()
         {
-            if ((int) r.Id == -1) return (int) r.Id;
-            if (Leader.Id == r.Id) return 0;
-            if (General.Id == r.Id) return 1;
-            if (Officer.Id == r.Id) return 2;
-            if (Member.Id == r.Id) return 3;
-            if (Recruit.Id == r.Id) return 4;
+            if ((int) Id == -1) return (int) Id;
+            if (Leader.Id == Id) return 0;
+            if (General.Id == Id) return 1;
+            if (Officer.Id == Id) return 2;
+            if (Member.Id == Id) return 3;
+            if (Recruit.Id == Id) return 4;
             return 0;
         }
 
@@ -155,7 +155,7 @@ namespace CyberCore.Manager.Factions
         public bool hasPerm(FactionRank target)
         {
             if (target.Id == FactionRankEnum.None || Id == FactionRankEnum.None) return false;
-            if (target.Id == FactionRankEnum.All)  return true;
+            if (target.Id == FactionRankEnum.All) return true;
             return Id >= target.Id;
         }
 
