@@ -72,7 +72,8 @@
         Faction_Main_Window,
         Faction_Home_Page,
         Faction_Join_Confirm,
-        Faction_Leader_Change
+        Faction_Leader_Change,
+        Faction_List_Window
     }
 
     public enum SubMenu

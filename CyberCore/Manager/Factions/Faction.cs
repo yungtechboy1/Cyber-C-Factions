@@ -1502,9 +1502,13 @@ namespace CyberCore.Manager.Factions
 
         public void removePlayer(Player p)
         {
+            removePlayer(p.getName());
+        }
+        public void removePlayer(String p)
+        {
             Main.CCM.SQL.Insert(
-                $"DELETE FROM Master WHERE player LIKE '{p.getName()}'");
-            PlayerRanks.Remove(p.getName());
+                $"DELETE FROM Master WHERE player LIKE '{p}'");
+            PlayerRanks.Remove(p);
         }
 
         public bool addPlayer(OpenPlayer p, FactionRankEnum r = FactionRankEnum.Recruit, String invitedby = null)

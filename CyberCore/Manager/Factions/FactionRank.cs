@@ -79,6 +79,8 @@ namespace CyberCore.Manager.Factions
         {
             switch (a)
             {
+                case -1:
+                    return FactionRank.All;
                 case 0:
                     return FactionRank.Leader;
                 case 1:
@@ -152,6 +154,7 @@ namespace CyberCore.Manager.Factions
 //FactionCommandWindow.java:40
         public bool hasPerm(FactionRank target)
         {
+            if (target.Id == FactionRankEnum.All) return true;
             return Id >= target.Id;
         }
 
@@ -165,6 +168,8 @@ namespace CyberCore.Manager.Factions
         {
             switch ((int) Id)
             {
+                case -1:
+                    return "All";
                 case 0:
                     return "Recruit";
                 case 1:

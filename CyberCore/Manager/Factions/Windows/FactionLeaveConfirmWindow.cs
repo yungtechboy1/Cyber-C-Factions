@@ -11,6 +11,15 @@ namespace CyberCore.Manager.Factions.Windows
         public FactionLeaveConfirmWindow(Faction f) : base(MainForm.Faction_Leave_Confirm, "Faction Leave Confirmation",
             "Leave", "Stay / Cancel", ChatColors.Red + "Are you sure you want to leave " + f.getDisplayName() + "?")
         {
+            Content = $"{ChatColors.Red}===WARNING===\n" +
+                      $"{ChatColors.Red}===WARNING===\n" +
+                      $"{ChatColors.Yellow}ARE YOU SURE \n" +
+                      $"{ChatColors.Yellow}YOU WANT TO LEAVE \n" +
+                      $"{ChatColors.Yellow}={f.getDisplayName()}=\n" +
+                      // $"{ChatColors.Yellow}AS RANK \n" +
+                      // $"{ChatColors.Aqua} {f.getPlayerRank(this.).getName()} \n" +
+                      $"{ChatColors.Red}===WARNING===\n" +
+                      $"{ChatColors.Red}===WARNING===\n";
             ExecuteAction = delegate(Player player, ModalForm form, bool arg3)
             {
                 if (arg3)

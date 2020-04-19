@@ -12,6 +12,7 @@ using MiNET.Plugins;
 using MiNET.Plugins.Attributes;
 using MiNET.UI;
 using MiNET.Utils;
+using Newtonsoft.Json.Serialization;
 using OpenAPI.Player;
 
 namespace CyberCore.Manager.Factions
@@ -38,6 +39,13 @@ namespace CyberCore.Manager.Factions
         public void FCreate(CorePlayer p)
         {
             p.SendForm(new FactionCreate0());
+        }
+
+        [Command(Name = "f leave", Description = "Use the command to leave your current faction!")]
+        [FactionPermission(FactionRankEnum.Recruit)]
+        public void Fleave(CorePlayer Sender)
+        {
+            Sender.SendForm(new FactionLeaveConfirmWindow(Sender.getFaction()));
         }
 
         [Command(Name = "faction", Aliases = new[]
@@ -550,18 +558,6 @@ namespace CyberCore.Manager.Factions
             p.SendForm(new FactionAllyWindow(facname));
         }
 
-        [FactionCommand]
-        [Command(Name = "f leave", Description = "Leave the faction that you are currently in")]
-        public void FLeave(CorePlayer Sender)
-        {
-            var fac = getFactionFromPlayer(Sender);
-            if (fac == null) return;
-            if (!fac.GetLeader().equalsIgnoreCase(Sender.getName()))
-                Sender.showFormWindow(new FactionLeaveConfirmWindow(fac));
-            else
-                Sender.SendMessage(FactionsMain.NAME +
-                                   "You are the leader of the faction... Please Do `/f del` if you wish to leave or pass leadership on to someone else!");
-        }
 
         private Faction getFactionFromPlayer(CorePlayer p)
         {
@@ -571,107 +567,17 @@ namespace CyberCore.Manager.Factions
             return fac;
         }
 
+        [Command(Name = "f list", Description = "Open Faction List")]
+        public void fList(CorePlayer Sender, string faction = null)
+        {
+        if(faction == null)
+            Sender.SendForm(new FactionListWindow());
+        }
+
         [Command(Name = "f info", Description = "Usage '/f info [faction]' | View your Faction Info or Others")]
         public void FInfo(CorePlayer Sender, string faction = null)
         {
-            var cp = Sender;
-            if (faction != null)
-            {
-                if (!IsValid(faction))
-                {
-                    Sender.SendMessage(ChatColors.Red + "Invalid Faction Name");
-                    return;
-                }
-
-                var ffaction = Manager.getFaction(faction);
-                if (ffaction == null)
-                {
-                    var lc = Manager.getFaction(Manager.factionPartialName(faction));
-                    if (lc == null)
-                    {
-                        Sender.SendMessage(ChatColors.Red + $"Faction: '{faction}' does not exist");
-                        return;
-                    }
-
-                    ffaction = lc;
-                }
-
-                var sb = new StringBuilder();
-                sb.Append(formatString("Faction name", ffaction.getDisplayName())).Append("\n");
-                sb.Append(formatString("Leader", ffaction.GetLeader())).Append("\n");
-                sb.Append(formatString("# of Players", ffaction.getPlayerCount() + "")).Append("\n");
-                sb.Append(formatString("Max # of Players", ffaction.GetMaxPlayers())).Append("\n");
-                sb.Append(formatString("MOTD", ffaction.getSettings().getMOTD())).Append("\n");
-                sb.Append(formatString("Desc", ffaction.getSettings().getDescription())).Append("\n");
-                sb.Append(formatString("PowerAbstract", ffaction.GetPower())).Append("\n");
-                sb.Append(formatString("Land Owned", ffaction.GetPlots().Count)).Append("\n");
-                sb.Append(formatString("Money", ffaction.GetMoney())).Append("\n");
-                sb.Append(formatString("XP", ffaction.getSettings().getXP())).Append("\n");
-                sb.Append(formatString("Level", ffaction.getSettings().getLevel())).Append("\n");
-
-                var f = new CyberFormSimple(MainForm.Faction_Info_Other);
-                f.Title = "CyberFactions | " + ffaction.getDisplayName() + ChatFormatting.Reset + " Faction info";
-                f.Content = sb.ToString();
-
-
-                f.addButton("View All Players", CommingSoon);
-                f.addButton("Invite to Ally", CommingSoon);
-                f.addButton("Add to Enemy", CommingSoon);
-                f.addButton("Message Faction", CommingSoon);
-                f.addButton("Report Faction", CommingSoon);
-
-                // CorePlayer cp = (CorePlayer) Sender;
-                cp.showFormWindow(f);
-                cp.LastSentFormType = MainForm.Faction_Info_Other;
-            }
-            else
-            {
-                var fac = Sender.getFaction();
-                if (fac == null)
-                {
-                    if (Manager.getPlayerFaction(Sender) == null)
-                    {
-                        Sender.SendMessage(ChatColors.Red + "[CyberTech] You are not in a Faction2222!");
-                    }
-                    else
-                    {
-                        fac = Sender.getFaction();
-                        if (fac == null)
-                        {
-                            Sender.SendMessage(ChatColors.Red + "[CyberTech] You are not in a Faction!");
-                            return;
-                        }
-                    }
-                }
-
-                var sb = new StringBuilder();
-                sb.Append(formatString("Faction name", fac.getDisplayName())).Append("\n");
-                sb.Append(formatString("Leader", fac.GetLeader())).Append("\n");
-                sb.Append(formatString("# of Players", fac.getPlayerCount() + "")).Append("\n");
-                sb.Append(formatString("Max # of Players", fac.GetMaxPlayers())).Append("\n");
-                sb.Append(formatString("MOTD", fac.getSettings().getMOTD())).Append("\n");
-                sb.Append(formatString("Desc", fac.getSettings().getDescription())).Append("\n");
-                sb.Append(formatString("PowerAbstract", fac.GetPower())).Append("\n");
-                sb.Append(formatString("Land Owned", fac.GetPlots().Count)).Append("\n");
-                sb.Append(formatString("Money", fac.GetMoney())).Append("\n");
-                sb.Append(formatString("XP", fac.getSettings().getXP())).Append("\n");
-                sb.Append(formatString("Level", fac.getSettings().getLevel())).Append("\n");
-
-
-                var f = new CyberFormSimple(MainForm.Faction_Info_Other);
-                f.Title = "CyberFactions | " + fac.getDisplayName() + ChatFormatting.Reset + " Faction info";
-                f.Content = sb.ToString();
-
-
-                f.addButton("View All Players", CommingSoon);
-                f.addButton("View Allies", CommingSoon);
-                f.addButton("View Enemies", CommingSoon);
-                f.addButton("Open Inbox", CommingSoon);
-                f.addButton("Report Faction", CommingSoon);
-
-                cp.showFormWindow(f);
-                cp.LastSentFormType = MainForm.Faction_Info_Self;
-            }
+            Sender.SendForm(new FactionListWindow(faction));
         }
 
         private void CommingSoon(Player arg1, SimpleForm arg2)

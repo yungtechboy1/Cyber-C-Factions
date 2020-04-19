@@ -138,6 +138,7 @@
               <e p="FactionCreate0Error.cs" t="Include" />
               <e p="FactionEnemyWindow.cs" t="Include" />
               <e p="FactionHomesPage.cs" t="Include" />
+              <e p="FactionInfoWindow.cs" t="Include" />
               <e p="FactionInviteChooseRank.cs" t="Include" />
               <e p="FactionInvited.cs" t="Include" />
               <e p="FactionInvitesWindow.cs" t="Include" />
@@ -145,6 +146,7 @@
               <e p="FactionJoinListWindow.cs" t="Include" />
               <e p="FactionKickListWindow.cs" t="Include" />
               <e p="FactionLeaveConfirmWindow.cs" t="Include" />
+              <e p="FactionListWindow.cs" t="Include" />
               <e p="FactionMainForm.cs" t="Include" />
               <e p="HTP_0_Window.cs" t="Include" />
             </e>
