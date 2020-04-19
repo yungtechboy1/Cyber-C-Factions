@@ -412,15 +412,41 @@ namespace CyberCore.Manager.Factions
             return getSettings().getPermSettings();
         }
 
-        public void PromotePlayer(Player pp)
-        {
-            PromotePlayer(pp, false);
-        }
-
-        public void PromotePlayer(Player pp, bool leaderConfirm)
+     
+        public void PromotePlayer(Player pp, bool leaderConfirm = false)
         {
             FactionRank cr = getPlayerRank(pp);
             String pn = pp.Username.ToLower();
+            switch (cr.toEnum())
+            {
+                case FactionRankEnum.Recruit:
+                    PlayerRanks[pn] = Member;
+                    updatePlayerRankinDB(pp, Member);
+                    break;
+                case FactionRankEnum.Member:
+                    PlayerRanks[pn] = FactionRank.Officer;
+                    updatePlayerRankinDB(pp, FactionRank.Officer);
+                    break;
+                case FactionRankEnum.Officer:
+                    PlayerRanks[pn] = FactionRank.General;
+                    updatePlayerRankinDB(pp, FactionRank.General);
+                    break;
+                case FactionRankEnum.General:
+                    if (!leaderConfirm) break;
+                    String l = GetLeader();
+                    PlayerRanks[l] = FactionRank.General;
+                    PlayerRanks[pn] = FactionRank.Leader;
+                    updatePlayerRankinDB(pp, FactionRank.Leader);
+                    updatePlayerRankinDB(l, FactionRank.General);
+//                Leader = (pn);
+                    break;
+            }
+        }
+     
+        public void PromotePlayer(String pp, bool leaderConfirm = false)
+        {
+            FactionRank cr = getPlayerRank(pp);
+            String pn = pp.ToLower();
             switch (cr.toEnum())
             {
                 case FactionRankEnum.Recruit:
@@ -467,6 +493,26 @@ namespace CyberCore.Manager.Factions
                     break;
             }
         }
+        public void DemotePlayer(string pp)
+        {
+            FactionRank cr = getPlayerRank(pp);
+            String pn = pp.ToLower();
+            switch (cr.toEnum())
+            {
+                case FactionRankEnum.Member:
+                    PlayerRanks[pn] = FactionRank.Recruit;
+                    updatePlayerRankinDB(pp, FactionRank.Recruit);
+                    break;
+                case FactionRankEnum.Officer:
+                    PlayerRanks[pn] = FactionRank.Member;
+                    updatePlayerRankinDB(pp, FactionRank.Member);
+                    break;
+                case FactionRankEnum.General:
+                    PlayerRanks[pn] = FactionRank.Officer;
+                    updatePlayerRankinDB(pp, FactionRank.Officer);
+                    break;
+            }
+        }
 
         public void updatePlayerRankinDB(OpenPlayer p, FactionRank r)
         {
@@ -491,6 +537,7 @@ namespace CyberCore.Manager.Factions
                 Console.WriteLine(
                     "Error sending plots to DB FOR RANK UPDATE!!! Please report Error 'E190 t'o an admin");
             }
+            BroadcastMessage($"{ChatColors.Yellow} {n} is now Rank {rr.toEnum()}");
         }
 
         public Faction GetAllyFromName(String name)

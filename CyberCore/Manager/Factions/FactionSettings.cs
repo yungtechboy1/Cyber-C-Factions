@@ -3,27 +3,26 @@ using System.Collections.Generic;
 using CyberCore.Utils;
 using MiNET.Utils;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Crypto.Digests;
 
 namespace CyberCore.Manager.Factions
 {
     public class FactionSettings
     {
-        private FactionPermSettings PermSettings = new FactionPermSettings();
+        private string Description = "A Basis faction trying to win!";
+        private string DisplayName;
         private Faction F;
-        private String Faction;
-        private String DisplayName;
+        private string Faction;
+        private int Level;
         private int MaxPlayers = 15;
+        private int Money;
+        private string MOTD = "Welcome! A basic faction message!";
+        private FactionPermSettings PermSettings = new FactionPermSettings();
+        private int Points;
+        private int Power;
         private double PowerBonus = 1d;
-        private String MOTD = "Welcome! A basic faction message!";
-        private String Description = "A Basis faction trying to win!";
-        private int Power = 0;
-        private int Money = 0;
-        private int Rich = 0;
-        private int XP = 0;
-        private int Level = 0;
-        private int Points = 0;
-        private int Privacy = 0;
+        private int Privacy;
+        private int Rich;
+        private int XP;
 
         public FactionSettings(Faction f, bool update = false)
         {
@@ -33,9 +32,9 @@ namespace CyberCore.Manager.Factions
             if (update) download();
         }
 
-        public FactionSettings(Faction f, String fps)
+        public FactionSettings(Faction f, string fps)
         {
-            F = (f);
+            F = f;
             setFaction(f.getName());
             setDisplayName(f.getName());
             setPermSettings(fps);
@@ -43,8 +42,8 @@ namespace CyberCore.Manager.Factions
 
         public void CalculateXP()
         {
-            int xp = getXP();
-            int lvl = getLevel();
+            var xp = getXP();
+            var lvl = getLevel();
             while (xp >= calculateRequireExperience(lvl))
             {
                 xp = xp - calculateRequireExperience(lvl);
@@ -58,10 +57,10 @@ namespace CyberCore.Manager.Factions
         public void addXP(int add)
         {
             if (add == 0) return;
-            int now = GetXP();
-            int added = now + add;
-            int level = getLevel();
-            int most = calculateRequireExperience(level);
+            var now = GetXP();
+            var added = now + add;
+            var level = getLevel();
+            var most = calculateRequireExperience(level);
             while (added >= most)
             {
                 //Level Up!
@@ -75,8 +74,8 @@ namespace CyberCore.Manager.Factions
 
         public void SetXPCalculate(int value)
         {
-            int level = getLevel();
-            int most = calculateRequireExperience(level);
+            var level = getLevel();
+            var most = calculateRequireExperience(level);
             while (value >= most)
             {
                 //Level Up!
@@ -90,7 +89,7 @@ namespace CyberCore.Manager.Factions
 
         public int GetXPPercent()
         {
-            Double d = ((XP / (double) calculateRequireExperience(getLevel())) * 100);
+            var d = XP / (double) calculateRequireExperience(getLevel()) * 100;
             return (int) d;
         }
 
@@ -101,15 +100,15 @@ namespace CyberCore.Manager.Factions
 
         public bool TakeXP(int xp)
         {
-            int x = GetXP();
-            int lvl = getLevel();
+            var x = GetXP();
+            var lvl = getLevel();
             while (x < xp)
             {
                 if (lvl == 0) return false;
                 xp += calculateRequireExperience(--lvl);
             }
 
-            int a = x - xp;
+            var a = x - xp;
             setXP(a);
             setLevel(lvl);
             return true;
@@ -120,11 +119,6 @@ namespace CyberCore.Manager.Factions
             return Privacy;
         }
 
-        public void setPrivacy(int privacy)
-        {
-            setPrivacy(privacy, false);
-        }
-
         public int calculateRequireExperience()
         {
             return calculateRequireExperience(getLevel());
@@ -133,54 +127,43 @@ namespace CyberCore.Manager.Factions
         public int calculateRequireExperience(int level)
         {
             if (level >= 30)
-            {
                 return 112 + (level - 30) * 9 * 100;
-            }
-            else if (level >= 15)
-            {
+            if (level >= 15)
                 return 37 + (level - 15) * 5 * 100;
-            }
-            else
-            {
-                return 7 + level * 2 * 100;
-            }
+            return 7 + level * 2 * 100;
         }
 
 
-        public void setPrivacy(int privacy, bool update)
+        public void setPrivacy(int privacy, bool update = false)
         {
             Privacy = privacy;
             if (update) UpdateSettingsValue("Privacy", privacy);
         }
-
-        public Dictionary<String, Object> GetAllSettings()
+        public void setPrivacy(bool privacy, bool update = false)
         {
-            Dictionary<String, Object> a = new Dictionary<String, Object>();
+            Privacy = privacy ? 1 : 0;
+            if (update) UpdateSettingsValue("Privacy", Privacy);
+        }
+
+        public Dictionary<string, object> GetAllSettings()
+        {
+            var a = new Dictionary<string, object>();
             try
             {
                 var r = F.Main.CCM.SQL.executeSelect($"select * from `Settings` where Name = '{getFaction()}'");
                 if (r == null) return null;
                 if (r.Count != 0)
                 {
-                    foreach (var s in getF().NeededfromsettingsString)
-                    {
-                        a.Add(s, r.GetString(s));
-                    }
+                    foreach (var s in getF().NeededfromsettingsString) a.Add(s, r.GetString(s));
 
-                    foreach (var s in getF().NeededfromsettingsInt)
-                    {
-                        a.Add(s, r.GetInt32(s));
-                    }
+                    foreach (var s in getF().NeededfromsettingsInt) a.Add(s, r.GetInt32(s));
 
-                    foreach (var s in getF().NeededfromsettingsDouble)
-                    {
-                        a.Add(s, r.getDouble(s));
-                    }
+                    foreach (var s in getF().NeededfromsettingsDouble) a.Add(s, r.getDouble(s));
 
                     return a;
                 }
 
-                CyberCoreMain.Log.Error("Error with Faction Settings Cache E39132!>>"+r.Count);
+                CyberCoreMain.Log.Error("Error with Faction Settings Cache E39132!>>" + r.Count);
                 // CyberCoreMain.Log.Error("Error with Faction Settings Cache E39132!>>"+r.Count+"|||"+r[0].Count);
                 return null;
             }
@@ -193,25 +176,26 @@ namespace CyberCore.Manager.Factions
 
         public void download()
         {
-            Dictionary<String, Object> a = GetAllSettings();
+            var a = GetAllSettings();
             if (a == null)
             {
                 CyberCoreMain.Log.Error($"Nothing to download for {getFaction()} From Settings!!!!!!E44345");
                 return;
             }
+
             // foreach (var aa in a)
             // {
             //     Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>"+aa.Key+"||"+aa.Value+"<<<<<<<<<<<<<<<<<<<<<<<");
             // }
-            setDisplayName((String) a["DisplayName"]);
+            setDisplayName((string) a["DisplayName"]);
             setMaxPlayers((int) a["MaxPlayers"]);
-            Object p = a["PowerBonus"];
+            var p = a["PowerBonus"];
             CyberCoreMain.Log.Error("POWERBONUS VALUE" + p + " | TYPE: " + p.GetType());
-            setPowerBonus((Double) p);
-            setMOTD((String) a["MOTD"]);
-            setDescription((String) a["Description"]);
+            setPowerBonus((double) p);
+            setMOTD((string) a["MOTD"]);
+            setDescription((string) a["Description"]);
             setPrivacy((int) a["Privacy"]);
-            setPermSettings((String) a["Perm"]);
+            setPermSettings((string) a["Perm"]);
             setMoney((int) a["Money"]);
             setPower((int) a["Power"]);
             setRich((int) a["Rich"]);
@@ -222,7 +206,7 @@ namespace CyberCore.Manager.Factions
 
         public void upload()
         {
-            String q =
+            var q =
                 $"INSERT INTO `Settings` VALUES('{getFaction()}','{getDisplayName()}', {getMaxPlayers()} ," +
                 $" {getPowerBonus()} ,' {getMOTD()}','{getDescription()}',{getPrivacy()} ,'{getPermSettings().export()}'" +
                 $", {getPower()} , {getMoney()} , {getRich()} , {getXP()} , {getLevel()} , {getPoints()} )";
@@ -236,7 +220,6 @@ namespace CyberCore.Manager.Factions
             {
                 CyberCoreMain.Log.Error("Error with Faction Settings Upload Process E3922! \n\n " + q, e);
 //            CyberCoreMain.Log.Error("Error with Faction PermSettings Cache E39942!AAA", e);
-                return;
             }
         }
 
@@ -250,59 +233,50 @@ namespace CyberCore.Manager.Factions
             F = f;
         }
 
-        public String getFaction()
+        public string getFaction()
         {
             return Faction;
         }
 
-        public void setFaction(String faction)
+        public void setFaction(string faction)
         {
             Faction = faction;
         }
 
-        public String getDisplayName()
+        public string getDisplayName()
         {
             return DisplayName;
         }
 
-        public void setDisplayName(String displayName)
-        {
-            setDisplayName(displayName, false);
-        }
-
-        public void setDisplayName(String displayName, bool update)
+        public void setDisplayName(string displayName, bool update = false)
         {
             DisplayName = displayName;
             if (update) UpdateSettingsValue("DisplayName", displayName);
         }
 
-        public void UpdateSettingsValue(String key, int val)
+        public void UpdateSettingsValue(string key, int val)
         {
             try
             {
                 getF().Main.CCM.SQL.Insert($"UPDATE `Settings` SET {key} = {val} WHERE `Name` LIKE '{getFaction()}'");
                 CyberCoreMain.Log.Info("SUCCESS with Faction PermSettings Cache E39942!BBwwwwwwwwwBssBBB");
-                return;
             }
             catch (Exception e)
             {
                 CyberCoreMain.Log.Error("Error with FacSett USVI KEY:" + key + " | Val: " + val, e);
-                return;
             }
         }
 
-        public void UpdateSettingsValue(String key, String val)
+        public void UpdateSettingsValue(string key, string val)
         {
             try
             {
                 getF().Main.CCM.SQL.Insert($"UPDATE `Settings` SET {key} = '{val}' WHERE `Name` LIKE '{getFaction()}'");
                 CyberCoreMain.Log.Info("SUCCESSSSSSSSSSS with Faction PermSettings Cache E39942!BBBqzxcccBBB");
-                return;
             }
             catch (Exception e)
             {
                 CyberCoreMain.Log.Error("Error with FacSett USVS KEY:" + key + " | Val: " + val, e);
-                return;
             }
         }
 
@@ -311,12 +285,7 @@ namespace CyberCore.Manager.Factions
             return MaxPlayers;
         }
 
-        public void setMaxPlayers(int maxPlayers)
-        {
-            setMaxPlayers(maxPlayers, false);
-        }
-
-        public void setMaxPlayers(int maxPlayers, bool update)
+        public void setMaxPlayers(int maxPlayers, bool update = false)
         {
             MaxPlayers = maxPlayers;
             if (update) UpdateSettingsValue("MaxPlayers", maxPlayers);
@@ -327,44 +296,29 @@ namespace CyberCore.Manager.Factions
             return PowerBonus;
         }
 
-        public void setPowerBonus(double powerBonus)
-        {
-            setPowerBonus(powerBonus, false);
-        }
-
-        public void setPowerBonus(double powerBonus, bool update)
+        public void setPowerBonus(double powerBonus, bool update = false)
         {
             PowerBonus = powerBonus;
             if (update) UpdateSettingsValue("PowerBonus", powerBonus + "");
         }
 
-        public String getMOTD()
+        public string getMOTD()
         {
             return MOTD;
         }
 
-        public void setMOTD(String MOTD)
-        {
-            setMOTD(MOTD, false);
-        }
-
-        public void setMOTD(String MOTD, bool update)
+        public void setMOTD(string MOTD, bool update = false)
         {
             this.MOTD = MOTD;
             if (update) UpdateSettingsValue("MOTD", MOTD);
         }
 
-        public String getDescription()
+        public string getDescription()
         {
             return Description;
         }
 
-        public void setDescription(String description)
-        {
-            setDescription(description, false);
-        }
-
-        public void setDescription(String description, bool update)
+        public void setDescription(string description, bool update = false)
         {
             Description = description;
             if (update) UpdateSettingsValue("Description", description);
@@ -375,24 +329,15 @@ namespace CyberCore.Manager.Factions
             return Power;
         }
 
-        public void setPower(int power)
-        {
-            setPower(power, false);
-        }
-
-        public void setPower(int power, bool update)
+        public void setPower(int power, bool update = false)
         {
             Power = power;
-            int dif = power - getPower();
-            String t = "";
+            var dif = power - getPower();
+            var t = "";
             if (dif > 0)
-            {
                 t = ChatColors.Green + "Gained +" + dif;
-            }
             else
-            {
                 t = ChatColors.Red + "Lost -" + Math.Abs(dif);
-            }
 
             getF().BroadcastPopUp(ChatColors.Gray + "Faction now has " + ChatColors.Green + power + ChatColors.Gray +
                                   " PowerAbstract!" + t);
@@ -402,35 +347,27 @@ namespace CyberCore.Manager.Factions
 
         public void AddPower(int power)
         {
-            int t = getPower() + Math.Abs(power);
+            var t = getPower() + Math.Abs(power);
             if (t > CalculateMaxPower())
-            {
                 setPower(CalculateMaxPower());
-            }
             else
-            {
                 setPower(t);
-            }
         }
 
         public int CalculateMaxPower()
         {
-            int TP = getF().GetNumberOfPlayers();
+            var TP = getF().GetNumberOfPlayers();
             return TP * 10;
             //Lets do 20 Instead of 10
         }
 
         public void TakePower(int power)
         {
-            int a = getPower() - power;
+            var a = getPower() - power;
             if (a < 0)
-            {
                 setPower(0);
-            }
             else
-            {
                 setPower(a);
-            }
         }
 
         public int getMoney()
@@ -438,12 +375,7 @@ namespace CyberCore.Manager.Factions
             return Money;
         }
 
-        public void setMoney(int money)
-        {
-            setMoney(money, false);
-        }
-
-        public void setMoney(int money, bool update)
+        public void setMoney(int money, bool update = false)
         {
             Money = money;
             if (update) UpdateSettingsValue("Money", money);
@@ -454,12 +386,7 @@ namespace CyberCore.Manager.Factions
             return Rich;
         }
 
-        public void setRich(int rich)
-        {
-            setRich(rich, false);
-        }
-
-        public void setRich(int rich, bool update)
+        public void setRich(int rich, bool update = false)
         {
             Rich = rich;
             if (update) UpdateSettingsValue("Rich", rich);
@@ -470,12 +397,7 @@ namespace CyberCore.Manager.Factions
             return XP;
         }
 
-        public void setXP(int XP)
-        {
-            setXP(XP, false);
-        }
-
-        public void setXP(int XP, bool update)
+        public void setXP(int XP, bool update = false)
         {
             this.XP = XP;
             if (update) UpdateSettingsValue("XP", XP);
@@ -486,12 +408,7 @@ namespace CyberCore.Manager.Factions
             return Level;
         }
 
-        public void setLevel(int level)
-        {
-            setLevel(level, false);
-        }
-
-        public void setLevel(int level, bool update)
+        public void setLevel(int level, bool update = false)
         {
             Level = level;
             if (update) UpdateSettingsValue("Level", level);
@@ -502,12 +419,7 @@ namespace CyberCore.Manager.Factions
             return Points;
         }
 
-        public void setPoints(int points)
-        {
-            setPoints(points, false);
-        }
-
-        public void setPoints(int points, bool update)
+        public void setPoints(int points, bool update = false)
         {
             Points = points;
             if (update) UpdateSettingsValue("Points", points);
@@ -518,38 +430,30 @@ namespace CyberCore.Manager.Factions
             return PermSettings;
         }
 
-        public void setPermSettings(FactionPermSettings permSettings)
-        {
-            setPermSettings(permSettings, false);
-        }
-
-        // public void setPermSettings(String a)
-        // {
-        //     setPermSettings(JsonConvert.DeserializeObject<FactionPermSettingsData>(a), false);
-        // }
-
-        public void setPermSettings(FactionPermSettings permSettings, bool update)
+        public void setPermSettings(FactionPermSettings permSettings, bool update = false)
         {
             PermSettings = permSettings;
             if (update) UpdateSettingsValue("Perm", JsonConvert.SerializeObject(PermSettings.export()));
         }
 
-        public void setPermSettings(String a, bool update = false)
+        public void setPermSettings(string a, bool update = false)
         {
             if (a.Contains("|"))
             {
-                CyberCoreMain.Log.Error("WARNING!!!!!! "+Faction+" IS USING OUTDATED PERMSETTING!!!!");
+                CyberCoreMain.Log.Error("WARNING!!!!!! " + Faction + " IS USING OUTDATED PERMSETTING!!!!");
                 PermSettings = new FactionPermSettings(a);
             }
             else
             {
                 var z = JsonConvert.DeserializeObject<FactionPermSettingsData>(a);
-                CyberCoreMain.Log.Error("TYPE >>>>>>>>> 123 >>>>>>>"+z+"|||||"+z.GetType());
+                CyberCoreMain.Log.Error("TYPE >>>>>>>>> 123 >>>>>>>" + z + "|||||" + z.GetType());
                 setPermSettings(z, update);
             }
+
             // if (update) UpdateSettingsValue("Perm", JsonConvert.SerializeObject(PermSettings.export()));
         }
-        public void setPermSettings(FactionPermSettingsData a, bool update)
+
+        public void setPermSettings(FactionPermSettingsData a, bool update = false)
         {
             PermSettings = new FactionPermSettings(a);
             if (update) UpdateSettingsValue("Perm", JsonConvert.SerializeObject(PermSettings.export()));
@@ -557,30 +461,20 @@ namespace CyberCore.Manager.Factions
 
         public void takeMoney(int money)
         {
-            int a = getMoney() - money;
+            var a = getMoney() - money;
             if (a < 0) setMoney(0);
             setMoney(a);
         }
 
-        public void addPoints(int pointReward)
+        public void addPoints(int pointReward, bool update = false)
         {
-            addPoints(pointReward, false);
-        }
-
-        public void addPoints(int pointReward, bool update)
-        {
-            int np = getPoints() + pointReward;
+            var np = getPoints() + pointReward;
             setPoints(np, update);
         }
 
-        public void addMoney(int moneyReward)
+        public void addMoney(int moneyReward, bool update = false)
         {
-            addMoney(moneyReward, false);
-        }
-
-        public void addMoney(int moneyReward, bool update)
-        {
-            int nm = getMoney() + moneyReward;
+            var nm = getMoney() + moneyReward;
             setMoney(nm, update);
         }
     }

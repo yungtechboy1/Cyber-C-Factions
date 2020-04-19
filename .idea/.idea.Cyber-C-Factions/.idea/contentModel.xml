@@ -149,6 +149,8 @@
               <e p="FactionListWindow.cs" t="Include" />
               <e p="FactionMainForm.cs" t="Include" />
               <e p="FactionNeutralWindow.cs" t="Include" />
+              <e p="FactionPermSettingsWindow.cs" t="Include" />
+              <e p="FactionPromoteDemoteWindow.cs" t="Include" />
               <e p="FactionSettingsWindow.cs" t="Include" />
               <e p="HTP_0_Window.cs" t="Include" />
             </e>

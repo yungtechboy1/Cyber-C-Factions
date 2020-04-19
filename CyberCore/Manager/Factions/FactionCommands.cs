@@ -41,6 +41,19 @@ namespace CyberCore.Manager.Factions
             p.SendForm(new FactionCreate0());
         }
 
+        [Command(Name = "f perm settings", Description = "View your faction's power")]
+        [FactionPermission(FactionRankEnum.Recruit)]
+        public void fpermsettings(CorePlayer p)
+        {
+            var fac = p.getFaction();
+            FactionRank nr = fac.getPermSettings().getAllowedToEditSettings();
+            FactionRank pr = fac.getPlayerRank(p);
+            if (pr.hasPerm(nr)) {
+                p.showFormWindow(new FactionPermSettingsWindow(fac));
+            } else {
+                p.SendMessage(FactionErrorString.Error_Settings_No_Permission.getMsg());
+            }
+        }
         [Command(Name = "f settings", Description = "View your faction's power")]
         [FactionPermission(FactionRankEnum.Recruit)]
         public void fsettings(CorePlayer p)
@@ -527,27 +540,49 @@ namespace CyberCore.Manager.Factions
 
         [Command(Name = "f demote", Description = "Demote Player in Faction")]
         [FactionCommand]
-        public void fdemote(CorePlayer Sender, Target player)
+        public void fdemote(CorePlayer Sender, Target player = null)
         {
             var fac = Sender.getFaction();
-            var pp = player.getPlayer();
+            var pp = (CorePlayer)player.getPlayer();
             if (pp == null)
             {
-                Sender.SendMessage(FactionsMain.NAME + ChatColors.Red + "Player Is Not Online!");
-                ;
+                Sender.SendForm(new FactionPromoteDemoteWindow(false,Sender));
                 return;
             }
 
-            var ppn = pp.getName();
-            if (!Manager.Main.isInFaction(ppn))
+            var pf = pp.getFaction();
+            if (pf == null||!pf.getName().equalsIgnoreCase(fac.getName()))
             {
                 Sender.SendMessage(FactionsMain.NAME + ChatColors.Red + "Target Player Not In Your Faction!");
                 return;
             }
 
-            var r = fac.getPlayerRank((Player) Sender);
+            var r = fac.getPlayerRank(Sender);
             var fr = fac.getPermSettings().getAllowedToPromote();
             if (r.hasPerm(fr)) fac.DemotePlayer(pp);
+        }
+        [Command(Name = "f promote", Description = "Demote Player in Faction")]
+        [FactionCommand]
+        public void fpromote(CorePlayer Sender, Target player = null)
+        {
+            var fac = Sender.getFaction();
+            var pp = (CorePlayer)player.getPlayer();
+            if (pp == null)
+            {
+                Sender.SendForm(new FactionPromoteDemoteWindow(true,Sender));
+                return;
+            }
+
+            var pf = pp.getFaction();
+            if (pf == null||!pf.getName().equalsIgnoreCase(fac.getName()))
+            {
+                Sender.SendMessage(FactionsMain.NAME + ChatColors.Red + "Target Player Not In Your Faction!");
+                return;
+            }
+
+            var r = fac.getPlayerRank(Sender);
+            var fr = fac.getPermSettings().getAllowedToPromote();
+            if (r.hasPerm(fr)) fac.PromotePlayer(pp);
         }
 
         [Command(Name = "f delete", Description = "Delete Faction")]

@@ -74,7 +74,8 @@
         Faction_Join_Confirm,
         Faction_Leader_Change,
         Faction_List_Window,
-        Faction_Nuetral_Select
+        Faction_Nuetral_Select,
+        Faction_Promote_Demote
     }
 
     public enum SubMenu
