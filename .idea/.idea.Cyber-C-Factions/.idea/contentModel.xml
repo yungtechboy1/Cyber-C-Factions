@@ -102,6 +102,7 @@
           <e p="Factions" t="Include">
             <e p="Data" t="Include">
               <e p="FactionInviteData.cs" t="Include" />
+              <e p="FactionMessage.cs" t="Include" />
               <e p="RelationshipManager.cs" t="Include" />
             </e>
             <e p="Faction.cs" t="Include" />
@@ -138,6 +139,7 @@
               <e p="FactionCreate0Error.cs" t="Include" />
               <e p="FactionEnemyWindow.cs" t="Include" />
               <e p="FactionHomesPage.cs" t="Include" />
+              <e p="FactionInboxWindow.cs" t="Include" />
               <e p="FactionInfoWindow.cs" t="Include" />
               <e p="FactionInviteChooseRank.cs" t="Include" />
               <e p="FactionInvited.cs" t="Include" />
@@ -153,6 +155,7 @@
               <e p="FactionPromoteDemoteWindow.cs" t="Include" />
               <e p="FactionSettingsWindow.cs" t="Include" />
               <e p="HTP_0_Window.cs" t="Include" />
+              <e p="InboxMessageWindow.cs" t="Include" />
             </e>
           </e>
           <e p="FloatingText" t="Include">
@@ -203,6 +206,7 @@
             <e p="CoolDown.cs" t="Include" />
             <e p="CoolDownTick.cs" t="Include" />
           </e>
+          <e p="CorePlayerData.cs" t="Include" />
           <e p="CustomConfig.cs" t="Include" />
           <e p="CustomConfigSection.cs" t="Include" />
           <e p="CyberTexts.cs" t="Include" />
@@ -218,6 +222,7 @@
           <e p="ExtraPlayerData.cs" t="Include" />
           <e p="FactionErrorString.cs" t="Include" />
           <e p="InternalPlayerSettings.cs" t="Include" />
+          <e p="MessageFormater.cs" t="Include" />
           <e p="SqlManager.cs" t="Include" />
           <e p="StaticItems.cs" t="Include" />
         </e>

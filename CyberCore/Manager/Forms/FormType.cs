@@ -75,7 +75,9 @@
         Faction_Leader_Change,
         Faction_List_Window,
         Faction_Nuetral_Select,
-        Faction_Promote_Demote
+        Faction_Promote_Demote,
+        Faction_Inbox_Main,
+        Inbox_Message_View
     }
 
     public enum SubMenu

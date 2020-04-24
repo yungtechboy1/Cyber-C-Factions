@@ -33,9 +33,5 @@ namespace CyberCore.Manager.Factions.Windows
                 }
               };
         }
-
-        public FactionChangeLeaderWindow(MainForm ttype, MainForm attype, string title, string trueButtonText, string falseButtonText, string content = "") : base(ttype, attype, title, trueButtonText, falseButtonText, content)
-        {
-        }
     }
 }

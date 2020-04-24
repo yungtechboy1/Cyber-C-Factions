@@ -190,14 +190,15 @@ namespace CyberCore
             api.CommandManager.RegisterPermissionChecker(new ServerRankChecker(this));
             api.CommandManager.LoadCommands(new FactionCommands(FM.FFactory));
 
-            getServer().PlayerFactory.PlayerCreated += (sender, args) =>
-            {
-                Player player = args.Player;
-                player.PlayerJoin += OnPlayerJoin;
-                // player.PlayerJoin += MasterListener.joinEvent;
-                player.PlayerLeave += OnPlayerLeave;
-                player.Ticking += OnTicking;
-            };
+
+            // getServer().PlayerFactory.PlayerCreated += (sender, args) =>
+            // {
+            //     Player player = args.Player;
+            //     player.PlayerJoin += OnPlayerJoin;
+            //     // player.PlayerJoin += MasterListener.joinEvent;
+            //     player.PlayerLeave += OnPlayerLeave;
+            //     player.Ticking += OnTicking;
+            // };
 
 
 

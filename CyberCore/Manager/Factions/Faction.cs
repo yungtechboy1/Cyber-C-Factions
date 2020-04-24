@@ -1818,6 +1818,25 @@ namespace CyberCore.Manager.Factions
             AddAllyRequest(fac, cp, CyberUtils.getLongTime() + 60 * 10);
         }
 
+        public List<FactionMessage> getMessages()
+        {var q = Main.CCM.SQL.executeSelect(
+                $"SELECT * FROM Inbox WHERE Target LIKE '{getName()}'");
+
+            List<int> dellist = new List<int>();
+            List<FactionMessage> list = new List<FactionMessage>();
+            if (q.Count != 0)
+            {
+                foreach (var qq in q)
+                {
+                    var m = new FactionMessage(qq);
+                    list.Add(m);
+                }
+            }
+
+            return list;
+
+        }
+
         public List<AllyRequest> getAllyRequests()
         {
             var q = Main.CCM.SQL.executeSelect(

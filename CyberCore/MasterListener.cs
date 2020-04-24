@@ -20,8 +20,17 @@ namespace CyberCore
     {
         public static CyberCoreMain plugin = CyberCoreMain.GetInstance();
 
+
         [EventHandler]
-        public void OnPlayerJoin(PlayerSpawnedEvent e)
+        public void onPlayerQuit(PlayerQuitEvent e)
+        {
+            CorePlayer p = (CorePlayer) e.Player;
+            CorePlayerData.SaveToFile(new CorePlayerData(p));
+        }
+
+        [EventHandler]
+        // public void OnPlayerJoin(PlayerSpawnedEvent e)
+        public void OnPlayerJoin(PlayerJoinEvent e)
         {
             CorePlayer p = (CorePlayer) e.Player;
             if (p == null)
@@ -29,6 +38,10 @@ namespace CyberCore
                 CyberCoreMain.Log.Error("Error With Join Event! Object is not player");
                 return;
             }
+
+            var d = CorePlayerData.LoadFromFile(p);
+            d.LoadToPlayer(p);
+
 
             p.loadEPD();
             var epd = p.EPD;
@@ -74,6 +87,11 @@ namespace CyberCore
 //            sd.addLine("TEST LINE 1",1);
 //            sd.addLine("YOUR NAME"+p.getDisplayName(),2);
 //            ScoreboardAPI.setScoreboard(p,s);
+            loadinv(p);
+        }
+
+        public void loadinv(CorePlayer p)
+        {
         }
 
         [EventHandler(EventPriority.Highest)]

@@ -205,7 +205,11 @@ namespace CyberCore.Utils
 
             return null;
         }
-        
+        public static DateTime toDateTimeFromLongTime(this long l)
+        {
+            // return getTick();
+            return new DateTime(l * TimeSpan.TicksPerSecond);
+        }
         public static Item addLore(this Item i, params string[] lines)
         {
             var tag = getDisplayCompound(i);
