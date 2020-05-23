@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using CyberCore.CustomEnums;
 using CyberCore.Manager.Factions;
 using CyberCore.Utils;
@@ -57,7 +58,10 @@ namespace CyberCore.Manager.Rank
             // CyberCoreMain.Log.Error("WHOAAAA WTF IS THIS!!!::" + a.Count);
             if (a.Count > 0)
             {
-                return a[0].GetInt32("user_id");
+                // Log.Info(a[0]);
+                // Log.Info(a[0]["user_id"]);
+                // Log.Info(a[0]["user_id"].GetType());
+                return a.GetInt32("user_id");
             }
             // CyberCoreMain.Log.Error("WHOAAAA WTF IS THIS!!!::" + a.Count);
             return 0;
@@ -69,7 +73,7 @@ namespace CyberCore.Manager.Rank
                 $"SELECT * FROM `xf_user_field_value` WHERE `field_value` LIKE '{uuid}' AND `field_id` = CAST(0x6d63706575756964 AS BINARY)");
             if (a.Count > 0)
             {
-                return a[0].GetInt32("user_id");
+                return a.GetInt32("user_id");
             }
 
             return 0;
@@ -83,7 +87,7 @@ namespace CyberCore.Manager.Rank
             if (a.Count != 0)
             {
                 l.Add(a.GetInt32("user_group_id"));
-                var z = a.GetString("secondary_group_ids");
+                var z = Encoding.UTF8.GetString((byte[])a[0]["secondary_group_ids"]);
                 if (z.Length > 0)
                 {
                     var zz = z.Split(",");

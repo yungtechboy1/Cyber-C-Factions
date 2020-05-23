@@ -56,7 +56,7 @@ namespace CyberCore.Manager.Factions
         public List<String> NeededfromsettingsInt = new List<String>()
         {
             ("MaxPlayers"), ("Power"), "Rich",
-            ("Money"), ("Points"), ("XP"), "Level", "Privacy"
+            ("Money"), ("Points"), ("XP"), "Level", "Privacy", "MaxHomes"
         };
 
         public List<String> NeededfromsettingsDouble = new List<String>()
@@ -358,24 +358,27 @@ namespace CyberCore.Manager.Factions
         private void onCreation()
         {
             getSettings().setDisplayName(getName());
+            string q = $"INSERT INTO `Settings` VALUES('{getName()}','{getSettings().getDisplayName()}'," +
+                       getSettings().getMaxPlayers() + "," +
+                       getSettings().getPowerBonus() +
+                       $",'{getSettings().getMOTD()}','{getSettings().getDescription()}'," +
+                       getSettings().getPrivacy() +
+                       $",'{getPermSettings().export()}'," +
+                       getSettings().getPower() + "," + getSettings().getMoney() + "," + getSettings().getRich() +
+                       "," + getSettings().getXP() + "," + getSettings().getLevel() + "," +
+                       getSettings().getPoints() + "," +getSettings().getMaxHomes() +")";
             try
             {
                 //Update PermSettings
-                CyberCoreMain.GetInstance().SQL.Insert(
-                    $"INSERT INTO `Settings` VALUES('{getName()}','{getSettings().getDisplayName()}'," +
-                    getSettings().getMaxPlayers() + "," +
-                    getSettings().getPowerBonus() +
-                    $",'{getSettings().getMOTD()}','{getSettings().getDescription()}'," + getSettings().getPrivacy() +
-                    $",'{getPermSettings().export()}'," +
-                    getSettings().getPower() + "," + getSettings().getMoney() + "," + getSettings().getRich() +
-                    "," + getSettings().getXP() + "," + getSettings().getLevel() + "," +
-                    getSettings().getPoints() + ")");
-                CyberCoreMain.Log.Error(
-                    "EGOOOODDDDDDDDDn PermSettings Cache E39942!BBgfggggwww122222222222222222222222222222222222222222222222222gBBBB");
+
+                CyberCoreMain.GetInstance().SQL.Insert(q);
+                // CyberCoreMain.Log.Error(
+                //     "EGOOOODDDDDDDDDn PermSettings Cache E39942!BBgfggggwww122222222222222222222222222222222222222222222222222gBBBB");
                 return;
             }
             catch (Exception e)
             {
+                CyberCoreMain.Log.Error(q);
                 CyberCoreMain.Log.Error("Error with Faction PermSettings Cache E399dddddddaaaaaaaaaa42!AAA", e);
                 return;
             }
@@ -395,9 +398,9 @@ namespace CyberCore.Manager.Factions
         public bool onTick(int tick)
         {
             reloadPlayerRanks(true);
-            
+
             // PlayerRanks
-            
+
             return true;
         }
 
@@ -412,7 +415,7 @@ namespace CyberCore.Manager.Factions
             return getSettings().getPermSettings();
         }
 
-     
+
         public void PromotePlayer(Player pp, bool leaderConfirm = false)
         {
             FactionRank cr = getPlayerRank(pp);
@@ -442,7 +445,7 @@ namespace CyberCore.Manager.Factions
                     break;
             }
         }
-     
+
         public void PromotePlayer(String pp, bool leaderConfirm = false)
         {
             FactionRank cr = getPlayerRank(pp);
@@ -493,6 +496,7 @@ namespace CyberCore.Manager.Factions
                     break;
             }
         }
+
         public void DemotePlayer(string pp)
         {
             FactionRank cr = getPlayerRank(pp);
@@ -537,6 +541,7 @@ namespace CyberCore.Manager.Factions
                 Console.WriteLine(
                     "Error sending plots to DB FOR RANK UPDATE!!! Please report Error 'E190 t'o an admin");
             }
+
             BroadcastMessage($"{ChatColors.Yellow} {n} is now Rank {rr.toEnum()}");
         }
 
@@ -601,6 +606,7 @@ namespace CyberCore.Manager.Factions
             p.SendMessage(FactionsMain.NAME + ChatColors.Yellow + $"You Have Been Kicked From {getDisplayName()}!!!");
             getSettings().TakePower(2);
         }
+
         public void KickOfflinePlayer(string playername)
         {
             String pn = playername;
@@ -1066,7 +1072,6 @@ namespace CyberCore.Manager.Factions
 //        }
 //    }
 
-       
 
         public Dictionary<String, HomeData> GetHome(bool force = false)
         {
@@ -1254,10 +1259,13 @@ namespace CyberCore.Manager.Factions
             FactionsMain.GetInstance().FFactory.RM.removeEnemyRelationship(getName(), fac.getName());
             FactionsMain.GetInstance().FFactory.RM.removeAllyRelationship(getName(), fac.getName());
 
-            fac.BroadcastMessage(ChatColors.Aqua+getDisplayName() + $"'s {ChatColors.Yellow}faction has set their relationship to you as Neutral!");
-            BroadcastMessage(ChatColors.Aqua+fac.getSettings().getDisplayName() + $"'s {ChatColors.Yellow}relationship has been set back to Neutral by" +
-                             player.DisplayName);    
+            fac.BroadcastMessage(ChatColors.Aqua + getDisplayName() +
+                                 $"'s {ChatColors.Yellow}faction has set their relationship to you as Neutral!");
+            BroadcastMessage(ChatColors.Aqua + fac.getSettings().getDisplayName() +
+                             $"'s {ChatColors.Yellow}relationship has been set back to Neutral by" +
+                             player.DisplayName);
         }
+
         public void AddEnemy(Faction fac, Player player)
         {
             if (!FactionsMain.GetInstance().FFactory.RM.addEnemyRelationship(getName(), fac.getName()))
@@ -1405,7 +1413,8 @@ namespace CyberCore.Manager.Factions
                 p.EPD.DeleteFactionInvite(aa);
                 Invites.Remove(name);
             }
-        } 
+        }
+
         public void DelInvite(FactionInviteData d)
         {
             var name = d.getPlayerName();
@@ -1467,13 +1476,13 @@ namespace CyberCore.Manager.Factions
         public void DenyInvite(FactionInviteData name)
         {
             DelInvite(name);
-            BroadcastMessage(ChatColors.Red+$"{name.getPlayerName()} has denied your Faction Invite!");
-            
+            BroadcastMessage(ChatColors.Red + $"{name.getPlayerName()} has denied your Faction Invite!");
         }
-         public void DenyInvite(CorePlayer name)
+
+        public void DenyInvite(CorePlayer name)
         {
             DelInvite(name);
-            BroadcastMessage(ChatColors.Red+$"{name.getName()} has denied your Faction Invite!");
+            BroadcastMessage(ChatColors.Red + $"{name.getName()} has denied your Faction Invite!");
         }
 
         public void onUpdate()
@@ -1560,6 +1569,7 @@ namespace CyberCore.Manager.Factions
         {
             removePlayer(p.getName());
         }
+
         public void removePlayer(String p)
         {
             Main.CCM.SQL.Insert(
@@ -1819,7 +1829,8 @@ namespace CyberCore.Manager.Factions
         }
 
         public List<FactionMessage> getMessages()
-        {var q = Main.CCM.SQL.executeSelect(
+        {
+            var q = Main.CCM.SQL.executeSelect(
                 $"SELECT * FROM Inbox WHERE Target LIKE '{getName()}'");
 
             List<int> dellist = new List<int>();
@@ -1834,7 +1845,6 @@ namespace CyberCore.Manager.Factions
             }
 
             return list;
-
         }
 
         public List<AllyRequest> getAllyRequests()
@@ -1899,12 +1909,16 @@ namespace CyberCore.Manager.Factions
             {
                 if (al.F.getName().equalsIgnoreCase(fac.getName()))
                 {
-                    if(player != null)player.SendMessage($"{ChatColors.Red}Error! Your faction already has a faction request with the faction {fac.getDisplayName()}");
-                    else fac.BroadcastMessage($"{ChatColors.Red}Error! Your faction already has a faction request with the faction {fac.getDisplayName()}");
+                    if (player != null)
+                        player.SendMessage(
+                            $"{ChatColors.Red}Error! Your faction already has a faction request with the faction {fac.getDisplayName()}");
+                    else
+                        fac.BroadcastMessage(
+                            $"{ChatColors.Red}Error! Your faction already has a faction request with the faction {fac.getDisplayName()}");
                     return;
                 }
             }
-            
+
             String pn = null;
             if (player != null) pn = player.getName();
             Main.CCM.SQL.Insert(
@@ -2329,7 +2343,7 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public bool canJoin(bool checkprivacy = true )
+        public bool canJoin(bool checkprivacy = true)
         {
             if (checkprivacy && GetPrivacy() == 1)
             {

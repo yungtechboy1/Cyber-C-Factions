@@ -189,6 +189,7 @@ namespace CyberCore
             api.CommandManager.RegisterPermissionChecker(new FactionCommandChecker(this));
             api.CommandManager.RegisterPermissionChecker(new ServerRankChecker(this));
             api.CommandManager.LoadCommands(new FactionCommands(FM.FFactory));
+            api.CommandManager.LoadCommands(new CyberCommands(this));
 
 
             // getServer().PlayerFactory.PlayerCreated += (sender, args) =>

@@ -1779,8 +1779,9 @@ namespace CyberCore
         protected override void OnPlayerJoining(PlayerEventArgs e)
         {
             base.OnPlayerJoining(e);
+            Console.WriteLine("YDEWASDASDASDAS DAS DAS DADSs");
+            base.OnPlayerJoining(e);
             // if (EPD == null) loadEPD();
-            
         }
 
         public void loadEPD()
@@ -1805,17 +1806,19 @@ namespace CyberCore
         }
 
         private long tt = 0;
+
         public void onUpdate(long currentTick)
         {
             tt++;
             if (tt < 20 * 10) return;
             if (tt > Int64.MaxValue - 1) tt = 0;
-            
+
             if (ShowHTP)
             {
                 ShowHTP = false;
                 SendForm(new HTP_0_Window());
             }
+
             //Check for Faction!
             if (currentTick % 5 == 0) //Only allows 4 Ticks per Sec
                 if (!CooldownLock)
@@ -2086,6 +2089,41 @@ namespace CyberCore
                         StartTeleport(h.getPosition(), 7);
                 }
             }
+        }
+
+        public override void HandleMcpeResourcePackClientResponse(McpeResourcePackClientResponse message)
+        {
+            Console.WriteLine("HEEETT=================================TTTT");
+            if (message.responseStatus == 4)
+            {
+                Console.WriteLine("HEEETTTTTT222222222222");
+                Console.WriteLine("HEEETTTTTT");
+                Console.WriteLine("HEEETTTTTT");
+                Console.WriteLine("HEEETTTTTT2222222");
+                OpenServer.FastThreadPool.QueueUserWorkItem(() => { Start(null); });
+                Console.WriteLine("HEEETTTTTT");
+                return;
+            }
+            else
+            {
+                base.HandleMcpeResourcePackClientResponse(message);
+            }
+        }
+
+        public void Start(object o)
+        {
+            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
+            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
+            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
+            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
+            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
+            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
+            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
+            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
+            if (!this.IsConnected || this.Level != null) CyberCoreMain.Log.Info("YOPOOOOOO SUMMM NULLL");
+            CyberCoreMain.Log.Info("LVELEEEELLL" + CyberCoreMain.GetInstance().getAPI().LevelManager
+                .GetLevel(this, Dimension.Overworld.ToString()));
+            base.Start(o);
         }
 
         public bool CanAddHome()
@@ -2383,7 +2421,8 @@ namespace CyberCore
                     Duration = 20 * 5
                 });
             }
-            SendMessage(ChatColors.Yellow+$"Teleporting in {secs} Secs! Please stay still!");
+
+            SendMessage(ChatColors.Yellow + $"Teleporting in {secs} Secs! Please stay still!");
 
             return true;
         }

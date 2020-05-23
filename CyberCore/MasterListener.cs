@@ -39,8 +39,15 @@ namespace CyberCore
                 return;
             }
 
+            Console.WriteLine("YEAAAAA");
+            Console.WriteLine("YEAAAAA");
+            Console.WriteLine("YEAAAAA");
+            Console.WriteLine("YEAAAAA");
+            Console.WriteLine("YEAAAAA");
+            Console.WriteLine("YEAAAAA");
+            Console.WriteLine("YEAAAAA");
             var d = CorePlayerData.LoadFromFile(p);
-            d.LoadToPlayer(p);
+            d?.LoadToPlayer(p);
 
 
             p.loadEPD();

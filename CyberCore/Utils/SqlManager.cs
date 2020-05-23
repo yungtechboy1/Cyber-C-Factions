@@ -38,7 +38,7 @@ namespace CyberCore.Utils
                 }
                 catch (Exception e)
                 {
-                    Log.Error("Error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", e);
+                    Log.Error("Error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaa:"+Host, e);
                 }
             }
             catch (Exception e)

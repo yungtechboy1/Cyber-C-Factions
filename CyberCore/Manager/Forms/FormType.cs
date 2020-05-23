@@ -77,7 +77,8 @@
         Faction_Nuetral_Select,
         Faction_Promote_Demote,
         Faction_Inbox_Main,
-        Inbox_Message_View
+        Inbox_Message_View,
+        Rank_Window
     }
 
     public enum SubMenu

@@ -491,7 +491,7 @@ namespace CyberCore.Utils
         }
         public static int GetInt32(this List<Dictionary<string, object>> list, string player)
         {
-            return (int) list[0][player];
+            return (int) Convert.ToInt32(list[0][player]);
         }
         public static bool Read(this List<Dictionary<string, object>> list)
         {

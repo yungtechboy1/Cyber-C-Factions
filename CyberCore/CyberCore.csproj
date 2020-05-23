@@ -16,6 +16,11 @@
 <!--        <PackageReference Include="System.Management" Version="4.0.0" />-->
     </ItemGroup>
 
+    <Target Name="AfterBuild">
+        <Copy SourceFiles="$(ProjectDir)\CyberCore.dll" DestinationFolder="D:\MINET\Server\Plugins" SkipUnchangedFiles="false" />
+<!--        <Copy SourceFiles="$(ProjectDir)..\..\Lib\*.dll" DestinationFolder="$(OutDir)Release\bin" SkipUnchangedFiles="false" />-->
+    </Target>
+    
     <ItemGroup>
       <Folder Include="Custom\Block" />
       <Folder Include="Custom\Sound" />
