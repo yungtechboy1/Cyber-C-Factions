@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
+using CyberCore.Manager.Forms;
 using log4net;
-using MiNET.Net;
-using MiNET.Plugins;
-using MiNET.Utils;
 using MySql.Data.MySqlClient;
 
 namespace CyberCore.Utils
@@ -12,36 +11,34 @@ namespace CyberCore.Utils
     public class SqlManager
     {
         private readonly ILog Log = LogManager.GetLogger(typeof(SqlManager));
-        public String Host { get; set; }
-        public int Port { get; set; }
-        public String Username { get; set; }
-        public String Password { get; set; }
-        public String Database { get; set; }
+        private bool Active;
+        public string ConnectionString;
 
-
-        public CyberCoreMain CCM { get; }
-
-        private MySqlConnection MSC { get; set; } = null;
-        private bool Active = false;
-
-        public SqlManager(CyberCoreMain ccm)
+        public SqlManager(CyberCoreMain ccm, String key = "")
         {
+            if(key.Length != 0)key +="-";
             CCM = ccm;
-            Host = CCM.MasterConfig.GetProperty("Host", null);
-            Username = CCM.MasterConfig.GetProperty("Username", null);
-            Password = CCM.MasterConfig.GetProperty("Password", null);
-            Database = CCM.MasterConfig.GetProperty("Database", null);
+            Host = CCM.MasterConfig.GetProperty(key+"Host", null);
+            Username = CCM.MasterConfig.GetProperty(key+"Username", null);
+            Password = CCM.MasterConfig.GetProperty(key+"Password", null);
+            Database = CCM.MasterConfig.GetProperty(key+"db-Server", null);
             Port = CCM.MasterConfig.GetProperty("Port", 3360);
-            String cs = "SERVER=" + Host + ";" + "DATABASE=" +
-                        Database + ";" + "UID=" + Username + ";" + "PASSWORD=" + Password + ";";
+            ConnectionString = $"SERVER={Host};port={Port};DATABASE={Database};user id={Username};PASSWORD={Password};";
             try
             {
-                MSC = new MySqlConnection(cs);
-                MSC.Open();
-                CheckMSQLState();
-                if (Active)
+                // System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                using var connection = new MySqlConnection(ConnectionString);
+                MSC = connection;
+                try
                 {
-                    Log.Info("MySQL MySqlConnection to" + Host + " was successful!");
+                    MSC.Open();
+                    CheckMSQLState();
+                    // executeSelect("SELECT *");
+                    if (Active) Log.Info("MySQL MySqlConnection to" + Host + " was successful!");
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaa:"+Host, e);
                 }
             }
             catch (Exception e)
@@ -50,15 +47,20 @@ namespace CyberCore.Utils
             }
         }
 
+        public string Host { get; set; }
+        public int Port { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Database { get; set; }
+
+
+        public CyberCoreMain CCM { get; }
+
+        private MySqlConnection MSC { get; }
+
         public MySqlConnection GetMySqlConnection()
         {
-            CheckMSQLState();
-            if (Active)
-            {
-                return MSC;
-            }
-
-            return null;
+            return new MySqlConnection(ConnectionString);
         }
 
         public void CheckMSQLState()
@@ -78,89 +80,103 @@ namespace CyberCore.Utils
             Active = false;
         }
 
-        public MySqlDataReader Query(String q)
+        // public async  List<Dictionary<string, object>> Query(String q)
+        // {
+        //     using (var conn = new MySqlConnection(ConnectionString))
+        //     {
+        //         await conn.OpenAsync();
+        //
+        //         // Retrieve all rows
+        //         var cmd = new MySqlCommand(q, conn);
+        //
+        //         var reader = await cmd.ExecuteReaderAsync();
+        //
+        //         while (await reader.ReadAsync())
+        //             Console.WriteLine(reader.GetString(0) + "|||||" + reader.GetString(1));
+        //         return reader;
+        //
+        //
+        //         // using (var cmd = new MySqlCommand(q, conn))
+        //         //               {
+        //         //                   using (var reader = await cmd.ExecuteReaderAsync())
+        //         //                   {
+        //         //                       while (await reader.ReadAsync())
+        //         //                           Console.WriteLine(reader.GetString(0)+"|||||"+reader.GetString(1));
+        //         //                       return reader;
+        //         //                   }
+        //         //               }
+        //
+        //         Log.Error("Attempt to Query @ " + Host + " while connection was Invalid for Query:\n " + q);
+        //         return null;
+        //     }
+        // }
+        public List<Dictionary<string, object>> executeSelect(string query)
         {
-            MySqlConnection c = GetMySqlConnection();
-            if (c == null)
-            {
-                Log.Error("Attempt to Query @ " + Host + " while connection was Invalid for Query:\n " + q);
-                return null;
-            }
-
-            try
-            {
-                MySqlCommand cc = new MySqlCommand(q, c);
-                c.Close();
-                return cc.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                Log.Error("SQL ERROR E333: \n" + e);
-            }
-
-            c.Close();
-            return null;
+            return executeSelecta(query);
         }
 
-        public List<Dictionary<String, Object>> executeSelect(String query)
+        public List<Dictionary<string, object>> executeSelecta(string query)
         {
-            List<Dictionary<String, Object>> data = new List<Dictionary<String, Object>>();
-            List<String> cols = new List<string>();
+            var startt = DateTime.Now.Ticks;
+            var data = new List<Dictionary<string, object>>();
+            var cols = new List<string>();
             DataTable schema = null;
 
 
-            using (var con = GetMySqlConnection())
+            // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1" + ConnectionString);
+            using (var con = new MySqlConnection(ConnectionString))
             {
-                using (var schemaCommand = new MySql.Data.MySqlClient.MySqlCommand(query, con))
+                con.Open();
+                // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.1");
+                using (var schemaCommand = new MySqlCommand(query, con))
                 {
-                    con.Open();
+                    // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.2");
                     using (var reader = schemaCommand.ExecuteReader(CommandBehavior.SchemaOnly))
                     {
+                        // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.3");
                         schema = reader.GetSchemaTable();
+                        // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 1.4");
                     }
-
-                    con.Close();
                 }
-            }
 
-            foreach (DataRow col in schema.Rows)
-            {
-                cols.Add(col.Field<String>("ColumnName"));
-            }
+                // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 2");
 
-            var a = Query(query);
-            if (a != null)
-            {
-                while (a.Read())
+                foreach (DataRow col in schema.Rows) cols.Add(col.Field<string>("ColumnName"));
+
+
+                // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 3");
+
+                using (var schemaCommand = new MySqlCommand(query, con))
                 {
-                    int i = 0;
-                    Dictionary<String, Object> aa = new Dictionary<string, object>();
-                    foreach (var co in cols)
+                    using (var reader = schemaCommand.ExecuteReader())
                     {
-                        aa.Add(cols[i], a[cols[i]]);
+                        while (reader.Read())
+                        {
+                            // int i = 0;
+                            var aa = new Dictionary<string, object>();
+                            foreach (var co in cols)
+                                if (reader.GetOrdinal(co) != -1)
+                                    aa.Add(co, reader[co]);
+                            // i++;
+
+                            data.Add(aa);
+                        }
                     }
-
-                    data.Add(aa);
                 }
-
-                a.Close();
-                return data;
             }
-            else
-            {
-                Log.Error($"Error Executing Select for query '{query}'");
-            }
-
-            return null;
+            var stop = DateTime.Now.Ticks;
+            var final = stop - startt;
+            CyberCoreMain.Log.Info($"IT TOOK {final/500000} OR {final/10000000} Secs OR {final/100000} OR {final/1000} orr {final/10} TICKS TO EXECUTE SQL COMMAND : "+query);
+            // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 4");
+            return data;
         }
 
-
-        public bool Insert(string q, string c,byte[] b)
+        public bool Insert(string q, string c, byte[] b)
         {
-            using (MySqlConnection con =  GetMySqlConnection())
+            using (var con = GetMySqlConnection())
             {
-                string query = q;
-                using (MySqlCommand cmd = new MySqlCommand(query))
+                var query = q;
+                using (var cmd = new MySqlCommand(query))
                 {
                     cmd.Connection = con;
                     cmd.Parameters.AddWithValue(c, b);
@@ -176,29 +192,33 @@ namespace CyberCore.Utils
 
         public bool Insert(string q)
         {
-            MySqlConnection c = GetMySqlConnection();
-            if (c == null)
+            return Inserta(q).Result;
+        }
+
+        public async Task<bool> Inserta(string q)
+        {
+            using (var c = GetMySqlConnection())
             {
-                Log.Error("Attempt to Insert @ " + Host + " while connection was Invalid for Query:\n " + q);
+                await c.OpenAsync();
+                if (c == null)
+                {
+                    Log.Error("Attempt to Insert @ " + Host + " while connection was Invalid for Query:\n " + q);
+                    return false;
+                }
+
+
+                using (var cmd = new MySqlCommand())
+                {
+                    cmd.Connection = c;
+                    cmd.CommandText = q;
+                    await cmd.ExecuteNonQueryAsync();
+                    return true;
+                }
+
                 return false;
-            }
 
-            try
-            {
-                MySqlCommand cc = new MySqlCommand {Connection = c, CommandText = q};
-                cc.ExecuteNonQuery();
-                c.Close();
-                return true;
+                // throw new NotImplementedException();
             }
-            catch (Exception e)
-            {
-                Log.Error("SQL ERROR E334: \n" + e);
-            }
-
-            c.Close();
-            return false;
-
-            // throw new NotImplementedException();
         }
     }
 }

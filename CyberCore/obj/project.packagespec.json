@@ -30,13 +30,13 @@
   "frameworks": {
     "netcoreapp3.1": {
       "dependencies": {
-        "MySql.Data": {
+        "MySqlConnector": {
           "target": "Package",
-          "version": "[8.0.19, )"
+          "version": "[0.64.0, )"
         },
         "OpenMiNET.OpenAPI": {
           "target": "Package",
-          "version": "[1.0.63, )"
+          "version": "[1.0.73, )"
         }
       },
       "imports": [

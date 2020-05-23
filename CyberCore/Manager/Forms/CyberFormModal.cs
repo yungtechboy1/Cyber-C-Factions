@@ -9,7 +9,7 @@ namespace CyberCore.Manager.Forms
 {
     public class CyberFormModal : ModalForm
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(CyberFormModal));
+        [JsonIgnore] private static readonly ILog Log = LogManager.GetLogger(typeof(CyberFormModal));
         [JsonIgnore] public MainForm AFT;
         [JsonIgnore] public Faction Fac = null;
         [JsonIgnore] public MainForm FT;
@@ -19,6 +19,7 @@ namespace CyberCore.Manager.Forms
             string content = "")
         {
             FT = ttype;
+            Title = title;
             Button1 = trueButtonText;
             Button2 = falseButtonText;
             Content = content;

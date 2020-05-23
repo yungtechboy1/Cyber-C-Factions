@@ -16,11 +16,12 @@
         <e p="CorePlayer.cs" t="Include" />
         <e p="CoreSettings.cs" t="Include" />
         <e p="Custom" t="Include">
+          <e p="Block" t="Include" />
+          <e p="CustomCyberGenerator.cs" t="Include" />
           <e p="CustomEnums" t="Include">
             <e p="ChatFormats.cs" t="Include" />
             <e p="CustomDamageCause.cs" t="Include" />
             <e p="PowerEnum.cs" t="Include" />
-            <e p="RankList.cs" t="Include" />
           </e>
           <e p="Events" t="Include">
             <e p="CustomEntityDamageEvent.cs" t="Include" />
@@ -31,7 +32,9 @@
             <e p="ItemSlimeBall.cs" t="Include" />
             <e p="NetherStar.cs" t="Include" />
           </e>
+          <e p="Sound" t="Include" />
         </e>
+        <e p="CyberCommands.cs" t="Include" />
         <e p="CyberCore.csproj" t="IncludeRecursive" />
         <e p="CyberCoreMain.cs" t="Include" />
         <e p="CyberPlayerFactory.cs" t="Include" />
@@ -75,39 +78,90 @@
             </e>
           </e>
           <e p="Crate" t="Include">
-            <e p="CrateData.cs" t="Include" />
             <e p="CrateMain.cs" t="Include" />
             <e p="CrateObject.cs" t="Include" />
+            <e p="CrateTickThread.cs" t="Include" />
+            <e p="Data" t="Include">
+              <e p="CrateData.cs" t="Include" />
+              <e p="CrateDataManager.cs" t="Include" />
+              <e p="CrateKeyData.cs" t="Include" />
+              <e p="CrateKeyDataManager.cs" t="Include" />
+              <e p="CrateLocationData.cs" t="Include" />
+              <e p="CrateLocationDataManager.cs" t="Include" />
+              <e p="KeyData.cs" t="Include" />
+            </e>
+            <e p="Form" t="Include">
+              <e p="AdminCrateChooseCrateWindow.cs" t="Include" />
+              <e p="AdminCrateEditCrateItemDataWindow.cs" t="Include" />
+              <e p="AdminCrateGetCrateKey.cs" t="Include" />
+              <e p="AdminCrateKeyCreator.cs" t="Include" />
+              <e p="AdminCrateMainMenu.cs" t="Include" />
+              <e p="AdminCrateViewItemsWindow.cs" t="Include" />
+              <e p="CrateConfirmWindow.cs" t="Include" />
+            </e>
             <e p="ItemChanceData.cs" t="Include" />
           </e>
           <e p="Factions" t="Include">
             <e p="Data" t="Include">
               <e p="FactionInviteData.cs" t="Include" />
+              <e p="FactionMessage.cs" t="Include" />
               <e p="RelationshipManager.cs" t="Include" />
             </e>
             <e p="Faction.cs" t="Include" />
+            <e p="FactionCommandChecker.cs" t="Include" />
+            <e p="FactionCommands.cs" t="Include" />
             <e p="FactionFactory.cs" t="Include" />
             <e p="FactionLocalCache.cs" t="Include" />
+            <e p="FactionPermissionChecker.cs" t="Include" />
             <e p="FactionPermSettings.cs" t="Include" />
             <e p="FactionRank.cs" t="Include" />
             <e p="FactionSettings.cs" t="Include" />
             <e p="FactionsMain.cs" t="Include" />
-            <e p="Invitation.cs" t="Include" />
             <e p="Missions" t="Include">
               <e p="ActiveMission.cs" t="Include" />
+              <e p="ActiveMissionData.cs" t="Include" />
               <e p="Mission.cs" t="Include" />
               <e p="MissionData.cs" t="Include" />
+              <e p="MissionItemData.cs" t="Include" />
               <e p="MissionTask.cs" t="Include" />
             </e>
             <e p="PlayerFactionSettings.cs" t="Include" />
             <e p="PlotManager.cs" t="Include" />
+            <e p="RequestType.cs" t="Include" />
             <e p="Windows" t="Include">
+              <e p="FactionAdminPage1.cs" t="Include" />
+              <e p="FactionAllyChatFactionWindow.cs" t="Include" />
+              <e p="FactionAllyHomesPage.cs" t="Include" />
+              <e p="FactionAllyWindow.cs" t="Include" />
+              <e p="FactionChangeLeaderWindow.cs" t="Include" />
+              <e p="FactionChatChoose.cs" t="Include" />
               <e p="FactionChatFactionWindow.cs" t="Include" />
+              <e p="FactionConfirmDelete.cs" t="Include" />
+              <e p="FactionCreate0.cs" t="Include" />
+              <e p="FactionCreate0Error.cs" t="Include" />
+              <e p="FactionEnemyWindow.cs" t="Include" />
+              <e p="FactionHomesPage.cs" t="Include" />
+              <e p="FactionInboxWindow.cs" t="Include" />
+              <e p="FactionInfoWindow.cs" t="Include" />
+              <e p="FactionInviteChooseRank.cs" t="Include" />
               <e p="FactionInvited.cs" t="Include" />
+              <e p="FactionInvitesWindow.cs" t="Include" />
+              <e p="FactionJoinConfirm.cs" t="Include" />
+              <e p="FactionJoinListWindow.cs" t="Include" />
+              <e p="FactionKickListWindow.cs" t="Include" />
+              <e p="FactionLeaveConfirmWindow.cs" t="Include" />
+              <e p="FactionListWindow.cs" t="Include" />
+              <e p="FactionMainForm.cs" t="Include" />
+              <e p="FactionNeutralWindow.cs" t="Include" />
+              <e p="FactionPermSettingsWindow.cs" t="Include" />
+              <e p="FactionPromoteDemoteWindow.cs" t="Include" />
+              <e p="FactionSettingsWindow.cs" t="Include" />
               <e p="HTP_0_Window.cs" t="Include" />
+              <e p="InboxMessageWindow.cs" t="Include" />
             </e>
           </e>
           <e p="FloatingText" t="Include">
+            <e p="CustomFloatingTextParticle.cs" t="Include" />
             <e p="CyberFloatingTextContainer.cs" t="Include" />
             <e p="FloatingTextEntity.cs" t="Include" />
             <e p="FloatingTextFactory.cs" t="Include" />
@@ -121,9 +175,11 @@
             <e p="FormType.cs" t="Include" />
           </e>
           <e p="Rank" t="Include">
-            <e p="Guest_Rank.cs" t="Include" />
-            <e p="Rank.cs" t="Include" />
+            <e p="CyberFormRankWindow.cs" t="Include" />
+            <e p="Rank2.cs" t="Include" />
             <e p="RankFactory.cs" t="Include" />
+            <e p="RankFactoryData.cs" t="Include" />
+            <e p="RankList2.cs" t="Include" />
           </e>
           <e p="Shop" t="Include">
             <e p="ShopInv.cs" t="Include" />
@@ -145,25 +201,31 @@
           </e>
         </e>
         <e p="PlayerSettingsData.cs" t="Include" />
+        <e p="ServerRankChecker.cs" t="Include" />
         <e p="Utils" t="Include">
           <e p="CacheChecker.cs" t="Include" />
+          <e p="CenterText.cs" t="Include" />
           <e p="Cooldowns" t="Include">
             <e p="CoolDown.cs" t="Include" />
             <e p="CoolDownTick.cs" t="Include" />
           </e>
+          <e p="CorePlayerData.cs" t="Include" />
           <e p="CustomConfig.cs" t="Include" />
           <e p="CustomConfigSection.cs" t="Include" />
           <e p="CyberTexts.cs" t="Include" />
           <e p="CyberUtils.cs" t="Include" />
           <e p="CyberUtilsExtender.cs" t="Include" />
           <e p="Data" t="Include">
-            <e p="ConfigSection2.cs" t="Include" />
+            <e p="JsonDataManager.cs" t="Include" />
             <e p="PlayerDetailedInfo.cs" t="Include" />
             <e p="ServerSqlite.cs" t="Include" />
+            <e p="UserSQL.cs" t="Include" />
           </e>
+          <e p="DefaultFontInfo.cs" t="Include" />
           <e p="ExtraPlayerData.cs" t="Include" />
           <e p="FactionErrorString.cs" t="Include" />
           <e p="InternalPlayerSettings.cs" t="Include" />
+          <e p="MessageFormater.cs" t="Include" />
           <e p="SqlManager.cs" t="Include" />
           <e p="StaticItems.cs" t="Include" />
         </e>

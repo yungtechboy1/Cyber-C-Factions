@@ -70,7 +70,8 @@ namespace CyberCore.Manager.Factions
             if (!peace)
             {
                 CyberCoreMain.Log.Info("Peace Faction Being Created!");
-                Faction fac = new Faction(this, "peace", ChatColors.Green + "peaceful", false);
+                Faction fac = new Faction(this, "peace", null);
+                fac.getSettings().setDisplayName(ChatColors.Green + "peaceful", true);
                 FFactory.LocalFactionCache.Add("peace", fac);
             }
 
@@ -78,7 +79,8 @@ namespace CyberCore.Manager.Factions
             if (!wilderness)
             {
                 CyberCoreMain.Log.Info("Wilderness Faction Being Created!");
-                Faction fac = new Faction(this, "wilderness", ChatColors.Red + "wilderness", false);
+                Faction fac = new Faction(this, "wilderness", null);
+                fac.getSettings().setDisplayName(ChatColors.Red + "wilderness");
                 FFactory.LocalFactionCache.Add("wilderness", fac);
             }
         }
@@ -104,24 +106,24 @@ namespace CyberCore.Manager.Factions
             return isInFaction(p);
         }
 
-        /**
-     * @param player OpenPlayer
-     * @return String
-     */
-        public String getPlayerFaction(OpenPlayer player)
-        {
-            return getPlayerFaction(player.getName());
-        }
-
-        /**
-     * @param uuid String
-     * @return String
-     */
-        public String getPlayerFaction(String uuid)
-        {
-            //if(FFactory.FacList.containsKey(player))return FFactory.FacList.get(player);
-            return null;
-        }
+     //    /**
+     // * @param player OpenPlayer
+     // * @return String
+     // */
+     //    public String getPlayerFaction(OpenPlayer player)
+     //    {
+     //        return getPlayerFaction(player.getName());
+     //    }
+     //
+     //    /**
+     // * @param uuid String
+     // * @return String
+     // */
+     //    public String getPlayerFaction(String uuid)
+     //    {
+     //        //if(FFactory.FacList.containsKey(player))return FFactory.FacList.get(player);
+     //        return null;
+     //    }
 
         public bool isLeader(OpenPlayer player)
         {
@@ -150,17 +152,23 @@ namespace CyberCore.Manager.Factions
             return FFactory.PM.getFactionFromPlot(x, z);
         }
 
-        public void PlayerInvitedToFaction(OpenPlayer invited, OpenPlayer Sender, Faction fac)
+        public void PlayerInvitedToFaction(CorePlayer invited, CorePlayer Sender, Faction fac)
         {
             PlayerInvitedToFaction(invited, Sender, fac, fac.getPermSettings().getDefaultJoinRank());
         }
 
-        public void PlayerInvitedToFaction(OpenPlayer invited, OpenPlayer Sender, Faction fac, FactionRank fr)
+        public void PlayerInvitedToFaction(CorePlayer invited, CorePlayer Sender, Faction fac, FactionRank fr)
         {
             if (invited == null)
             {
                 CyberCoreMain.Log.Warn("WARNING!!! TRING TO INVITE NULL PLAYER to FAC: " +
                                        fac.getSettings().getDisplayName());
+                return;
+            }
+
+            if (fac.HasInvite(invited.getName()) != null)
+            {
+                Sender.SendMessage($"Error! {invited.getName()} already has an active Invite for the faction!");
                 return;
             }
 
@@ -172,17 +180,17 @@ namespace CyberCore.Manager.Factions
                                 fac.getSettings().getDisplayName() + " by " + Sender.getName() + "\n" +
                                 ChatColors.Green + "Type '/f accept' or '/f deny' into chat to accept or deny!");
 
-            int time = CyberUtils.getLongTime() + 60 * 5; //5 Mins
-            fac.AddInvite(invited, time, Sender, fr);
-
+            long time = CyberUtils.getLongTime() + 60 * 5; //5 Mins
             var fid = new FactionInviteData(invited.getName(), fac.getName(), time, Sender.getName(),
-                fr);
+                fr.toEnum());
+            fac.AddFactionInvite(invited, fid);
 
-            ExtraPlayerData epd = CyberUtils.getExtraPlayerData(invited);
+
+            ExtraPlayerData epd = invited.EPD;
             epd.FactionInviteData.Add(fid);
-            CyberUtils.updateExtraPlayerData(invited, epd);
+            // CyberUtils.updateExtraPlayerData(invited, epd);
             FFactory.addFactionInvite(fid);
-            if (!invited.GetExtraPlayerData().InternalPlayerSettings.isAllowFactionRequestPopUps()) return;
+            if (!(invited).EPD.InternalPlayerSettings.isAllowFactionRequestPopUps()) return;
             invited.showFormWindow(new FactionInvited(invited.Username, fac.getName()));
         }
     }

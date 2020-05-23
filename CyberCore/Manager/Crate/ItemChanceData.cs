@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using CyberCore.Utils;
 using fNbt;
 using MiNET.Blocks;
@@ -12,14 +13,17 @@ namespace CyberCore.Manager.Crate
         public int Chance { get;  set; }
         public short ItemID{ get;  set; }
         public short ItemMeta{ get;  set; }
-        public short Max_Count{ get;  set; }
+        public int Max_Count{ get;  set; }
         public string NBT { get;  set; } = ""; //NBT_HEX
 
-        // public ItemChanceData(Item i, int chance, int max_Count)
-        // {
-        //     return new ItemChanceData(i.getId(), i.getDamage(), chance, max_Count,
-        //         i.hasCompoundTag() ? Binary.bytesToHexString(i.getCompoundTag()) : "");
-        // }
+        public ItemChanceData(Item i, int chance, int max_Count)
+        {
+            ItemID = i.Id;
+            ItemMeta = i.Metadata;
+            NBT = i.ExtraData.NBTToString();
+            Max_Count = max_Count;
+            Chance = chance;
+        }
 
         // public ItemChanceData(Dictionary<String,Object> c)
         // {
@@ -115,6 +119,25 @@ namespace CyberCore.Manager.Crate
             }
 
             return null;
+        }
+
+        public void updateDataFromItem(Item item)
+        {
+            String fnt = "";
+            var a = new NbtFile();
+            a.BigEndian = false;
+            a.UseVarInt = true;
+            a.RootTag = item.ExtraData;
+            // byte[] bytes = NBTCompressionSteamTool.NBTCompressedStreamTools.a(a);
+            var aa = (new MemoryStream());
+            a.SaveToStream(aa, NbtCompression.AutoDetect);
+            var aaa = new StreamReader(aa).ReadToEnd();
+
+            if (item.ExtraData.HasValue) fnt = aaa;
+            NBT = fnt;
+            ItemMeta = item.Metadata;
+            ItemID = item.Id;
+            
         }
     }
 }

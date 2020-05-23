@@ -8,19 +8,19 @@ namespace CyberCore.Manager.Factions.Data
     public class FactionInviteData
     {
         String PlayerName;
-        int TimeStamp = -1;
+        long TimeStamp = -1;
         String Faction;
         String InvitedBy;
-        FactionRank FacRank;
+        public FactionRank FacRank;
 
-        public FactionInviteData(String playerName, String faction, int timeStamp = -1, String invitedBy = null,
-            FactionRank fr = FactionRank.Recruit)
+        public FactionInviteData(String playerName, String faction, long timeStamp = -1, String invitedBy = null,
+            FactionRankEnum fr = FactionRankEnum.Recruit)
         {
             PlayerName = playerName;
             TimeStamp = timeStamp;
             Faction = faction;
             InvitedBy = invitedBy;
-            FacRank = fr;
+            FacRank = fr.toFactionRank();
         }
 
         public String getPlayerName()
@@ -28,7 +28,7 @@ namespace CyberCore.Manager.Factions.Data
             return PlayerName;
         }
 
-        public int getTimeStamp()
+        public long getTimeStamp()
         {
             return TimeStamp;
         }
@@ -48,7 +48,7 @@ namespace CyberCore.Manager.Factions.Data
             return cp.Username.Equals(PlayerName, StringComparison.CurrentCultureIgnoreCase);
         }
 
-        public bool isValid(int time)
+        public bool isValid(long time)
         {
             return time < TimeStamp;
         }
@@ -56,6 +56,65 @@ namespace CyberCore.Manager.Factions.Data
         public bool isValid()
         {
             return CyberUtils.getLongTime() < TimeStamp;
+        }
+
+        public FailReason failReason = FailReason.None;
+
+        public enum FailReason
+        {
+            None,
+            Request_Not_In_Faction,
+            Request_Not_In_MySQL
+        }
+        
+        public bool DoubleCheckFaction()
+        {
+            var f = CyberCoreMain.GetInstance().FM.FFactory.getFaction(Faction);
+            if (f != null)
+            {
+                var a = f.Invites[getPlayerName().ToLower()];
+                if (a != null)
+                {
+                    if (a.DoubleCheckMysql())
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        a.failReason = FailReason.Request_Not_In_MySQL;
+                        a.TimeStamp = 0;
+                    }
+                }
+                else
+                    return true;
+
+            }
+
+            return false;
+        }
+        public bool DoubleCheckMysql()
+        {
+            var a = CyberCoreMain.GetInstance().SQL
+                .executeSelect(
+                    $"SELECT * FROM `FactionInvites` WHERE expires LIKE '{TimeStamp}' AND target LIKE '{PlayerName}' AND faction LIKE '{Faction}' AND rank LIKE '{FacRank}'");
+            return (a.Count != 0);
+        }
+
+        public void DenyInvite()
+        {
+            var f = FactionFactory.GetInstance().getFaction(Faction);
+            if (f != null)
+            {
+                
+                
+            }
+            else
+            {
+                CyberCoreMain.GetInstance().SQL.Insert(
+                    $"DELETE * from `FactionInvites` where `faction` LIKE '{Faction}' AND `target` LIKE '{getPlayerName()}';");
+                TimeStamp = -1;
+
+            }
         }
     }
 }

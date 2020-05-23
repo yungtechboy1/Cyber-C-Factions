@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Threading.Tasks;
 using CyberCore.Utils;
 using log4net;
 using MySql.Data.MySqlClient;
+
 
 namespace CyberCore.Manager.Factions
 {
@@ -30,11 +33,12 @@ namespace CyberCore.Manager.Factions
             SqlManager c = getMYSQL();
             try
             {
-                MySqlDataReader r = c.Query("SELECT * FROM plots WHERE faction LIKE '" + faction + "'");
-                while (r.Read())
-                {
-                    p.Add(r.GetString("plotid"));
-                }
+                 List<Dictionary<string, object>> r = c.executeSelect("SELECT * FROM plots WHERE faction LIKE '" + faction + "'");
+                 foreach (var a in r)
+                 {
+                     p.Add(r.GetString("plotid"));
+                 }
+                 
 
                 return p;
             }
@@ -50,17 +54,28 @@ namespace CyberCore.Manager.Factions
             try
             {
                 List<String> results = new List<String>();
-                MySqlDataReader r = getMYSQL().Query("select * from `plots`");
-                if (r == null)
+                 List<Dictionary<string, object>> r = getMYSQL().executeSelect("select * from `plots`");
+                if (r.Count != 0)
                 {
-                    Log.Error("NO PLOTS WERE FOUND");
+                    Log.Error("NO PLOTS WERE FOUND |||| CLOSED!!!!!!");
                     return;
                 }
 
-                while (r.Read())
+                foreach (var a in r)
                 {
-                    List.Add(r.GetInt32("x") + "|" + r.GetInt32("z"), r.GetString("faction"));
-                    Health.Add(r.GetInt32("x") + "|" + r.GetInt32("z"), r.GetInt32("health"));
+                    // if (!a.ContainsKey("x") || !a.ContainsKey("y") || !a.ContainsKey("faction") ||
+                    //     !a.ContainsKey("health"))
+                    // {
+                    //     Log.Error("Error Not all Keyzzz Prezent");
+                    //     foreach (var aa in a)
+                    //     {
+                    //         Log.Error(aa.Key+"|||||||||||||||"+aa.Value);
+                    //     }
+                    // }
+
+                    var pid = a.GetString("plotid");
+                    List.Add(pid, a.GetString("faction"));
+                    Health.Add(pid, a.GetInt32("health"));
                 }
             }
             catch (Exception e)
@@ -166,7 +181,7 @@ namespace CyberCore.Manager.Factions
         public bool updatePlotHealth(int x, int z, int amount)
         {
             String k = getPlotKey(x, z);
-            String q = "UPDATE `plots` SET `Health` = "+amount+$" WHERE `plotid` = '{k}')";
+            String q = $"UPDATE `plots` SET `Health` = {amount} WHERE `plotid` = '{k}')";
             if (!getMYSQL().Insert(q))
             {
                 return false;

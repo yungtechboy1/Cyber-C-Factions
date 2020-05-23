@@ -29,6 +29,7 @@ namespace CyberCore.Utils
         Error_SA224,
         Error_SA223,
         Error_CMD_Invite_No_Player_Entered,
+        Error_No_Permission,
         Error_Settings_No_Permission
 //        FactionExists(FactionsMain.NAME+ChatColors.Red+"Faction already exists",2),
 //        FactionExists(FactionsMain.NAME+ChatColors.Red+"Faction already exists",2),
@@ -40,6 +41,7 @@ namespace CyberCore.Utils
         {
             if (f == FactionErrorString.NO_ERROR) return "No Error Found";
             if (f == FactionErrorString.Default_Faction_MOTD) return "user /f motd to change the Message of The Day!";
+            if (f == FactionErrorString.Error_No_Permission) return $"{ChatColors.Red} Error! You do not have permission to invite!";
             if (f == FactionErrorString.Success_FactionCreated)
                 return ChatColors.Green + "[CyboticFactions] Faction successfully created!";
             if (f == FactionErrorString.Default_Faction_Description) return "Brand new faction, ready to take over!";

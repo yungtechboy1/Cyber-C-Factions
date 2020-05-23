@@ -22,9 +22,10 @@ namespace CyberCore.Manager.Factions.Windows
         }
 
 
-        private void onRun(Player player, ModalForm modal)
+        private void onRun(Player player, ModalForm modal, bool b)
         {
-            var a = player.GetExtraPlayerData();
+            //TODO THIS DOES NOT CHECK BOOL
+            var a = ((CorePlayer)player).EPD;
             var aa = a.FactionInviteData;
             var aac = aa.Count;
             if (aac != 0)
@@ -35,7 +36,7 @@ namespace CyberCore.Manager.Factions.Windows
                 if (f == null)
                 {
                     //Accept
-                    if (f.AcceptInvite(player))
+                    if (f.AcceptInvite((CorePlayer) player))
                         player.SendMessage("Welcome to " + f.getDisplayName());
                     else
                         player.SendMessage("Error! Invite timed out!");

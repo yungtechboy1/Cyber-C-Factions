@@ -1,59 +1,76 @@
 ﻿using System;
+using CyberCore.Utils;
 using log4net;
 using MiNET;
 using MiNET.Utils;
 
 namespace CyberCore.Manager.Factions
 {
-    public enum FactionRank
+    public enum FactionRankEnum
     {
         Recruit = 0,
         Member = 1,
         Officer = 2,
         General = 3,
         Leader = 4,
-        All = -1
+        All = -1,
+        None = -2,
     }
 
-    static class FactionRankMethods
+    public struct FactionRank
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FactionRankMethods));
+        public static readonly FactionRank None = new FactionRank(FactionRankEnum.None);
+        public static readonly FactionRank Recruit = new FactionRank(FactionRankEnum.Recruit);
+        public static readonly FactionRank Member = new FactionRank(FactionRankEnum.Member);
+        public static readonly FactionRank Officer = new FactionRank(FactionRankEnum.Officer);
+        public static readonly FactionRank General = new FactionRank(FactionRankEnum.General);
+        public static readonly FactionRank Leader = new FactionRank(FactionRankEnum.Leader);
+        public static readonly FactionRank All = new FactionRank(FactionRankEnum.All);
+        private static readonly ILog Log = LogManager.GetLogger(typeof(FactionRank));
+
+        public FactionRankEnum Id;
+
+        public FactionRank(FactionRankEnum id)
+        {
+            Id = id;
+        }
 
         public static FactionRank getRankFromString(String a)
         {
             try
             {
-                int i = int.Parse(a);
-                foreach (FactionRank f in Enum.GetValues(typeof(FactionRank)))
+                foreach (FactionRankEnum f in Enum.GetValues(typeof(FactionRankEnum)))
                 {
-                    if ((int) f == i) return f;
+                    if (f.ToString().equalsIgnoreCase(a)) return f.toFactionRank();
                 }
 
-                CyberCoreMain.Log.Error("Error Parsing ");
+                CyberCoreMain.Log.Error("Error Parsing <<<<<<<<<<<<<<<<<<<<<<<<<<111");
                 return FactionRank.Recruit;
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error attempting to parse Rank String to Int to Rank");
+                Console.WriteLine("Error attempting to parse Rank String to Int to Rank<<<<<<<<<<<<<<<<22222");
                 return FactionRank.Recruit;
             }
         }
-        public static FactionRank getRankFromString(FactionRank a)
+
+        public FactionRank getRankFromString(FactionRank a)
         {
             try
             {
-                int i = (int)(a);
+                int i = (int) a.Id;
+                //TODO might give error!
                 foreach (FactionRank f in Enum.GetValues(typeof(FactionRank)))
                 {
-                    if ((int) f == i) return f;
+                    if ((int) f.Id == i) return f;
                 }
 
-                CyberCoreMain.Log.Error("Error Parsing ");
+                CyberCoreMain.Log.Error("Error Parsing44444444444444 ");
                 return FactionRank.Recruit;
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error attempting to parse Rank String to Int to Rank");
+                Console.WriteLine("Error attempting to parse Rank String to Int to Rank22223333333333");
                 return FactionRank.Recruit;
             }
         }
@@ -62,6 +79,8 @@ namespace CyberCore.Manager.Factions
         {
             switch (a)
             {
+                case -1:
+                    return FactionRank.All;
                 case 0:
                     return FactionRank.Leader;
                 case 1:
@@ -77,34 +96,45 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        public static int getFormPower(FactionRank r)
+        public static FactionRank getRankFromFactionRankEnum(FactionRankEnum a)
         {
-            if ((int)r == -1) return (int)r;
-            switch (r)
+            switch (a)
             {
-                case FactionRank.Leader:
-                    return 0;
-                case FactionRank.General:
-                    return 1;
-                case FactionRank.Officer:
-                    return 2;
-                case FactionRank.Member:
-                    return 3;
-                case FactionRank.Recruit:
-                    return 4;
+                case FactionRankEnum.Leader:
+                    return FactionRank.Leader;
+                case FactionRankEnum.General:
+                    return FactionRank.General;
+                case FactionRankEnum.Officer:
+                    return FactionRank.Officer;
+                case FactionRankEnum.Member:
+                    return FactionRank.Member;
+                case FactionRankEnum.Recruit:
+                    return FactionRank.Recruit;
                 default:
-                    return 0;
+                    Log.Error("Error tring to Parse " + a + " TO FactionRank");
+                    return FactionRank.None;
             }
         }
 
-        public static int getPower(FactionRank r)
+        public int getFormPower()
         {
-            return (int)r;
+            if ((int) Id == -1) return (int) Id;
+            if (Leader.Id == Id) return 0;
+            if (General.Id == Id) return 1;
+            if (Officer.Id == Id) return 2;
+            if (Member.Id == Id) return 3;
+            if (Recruit.Id == Id) return 4;
+            return 0;
         }
 
-        public static string getChatColor(FactionRank r)
+        public int getPower()
         {
-            switch ((int)r)
+            return (int) Id;
+        }
+
+        public string getChatColor()
+        {
+            switch ((int) Id)
             {
                 case 0:
                     return ChatColors.Gray;
@@ -122,22 +152,25 @@ namespace CyberCore.Manager.Factions
         }
 
 //FactionCommandWindow.java:40
-        public static bool hasPerm(FactionRank src,FactionRank target)
+        public bool hasPerm(FactionRank target)
         {
-            if (target == null) return false;
-            return (int)src >= (int)target;
+            if (target.Id == FactionRankEnum.None || Id == FactionRankEnum.None) return false;
+            if (target.Id == FactionRankEnum.All) return true;
+            return Id >= target.Id;
         }
 
 
-        public static void SendFailReason(FactionRank target, Player p)
+        public void SendFailReason(FactionRank target, Player p)
         {
-            p.SendMessage(ChatColors.Red + "Error! You must be a " + getName(target) + " to use this command!");
+            p.SendMessage(ChatColors.Red + "Error! You must be a " + target.getName() + " to use this command!");
         }
 
-        public static String getName(FactionRank t)
+        public String getName()
         {
-            switch ((int)t)
+            switch ((int) Id)
             {
+                case -1:
+                    return "All";
                 case 0:
                     return "Recruit";
                 case 1:
@@ -149,13 +182,13 @@ namespace CyberCore.Manager.Factions
                 case 4:
                     return "Leader";
                 default:
-                    return "Unknown-" + (int)t;
+                    return "Unknown-" + Id;
             }
         }
 
-        public static String GetChatPrefix(FactionRank t)
+        public String GetChatPrefix()
         {
-            switch ((int)t)
+            switch ((int) Id)
             {
                 case 0:
                     return ChatColors.Gray + "R";
@@ -170,6 +203,11 @@ namespace CyberCore.Manager.Factions
                 default:
                     return ChatColors.LightPurple + "-";
             }
+        }
+
+        public FactionRankEnum toEnum()
+        {
+            return Id;
         }
     }
 }

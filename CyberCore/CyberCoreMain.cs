@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using CyberCore.Manager.AuctionHouse;
 using CyberCore.Manager.ClassFactory;
+using CyberCore.Manager.Crate;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
@@ -37,7 +38,8 @@ namespace CyberCore
         {
             // s.ServerManager = new CyberTechServerManager(s);
             s.PlayerFactory = new CyberPlayerFactory(API);
-            Log.Info("Executed startup successfully. Replaced identity managment.");
+            Console.WriteLine("================Executed startup successfully. Replaced identity managment=========================");
+            Log.Info("================Executed startup successfully. Replaced identity managment=========================");
             
         }
         
@@ -47,10 +49,15 @@ namespace CyberCore
         public CustomConfig MasterConfig { get; set; }
         public FactionsMain FM { get; private set; }
         public SqlManager SQL { get; private set; }
+        public SqlManager WebSQL { get; private set; }
         public ServerSqlite ServerSQL { get; set; }
         public WarpManager WarpManager { get; set; }
         public ClassFactory ClassFactory { get; set; }
         public RankFactory RF { get; set; }
+        public UserSQL UserSQL { get; set; }
+        public CrateMain CrateMain { get; set; }
+        
+        public FloatingTextFactory FTM { get; set; }
 
         public List<CyberFloatingTextContainer> SavedFloatingText { get; set; } =
             new List<CyberFloatingTextContainer>();
@@ -74,11 +81,21 @@ namespace CyberCore
 
         public CyberCoreMain()
         {
-            MasterConfig = new CustomConfig(this, "config.cfg");
+            MasterConfig = new CustomConfig(this, "Master");
             instance = this;
+            SQL = new SqlManager(this);
+            WebSQL = new SqlManager(this,"web");
+            RF = new RankFactory(this);
             ServerSQL = new ServerSqlite(this);
+            UserSQL = new UserSQL(this);
+            ClassFactory = new ClassFactory(this);
             WarpManager = new WarpManager(this);
             // MasterConfig = new Dictionary<String,Object>() {ConfigFileName = "MasterConfig.conf"};
+        }
+
+        private void RegisterCommands()
+        {
+            // getAPI().CommandManager.LoadCommands();
         }
 
         private void OnPlayerJoin(object o, PlayerEventArgs eventArgs)
@@ -154,26 +171,37 @@ namespace CyberCore
         public override void Enabled(OpenApi api)
         {
             API = api;
-            SQL = new SqlManager(this);
+            api.LevelManager.LevelCreated += delegate(object? sender, LevelEventArgs args)
+            {
+                var a = args.Level;
+                a.SpawnPoint = new PlayerLocation(0,2,0);
+            };
+            API.OpenServer.PlayerFactory = new CyberPlayerFactory(API);
+            Console.WriteLine("================Executed startup successfully. Replaced identity managment=========================");
+            Log.Info("================Executed startup successfully. Replaced identity managment=========================");
+
+            
             FM = new FactionsMain(this);
             
             AF = new AuctionFactory(this);
+            api.EventDispatcher.RegisterEvents(new MasterListener());
+            api.CommandManager.RegisterPermissionChecker(new FactionPermissionChecker(FM.FFactory));
+            api.CommandManager.RegisterPermissionChecker(new FactionCommandChecker(this));
+            api.CommandManager.RegisterPermissionChecker(new ServerRankChecker(this));
+            api.CommandManager.LoadCommands(new FactionCommands(FM.FFactory));
+            api.CommandManager.LoadCommands(new CyberCommands(this));
 
-            getServer().PlayerFactory.PlayerCreated += (sender, args) =>
-            {
-                Player player = args.Player;
-                player.PlayerJoin += OnPlayerJoin;
-                player.PlayerJoin += MasterListener.joinEvent;
-                player.PlayerLeave += OnPlayerLeave;
-                player.Ticking += OnTicking;
-            };
 
-            foreach (var l in getServer().LevelManager.Levels)
-            {
-                l.BlockBreak += MasterListener.
-            }
+            // getServer().PlayerFactory.PlayerCreated += (sender, args) =>
+            // {
+            //     Player player = args.Player;
+            //     player.PlayerJoin += OnPlayerJoin;
+            //     // player.PlayerJoin += MasterListener.joinEvent;
+            //     player.PlayerLeave += OnPlayerLeave;
+            //     player.Ticking += OnTicking;
+            // };
 
-            getServer().LevelManager.Levels
+
 
             // api.CommandManager.RegisterPermissionChecker(new FactionPermissionChecker(FactionManager));
             //
@@ -206,9 +234,14 @@ namespace CyberCore
             Log.Info($"[TestPlugin] {(method.DeclaringType.FullName)}.{method.Name}: " + message);
         }
 
-        public OpenPlayer getPlayer(string name)
+        public CorePlayer getPlayer(Player name)
         {
-            return getAPI().PlayerManager.getPlayer(name);
+            return (CorePlayer) getAPI().PlayerManager.getPlayer(name.Username);
+        }
+        public CorePlayer getPlayer(string name)
+        {
+            Log.Info("GET CORE PLAYER USED)))))))))))))))))))))))))))))))))))))))))))))))))))))))))");
+            return (CorePlayer) getAPI().PlayerManager.getPlayer(name);
         }
 
             public double getTicksPerSecond()
@@ -256,12 +289,12 @@ namespace CyberCore
 
             return amt;
         }
-        public Rank getPlayerRank(String p) {
-            return getPlayerRank(getPlayer(p));
+        public Rank2 getPlayerRank(String p) {
+            return RF.getPlayerRank(p);
         }
 
 
-        public Rank getPlayerRank(Player p) {
+        public Rank2 getPlayerRank(CorePlayer p) {
             return RF.getPlayerRank(p);
         }
     }

@@ -380,7 +380,7 @@ namespace CyberCore.Manager.ClassFactory
             cp.initAllClassBuffs();
         }
 
-        private void recheckAllBuffs(int tick)
+        private void recheckAllBuffs(long tick)
         {
             //No Need to Keep resending :/
 //        for (Buff bingetBuffs().values()) {
@@ -1066,7 +1066,7 @@ namespace CyberCore.Manager.ClassFactory
             return XPRemainder(getXP());
         }
 
-        public void tickPowers(int tick)
+        public void tickPowers(long tick)
         {
 //        CyberCoreMain.Log.Error("Was LOG ||"+"Tring to TICKING POWER "+getActivePowers().size());
 //        CyberCoreMain.Log.Error("Was LOG ||"+"Tring to TICKING POWER "+getActivePowers());
@@ -1084,7 +1084,7 @@ namespace CyberCore.Manager.ClassFactory
             }
         }
 
-        public void onUpdate(int tick)
+        public void onUpdate(long tick)
         {
 //        CyberCoreMain.Log.Error("Was LOG ||"+"TICKING BASECLASS");
             tickPowers(tick);

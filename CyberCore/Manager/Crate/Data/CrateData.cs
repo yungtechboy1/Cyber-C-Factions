@@ -8,12 +8,12 @@ namespace CyberCore.Manager.Crate
     public class CrateData
     {
         // Random RND = new Random();
-        public List<ItemChanceData> PossibleItems = new List<ItemChanceData>();
-        public String Key = new Random().Next(0, 10000) + "__UNNAMED CRATE__";
-        public String Name = "__UNNAMED CRATE__";
-        public String SubName = "==========";
+        public List<ItemChanceData> PossibleItems { get; set; } = new List<ItemChanceData>();
+        public String Key { get; set; } = new Random().Next(0, 10000) + "__UNNAMED CRATE__";
+        public String Name { get; set; } = "__UNNAMED CRATE__";
+        public String SubName { get; set; } = "==========";
 
-        public List<String> KeyItems = new List<String>();
+        public List<String> KeyItems { get; set; } = new List<String>();
 //    public Item Key;
 
 
@@ -82,9 +82,16 @@ namespace CyberCore.Manager.Crate
 
 
         //https://github.com/google/gson/blob/master/UserGuide.md#TOC-Serializing-and-Deserializing-Collection-with-Objects-of-Arbitrary-Types
-        public String export()
+        public CrateDataData export()
         {
-            return toJSON();
+            return new CrateDataData()
+            {
+                KeyItems = KeyItems,
+                Key = Key,
+                Name = Name,
+                SubName = SubName,
+                PossibleItems = PossibleItems
+            };
         }
 
 
@@ -103,5 +110,19 @@ namespace CyberCore.Manager.Crate
 // //        c.put("PossibleItems", PossibleItems);
 //         return c;
 //     }
+    }
+
+    public class CrateDataData
+    {
+        public CrateDataData()
+        {
+        }
+
+        public List<ItemChanceData> PossibleItems { get; set; } = new List<ItemChanceData>();
+        public String Key { get; set; } = new Random().Next(0, 10000) + "__UNNAMED CRATE__";
+        public String Name { get; set; } = "__UNNAMED CRATE__";
+        public String SubName { get; set; } = "==========";
+
+        public List<String> KeyItems { get; set; } = new List<String>();
     }
 }

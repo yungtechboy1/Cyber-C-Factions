@@ -1,121 +1,189 @@
 ﻿using System;
+using CyberCore.Manager.Factions;
+using Newtonsoft.Json;
+using static CyberCore.Manager.Factions.FactionRank;
 
 namespace CyberCore.Manager.Factions
 {
+    public class FactionPermSettingsData
+    {
+        public FactionRank AllowedToViewInbox { get; set; } = Officer;
+        public FactionRank AllowedToAcceptAlly { get; set; } = General;
+        public FactionRank AllowedToEditSettings { get; set; } = Leader;
+        public FactionRank AllowedToPromote { get; set; } = Member;
+        public FactionRank AllowedToKick { get; set; } = General;
+        public int MaxFactionChat { get; set; } = 30;
+        public int MaxAllyChat { get; set; } = 30;
+        public int WeeklyFactionTax { get; set; } = 0;
+        public FactionRank AllowedToInvite { get; set; } = Member;
+        public FactionRank DefaultJoinRank { get; set; } = Recruit;
+        public FactionRank AllowedToClaim { get; set; } = General;
+        public FactionRank AllowedToWinthdraw { get; set; } = General;
+        public FactionRank AllowedToSetHome { get; set; } = General;
+        
+        public bool AllowAlliesToTPToHomes = true;
+
+        public FactionPermSettingsData()
+        {
+            
+        }
+        public FactionPermSettingsData(FactionPermSettings f)
+        {
+            AllowedToViewInbox = f.AllowedToClaim;
+            AllowedToAcceptAlly = f.AllowedToAcceptAlly;
+            AllowedToEditSettings = f.AllowedToEditSettings;
+            AllowedToPromote = f.AllowedToPromote;
+            AllowedToKick = f.AllowedToKick;
+            MaxFactionChat = f.MaxFactionChat;
+            MaxAllyChat = f.MaxAllyChat;
+            WeeklyFactionTax = f.WeeklyFactionTax;
+            AllowedToInvite = f.AllowedToInvite;
+            DefaultJoinRank = f.DefaultJoinRank;
+            AllowedToClaim = f.AllowedToClaim;
+            AllowedToWinthdraw = f.AllowedToWinthdraw;
+            AllowedToSetHome = f.AllowedToSetHome;
+            AllowAlliesToTPToHomes = f.AllowAlliesToTPToHomes;
+        }
+    }
+
     public class FactionPermSettings
     {
-        private FactionRank AllowedToViewInbox = FactionRank.Officer;
-    private FactionRank AllowedToAcceptAlly = FactionRank.General;
-    private FactionRank AllowedToEditSettings = FactionRank.Leader;
-    private FactionRank AllowedToPromote = FactionRank.Member;
-    private FactionRank AllowedToKick = FactionRank.General;
-    //    private FactionRank AllowedToDemote = FactionRank.Member;
-    private int MaxFactionChat = 30;
-    private int MaxAllyChat = 30;
-    private int WeeklyFactionTax = 0;
-    private FactionRank AllowedToInvite = FactionRank.Member;
-    private FactionRank DefaultJoinRank = FactionRank.Recruit;
-    private FactionRank AllowedToClaim = FactionRank.General;
-    private FactionRank AllowedToWinthdraw = FactionRank.General;
-    private FactionRank AllowedToSetHome = FactionRank.General;
+        public FactionRank AllowedToViewInbox = Officer;
+        public FactionRank AllowedToAcceptAlly = General;
+        public FactionRank AllowedToEditSettings = Leader;
+        public FactionRank AllowedToPromote = Member;
 
-    public FactionPermSettings() {
+        public FactionRank AllowedToKick = General;
 
-    }
+        //    private FactionRank AllowedToDemote = FactionRank.Member;
+        public int MaxFactionChat = 30;
+        public int MaxAllyChat = 30;
+        public int WeeklyFactionTax = 0;
+        public bool AllowAlliesToTPToHomes = true;
+        public FactionRank AllowedToInvite = Member;
+        public FactionRank DefaultJoinRank = Recruit;
+        public FactionRank AllowedToClaim = General;
+        public FactionRank AllowedToWinthdraw = General;
+        public FactionRank AllowedToSetHome = General;
 
-    public FactionPermSettings(String i) {
-        String[] ii = i.Split("\\|");
-        if (ii.Length != 11) {
-            Console.WriteLine("Error importing factions settings! Expected length 10, got " + ii.Length);
-            return;
+        public FactionPermSettings()
+        {
         }
-        FactionRank avi = FactionRankMethods.getRankFromString(ii[0]);
-        if (avi != null) AllowedToViewInbox = avi;
-
-        FactionRank aaa = FactionRankMethods.getRankFromString(ii[1]);
-        if (aaa != null) AllowedToAcceptAlly = avi;
-
-        FactionRank aes = FactionRankMethods.getRankFromString(ii[2]);
-        if (aes != null) AllowedToEditSettings = aes;
-
-        FactionRank ap = FactionRankMethods.getRankFromString(ii[3]);
-        if (ap != null) AllowedToPromote = ap;
-
-        FactionRank atk = FactionRankMethods.getRankFromString(ii[4]);
-        if (atk != null) AllowedToKick = avi;
-
-        FactionRank ati = FactionRankMethods.getRankFromString(ii[5]);
-        if (ati != null) AllowedToInvite = ati;
-
-        FactionRank djr = FactionRankMethods.getRankFromString(ii[6]);
-        if (djr != null) DefaultJoinRank = djr;
-
-        FactionRank atc = FactionRankMethods.getRankFromString(ii[7]);
-        if (atc != null) AllowedToClaim = atc;
-
-        FactionRank atw = FactionRankMethods.getRankFromString(ii[8]);
-        if (atw != null) AllowedToWinthdraw = atw;
-
-        FactionRank ash = FactionRankMethods.getRankFromString(ii[9]);
-        if (avi != null) AllowedToViewInbox = ash;
-
-        try {
-            int iii = int.Parse(ii[10]);
-            WeeklyFactionTax = iii;
-        } catch (Exception e) {
-            Console.WriteLine("Error parseing WeeklyFactionTax! from " + ii[10]);
+        
+        public FactionPermSettings(FactionPermSettingsData f)
+        {
+            AllowedToViewInbox = f.AllowedToClaim;
+            AllowedToAcceptAlly = f.AllowedToAcceptAlly;
+            AllowedToEditSettings = f.AllowedToEditSettings;
+            AllowedToPromote = f.AllowedToPromote;
+            AllowedToKick = f.AllowedToKick;
+            MaxFactionChat = f.MaxFactionChat;
+            MaxAllyChat = f.MaxAllyChat;
+            WeeklyFactionTax = f.WeeklyFactionTax;
+            AllowedToInvite = f.AllowedToInvite;
+            DefaultJoinRank = f.DefaultJoinRank;
+            AllowedToClaim = f.AllowedToClaim;
+            AllowedToWinthdraw = f.AllowedToWinthdraw;
+            AllowedToSetHome = f.AllowedToSetHome;
+            AllowedToSetHome = f.AllowedToSetHome;
         }
 
+        public FactionPermSettings(String i)
+        {
+            String[] ii = i.Split("|");
+            if (ii.Length != 12)
+            {
+                Console.WriteLine("Error importing factions settings! Expected length 10, got " + ii.Length+"||"+ii);
+                return;
+            }
 
-    }
+            FactionRank avi = getRankFromString(ii[0]);
+            if (None.hasPerm(avi)) AllowedToViewInbox = avi;
 
-    public String export() {
-        String e = "";
-        e += FactionRankMethods.getRankFromString(AllowedToViewInbox) + "|";
-        e += FactionRankMethods.getRankFromString(AllowedToAcceptAlly) + "|";
-        e += FactionRankMethods.getRankFromString(AllowedToEditSettings) + "|";
-        e += FactionRankMethods.getRankFromString(AllowedToPromote) + "|";
-        e += FactionRankMethods.getRankFromString(AllowedToKick) + "|";
-        e += FactionRankMethods.getRankFromString(AllowedToInvite) + "|";
-        e += FactionRankMethods.getRankFromString(DefaultJoinRank) + "|";
-        e += FactionRankMethods.getRankFromString(AllowedToClaim) + "|";
-        e += FactionRankMethods.getRankFromString(AllowedToWinthdraw) + "|";
-        e += FactionRankMethods.getRankFromString(AllowedToSetHome) + "|";
-        e += getWeeklyFactionTax() + "|";
-        return e;
-    }
+            FactionRank aaa = getRankFromString(ii[1]);
+            if (None.hasPerm(aaa)) AllowedToAcceptAlly = avi;
 
-    public int getWeeklyFactionTax() {
-        return WeeklyFactionTax;
-    }
+            FactionRank aes = getRankFromString(ii[2]);
+            if (None.hasPerm(aes)) AllowedToEditSettings = aes;
 
-    public void setWeeklyFactionTax(int weeklyFactionTax) {
-        WeeklyFactionTax = weeklyFactionTax;
-    }
+            FactionRank ap = getRankFromString(ii[3]);
+            if (None.hasPerm(ap)) AllowedToPromote = ap;
 
-    public FactionRank getAllowedToWinthdraw() {
-        return AllowedToWinthdraw;
-    }
+            FactionRank atk = getRankFromString(ii[4]);
+            if (None.hasPerm(atk)) AllowedToKick = avi;
 
-    public void setAllowedToWinthdraw(FactionRank allowedToWinthdraw) {
-        AllowedToWinthdraw = allowedToWinthdraw;
-    }
+            FactionRank ati = getRankFromString(ii[5]);
+            if (None.hasPerm(ati)) AllowedToInvite = ati;
 
-    public FactionRank getAllowedToSetHome() {
-        return AllowedToSetHome;
-    }
+            FactionRank djr = getRankFromString(ii[6]);
+            if (None.hasPerm(djr)) DefaultJoinRank = djr;
 
-    public void setAllowedToSetHome(FactionRank allowedToSetHome) {
-        AllowedToSetHome = allowedToSetHome;
-    }
+            FactionRank atc = getRankFromString(ii[7]);
+            if (None.hasPerm(atc)) AllowedToClaim = atc;
 
-    public FactionRank getAllowedToPromote() {
-        return AllowedToPromote;
-    }
+            FactionRank atw = getRankFromString(ii[8]);
+            if (None.hasPerm(atw)) AllowedToWinthdraw = atw;
 
-    public void setAllowedToPromote(FactionRank allowedToPromote) {
-        AllowedToPromote = allowedToPromote;
-    }
+            FactionRank ash = getRankFromString(ii[9]);
+            if (None.hasPerm(avi)) AllowedToViewInbox = ash;
+
+
+            
+            try
+            {
+                int iii = int.Parse(ii[10]);
+                WeeklyFactionTax = iii;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error parseing WeeklyFactionTax! from " + ii[10]);
+            }
+        }
+
+        public String export()
+        {
+            return JsonConvert.SerializeObject(new FactionPermSettingsData(this));
+        }
+
+        public int getWeeklyFactionTax()
+        {
+            return WeeklyFactionTax;
+        }
+
+        public void setWeeklyFactionTax(int weeklyFactionTax)
+        {
+            WeeklyFactionTax = weeklyFactionTax;
+        }
+
+        public FactionRank getAllowedToWinthdraw()
+        {
+            return AllowedToWinthdraw;
+        }
+
+        public void setAllowedToWinthdraw(FactionRank allowedToWinthdraw)
+        {
+            AllowedToWinthdraw = allowedToWinthdraw;
+        }
+
+        public FactionRank getAllowedToSetHome()
+        {
+            return AllowedToSetHome;
+        }
+
+        public void setAllowedToSetHome(FactionRank allowedToSetHome)
+        {
+            AllowedToSetHome = allowedToSetHome;
+        }
+
+        public FactionRank getAllowedToPromote()
+        {
+            return AllowedToPromote;
+        }
+
+        public void setAllowedToPromote(FactionRank allowedToPromote)
+        {
+            AllowedToPromote = allowedToPromote;
+        }
 
 //    public FactionRank getAllowedToDemote() {
 //        return AllowedToDemote;
@@ -125,76 +193,94 @@ namespace CyberCore.Manager.Factions
 //        AllowedToDemote = allowedToDemote;
 //    }
 
-    public int getMaxFactionChat() {
-        return MaxFactionChat;
-    }
+        public int getMaxFactionChat()
+        {
+            return MaxFactionChat;
+        }
 
-    public void setMaxFactionChat(int maxFactionChat) {
-        MaxFactionChat = maxFactionChat;
-    }
+        public void setMaxFactionChat(int maxFactionChat)
+        {
+            MaxFactionChat = maxFactionChat;
+        }
 
-    public int getMaxAllyChat() {
-        return MaxAllyChat;
-    }
+        public int getMaxAllyChat()
+        {
+            return MaxAllyChat;
+        }
 
-    public void setMaxAllyChat(int maxAllyChat) {
-        MaxAllyChat = maxAllyChat;
-    }
+        public void setMaxAllyChat(int maxAllyChat)
+        {
+            MaxAllyChat = maxAllyChat;
+        }
 
-    public FactionRank getAllowedToViewInbox() {
-        return AllowedToViewInbox;
-    }
+        public FactionRank getAllowedToViewInbox()
+        {
+            return AllowedToViewInbox;
+        }
 
-    public void setAllowedToViewInbox(FactionRank allowedToViewInbox) {
-        AllowedToViewInbox = allowedToViewInbox;
-    }
+        public void setAllowedToViewInbox(FactionRank allowedToViewInbox)
+        {
+            AllowedToViewInbox = allowedToViewInbox;
+        }
 
-    public FactionRank getAllowedToAcceptAlly() {
-        return AllowedToAcceptAlly;
-    }
+        public FactionRank getAllowedToAcceptAlly()
+        {
+            return AllowedToAcceptAlly;
+        }
 
-    public void setAllowedToAcceptAlly(FactionRank allowedToAcceptAlly) {
-        AllowedToAcceptAlly = allowedToAcceptAlly;
-    }
+        public void setAllowedToAcceptAlly(FactionRank allowedToAcceptAlly)
+        {
+            AllowedToAcceptAlly = allowedToAcceptAlly;
+        }
 
-    public FactionRank getAllowedToInvite() {
-        return AllowedToInvite;
-    }
+        public FactionRank getAllowedToInvite()
+        {
+            return AllowedToInvite;
+        }
 
-    public void setAllowedToInvite(FactionRank allowedToInvite) {
-        AllowedToInvite = allowedToInvite;
-    }
+        public void setAllowedToInvite(FactionRank allowedToInvite)
+        {
+            AllowedToInvite = allowedToInvite;
+        }
 
-    public FactionRank getDefaultJoinRank() {
-        return DefaultJoinRank;
-    }
+        public FactionRank getDefaultJoinRank()
+        {
+            return DefaultJoinRank;
+        }
 
-    public void setDefaultJoinRank(FactionRank defaultJoinRank) {
-        DefaultJoinRank = defaultJoinRank;
-    }
+        public void setDefaultJoinRank(FactionRank defaultJoinRank)
+        {
+            DefaultJoinRank = defaultJoinRank;
+        }
 
-    public FactionRank getAllowedToClaim() {
-        return AllowedToClaim;
-    }
+        public FactionRank getAllowedToClaim()
+        {
+            return AllowedToClaim;
+        }
 
-    public void setAllowedToClaim(FactionRank allowedToClaim) {
-        AllowedToClaim = allowedToClaim;
-    }
+        public void setAllowedToClaim(FactionRank allowedToClaim)
+        {
+            AllowedToClaim = allowedToClaim;
+        }
 
-    public FactionRank getAllowedToKick() {
-        return AllowedToKick;
-    }
+        public FactionRank getAllowedToKick()
+        {
+            return AllowedToKick;
+        }
 
-    public void setAllowedToKick(FactionRank allowedToKick) {
-        AllowedToKick = allowedToKick;
-    }
+        public void setAllowedToKick(FactionRank allowedToKick)
+        {
+            AllowedToKick = allowedToKick;
+        }
 
-    public FactionRank getAllowedToEditSettings() {
-        return AllowedToEditSettings;
-    }
+        public FactionRank getAllowedToEditSettings()
+        {
+            return AllowedToEditSettings;
+        }
 
-    public void setAllowedToEditSettings(FactionRank allowedToEditSettings) {
-        this.AllowedToEditSettings = allowedToEditSettings;
-    }
+        public void setAllowedToEditSettings(FactionRank allowedToEditSettings)
+        {
+            this.AllowedToEditSettings = allowedToEditSettings;
+        }
     }
 }

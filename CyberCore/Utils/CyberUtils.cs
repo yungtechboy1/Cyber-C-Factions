@@ -59,40 +59,16 @@ namespace CyberCore.Utils
 
             return null;
         }
-
-        public static bool hasExtraPlayerData(Player p)
-        {
-            return epd.ContainsKey(p.getName().ToLower());
-        }
         
-        [CanBeNull]
-        public static ExtraPlayerData getExtraPlayerData(Player p)
-        {
-            //TODO add Saveing of This Data!
-            //SQL Save
-            if (epd.ContainsKey(p.getName().ToLower())) return epd[p.getName().ToLower()];
-            else
-            {
-                var e = new ExtraPlayerData(p);
-                epd.Add(p.getName().ToLower(),e);
-                return e;
-            }
-        }
-
-        public static void updateExtraPlayerData(Player p, ExtraPlayerData e)
-        {
-            epd.Add(p.getName().ToLower(), e);
-        }
-
         public static void removeExtraPlayerData(Player p)
         {
             epd.Remove(p.getName().ToLower());
         }
 
         [CanBeNull]
-        public static Player getPlayer(String name)
+        public static CorePlayer getPlayer(String name)
         {
-            return CyberCoreMain.GetInstance().getAPI().PlayerManager.getPlayer(name);
+            return CyberCoreMain.GetInstance().getPlayer(name);
         }
 
         public static String toStringCode(String[] a)
@@ -109,7 +85,7 @@ namespace CyberCore.Utils
 
         public static String[] fromStringCode(String s)
         {
-            String[] ss = s.Split("\\|");
+            String[] ss = s.Split("|");
             return ss;
         }
         //TODO
@@ -201,6 +177,7 @@ namespace CyberCore.Utils
         }
         public static long getLongTime()
         {
+            // return getTick();
             return DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
         }
 

@@ -39,7 +39,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         //APE|DragonJumper|XP|100
         public static AdvancedPowerEnum fromString(String s)
         {
-            String[] ss = s.Split("\\|");
+            String[] ss = s.Split("|");
             if (ss.Length == 3)
             {
                 //None, Invalid Save

@@ -40,7 +40,7 @@ namespace CyberCore.Manager.Factions.Windows
                 CyberCoreMain.Log.Error("Error With FactionChatFactionWindow! No Faction Found!!!!!");
                 return;
             }
-            Fac.HandleFactionChatWindow((customForm.Content[0] as Input).Value,player);
+            Fac.HandleFactionChatWindow((customForm.Content[0] as Input).Value,player.toCorePlayer());
         }
     }
 }

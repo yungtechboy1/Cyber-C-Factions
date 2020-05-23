@@ -26,6 +26,36 @@ namespace CyberCore.Manager.Forms
             Content = elements;
         }
 
+        public String getInputResponse(int k)
+        {
+            return ((Input) Content[k]).Value;
+        }
+        
+        public void addLabel(String txt)
+        {
+            addElement(new Label()
+            {
+                Text = txt
+            });
+        }
+        public void addToggle(String txt, bool def = false)
+        {
+            addElement(new Toggle()
+            {
+                Text = txt,
+                Value = def
+            });
+        }
+        public void addInput(String title,string placeholder = "",string defvalue = "")
+        {
+            addElement(new Input()
+            {
+                Text = title,
+                Placeholder = placeholder,
+                Value = defvalue
+            });
+        }
+        
         public void addElement(CustomElement e)
         {
             if(Content == null)Content = new List<CustomElement>();

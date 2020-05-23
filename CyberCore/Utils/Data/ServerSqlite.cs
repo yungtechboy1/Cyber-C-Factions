@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.Warp;
@@ -45,7 +46,7 @@ namespace CyberCore.Utils.Data
             }
         }
 
-        public void LoadPlayer(Player p)
+        public void LoadPlayer(CorePlayer p)
         {
             if (p == null) Console.WriteLine("PLAYER NULL");
             try
@@ -57,7 +58,7 @@ namespace CyberCore.Utils.Data
                 Faction f = Plugin.FM.FFactory.getPlayerFaction(p);
                 if (f != null)
                 {
-                    Plugin.FM.FFactory.FacList.Add(p.getName().ToLower(),f.getName());
+                    Plugin.FM.FFactory.FacList[p.getName().ToLower()]= f.getName();
                     // p. = f.getName();
                 }
             }
@@ -69,7 +70,7 @@ namespace CyberCore.Utils.Data
 
         private void LoadClass(Player p)
         {
-            Plugin.ClassFactory.GetClass(p, true);
+            Plugin.ClassFactory.GetClass((CorePlayer) p, true);
         }
 
 //    private void LoadRank(Player p) {
@@ -116,75 +117,61 @@ namespace CyberCore.Utils.Data
 //        SaveSettings((Player) p);
 //    }
 
-        public void UnLoadPlayer(Player p)
+        public void UnLoadPlayer(CorePlayer p)
         {
             SaveHomes(p);
             SaveSettings(p);
             Plugin.ClassFactory.SaveClassToFile(p);
         }
 
-        private void LoadHomes(Player p)
+        private void LoadHomes(CorePlayer p)
         {
-            try
+            List<Dictionary<String, Object>> data =
+                Plugin.SQL.executeSelect("SELECT * FROM `PlayerHomes` WHERE `owneruuid` LIKE '" + p.ClientUuid + "'");
+            if (data == null)
             {
-                List<Dictionary<String, Object>> data =
-                    executeSelect("SELECT * FROM `PlayerHomes` WHERE `owneruuid` LIKE '" + p.getUniqueId() + "'");
-                if (data == null)
-                {
-                    CyberCoreMain.Log.Error("Error Loading Warps from Sqlite!");
-                    return;
-                }
-                else
-                {
-                    Plugin.getLogger().info("Loading " + data.size() + " Warps!");
-                }
-
-                for (Dictionary < String, Object > v : data)
-                {
-                    p.AddHome(new Faction.HomeData((String) v.get("name"), (Double) v.get("x"), (Double) v.get("y"),
-                        (Double) v.get("z"), (String) v.get("level"), p));
-                }
+                CyberCoreMain.Log.Error("Error Loading Warps from Sqlite!");
+                return;
             }
-            catch (SQLException e)
+            else
             {
-                e.printStackTrace();
+                CyberCoreMain.Log.Info("Loading " + data.Count + " Homes!");
+            }
+
+            foreach (var v in data)
+            {
+                var a = Faction.HomeData.phrase(new Vector3((int) v["x"], (int) v["y"], (int) v["z"]),
+                    (String) v["level"], (String) v["name"], (String) v["faction"]);
+                a.HomeID = (int) v["hid"];
+                p.AddHome(a);
             }
         }
 
-        private void LoadSettings(Player p)
+        private void LoadSettings(CorePlayer p)
         {
             UserSQL u = Plugin.UserSQL;
-            Plugin.getLogger().info("Starting loading " + p.getName() + "'s Server Data...Maybe");
+            CyberCoreMain.Log.Info("Starting loading " + p.getName() + "'s Server Data...Maybe");
             PlayerSettingsData pd = u.getPlayerSettingsData(p);
             p.setPlayerSettingsData(pd);
         }
 
-        private void SaveHomes(Player p)
+        private void SaveHomes(CorePlayer p)
         {
-            try
-            {
-                executeUpdate("DELETE FROM `PlayerHomes` WHERE `owneruuid` LIKE '" + p.getUniqueId() + "'");
-                for (Faction.HomeData h :
-                p.HD) {
-                    executeUpdate("INSERT INTO `PlayerHomes` VALUES (0,'" + h.getName() + "'," + h.getX() + "," +
-                                  h.getY() +
-                                  "," + h.getZ() + ",'" + h.getLevel() + "','" + h.getOwner() + "','" +
-                                  h.getOwneruuid() +
-                                  "')");
+                Plugin.SQL.Insert($"DELETE FROM `PlayerHomes` WHERE `owneruuid` LIKE '{p.ClientUuid}'");
+                foreach (Faction.HomeData h in p.HD)
+                {
+                    Plugin.SQL.Insert(
+                        $"INSERT INTO `PlayerHomes` VALUES (0,'{h.getName()}',{h.getX()},{h.getY()},{h.getZ()} ,'{h.getL().LevelName}','{h.getOwnerName()}','{h.getOwnerUUID()}')");
                 }
-                Plugin.getLogger().info("Homes saved for " + p.getName());
+
+                CyberCoreMain.Log.Info("Homes saved for " + p.getName());
 //            p.sendTip("Homes Saved!");
-            }
-            catch (SQLException e)
-            {
-                e.printStackTrace();
-            }
         }
 
-        private void SaveSettings(Player p)
+        private void SaveSettings(CorePlayer p)
         {
             UserSQL u = Plugin.UserSQL;
-            Plugin.getLogger().info("Starting SAVING FOR  " + p.getName() + "'s Server Data...Maybe");
+            CyberCoreMain.Log.Info("Starting SAVING FOR  " + p.getName() + "'s Server Data...Maybe");
             u.savePlayerSettingData(p);
         }
     }

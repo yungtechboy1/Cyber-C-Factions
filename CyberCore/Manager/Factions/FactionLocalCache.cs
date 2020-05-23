@@ -40,9 +40,9 @@ namespace CyberCore.Manager.Factions
         public void Update(){
 
         }
-
-        public int getTimeToInt(){
-            return CyberUtils.getLongTime();
-        }
+        //
+        // public long getTimeToInt(){
+        //     return CyberUtils.getLongTime();
+        // }
     }
 }

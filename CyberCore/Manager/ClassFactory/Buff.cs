@@ -7,7 +7,7 @@
         private bool debuff = false;
 
         
-        protected Buff(BuffType bt, float amount, bool dbuff = false)
+        public Buff(BuffType bt, float amount, bool dbuff = false)
         {
             this.bt = bt;
             this.amount = amount;

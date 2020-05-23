@@ -66,7 +66,19 @@
         Faction_Leave_Confirm,
         Faction_Home,
         Faction_Settings_Window,
-        Faction_Invite_Choose_Rank
+        Faction_Invite_Choose_Rank,
+        Faction_View_Invites,
+        Faction_Ally_Select,
+        Faction_Main_Window,
+        Faction_Home_Page,
+        Faction_Join_Confirm,
+        Faction_Leader_Change,
+        Faction_List_Window,
+        Faction_Nuetral_Select,
+        Faction_Promote_Demote,
+        Faction_Inbox_Main,
+        Inbox_Message_View,
+        Rank_Window
     }
 
     public enum SubMenu

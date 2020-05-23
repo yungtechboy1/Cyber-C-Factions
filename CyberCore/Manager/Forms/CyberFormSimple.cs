@@ -24,19 +24,32 @@ namespace CyberCore.Manager.Forms
         private static readonly ILog Log = LogManager.GetLogger(typeof(CyberFormSimple));
 
 
-        public CyberFormSimple(MainForm ttype, List<Button> bl, String desc = "")
+        public CyberFormSimple(MainForm ttype, List<Button> bl, String title = "")
         {
             FT = ttype;
             Buttons = bl;
-            Content = desc;
+            Content = "";
+            Title = title;
         }
-        public CyberFormSimple(MainForm ttype, String desc = "")
+        public CyberFormSimple(MainForm ttype, String title = "")
         {
             FT = ttype;
             Buttons = new List<Button>();
-            Content = desc;
+            Title = title;
+            Content = "";
         }
 
+        public void addButton(String txt,Action<Player, SimpleForm> a = null)
+        {
+            if(Buttons == null)Buttons = new List<Button>();
+            var b = new Button()
+            {
+                Text = txt, 
+               
+            };
+            if (a != null) b.ExecuteAction = a;
+            Buttons.Add(b);
+        }
         public void addButton(Button b)
         {
             if(Buttons == null)Buttons = new List<Button>();
@@ -49,6 +62,23 @@ namespace CyberCore.Manager.Forms
             AFT = attype;
             Buttons = bl;
             Content = desc;
+        }
+
+        [JsonIgnore]
+        public int ClickedID = -1;
+        public override void FromJson(string json, Player player)
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings()
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.None,
+                Formatting = Formatting.Indented
+            };
+            int? nullable = JsonConvert.DeserializeObject<int?>(json);
+            Log.Debug((object) ("Form JSON\n" + JsonConvert.SerializeObject((object) nullable, settings)));
+            if (!nullable.HasValue)
+                return;
+            ClickedID = nullable.Value;
+            this.Buttons[nullable.Value].Execute(player, this);
         }
         
     }
