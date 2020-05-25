@@ -58,6 +58,7 @@ namespace CyberCore.Utils
             _Inv.Clear();
             foreach (var i in Inv)
             {
+                if(i == null)continue;
                 _Inv.Add(new CorePlayerItemData(i));
             }
             return JsonConvert.SerializeObject(this);

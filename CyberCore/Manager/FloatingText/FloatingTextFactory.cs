@@ -40,7 +40,7 @@ namespace CyberCore.Manager.FloatingText
             // start();
             //TODO
             // run();
-            LoadFromSave();
+            
             _tickerHighPrecisionTimer = new HighPrecisionTimer(2000, run, false, false);
             //Create New Tick Function and exicute every 40 Ticks
             //Just Call run in here
@@ -48,6 +48,7 @@ namespace CyberCore.Manager.FloatingText
 
         public void LoadFromSave()
         {
+            Console.WriteLine($"STTTTTTTTTTTTTTTTTTTTTT ");
             string directoryName = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string path = Path.Combine(directoryName, "Plugins");
             path = Path.Combine(path, "MasterFloatingText.conf");
@@ -60,7 +61,9 @@ namespace CyberCore.Manager.FloatingText
                 {
                     var ln = v.Lvl;
                     var l = CCM.getAPI().LevelManager.GetLevel(null, ln);
-                    AddFloatingText(new CyberFloatingTextContainer(this, v, l));
+                    Console.WriteLine($"LOADDDDDDDDINNNNNGGGGGGGGG {v.Syntax} || {ln} VS {API.LevelManager.GetDefaultLevel().LevelId} VS  {API.LevelManager.GetDefaultLevel().LevelName}");
+                    if (l != null) AddFloatingText(new CyberFloatingTextContainer(this, v, l));
+                    else Console.WriteLine("ERRRRORRR!!!!!!!!");
                 }
             }
             else
@@ -77,14 +80,13 @@ namespace CyberCore.Manager.FloatingText
             _tickerHighPrecisionTimer.Dispose();
             if (!save) return;
             
-            CyberCoreMain.Log.Error("STARTING TO SAVE FTM INNNN");
             List<CyberFloatingTextContainerData> d = new List<CyberFloatingTextContainerData>();
             foreach (var v in SavedFloatingText)
             {
                 if (v is PopupFT) continue;
                 v.FTData.PrepareForSave();
                 
-                CyberCoreMain.Log.Error("SAVING FTM FOR "+v.FTData.Syntax);
+                // CyberCoreMain.Log.Error("SAVING FTM FOR "+v.FTData.Syntax);
                 d.Add(v.FTData);
             }
 
@@ -95,7 +97,7 @@ namespace CyberCore.Manager.FloatingText
             path = Path.Combine(path, "MasterFloatingText.conf");
             File.WriteAllText(path, dd);
             
-            CyberCoreMain.Log.Error("SAVED TO  "+path+" |||||||| "+dd);
+            // CyberCoreMain.Log.Error("SAVED TO  "+path+" |||||||| "+dd);
         }
 
         public static void killall(bool fr = false)
@@ -172,11 +174,18 @@ namespace CyberCore.Manager.FloatingText
         }
 
             long lasttick = -1;
+            public bool ReadyToRun = false;
         public void run(Object o)
         {
             // CyberCoreMain.Log.Error("RUNNING!!!!!!!!!!!");
 //        CyberCoreMain.Log.Error("Was LOG ||"+"11111111111111111111");
 //CyberCoreMain.Log.Error("Was LOG ||"+"======");
+            if (API.LevelManager.Levels.Count == 0) return;
+            if (!ReadyToRun)
+            {
+                LoadFromSave();
+                ReadyToRun = true;
+            }
             long tick = CyberUtils.getTick();
             if (tick != lasttick)
             {
@@ -300,7 +309,7 @@ CyberCoreMain.Log.Error("FT AND PLAYER NOT IN SAME LEVEL");
                     try
                     {
                         KillUnnneded(FTLastSentToRmv[a.EntityId], a.EntityId, a.Level);
-                        CyberCoreMain.Log.Error("3333333333333333333333333333DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                        // CyberCoreMain.Log.Error("3333333333333333333333333333DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 
                         a.HaldleSendP(app);
                     }

@@ -16,7 +16,6 @@
         <e p="CorePlayer.cs" t="Include" />
         <e p="CoreSettings.cs" t="Include" />
         <e p="Custom" t="Include">
-          <e p="Block" t="Include" />
           <e p="CustomCyberGenerator.cs" t="Include" />
           <e p="CustomEnums" t="Include">
             <e p="ChatFormats.cs" t="Include" />
@@ -32,7 +31,6 @@
             <e p="ItemSlimeBall.cs" t="Include" />
             <e p="NetherStar.cs" t="Include" />
           </e>
-          <e p="Sound" t="Include" />
         </e>
         <e p="CyberCommands.cs" t="Include" />
         <e p="CyberCore.csproj" t="IncludeRecursive" />

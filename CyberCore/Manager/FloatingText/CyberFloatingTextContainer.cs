@@ -80,8 +80,9 @@ namespace CyberCore.Manager.FloatingText
         public CyberFloatingTextContainer(FloatingTextFactory ftf, CyberFloatingTextContainerData data, Level l) : base(
             EntityType.Villager, l)
         {
+            FTData = data;
             EntityId = generateEntityId();
-            var p = new PlayerLocation(data.Cords[0],data.Cords[1],data.Cords[2]);
+            var p = new PlayerLocation(data.Cords[0], data.Cords[1], data.Cords[2]);
             KnownPosition = p;
             LastSentPosition = p;
             setFlags();
@@ -131,7 +132,7 @@ namespace CyberCore.Manager.FloatingText
             IsRiding = false;
             IsSprinting = false;
             IsUsingItem = false;
-            IsInvisible = false;//true
+            IsInvisible = false; //true
             IsTempted = false;
             IsInLove = false;
             IsSaddled = false;
@@ -252,6 +253,8 @@ namespace CyberCore.Manager.FloatingText
             return FTData.Syntax.Contains("{name}");
         }
 
+        public List<String> Spawned = new List<string>();
+
         //Generate Flaoting Text for following players
         public void HaldleSendP(List<CorePlayer> ap)
         {
@@ -261,31 +264,32 @@ namespace CyberCore.Manager.FloatingText
 //        sync(_CE_Lock)//TODO
             if (FTData._CE_Lock || FTData._CE_Done)
             {
-                
                 CyberCoreMain.Log.Error($"ERRRRRRRRRRR ATTTTTTT CHK {FTData._CE_Done} || {FTData._CE_Lock}");
                 return;
             }
-            FTData._CE_Lock = true;
-            if (_CE_Dynamic() || _CE_NeedToResend())
-            {
-                foreach (var p in ap)
-                {
-//            Player p = Server.getInstance().getPlayerExact(pn);
-                    if (p == null)
-                    {
-                        CyberCoreMain.Log.Error("WJATTTTTTTTTTTTT THA PLAAAAAYYASA IS NULLZ");
-                        continue;
-                    }
 
+            FTData._CE_Lock = true;
+            CyberCoreMain.Log.Error($"B44444  SEND CHK {_CE_Dynamic()} || {_CE_NeedToResend()}");
+
+            foreach (var p in ap)
+            {
+                if (p == null)
+                {
+                    CyberCoreMain.Log.Error("WJATTTTTTTTTTTTT THA PLAAAAAYYASA IS NULLZ");
+                    continue;
+                }
+
+                if (!p.IsSpawned || p.HealthManager.IsDead) continue;
+                if (!Spawned.Contains(p.Username) || _CE_Dynamic() || _CE_NeedToResend())
+                {
                     foreach (var dp in encode(p))
                     {
-                        CyberCoreMain.Log.Error("SENT DATA PKT"+p.Username);
+                        CyberCoreMain.Log.Error("SENT DATA PKT" + p.Username);
                         p.SendPacket(dp);
                     }
                 }
-
-                
             }
+
             FTData._CE_Lock = false;
         }
 
@@ -303,16 +307,17 @@ namespace CyberCore.Manager.FloatingText
                 Level.RelayBroadcast(Level.GetAllPlayers(), packet);
             }
         }
-        
-        public UUID randomUUID() {
-            SecureRandom ng =  new SecureRandom();
+
+        public UUID randomUUID()
+        {
+            SecureRandom ng = new SecureRandom();
 
             byte[] randomBytes = new byte[16];
             ng.NextBytes(randomBytes);
-            randomBytes[6]  &= 0x0f;  /* clear version        */
-            randomBytes[6]  |= 0x40;  /* set to version 4     */
-            randomBytes[8]  &= 0x3f;  /* clear variant        */
-            randomBytes[8]  |= 0x80;  /* set to IETF variant  */
+            randomBytes[6] &= 0x0f; /* clear version        */
+            randomBytes[6] |= 0x40; /* set to version 4     */
+            randomBytes[8] &= 0x3f; /* clear variant        */
+            randomBytes[8] |= 0x80; /* set to IETF variant  */
             return new UUID(randomBytes);
         }
 
@@ -320,11 +325,11 @@ namespace CyberCore.Manager.FloatingText
         {
             uint flags = 0;
             flags |= 0x02; // No PvP (Remove hit markers client-side).
-             flags |= 0x04; // No PvM (Remove hit markers client-side).
-           flags |= 0x08;
-           return flags;
+            flags |= 0x04; // No PvM (Remove hit markers client-side).
+            flags |= 0x08;
+            return flags;
         }
-        
+
         public List<Packet> encode(CorePlayer p)
         {
             var packets = new List<Packet>();
@@ -363,7 +368,6 @@ namespace CyberCore.Manager.FloatingText
             mcpeAddPlayer.deviceOs = 5;
             packets.Add(mcpeAddPlayer);
 
-            
 
             // var addEntity = McpeAddEntity.CreateObject();
             // addEntity.entityType = "15";

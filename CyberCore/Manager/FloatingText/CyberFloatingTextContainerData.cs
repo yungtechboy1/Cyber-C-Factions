@@ -27,6 +27,7 @@ namespace CyberCore.Manager.FloatingText
             _CE_Done = false;
             _CE_Lock = false;
             Active = false;
+            lastSyntax = null;
         }
         
         public String toJson()

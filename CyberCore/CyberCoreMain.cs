@@ -29,7 +29,7 @@ namespace CyberCore
 {
     [OpenPluginInfo(Name = "CyberCore", Description = "CyberTech++ Core Plugin", Author = "YungTechBoy1",
         Version = "1.0.0.0-PA", Website = "CyberTechpp.com")]
-    public class CyberCoreMain : OpenPlugin , IStartup
+    public class CyberCoreMain : OpenPlugin
     {
         // public Dictionary<String, Object> PlayerIdentification = new Dictionary<string, object>();
         public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(CyberCoreMain));
@@ -76,6 +76,12 @@ namespace CyberCore
         public static CyberCoreMain GetInstance()
         {
             return instance;
+        }
+
+        ~CyberCoreMain()
+        {
+            Console.WriteLine("DISABLEING");
+            Disabled(API);
         }
 
         public CyberCoreMain()
@@ -170,11 +176,11 @@ namespace CyberCore
         public override void Enabled(OpenApi api)
         {
             API = api;
-            api.LevelManager.LevelCreated += delegate(object? sender, LevelEventArgs args)
-            {
-                var a = args.Level;
-                a.SpawnPoint = new PlayerLocation(0,2,0);
-            };
+            // api.LevelManager.LevelCreated += delegate(object? sender, LevelEventArgs args)
+            // {
+            //     var a = args.Level;
+            //     a.SpawnPoint = new PlayerLocation(0,2,0);
+            // };
             API.OpenServer.PlayerFactory = new CyberPlayerFactory(API);
             Console.WriteLine("================Executed startup successfully. Replaced identity managment=========================");
             Log.Info("================Executed startup successfully. Replaced identity managment=========================");
@@ -228,7 +234,7 @@ namespace CyberCore
 
         public override void Disabled(OpenApi api)
         {
-            Log.Error("STARTING TO SAVE FTM");
+        
             FTM.stop();
             // api.CommandManager.UnloadCommands(CommandsClass);
         }

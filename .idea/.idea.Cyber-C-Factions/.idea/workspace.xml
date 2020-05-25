@@ -2,18 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainerData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/PopupFTData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/CyberCommands.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCommands.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/CyberCore.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCore.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainerData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainerData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/PopupFT.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/PopupFT.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/MasterListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/MasterListener.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CorePlayerData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CorePlayerData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CustomConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CustomConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/obj/Debug/netcoreapp3.1/CyberCore.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/obj/Debug/netcoreapp3.1/CyberCore.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/obj/project.assets.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -333,6 +331,7 @@
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateEditCrateItemDataWindow.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateGetCrateKey.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Crate/Form/CrateConfirmWindow.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E07FFA0B-6E50-4B0E-B2B3-C8EBAE4DE79D/77/4d01e564/IStartup.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormCustom.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormModal.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionRank.cs" root0="FORCE_HIGHLIGHTING" />
@@ -483,7 +482,6 @@
         <option value="$PROJECT_DIR$/CyberCore/CorePlayer.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Custom/CustomCyberGenerator.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/CyberCore.csproj" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/FormType.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Rank/CyberFormRankWindow.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" />
@@ -493,12 +491,13 @@
         <option value="$PROJECT_DIR$/CyberCore/CyberCommands.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/PopupFTData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/PopupFT.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/MasterListener.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/CyberCore.csproj" />
+        <option value="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Utils/CorePlayerData.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainerData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/MasterListener.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Utils/CorePlayerData.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" />
       </list>
     </option>
   </component>
@@ -645,7 +644,7 @@
       <workItem from="1588460553896" duration="4493000" />
       <workItem from="1590196290740" duration="11945000" />
       <workItem from="1590260967335" duration="9969000" />
-      <workItem from="1590301898655" duration="14447000" />
+      <workItem from="1590301898655" duration="21771000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />
@@ -710,22 +709,22 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1380" y="100" width="1080" height="840" key="DiffContextDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1585436853249" />
-    <state width="2517" height="262" key="GridCell.Tab.0.bottom" timestamp="1590390357619">
+    <state width="1220" height="262" key="GridCell.Tab.0.bottom" timestamp="1590405442341">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2517" height="262" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1590390357619" />
-    <state width="2517" height="262" key="GridCell.Tab.0.center" timestamp="1590390357618">
+    <state width="1220" height="262" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1590405442341" />
+    <state width="1220" height="262" key="GridCell.Tab.0.center" timestamp="1590405442341">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2517" height="262" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1590390357618" />
-    <state width="2517" height="262" key="GridCell.Tab.0.left" timestamp="1590390357618">
+    <state width="1220" height="262" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1590405442341" />
+    <state width="1220" height="262" key="GridCell.Tab.0.left" timestamp="1590405442340">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2517" height="262" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1590390357618" />
-    <state width="2517" height="262" key="GridCell.Tab.0.right" timestamp="1590390357619">
+    <state width="1220" height="262" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1590405442340" />
+    <state width="1220" height="262" key="GridCell.Tab.0.right" timestamp="1590405442341">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2517" height="262" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1590390357619" />
+    <state width="1220" height="262" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1590405442341" />
     <state width="1220" height="322" key="GridCell.Tab.1.bottom" timestamp="1590301279358">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -891,23 +890,23 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="0" y="0" width="1280" height="1040" key="dock-window-9/0.0.2560.1040@0.0.2560.1040" timestamp="1585690906761" />
-    <state x="1470" y="288" width="936" height="752" key="find.popup" timestamp="1590390300958">
+    <state x="1470" y="288" width="936" height="752" key="find.popup" timestamp="1590404699536">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="662" y="144" width="692" height="752" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584584090275" />
     <state x="-1854" y="155" width="738" height="804" key="find.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584417682271" />
-    <state x="1470" y="288" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590390300958" />
+    <state x="1470" y="288" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590404699536" />
     <state x="1461" y="244" width="672" height="677" key="run.anything.popup" timestamp="1590303756016">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1096" y="244" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584581008542" />
     <state x="1461" y="244" width="672" height="677" key="run.anything.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590303756016" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1590388783862">
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1590403780365">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="644" y="227" width="672" height="635" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584582826054" />
     <state x="-1873" y="244" width="672" height="678" key="search.everywhere.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584412852759" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590388783862" />
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590403780365" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -927,13 +926,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs</url>
-          <line>298</line>
+          <line>307</line>
           <properties documentPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" initialLine="292">
             <startOffsets>
-              <option value="12126" />
+              <option value="12606" />
             </startOffsets>
             <endOffsets>
-              <option value="12126" />
+              <option value="12606" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="3" />
