@@ -1,44 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using CyberCore.Utils;
 using MiNET;
+using MiNET.Blocks;
 using MiNET.Entities;
+using MiNET.Entities.Passive;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Worlds;
+using OpenAPI.Events.Level;
 using OpenAPI.Player;
+using Org.BouncyCastle.Asn1.X509;
+using Org.BouncyCastle.Security;
 
 namespace CyberCore.Manager.FloatingText
 {
     public class CyberFloatingTextContainer : Entity
     {
-        public bool _CE_Done;
-
-
-//    public Level Lvl;
-        public bool _CE_Lock;
-        public bool Active;
-        public bool Formated = false;
         public FloatingTextFactory FTF;
+        public CyberFloatingTextContainerData FTData = new CyberFloatingTextContainerData();
 
-        private string lastSyntax;
-
-        public long LastUpdate;
-        // public long EntityId = -1;
-
-
-        // public PlayerLocation Pos;
-        public string Lvl;
-        public bool PlayerUnique = false;
-
-        public int Range = 64;
-        public string Syntax;
-        public FloatingTextType TYPE = FloatingTextType.FT_Standard;
-        public int UpdateTicks = 20;
-        public bool Vertical = false;
-
-        public CyberFloatingTextContainer(FloatingTextFactory ftf, PlayerLocation pos, Level l, string syntax) : base(
-            EntityType.Villager, l)
+        public CyberFloatingTextContainer(FloatingTextFactory ftf, PlayerLocation pos, Level l, string syntax = null) :
+            base(
+                EntityType.Villager, l)
         {
             EntityId = generateEntityId();
             KnownPosition = pos;
@@ -50,12 +35,72 @@ namespace CyberCore.Manager.FloatingText
             FTF = ftf;
             //TODO No Need?
             // EntityId = generateEntityId();
-            Syntax = syntax;
+            if (syntax == null)
+            {
+                syntax = $"==========FT===========\n" +
+                         $"EID: {EntityId}\n" +
+                         $"Pos: {pos}";
+            }
+
+            FTData.Syntax = syntax;
+            FTData.Lvl = l.LevelId;
+            FTData.Cords[0] = (int) Math.Floor(KnownPosition.X);
+            FTData.Cords[1] = (int) Math.Floor(KnownPosition.Y);
+            FTData.Cords[2] = (int) Math.Floor(KnownPosition.Z);
 //        Lvl = pos.level;
         }
 
+        public CyberFloatingTextContainer(FloatingTextFactory ftf, CorePlayer p, string syntax = null) : base(
+            EntityType.Villager, p.Level)
+        {
+            EntityId = generateEntityId();
+            KnownPosition = p.KnownPosition.Clone() as PlayerLocation;
+            LastSentPosition = p.KnownPosition.Clone() as PlayerLocation;
+            setFlags();
+            Width = .01f;
+            Height = .01f;
+            Scale = .01f;
+            FTF = ftf;
+            //TODO No Need?
+            // EntityId = generateEntityId();
+            if (syntax == null)
+            {
+                syntax = $"==========FT===========\n" +
+                         $"EID: {EntityId}\n" +
+                         $"Pos: {KnownPosition}";
+            }
 
-//         public String toString()
+            FTData.Syntax = syntax;
+            FTData.Lvl = p.Level.LevelId;
+            FTData.Cords[0] = (int) Math.Floor(KnownPosition.X);
+            FTData.Cords[1] = (int) Math.Floor(KnownPosition.Y);
+            FTData.Cords[2] = (int) Math.Floor(KnownPosition.Z);
+        }
+
+        public CyberFloatingTextContainer(FloatingTextFactory ftf, CyberFloatingTextContainerData data, Level l) : base(
+            EntityType.Villager, l)
+        {
+            EntityId = generateEntityId();
+            var p = new PlayerLocation(data.Cords[0],data.Cords[1],data.Cords[2]);
+            KnownPosition = p;
+            LastSentPosition = p;
+            setFlags();
+            Width = .01f;
+            Height = .01f;
+            Scale = .01f;
+            FTF = ftf;
+            //TODO No Need?
+            // EntityId = generateEntityId();
+            if (FTData.Syntax == null)
+            {
+                FTData.Syntax = $"==========FT===========\n" +
+                                $"EID: {EntityId}\n" +
+                                $"Pos: {KnownPosition}";
+            }
+        }
+
+
+        //         public String toString()
 //         {
 //             return ("CyberFloatingTextContainer{" +
 //                     "TYPE=" + TYPE +
@@ -75,7 +120,7 @@ namespace CyberCore.Manager.FloatingText
 //                     ", FTF=" + FTF +
 //                     ", lastSyntax='" + lastSyntax + '\'' +
 //                     ", uuid=" + uuid +
-//                     ", metadata=" + metadata +
+//                     ", metaFTData=" + metaFTData +
 //                     '}').ToString();
 //         }
 
@@ -86,7 +131,7 @@ namespace CyberCore.Manager.FloatingText
             IsRiding = false;
             IsSprinting = false;
             IsUsingItem = false;
-            IsInvisible = true;
+            IsInvisible = false;//true
             IsTempted = false;
             IsInLove = false;
             IsSaddled = false;
@@ -166,7 +211,7 @@ namespace CyberCore.Manager.FloatingText
 
         public string GetText(CorePlayer p, bool vertical = false)
         {
-            return FTF.FormatText(Syntax, p, vertical);
+            return FTF.FormatText(FTData.Syntax, p, vertical);
         }
 
         //Generate Flaoting Text for following players
@@ -176,8 +221,8 @@ namespace CyberCore.Manager.FloatingText
 //        List<Packet> tosend = new List<>();
             Dictionary<string, List<Packet>> tosend;
 //        sync(_CE_Lock)//TODO
-            if (_CE_Lock || _CE_Done) return;
-            _CE_Lock = true;
+            if (FTData._CE_Lock || FTData._CE_Done) return;
+            FTData._CE_Lock = true;
             foreach (var pn in ap)
             {
                 OpenPlayer p;
@@ -185,26 +230,26 @@ namespace CyberCore.Manager.FloatingText
                 foreach (var dp in encode((CorePlayer) p)) p.SendPacket(dp);
             }
 
-            _CE_Lock = false;
+            FTData._CE_Lock = false;
         }
 
         public bool _CE_NeedToResend()
         {
-            if (lastSyntax == null)
+            if (FTData.lastSyntax == null)
             {
-                lastSyntax = Syntax;
+                FTData.lastSyntax = FTData.Syntax;
                 return true;
             }
 
-            if (lastSyntax == Syntax) return false;
+            if (FTData.lastSyntax == FTData.Syntax) return false;
 
-            lastSyntax = Syntax;
+            FTData.lastSyntax = FTData.Syntax;
             return true;
         }
 
         public bool _CE_Dynamic()
         {
-            return Syntax.Contains("{name}");
+            return FTData.Syntax.Contains("{name}");
         }
 
         //Generate Flaoting Text for following players
@@ -214,22 +259,37 @@ namespace CyberCore.Manager.FloatingText
 //        List<Packet> tosend = new List<>();
             Dictionary<string, List<Packet>> tosend;
 //        sync(_CE_Lock)//TODO
-            if (_CE_Lock || _CE_Done) return;
-            _CE_Lock = true;
+            if (FTData._CE_Lock || FTData._CE_Done)
+            {
+                
+                CyberCoreMain.Log.Error($"ERRRRRRRRRRR ATTTTTTT CHK {FTData._CE_Done} || {FTData._CE_Lock}");
+                return;
+            }
+            FTData._CE_Lock = true;
             if (_CE_Dynamic() || _CE_NeedToResend())
             {
                 foreach (var p in ap)
                 {
 //            Player p = Server.getInstance().getPlayerExact(pn);
-                    if (p == null) continue;
-                    foreach (var dp in encode(p)) p.SendPacket(dp);
+                    if (p == null)
+                    {
+                        CyberCoreMain.Log.Error("WJATTTTTTTTTTTTT THA PLAAAAAYYASA IS NULLZ");
+                        continue;
+                    }
+
+                    foreach (var dp in encode(p))
+                    {
+                        CyberCoreMain.Log.Error("SENT DATA PKT"+p.Username);
+                        p.SendPacket(dp);
+                    }
                 }
 
-                _CE_Lock = false;
+                
             }
+            FTData._CE_Lock = false;
         }
 
-        private void sendMetadata(Player p)
+        private void sendMetaFTData(Player p)
         {
             if (Level != null)
             {
@@ -237,44 +297,92 @@ namespace CyberCore.Manager.FloatingText
                 packet.runtimeEntityId = EntityId;
 
 //            if (!Strings.isNullOrEmpty(text)) {
-//                metadata.putString(Entity.DATA_SCORE_TAG, text);
+//                metaFTData.putString(Entity.FTData_SCORE_TAG, text);
 //            }
                 packet.metadata = GetMetadata();
                 Level.RelayBroadcast(Level.GetAllPlayers(), packet);
             }
         }
+        
+        public UUID randomUUID() {
+            SecureRandom ng =  new SecureRandom();
 
+            byte[] randomBytes = new byte[16];
+            ng.NextBytes(randomBytes);
+            randomBytes[6]  &= 0x0f;  /* clear version        */
+            randomBytes[6]  |= 0x40;  /* set to version 4     */
+            randomBytes[8]  &= 0x3f;  /* clear variant        */
+            randomBytes[8]  |= 0x80;  /* set to IETF variant  */
+            return new UUID(randomBytes);
+        }
+
+        private uint GetAdventureFlags()
+        {
+            uint flags = 0;
+            flags |= 0x02; // No PvP (Remove hit markers client-side).
+             flags |= 0x04; // No PvM (Remove hit markers client-side).
+           flags |= 0x08;
+           return flags;
+        }
+        
         public List<Packet> encode(CorePlayer p)
         {
             var packets = new List<Packet>();
 
-            if (Active)
-            {
-                var pk = new McpeRemoveEntity();
-                pk.entityIdSelf = EntityId;
+            // if (FTData.Active)
+            // {
+            //     var pk = McpeRemoveEntity.CreateObject();
+            //     pk.entityIdSelf = EntityId;
+            //
+            //     packets.Add(pk);
+            // }
+            var uuid = randomUUID();
+            NameTag = GetText(p, FTData.Vertical);
+            HideNameTag = false;
+            McpeAddPlayer mcpeAddPlayer = McpeAddPlayer.CreateObject();
+            mcpeAddPlayer.uuid = uuid;
+            mcpeAddPlayer.username = "";
+            mcpeAddPlayer.entityIdSelf = EntityId;
+            mcpeAddPlayer.runtimeEntityId = EntityId;
+            mcpeAddPlayer.x = KnownPosition.X;
+            mcpeAddPlayer.y = KnownPosition.Y;
+            mcpeAddPlayer.z = KnownPosition.Z;
+            mcpeAddPlayer.speedX = Velocity.X;
+            mcpeAddPlayer.speedY = Velocity.Y;
+            mcpeAddPlayer.speedZ = Velocity.Z;
+            mcpeAddPlayer.yaw = KnownPosition.Yaw;
+            mcpeAddPlayer.headYaw = KnownPosition.HeadYaw;
+            mcpeAddPlayer.pitch = KnownPosition.Pitch;
+            mcpeAddPlayer.metadata = GetMetadata();
+            mcpeAddPlayer.flags = GetAdventureFlags();
+            mcpeAddPlayer.commandPermission = (uint) (int) CommandPermission.Normal;
+            mcpeAddPlayer.actionPermissions = (uint) ActionPermissions.Default;
+            mcpeAddPlayer.permissionLevel = (uint) PermissionLevel.Operator;
+            mcpeAddPlayer.userId = -1;
+            mcpeAddPlayer.deviceId = "BOT";
+            mcpeAddPlayer.deviceOs = 5;
+            packets.Add(mcpeAddPlayer);
 
-                packets.Add(pk);
-            }
+            
 
-            NameTag = GetText(p, Vertical);
-            var addEntity = McpeAddEntity.CreateObject();
-            addEntity.entityType = EntityTypeId;
-            addEntity.entityIdSelf = EntityId;
-            addEntity.runtimeEntityId = EntityId;
-            addEntity.x = KnownPosition.X;
-            addEntity.y = KnownPosition.Y;
-            addEntity.z = KnownPosition.Z;
-            addEntity.pitch = KnownPosition.Pitch;
-            addEntity.yaw = KnownPosition.Yaw;
-            addEntity.headYaw = KnownPosition.HeadYaw;
-            addEntity.metadata = GetMetadata();
-            addEntity.speedX = Velocity.X;
-            addEntity.speedY = Velocity.Y;
-            addEntity.speedZ = Velocity.Z;
-            addEntity.attributes = GetEntityAttributes();
-            packets.Add(addEntity);
+            // var addEntity = McpeAddEntity.CreateObject();
+            // addEntity.entityType = "15";
+            // addEntity.entityIdSelf = EntityId;
+            // addEntity.runtimeEntityId = EntityId;
+            // addEntity.x = KnownPosition.X;
+            // addEntity.y = KnownPosition.Y;
+            // addEntity.z = KnownPosition.Z;
+            // addEntity.pitch = KnownPosition.Pitch;
+            // addEntity.yaw = KnownPosition.Yaw;
+            // addEntity.headYaw = KnownPosition.HeadYaw;
+            // addEntity.metadata = GetMetadata();
+            // addEntity.speedX = Velocity.X;
+            // addEntity.speedY = Velocity.Y;
+            // addEntity.speedZ = Velocity.Z;
+            // addEntity.attributes = GetEntityAttributes();
+            // packets.Add(addEntity);
 
-            Active = true;
+            FTData.Active = true;
             return packets;
         }
 
@@ -285,22 +393,22 @@ namespace CyberCore.Manager.FloatingText
 
         public void OnUpdate(long tick)
         {
-            LastUpdate = tick;
+            FTData.LastUpdate = tick;
         }
 
         public void kill()
         {
-            _CE_Done = true;
+            FTData._CE_Done = true;
         }
 
         public string getKeyPos()
         {
-            return KnownPosition.X + "|" + KnownPosition.Y + "|" + KnownPosition.Z + "|" + Lvl;
+            return KnownPosition.X + "|" + KnownPosition.Y + "|" + KnownPosition.Z + "|" + FTData.Lvl;
         }
 
         public bool isValid()
         {
-            if (Lvl == null) return false;
+            if (FTData.Lvl == null) return false;
             return true;
         }
     }

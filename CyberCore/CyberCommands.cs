@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using AStarNavigator;
 using CyberCore.Manager.Factions.Windows;
+using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
 using CyberCore.Utils;
 using log4net.Core;
@@ -34,6 +35,22 @@ namespace CyberCore
             p.RefreshCommands();
             //a
             p.SendForm(new CyberFormRankWindow(p));
+        }
+        
+        
+        [Command(Name = "ft add", Description = "Add floating text")]
+        public void ftadd(CorePlayer p, string text = null)
+        {
+            FloatingTextFactory.AddFloatingText(new CyberFloatingTextContainer(CCM.FTM,p,text),true);
+            p.SendMessage(ChatColors.Green+"Floating Text Added!");
+        }
+        [Command(Name = "ft reload", Description = "Reload floating text")]
+        public void ftreload(CorePlayer p)
+        {
+            
+            FloatingTextFactory.killall(true);
+            CCM.FTM.LoadFromSave();
+            p.SendMessage(ChatColors.Green+"Floating REloaded Added!");
         }
         //
         // [Command(Name = "we p1", Description = "Set Point 1")]

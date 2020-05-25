@@ -53,14 +53,13 @@ namespace CyberCore
         public ServerSqlite ServerSQL { get; set; }
         public WarpManager WarpManager { get; set; }
         public ClassFactory ClassFactory { get; set; }
-        public RankFactory RF { get; set; }
+        public RankFactory RankFactory { get; set; }
         public UserSQL UserSQL { get; set; }
         public CrateMain CrateMain { get; set; }
         
-        public FloatingTextFactory FTM { get; set; }
+        public FloatingTextFactory FTM { get; private set; }
 
-        public List<CyberFloatingTextContainer> SavedFloatingText { get; set; } =
-            new List<CyberFloatingTextContainer>();
+        
 
 
         public bool isInSpawn(CorePlayer p)
@@ -85,7 +84,7 @@ namespace CyberCore
             instance = this;
             SQL = new SqlManager(this);
             WebSQL = new SqlManager(this,"web");
-            RF = new RankFactory(this);
+            RankFactory = new RankFactory(this);
             ServerSQL = new ServerSqlite(this);
             UserSQL = new UserSQL(this);
             ClassFactory = new ClassFactory(this);
@@ -191,6 +190,11 @@ namespace CyberCore
             api.CommandManager.LoadCommands(new FactionCommands(FM.FFactory));
             api.CommandManager.LoadCommands(new CyberCommands(this));
 
+            
+            FTM = new FloatingTextFactory(this);
+            // var l = getAPI().LevelManager.GetDefaultLevel();
+            // FloatingTextFactory.AddFloatingText(new CyberFloatingTextContainer(FTM,l.SpawnPoint+new PlayerLocation(0,2,0) ,l));
+
 
             // getServer().PlayerFactory.PlayerCreated += (sender, args) =>
             // {
@@ -224,6 +228,8 @@ namespace CyberCore
 
         public override void Disabled(OpenApi api)
         {
+            Log.Error("STARTING TO SAVE FTM");
+            FTM.stop();
             // api.CommandManager.UnloadCommands(CommandsClass);
         }
 
@@ -290,12 +296,12 @@ namespace CyberCore
             return amt;
         }
         public Rank2 getPlayerRank(String p) {
-            return RF.getPlayerRank(p);
+            return RankFactory.getPlayerRank(p);
         }
 
 
         public Rank2 getPlayerRank(CorePlayer p) {
-            return RF.getPlayerRank(p);
+            return RankFactory.getPlayerRank(p);
         }
     }
 }

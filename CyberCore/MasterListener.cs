@@ -78,7 +78,7 @@ namespace CyberCore
             CyberCoreMain.Log.Info("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS1111111");
             plugin.ServerSQL.LoadPlayer((CorePlayer) p);
             CyberCoreMain.Log.Info("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS1111111");
-            var rank = plugin.RF.getPlayerRank((CorePlayer) p).display_name;
+            var rank = plugin.RankFactory.getPlayerRank((CorePlayer) p).display_name;
             CyberCoreMain.Log.Info("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS1111111");
             p.SendMessage(CyberUtils.colorize("&2You Have Joined with the Rank: " + rank));
             CyberCoreMain.Log.Info("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS1111111");
@@ -771,11 +771,18 @@ namespace CyberCore
         {
             // String Msg = (String) plugin.MainConfig.get("Leave-Message");
             // eeee.setQuitMessage(Msg.replace("{player}", eeee.getPlayer().getName()));
-            Player p = eeee.Player;
-            if (p is CorePlayer)
+            CorePlayer p = (CorePlayer)eeee.Player;
+            if (p  != null)
             {
-                if (((CorePlayer) p).getPlayerClass() != null) plugin.ClassFactory.save((CorePlayer) p);
-                ((CorePlayer) p).EPD.upload();
+                if ( p.getPlayerClass() != null) plugin.ClassFactory.save(p);
+                if (p.EPD != null)
+                {
+                    p.EPD.upload();
+                }
+                else
+                {
+                    CyberCoreMain.Log.Error("Could not save EPD For Player"+p.getName());
+                }
             }
         }
 
