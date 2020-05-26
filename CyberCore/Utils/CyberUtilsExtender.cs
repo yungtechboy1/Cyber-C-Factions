@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using System.Numerics;
 using CyberCore.Manager.Factions;
 using fNbt;
 using JetBrains.Annotations;
@@ -10,6 +11,7 @@ using MiNET.Effects;
 using MiNET.Items;
 using MiNET.UI;
 using MiNET.Utils;
+using MiNET.Worlds;
 using OpenAPI.Player;
 using Org.BouncyCastle.Asn1.X509;
 using Target = MiNET.Plugins.Target;
@@ -356,6 +358,27 @@ namespace CyberCore.Utils
         //     return f;
         // }
 
+        public static PlayerLocation Safe(this PlayerLocation l, Level lvl)
+        {
+            int h = lvl.GetHeight(new BlockCoordinates(l));
+            l.Y = h + 1;
+            for (int i = 255 ; i > 0; i--)
+            {
+                var bid = lvl.GetBlock( new Vector3(l.X,i,l.Z));
+                if (bid.Id != 0)
+                {
+                    l.Y = i + 1;
+                    break;
+                }
+            }
+            return l;
+        }
+        public static BlockCoordinates Safe(this BlockCoordinates l, Level lvl)
+        {
+            int h = lvl.GetHeight(l);
+            l.Y = h + 1;
+            return l;
+        }
         public static void showFormWindow(this OpenPlayer p, Form f)
         {
             p.SendForm(f);

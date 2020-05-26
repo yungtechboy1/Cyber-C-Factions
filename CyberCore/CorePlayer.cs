@@ -133,12 +133,12 @@ namespace CyberCore
         protected Dictionary<BuffType, float> lastdata = null;
         private long uct;
         private bool uw;
-        private long WaitingForTP = -1;
+        private long WFTP_TPTick = -1;
 
-        public int WaitingForTPCancelDistance = 2;
-        public bool WaitingForTPEffects;
-        private PlayerLocation WaitingForTPPos;
-        private PlayerLocation WaitingForTPStartPos;
+        public int WFTP_CancelDistance = 2;
+        public bool WFTP_Effects;
+        private PlayerLocation WFTP_ToPlayerLocation;
+        private PlayerLocation WFTP_StartPos;
 
         public CorePlayer(MiNetServer server, IPEndPoint endPoint, OpenApi api) : base(server, endPoint, api)
         {
@@ -1882,7 +1882,7 @@ namespace CyberCore
                         {
                             if (isReadyToTeleport())
                             {
-                                Teleport(WaitingForTPPos);
+                                Teleport(WFTP_ToPlayerLocation.Safe(Level));
                                 clearWaitingForTP();
                             }
                         }
@@ -2364,9 +2364,9 @@ namespace CyberCore
 
         public bool isReadyToTeleport()
         {
-            if (!(WaitingForTP == -1) && WaitingForTPPos != null)
+            if (!(WFTP_TPTick == -1) && WFTP_ToPlayerLocation != null)
             {
-                return CyberUtils.getTick() >= WaitingForTP;
+                return CyberUtils.getTick() >= WFTP_TPTick;
             }
 
             return false;
@@ -2374,12 +2374,12 @@ namespace CyberCore
 
         public bool isWaitingForTeleport()
         {
-            if (!(WaitingForTP == -1) && WaitingForTPPos != null)
+            if (!(WFTP_TPTick == -1) && WFTP_ToPlayerLocation != null)
             {
-                if (WaitingForTPStartPos != null &&
-                    WaitingForTPStartPos.DistanceTo(WaitingForTPPos) > WaitingForTPCancelDistance)
+                if (WFTP_StartPos != null &&
+                    WFTP_StartPos.DistanceTo(KnownPosition) > WFTP_CancelDistance)
                 {
-                    SendMessage("Error! You moved too much so your Teleport request was canceled");
+                    SendMessage(ChatColors.Red+"Error! You moved too much so your Teleport request was canceled");
                     clearWaitingForTP();
                     return false;
                 }
@@ -2393,8 +2393,8 @@ namespace CyberCore
 
         public void clearWaitingForTP()
         {
-            WaitingForTP = -1;
-            WaitingForTPPos = null;
+            WFTP_TPTick = -1;
+            WFTP_ToPlayerLocation = null;
         }
 
         public bool delayTeleport(Vector3 pos, int secs = 5, bool giveeffects = true, int canceltpdistance = 2)
@@ -2405,20 +2405,20 @@ namespace CyberCore
                 return false;
             }
 
-            WaitingForTP = CyberUtils.getTick() + (secs * 20);
-            WaitingForTPStartPos = (PlayerLocation) KnownPosition.Clone();
-            WaitingForTPPos = new PlayerLocation(pos);
-            WaitingForTPEffects = giveeffects;
-            WaitingForTPCancelDistance = canceltpdistance;
-            if (WaitingForTPEffects)
+            WFTP_TPTick = CyberUtils.getTick() + (secs * 20);
+            WFTP_StartPos = (PlayerLocation) KnownPosition.Clone();
+            WFTP_ToPlayerLocation = new PlayerLocation(pos);
+            WFTP_Effects = giveeffects;
+            WFTP_CancelDistance = canceltpdistance;
+            if (WFTP_Effects)
             {
                 SetEffect(new Nausea()
                 {
-                    Duration = 20 * 5
+                    Duration = 20 * (secs+3)
                 });
                 SetEffect(new Slowness()
                 {
-                    Duration = 20 * 5
+                    Duration = 20 * (secs+3)
                 });
             }
 

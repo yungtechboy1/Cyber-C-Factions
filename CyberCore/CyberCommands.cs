@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using AStarNavigator;
 using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
 using CyberCore.Utils;
+using fNbt;
 using log4net.Core;
 using MiNET;
+using MiNET.BlockEntities;
 using MiNET.Blocks;
+using MiNET.Net;
+using MiNET.Plugins;
 using MiNET.Plugins.Attributes;
 using MiNET.Utils;
+using Mono.Cecil;
 using OpenAPI.Utils;
 using Level = MiNET.Worlds.Level;
 
@@ -28,7 +34,7 @@ namespace CyberCore
         {
             CCM = cyberCoreMain;
         }
-        
+
         [Command(Name = "rank", Description = "Rank Options")]
         public void rank(CorePlayer p)
         {
@@ -36,22 +42,126 @@ namespace CyberCore
             //a
             p.SendForm(new CyberFormRankWindow(p));
         }
-        
-        
+
+
         [Command(Name = "ft add", Description = "Add floating text")]
         public void ftadd(CorePlayer p, string text = null)
         {
-            FloatingTextFactory.AddFloatingText(new CyberFloatingTextContainer(CCM.FTM,p,text),true);
-            p.SendMessage(ChatColors.Green+"Floating Text Added!");
+            FloatingTextFactory.AddFloatingText(new CyberFloatingTextContainer(CCM.FTM, p, text), true);
+            p.SendMessage(ChatColors.Green + "Floating Text Added!");
         }
+
         [Command(Name = "ft reload", Description = "Reload floating text")]
         public void ftreload(CorePlayer p)
         {
-            
             FloatingTextFactory.killall(true);
+            FloatingTextFactory.SavedFloatingText.Clear();
             CCM.FTM.LoadFromSave();
-            p.SendMessage(ChatColors.Green+"Floating REloaded Added!");
+            p.SendMessage(ChatColors.Green + "Floating REloaded Added!");
         }
+
+        [Command(Name = "spawn", Description = "Teleport to spawn")]
+        public void spawn(CorePlayer p)
+        {
+            p.delayTeleport(p.Level.SpawnPoint);
+            p.SendMessage(ChatColors.Green + "Teleproting to spawn in 5 secs!");
+        }
+        
+        public static readonly int WildMaxVal = 25000;
+        [Command(Name = "wild", Description = "Teleport to random spot in the wild")]
+        public void wild(CorePlayer p)
+        {
+            var r = new Random();
+            var to = new PlayerLocation(r.Next(-WildMaxVal,WildMaxVal),100,r.Next(-WildMaxVal,WildMaxVal));
+            p.Level.WorldProvider.GenerateChunkColumn(new ChunkCoordinates((int)to.X >> 4, (int)to.Z >> 4));
+            p.delayTeleport(to,10);
+            p.SendMessage(ChatColors.Green + "Teleproting to spawn in 10 secs!");
+        }
+
+        [Command(Name = "setspawn", Description = "Set a new spawn point")]
+        [ServerRankAttr(RankEnum.Administrative)]
+        public void setspawn(CorePlayer p)
+        {
+            p.Level.SpawnPoint = (PlayerLocation) p.KnownPosition.Clone();
+            p.SendMessage(ChatColors.Green + "New Spawn Point Set!");
+        }
+
+        public static List<String> SpawnProtection = new List<string>();
+
+        [Command(Name = "spawnprotection", Aliases = new[] {"sp"},
+            Description = "Toggle Spawn Protection to Place and Remove Block")]
+        [ServerRankAttr(RankEnum.Administrative)]
+        public void spawnprotection(CorePlayer p)
+        {
+            if (SpawnProtection.Contains(p.Username))
+            {
+                SpawnProtection.Remove(p.Username);
+                p.SendMessage(ChatColors.Yellow + "Spawn protection Re-Enabled for you! You can not break spawn blocks anymore");
+            }
+            else
+            {
+                SpawnProtection.Add(p.Username);
+                p.SendMessage(ChatColors.Yellow + "Spawn protection Disabled! You can now break and place blocks at spawn");
+
+            }
+        }
+        
+         [Command(Name = "vi", Description = "Open a Chest")]
+        public void OpenInventory(Player player)
+        {
+            //Log.Info("Command Executed!");
+            player.SendMessage("Opening Chest...");
+            
+            /*BlockCoordinates coords = (BlockCoordinates) player.KnownPosition;
+            coords.Y = 0;*/
+            BlockCoordinates coords = new BlockCoordinates(0);
+
+            //Block past = player.Level.GetBlock(coords);
+
+            McpeUpdateBlock chest = McpeUpdateBlock.CreateObject();
+            chest.blockRuntimeId = (byte) new Chest().GetRuntimeId();
+            chest.coordinates = coords;
+            chest.blockPriority = 0 & 15;
+            player.SendPacket(chest);
+
+            ChestBlockEntity blockEntity = new ChestBlockEntity {Coordinates = coords};
+            NbtCompound compound = blockEntity.GetCompound();
+            compound["CustomName"] = new NbtString("CustomName", "§5§k--§r §l§o§2Virtual Chest§r §5§k--§r");
+            //player.Level.SetBlockEntity(blockEntity);
+            McpeBlockEntityData chestEntity = McpeBlockEntityData.CreateObject();
+            chestEntity.namedtag = new Nbt
+            {
+                NbtFile = new NbtFile
+                {
+                    BigEndian = false,
+                    UseVarInt = true,
+                    RootTag = compound
+                }
+            };
+            chestEntity.coordinates = coords;
+            player.SendPacket(chestEntity);
+
+            //player.OpenInventory(coords);
+            Inventory inventory = new Inventory(0, blockEntity, 1, new NbtList())
+            {
+                Type = 0,
+                WindowsId = 10
+            };
+            
+            //inventory.InventoryChange += new Action<Player, MiNET.Inventory, byte, Item>(player.OnInventoryChange);
+            inventory.AddObserver(player);
+            McpeContainerOpen mcpeContainerOpen = McpeContainerOpen.CreateObject(1L);
+            mcpeContainerOpen.windowId = inventory.WindowsId;
+            mcpeContainerOpen.type = inventory.Type;
+            mcpeContainerOpen.coordinates = coords;
+            mcpeContainerOpen.runtimeEntityId = 1L;
+            player.SendPacket( mcpeContainerOpen);
+            McpeInventoryContent inventoryContent = McpeInventoryContent.CreateObject(1L);
+            inventoryContent.inventoryId = (uint) inventory.WindowsId;
+            inventoryContent.input = inventory.Slots;
+            player.SendPacket( inventoryContent);
+        }
+
         //
         // [Command(Name = "we p1", Description = "Set Point 1")]
         // // [ServerRankAttr(RankEnum.Administrative)]
@@ -114,7 +224,8 @@ namespace CyberCore
 
                     xx++;
                 }
-                    Data.Add(d);
+
+                Data.Add(d);
             }
         }
 

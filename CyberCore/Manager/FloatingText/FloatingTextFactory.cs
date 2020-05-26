@@ -61,8 +61,13 @@ namespace CyberCore.Manager.FloatingText
                 {
                     var ln = v.Lvl;
                     var l = CCM.getAPI().LevelManager.GetLevel(null, ln);
-                    Console.WriteLine($"LOADDDDDDDDINNNNNGGGGGGGGG {v.Syntax} || {ln} VS {API.LevelManager.GetDefaultLevel().LevelId} VS  {API.LevelManager.GetDefaultLevel().LevelName}");
-                    if (l != null) AddFloatingText(new CyberFloatingTextContainer(this, v, l));
+                    // Console.WriteLine($"LOADDDDDDDDINNNNNGGGGGGGGG {v.Syntax} || {ln} VS {API.LevelManager.GetDefaultLevel().LevelId} VS  {API.LevelManager.GetDefaultLevel().LevelName}");
+                    if (l != null)
+                    {
+                        var vv = new CyberFloatingTextContainer(this, v, l);
+                        AddFloatingText(vv);
+                        SavedFloatingText.Add(vv);
+                    }
                     else Console.WriteLine("ERRRRORRR!!!!!!!!");
                 }
             }
@@ -251,7 +256,7 @@ namespace CyberCore.Manager.FloatingText
                     var pc = l.GetAllPlayers();
                     if (pc == null || pc.Length == 0)
                     {
-                        CyberCoreMain.Log.Error("Was NO PLATERS NEAR");
+                        // CyberCoreMain.Log.Error("Was NO PLATERS NEAR");
                         continue;
                     }
 

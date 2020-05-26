@@ -16,30 +16,13 @@ namespace CyberCore.Utils
     {
         public String PlayerName { get; set; }
         public PlayerLocation Location { get; set; }
-         public String Level { get; set; }
-         [JsonIgnore] public List<Item> Inv { get; set; }
-         public List<CorePlayerItemData> _Inv { get; set; } = new List<CorePlayerItemData>();
+        public String Level { get; set; }
+        [JsonIgnore] public List<Item> Inv { get; set; }
+        [JsonIgnore] public List<CorePlayerItemData> _Inv { get; set; } = new List<CorePlayerItemData>();
+        public string _InvJSON { get; set; }
         public int CurrentHealth { get; set; }
 
-        public class  CorePlayerItemData
-        {
-            public int Id { get; set; }
-            public int Metadata { get; set; }
-            public int Count { get; set; }
 
-            public CorePlayerItemData(Item i)
-            {
-                Id = i.Id;
-                Metadata = i.Metadata;
-                Count = i.Count;
-            }
-
-            public Item toItem()
-            {
-                return ItemFactory.GetItem((short) Id, (short)Metadata, Count);
-            }
-        }
-        
         public CorePlayerData()
         {
         }
@@ -49,7 +32,7 @@ namespace CyberCore.Utils
             PlayerName = p.Username;
             Location = p.KnownPosition;
             Level = p.Level.LevelId;
-            Inv = p.Inventory.Slots;
+            Inv = new List<Item>(p.Inventory.Slots);
             CurrentHealth = p.HealthManager.Health;
         }
 
@@ -58,9 +41,12 @@ namespace CyberCore.Utils
             _Inv.Clear();
             foreach (var i in Inv)
             {
-                if(i == null)continue;
-                _Inv.Add(new CorePlayerItemData(i));
+                if (i == null) continue;
+                Console.WriteLine("ADD AN ITEM================================================");
+                _Inv.Add(CorePlayerItemData.CreateObject(i));
             }
+
+            _InvJSON = JsonConvert.SerializeObject(_Inv);
             return JsonConvert.SerializeObject(this);
         }
 
@@ -78,7 +64,6 @@ namespace CyberCore.Utils
             {
                 File.Delete(path);
                 File.WriteAllText(path, d.toJSON());
-                var data = File.ReadAllText(path);
                 Console.WriteLine((object) ("!@@!@#!@3333###@@@!@@@Loading config-file " + path));
             }
             else
@@ -86,6 +71,8 @@ namespace CyberCore.Utils
                 File.WriteAllText(path, d.toJSON());
                 Console.WriteLine((object) ("|||||22222222222222222222||||||NO File found at " + path));
             }
+
+            Console.WriteLine($" {d.PlayerName} HAS BEEN SAVED AT {d.Location}");
         }
 
         public static CorePlayerData LoadFromFile(CorePlayer d)
@@ -114,12 +101,33 @@ namespace CyberCore.Utils
         public void LoadToPlayer(CorePlayer p)
         {
             // p.Teleport();
-            p.SpawnPosition = Location;
+            // p.SpawnPosition = Location;
+            // p.KnownPosition = Location;
             p.Inventory.Clear();
+            if (_InvJSON == null)
+            {
+                Console.WriteLine("ERRORR INVJSON WAS NULKL");
+                return;
+            }
+
+            _Inv = JsonConvert.DeserializeObject<List<CorePlayerItemData>>(_InvJSON);
+            if (_Inv == null)
+            {
+                Console.WriteLine("ERRORR _Inv WAS NULKL");
+                return;
+            }
+
             foreach (var d in _Inv)
             {
-                p.Inventory.AddItem(d.toItem(),false);
+                var i = d.toItem();
+                p.Inventory.AddItem(i, false);
+                Console.WriteLine("ADDING ITEM "+i.getName()+" || "+d.Id);
             }
+
+            p.SendPlayerInventory();
+            p.Teleport(Location.Safe(CyberCoreMain.GetInstance().getAPI().LevelManager.GetLevel(null,Level)));
+
+            Console.WriteLine($" {PlayerName} SHOULD BE LOADED AT {Location} AND {_Inv.Count}");
             // var l = CyberCoreMain.GetInstance().getAPI().LevelManager.GetLevel(null, Level);
             // l.AddEntity();
             // p.SpawnLevel();

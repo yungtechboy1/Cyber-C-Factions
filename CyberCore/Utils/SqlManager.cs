@@ -166,7 +166,7 @@ namespace CyberCore.Utils
             }
             var stop = DateTime.Now.Ticks;
             var final = stop - startt;
-            CyberCoreMain.Log.Info($"IT TOOK {final/500000} OR {final/10000000} Secs OR {final/100000} OR {final/1000} orr {final/10} TICKS TO EXECUTE SQL COMMAND : "+query);
+            // CyberCoreMain.Log.Info($"IT TOOK {final/500000} OR {final/10000000} Secs OR {final/100000} OR {final/1000} orr {final/10} TICKS TO EXECUTE SQL COMMAND : "+query);
             // Log.Info("DDDDDDDDDDDDDDDPASSSSSSSSS 4");
             return data;
         }

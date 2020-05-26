@@ -269,7 +269,7 @@ namespace CyberCore.Manager.FloatingText
             }
 
             FTData._CE_Lock = true;
-            CyberCoreMain.Log.Error($"B44444  SEND CHK {_CE_Dynamic()} || {_CE_NeedToResend()}");
+            // CyberCoreMain.Log.Error($"B44444  SEND CHK {_CE_Dynamic()} || {_CE_NeedToResend()}");
 
             foreach (var p in ap)
             {
@@ -284,7 +284,7 @@ namespace CyberCore.Manager.FloatingText
                 {
                     foreach (var dp in encode(p))
                     {
-                        CyberCoreMain.Log.Error("SENT DATA PKT" + p.Username);
+                        // CyberCoreMain.Log.Error("SENT DATA PKT" + p.Username);
                         p.SendPacket(dp);
                     }
                 }

@@ -8,6 +8,7 @@ using MiNET;
 using MiNET.Blocks;
 using MiNET.Items;
 using MiNET.Net;
+using MiNET.Plugins.Attributes;
 using MiNET.Utils;
 using OpenAPI.Events;
 using OpenAPI.Events.Block;
@@ -20,12 +21,16 @@ namespace CyberCore
     {
         public static CyberCoreMain plugin = CyberCoreMain.GetInstance();
 
-
         [EventHandler]
-        public void onPlayerQuit(PlayerQuitEvent e)
+        public void t(PlayerSpawnedEvent e)
         {
-            CorePlayer p = (CorePlayer) e.Player;
-            CorePlayerData.SaveToFile(new CorePlayerData(p));
+            var player = (CorePlayer) e.Player;
+            Console.WriteLine("RUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
+            Console.WriteLine("RUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
+            Console.WriteLine("RUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
+            Console.WriteLine("RUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
+            var d = CorePlayerData.LoadFromFile((CorePlayer) player);
+            d?.LoadToPlayer((CorePlayer) player);
         }
 
         [EventHandler]
@@ -46,8 +51,7 @@ namespace CyberCore
             Console.WriteLine("YEAAAAA");
             Console.WriteLine("YEAAAAA");
             Console.WriteLine("YEAAAAA");
-            var d = CorePlayerData.LoadFromFile(p);
-            d?.LoadToPlayer(p);
+            
 
 
             p.loadEPD();
@@ -771,7 +775,9 @@ namespace CyberCore
         {
             // String Msg = (String) plugin.MainConfig.get("Leave-Message");
             // eeee.setQuitMessage(Msg.replace("{player}", eeee.getPlayer().getName()));
+            
             CorePlayer p = (CorePlayer)eeee.Player;
+            CorePlayerData.SaveToFile(new CorePlayerData(p));
             if (p  != null)
             {
                 if ( p.getPlayerClass() != null) plugin.ClassFactory.save(p);
