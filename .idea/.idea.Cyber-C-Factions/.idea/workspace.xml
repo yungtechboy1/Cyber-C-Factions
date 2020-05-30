@@ -2,17 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CyberCore/CorePlayerItemData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/CorePlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CorePlayer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/CyberCommands.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCommands.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/MasterListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/MasterListener.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CorePlayerData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CorePlayerData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/PlayerSettingsData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/PlayerSettingsData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/Data/UserSQL.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/Data/UserSQL.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,6 +68,13 @@
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="cyber: schema" type="76f4a085:MysqlImplModel$Schema" />
         <item name="Inbox: table" type="285a2a93:MysqlImplModel$Table" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="MySQL - cyber@198.199.70.100" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="cyber: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="PlayerSettings: table" type="285a2a93:MysqlImplModel$Table" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
@@ -454,8 +456,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Windows/FactionAllyHomesPage.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Windows/FactionHomesPage.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Windows/FactionKickListWindow.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionCommandChecker.cs" />
         <option value="$PROJECT_DIR$/CyberCore/ServerRankChecker.cs" />
@@ -502,9 +502,11 @@
         <option value="$PROJECT_DIR$/CyberCore/MasterListener.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CorePlayerItemData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/CorePlayer.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CorePlayerData.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/CorePlayer.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CyberCommands.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Utils/Data/UserSQL.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/PlayerSettingsData.cs" />
       </list>
     </option>
   </component>
@@ -652,7 +654,8 @@
       <workItem from="1590196290740" duration="11945000" />
       <workItem from="1590260967335" duration="9969000" />
       <workItem from="1590301898655" duration="29046000" />
-      <workItem from="1590479454995" duration="9330000" />
+      <workItem from="1590479454995" duration="21374000" />
+      <workItem from="1590729458460" duration="4091000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />
@@ -717,22 +720,22 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1380" y="100" width="1080" height="840" key="DiffContextDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1585436853249" />
-    <state width="1220" height="262" key="GridCell.Tab.0.bottom" timestamp="1590487303124">
+    <state width="2517" height="262" key="GridCell.Tab.0.bottom" timestamp="1590634370508">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1220" height="262" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1590487303124" />
-    <state width="1220" height="262" key="GridCell.Tab.0.center" timestamp="1590487303123">
+    <state width="2517" height="262" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1590634370508" />
+    <state width="2517" height="262" key="GridCell.Tab.0.center" timestamp="1590634370507">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1220" height="262" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1590487303123" />
-    <state width="1220" height="262" key="GridCell.Tab.0.left" timestamp="1590487303123">
+    <state width="2517" height="262" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1590634370507" />
+    <state width="2517" height="262" key="GridCell.Tab.0.left" timestamp="1590634370507">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1220" height="262" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1590487303123" />
-    <state width="1220" height="262" key="GridCell.Tab.0.right" timestamp="1590487303123">
+    <state width="2517" height="262" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1590634370507" />
+    <state width="2517" height="262" key="GridCell.Tab.0.right" timestamp="1590634370508">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1220" height="262" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1590487303123" />
+    <state width="2517" height="262" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1590634370508" />
     <state width="1220" height="322" key="GridCell.Tab.1.bottom" timestamp="1590301279358">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -787,11 +790,11 @@
     <state x="-1943" y="289" key="Rider.ProjectTemplateDialog.Size/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583548955442" />
     <state x="617" y="288" key="Rider.ProjectTemplateDialog.Size/0.0.2048.1112/-2560.1.2048.1112@0.0.2048.1112" timestamp="1582865519424" />
     <state x="771" y="269" key="Rider.ProjectTemplateDialog.Size/0.0.2560.1040@0.0.2560.1040" timestamp="1585187581860" />
-    <state x="1071" y="200" key="RiderGenerateDialog" timestamp="1590407079269">
+    <state x="1071" y="200" key="RiderGenerateDialog" timestamp="1590730833422">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="-1703" y="273" key="RiderGenerateDialog/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584412879727" />
-    <state x="1071" y="200" key="RiderGenerateDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1590407079269" />
+    <state x="1071" y="200" key="RiderGenerateDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1590730833422" />
     <state x="-1713" y="268" key="RollbackChangesDialog" timestamp="1584232196669">
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
@@ -827,10 +830,10 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1711" y="333" width="418" height="369" key="com.intellij.database.psi.DbRenamePsiElementProcessor.DbRenameDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1585285915309" />
-    <state x="1582" y="241" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1587616327740">
+    <state x="1582" y="241" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1590635825769">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="1582" y="241" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1587616327740" />
+    <state x="1582" y="241" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1590635825769" />
     <state x="510" y="253" width="641" height="533" key="com.intellij.database.view.ui.DbObjectDialog" timestamp="1586496528450">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -852,13 +855,13 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="838" y="174" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.2560.1040@0.0.2560.1040" timestamp="1585187746756" />
-    <state x="627" y="41" width="1063" height="1014" key="dock-window-1" timestamp="1590480881811">
+    <state x="1280" y="0" width="1280" height="1040" key="dock-window-1" timestamp="1590775258179">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="953" y="0" width="974" height="1047" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1584580243501" />
     <state x="0" y="0" width="1404" height="765" key="dock-window-1/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584411771012" />
     <state x="-6" y="0" width="1037" height="1118" key="dock-window-1/0.0.2048.1112@0.0.2048.1112" timestamp="1583635438152" />
-    <state x="627" y="41" width="1063" height="1014" key="dock-window-1/0.0.2560.1040@0.0.2560.1040" timestamp="1590480881810" />
+    <state x="1280" y="0" width="1280" height="1040" key="dock-window-1/0.0.2560.1040@0.0.2560.1040" timestamp="1590775258179" />
     <state x="0" y="0" width="1280" height="1040" key="dock-window-10" timestamp="1585704352968">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -902,23 +905,23 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="0" y="0" width="1280" height="1040" key="dock-window-9/0.0.2560.1040@0.0.2560.1040" timestamp="1585690906761" />
-    <state x="1470" y="288" width="936" height="752" key="find.popup" timestamp="1590485621620">
+    <state x="1447" y="216" width="936" height="752" key="find.popup" timestamp="1590730682606">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="662" y="144" width="692" height="752" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584584090275" />
     <state x="-1854" y="155" width="738" height="804" key="find.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584417682271" />
-    <state x="1470" y="288" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590485621620" />
+    <state x="1447" y="216" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590730682606" />
     <state x="1461" y="244" width="672" height="677" key="run.anything.popup" timestamp="1590303756016">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1096" y="244" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584581008542" />
     <state x="1461" y="244" width="672" height="677" key="run.anything.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590303756016" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1590485687527">
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1590632706825">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="644" y="227" width="672" height="635" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584582826054" />
     <state x="-1873" y="244" width="672" height="678" key="search.everywhere.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584412852759" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590485687527" />
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590632706825" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

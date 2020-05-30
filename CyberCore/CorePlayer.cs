@@ -560,12 +560,6 @@ namespace CyberCore
             }
         }
 
-        public PlayerSettingsData GetData()
-        {
-            if (getSettingsData() == null) CreateDefaultSettingsData(this);
-            return getSettingsData();
-        }
-
 
         public override void Disconnect(string reason, bool sendDisconnect = true)
         {
@@ -623,20 +617,18 @@ namespace CyberCore
         public void TakeMoney(double price)
         {
             if (price <= 0) return;
-            var ped = GetData();
-            ped.takeCash(price);
+            getPlayerSettingsData().takeCash(price);
         }
 
         public void AddMoney(double price)
         {
             if (price <= 0) return;
-            var ped = GetData();
-            ped.addCash(price);
+            getPlayerSettingsData().addCash(price);
         }
 
         public double getMoney()
         {
-            return GetData().getCash();
+            return getPlayerSettingsData().getCash();
         }
 
 
@@ -2158,7 +2150,7 @@ namespace CyberCore
             HD.Add(homeData);
         }
 
-        public PlayerSettingsData getSettingsData()
+        private PlayerSettingsData getSettingsData()
         {
             return SettingsData;
         }
@@ -2177,8 +2169,8 @@ namespace CyberCore
 
         public PlayerSettingsData getPlayerSettingsData()
         {
-            if (PlayerSettingsData == null) CreateDefaultSettingsData(this);
-            return PlayerSettingsData;
+            if (getSettingsData() == null) CreateDefaultSettingsData(this);
+            return getSettingsData();
         }
 
         public void StartTeleport(CorePlayer pl, int delay)
@@ -2379,7 +2371,7 @@ namespace CyberCore
                 if (WFTP_StartPos != null &&
                     WFTP_StartPos.DistanceTo(KnownPosition) > WFTP_CancelDistance)
                 {
-                    SendMessage(ChatColors.Red+"Error! You moved too much so your Teleport request was canceled");
+                    SendMessage(ChatColors.Red + "Error! You moved too much so your Teleport request was canceled");
                     clearWaitingForTP();
                     return false;
                 }
@@ -2414,11 +2406,11 @@ namespace CyberCore
             {
                 SetEffect(new Nausea()
                 {
-                    Duration = 20 * (secs+3)
+                    Duration = 20 * (secs + 3)
                 });
                 SetEffect(new Slowness()
                 {
-                    Duration = 20 * (secs+3)
+                    Duration = 20 * (secs + 3)
                 });
             }
 

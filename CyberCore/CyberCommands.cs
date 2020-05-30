@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using AStarNavigator;
 using CyberCore.Manager.Factions.Windows;
@@ -17,6 +18,8 @@ using MiNET.Plugins;
 using MiNET.Plugins.Attributes;
 using MiNET.Utils;
 using Mono.Cecil;
+using Mono.Cecil.Cil;
+using OpenAPI.Events.Player;
 using OpenAPI.Utils;
 using Level = MiNET.Worlds.Level;
 
@@ -66,15 +69,16 @@ namespace CyberCore
             p.delayTeleport(p.Level.SpawnPoint);
             p.SendMessage(ChatColors.Green + "Teleproting to spawn in 5 secs!");
         }
-        
+
         public static readonly int WildMaxVal = 25000;
+
         [Command(Name = "wild", Description = "Teleport to random spot in the wild")]
         public void wild(CorePlayer p)
         {
             var r = new Random();
-            var to = new PlayerLocation(r.Next(-WildMaxVal,WildMaxVal),100,r.Next(-WildMaxVal,WildMaxVal));
-            p.Level.WorldProvider.GenerateChunkColumn(new ChunkCoordinates((int)to.X >> 4, (int)to.Z >> 4));
-            p.delayTeleport(to,10);
+            var to = new PlayerLocation(r.Next(-WildMaxVal, WildMaxVal), 100, r.Next(-WildMaxVal, WildMaxVal));
+            p.Level.WorldProvider.GenerateChunkColumn(new ChunkCoordinates((int) to.X >> 4, (int) to.Z >> 4));
+            p.delayTeleport(to, 10);
             p.SendMessage(ChatColors.Green + "Teleproting to spawn in 10 secs!");
         }
 
@@ -96,22 +100,207 @@ namespace CyberCore
             if (SpawnProtection.Contains(p.Username))
             {
                 SpawnProtection.Remove(p.Username);
-                p.SendMessage(ChatColors.Yellow + "Spawn protection Re-Enabled for you! You can not break spawn blocks anymore");
+                p.SendMessage(ChatColors.Yellow +
+                              "Spawn protection Re-Enabled for you! You can not break spawn blocks anymore");
             }
             else
             {
                 SpawnProtection.Add(p.Username);
-                p.SendMessage(ChatColors.Yellow + "Spawn protection Disabled! You can now break and place blocks at spawn");
-
+                p.SendMessage(ChatColors.Yellow +
+                              "Spawn protection Disabled! You can now break and place blocks at spawn");
             }
         }
+
+        public static Dictionary<String, TPData> AcceptTPR = new Dictionary<string, TPData>();
+        public static Dictionary<String, TPData> AcceptTPRH = new Dictionary<string, TPData>();
+
+        public class TPData
+        {
+            public String Name;
+            public long Tick;
+
+            public TPData(String n)
+            {
+                Name = n;
+                Tick = CyberUtils.getTick();
+            }
+
+            public TPData(CorePlayer p)
+            {
+                Name = p.getName();
+                Tick = CyberUtils.getTick();
+            }
+
+            private int max = 60 * 5; //5 Mins
+
+            public bool isValid()
+            {
+                return Tick + (20 * max) > CyberUtils.getTick();
+            }
+        }
+
+        [Command(Name = "tpd", Description = "Deny all teleport requests")]
+        public void tpd(CorePlayer player)
+        {
+            
+            AcceptTPRH.Remove(player.getName().ToLower());
+            AcceptTPR.Remove(player.getName().ToLower());
+        }
+
+        [Command(Name = "tpr", Description = "Request To Teleport To A Player")]
+        public void tpr(CorePlayer player, Target t)
+        {
+            var tp = t.getPlayer();
+            if (tp != null)
+            {
+                AcceptTPRH.Remove(tp.getName().ToLower());
+                AcceptTPR[tp.getName().ToLower()] = new TPData(player.getName());
+                tp.SendMessage($"{ChatColors.Aqua}[TP REQUEST] {player.getName()} has requested to teleport to you!");
+                tp.SendMessage($"{ChatColors.Aqua}[TP REQUEST] Use /tpa to accept the request!");
+                tp.SendMessage($"{ChatColors.Aqua}[TP REQUEST] Use /tpd to deny the request!");
+                player.SendMessage($"{ChatColors.Green} Request sent to {tp.getName()}!");
+            }
+
+            player.SendMessage($"{ChatColors.Red} Error! No Player found!");
+        }
+
+        [Command(Name = "tprh", Description = "Request A Player to teleport to you")]
+        public void tprh(CorePlayer player, Target t)
+        {
+            var tp = t.getPlayer();
+            if (tp != null)
+            {
+                AcceptTPR.Remove(tp.getName().ToLower());
+                AcceptTPRH[tp.getName().ToLower()] = new TPData(player.getName());
+                tp.SendMessage(
+                    $"{ChatColors.Aqua}[TP REQUEST] {player.getName()} has requested you to teleport to them!");
+                tp.SendMessage($"{ChatColors.Aqua}[TP REQUEST] Use /tpa to accept the request!");
+                tp.SendMessage($"{ChatColors.Aqua}[TP REQUEST] Use /tpd to deny the request!");
+                player.SendMessage($"{ChatColors.Green} Request sent to {tp.getName()}!");
+            }
+
+            player.SendMessage($"{ChatColors.Red} Error! No Player found!");
+        }
+
+        [Command(Name = "tpa", Description = "Accept Teleport")]
+        public void tpa(CorePlayer player)
+        {
+            CorePlayer tp;
+            if (AcceptTPR.ContainsKey(player.getName().ToLower()))
+            {
+                var d = AcceptTPR[player.getName().ToLower()];
+                if (!d.isValid())
+                {
+                    player.SendMessage(
+                        $"{ChatColors.Red}[TP ACCEPT] Error! The Teleport request is over 5 Mins old and has expired! Error: TP3");
+                }
+                else
+                {
+                    tp = CCM.getPlayer(d.Name);
+                    if (tp != null)
+                    {
+                        player.SendMessage($"{ChatColors.Green}[TP ACCEPT] Request has been accepted!");
+                        tp.SendMessage($"{ChatColors.Green}[TP ACCEPT] Request has been accepted!");
+                        tp.delayTeleport((Vector3) player.KnownPosition.Clone(), 10);
+                    }
+                    else
+                    {
+                        player.SendMessage(
+                            $"{ChatColors.Red}[TP ACCEPT] Error! Player could not be found! Error: TP18");
+                    }
+                }
+
+                AcceptTPR.Remove(player.getName().ToLower());
+            }
+            else if (AcceptTPRH.ContainsKey(player.getName().ToLower()))
+            {
+                var d = AcceptTPRH[player.getName().ToLower()];
+                if (!d.isValid())
+                {
+                    player.SendMessage(
+                        $"{ChatColors.Red}[TPH ACCEPT] Error! The Teleport request is over 5 Mins old and has expired! Error: TP33");
+                }
+                else
+                {
+                    tp = CCM.getPlayer(d.Name);
+                    if (tp != null)
+                    {
+                        player.SendMessage($"{ChatColors.Green}[TPH ACCEPT] Request has been accepted!");
+                        tp.SendMessage($"{ChatColors.Green}[TPH ACCEPT] Request has been accepted!");
+                        player.delayTeleport((Vector3) tp.KnownPosition.Clone(), 10);
+                    }
+                    else
+                    {
+                        player.SendMessage(
+                            $"{ChatColors.Red}[TPH ACCEPT] Error! Player could not be found! Error: TP138");
+                    }
+                }
+
+                AcceptTPRH.Remove(player.getName().ToLower());
+            }
+        }
+
+        [Command(Name = "cash", Aliases = new []{"bal","balance"}, Description = "View your cash balance")]
+        public void cash(CorePlayer p)
+        {
+            var bal = p.getPlayerSettingsData().getCash();
+            p.SendMessage($"{ChatColors.Green}[CASH] Your Balance is: "+bal);
+        }
+        [Command(Name = "bank", Aliases = new []{"bank bal"},Description = "View your bank balance")]
+        public void bank(CorePlayer p)
+        {
+            var bal = p.getPlayerSettingsData().BankBal;
+            p.SendMessage($"{ChatColors.Green}[BANK] Your Balance is: "+bal);
+        }
+        [Command(Name = "deposit", Aliases = new []{"bank deposit"},Description = "Deposit your cash balance to the bank")]
+        public void deposit(CorePlayer p, int amt)
+        {
+            if (!p.getPlayerSettingsData().addToBank(amt))
+            {
+                
+                p.SendMessage($"{ChatColors.Red}[BANK] ERROR | You only have: $"+p.getPlayerSettingsData().getCash());
+                return;
+            }
+            p.SendMessage($"{ChatColors.Green}[BANK] SUCCESS | ${amt} has been depositied to your account!");
+            p.SendMessage($"{ChatColors.Green}[BANK] Your Bank Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().BankBal}");
+            p.SendMessage($"{ChatColors.Green}[BANK] Your Cash Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().getCash()}");
+        }
         
-         [Command(Name = "vi", Description = "Open a Chest")]
-        public void OpenInventory(Player player)
+        [Command(Name = "withdraw", Aliases = new []{"bank withdraw"},Description = "Withdraw money from the bank")]
+        public void withdraw(CorePlayer p, int amt)
+        {
+            if (!p.getPlayerSettingsData().takeFromBank(amt))
+            {
+                
+                p.SendMessage($"{ChatColors.Red}[BANK] ERROR | You only have: $"+p.getPlayerSettingsData().BankBal+" in the bank!");
+                return;
+            }
+            p.SendMessage($"{ChatColors.Green}[BANK] SUCCESS | ${amt} has been withdrawn to your account!");
+            p.SendMessage($"{ChatColors.Green}[BANK] Your Bank Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().BankBal}");
+            p.SendMessage($"{ChatColors.Green}[BANK] Your Cash Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().getCash()}");
+        }
+        
+        [Command(Name = "loan", Aliases = new []{"bank loan"},Description = "Request a loan from the bank")]
+        public void loan(CorePlayer p, int amt)
+        {
+            if (!p.getPlayerSettingsData().takeLoanFromBank(amt))
+            {
+                
+                p.SendMessage($"{ChatColors.Red}[BANK] ERROR | Your credit limit is: $"+p.getPlayerSettingsData().getMaxLoanAmount()+"!");
+                return;
+            }
+            p.SendMessage($"{ChatColors.Green}[BANK] SUCCESS | You have borrowed ${amt}! You have 12 Days to pay it back! Your Daily payments are ${amt/12}");
+            p.SendMessage($"{ChatColors.Green}[BANK] Your Bank Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().BankBal}");
+            p.SendMessage($"{ChatColors.Green}[BANK] Your Cash Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().getCash()}");
+        }
+
+        //TODO TEST
+        [Command(Name = "vi", Description = "Open a Chest")]
+        public void OpenInventory(CorePlayer player)
         {
             //Log.Info("Command Executed!");
             player.SendMessage("Opening Chest...");
-            
+
             /*BlockCoordinates coords = (BlockCoordinates) player.KnownPosition;
             coords.Y = 0;*/
             BlockCoordinates coords = new BlockCoordinates(0);
@@ -147,7 +336,7 @@ namespace CyberCore
                 Type = 0,
                 WindowsId = 10
             };
-            
+
             //inventory.InventoryChange += new Action<Player, MiNET.Inventory, byte, Item>(player.OnInventoryChange);
             inventory.AddObserver(player);
             McpeContainerOpen mcpeContainerOpen = McpeContainerOpen.CreateObject(1L);
@@ -155,11 +344,11 @@ namespace CyberCore
             mcpeContainerOpen.type = inventory.Type;
             mcpeContainerOpen.coordinates = coords;
             mcpeContainerOpen.runtimeEntityId = 1L;
-            player.SendPacket( mcpeContainerOpen);
+            player.SendPacket(mcpeContainerOpen);
             McpeInventoryContent inventoryContent = McpeInventoryContent.CreateObject(1L);
             inventoryContent.inventoryId = (uint) inventory.WindowsId;
             inventoryContent.input = inventory.Slots;
-            player.SendPacket( inventoryContent);
+            player.SendPacket(inventoryContent);
         }
 
         //
