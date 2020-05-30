@@ -4,11 +4,20 @@
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/CyberCommands.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCommands.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateMain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateMainMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateMainMenu.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/CrateConfirmWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/CrateConfirmWindow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/MasterListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/MasterListener.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DarkyenusTimeTracker">
+    <option name="totalTimeSeconds" value="1321" />
+    <option name="gitIntegration" value="true" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -452,10 +461,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Windows/FactionKickListWindow.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionCommandChecker.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/ServerRankChecker.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormSimple.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Windows/FactionCreate0.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Windows/FactionJoinConfirm.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Windows/FactionJoinListWindow.cs" />
@@ -495,14 +500,18 @@
         <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/MasterListener.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CorePlayerItemData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CorePlayerData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CorePlayer.cs" />
         <option value="$PROJECT_DIR$/CyberCore/PlayerSettingsData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/Data/UserSQL.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateObject.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/MasterListener.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CyberCommands.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateMain.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateMainMenu.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/CrateConfirmWindow.cs" />
       </list>
     </option>
   </component>
@@ -651,7 +660,8 @@
       <workItem from="1590260967335" duration="9969000" />
       <workItem from="1590301898655" duration="29046000" />
       <workItem from="1590479454995" duration="21374000" />
-      <workItem from="1590729458460" duration="4294000" />
+      <workItem from="1590729458460" duration="6027000" />
+      <workItem from="1590802851709" duration="1341000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />
@@ -795,12 +805,12 @@
       <screen x="-2560" y="1" width="2048" height="1112" />
     </state>
     <state x="-1713" y="268" key="RollbackChangesDialog/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584232196669" />
-    <state x="447" y="161" key="SettingsEditor" timestamp="1587696082692">
+    <state x="38" y="171" key="SettingsEditor" timestamp="1590802804934">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="500" y="186" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1584581081187" />
     <state x="-2027" y="200" key="SettingsEditor/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1583551206878" />
-    <state x="447" y="161" key="SettingsEditor/0.0.2560.1040@0.0.2560.1040" timestamp="1587696082692" />
+    <state x="38" y="171" key="SettingsEditor/0.0.2560.1040@0.0.2560.1040" timestamp="1590802804934" />
     <state x="1681" y="345" key="SimpleOpenTaskDialog" timestamp="1585624049637">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -851,22 +861,22 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="838" y="174" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.2560.1040@0.0.2560.1040" timestamp="1585187746756" />
-    <state x="1280" y="0" width="1280" height="1040" key="dock-window-1" timestamp="1590775258179">
+    <state x="1280" y="0" width="1280" height="1040" key="dock-window-1" timestamp="1590802956330">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="953" y="0" width="974" height="1047" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1584580243501" />
     <state x="0" y="0" width="1404" height="765" key="dock-window-1/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584411771012" />
     <state x="-6" y="0" width="1037" height="1118" key="dock-window-1/0.0.2048.1112@0.0.2048.1112" timestamp="1583635438152" />
-    <state x="1280" y="0" width="1280" height="1040" key="dock-window-1/0.0.2560.1040@0.0.2560.1040" timestamp="1590775258179" />
+    <state x="1280" y="0" width="1280" height="1040" key="dock-window-1/0.0.2560.1040@0.0.2560.1040" timestamp="1590802956330" />
     <state x="0" y="0" width="1280" height="1040" key="dock-window-10" timestamp="1585704352968">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="0" y="0" width="1280" height="1040" key="dock-window-10/0.0.2560.1040@0.0.2560.1040" timestamp="1585704352968" />
-    <state x="1280" y="0" width="1280" height="1040" key="dock-window-2" timestamp="1587698471510">
+    <state x="1280" y="0" width="1280" height="1040" key="dock-window-2" timestamp="1590802956330">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="0" y="433" width="1404" height="765" key="dock-window-2/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584411771012" />
-    <state x="1280" y="0" width="1280" height="1040" key="dock-window-2/0.0.2560.1040@0.0.2560.1040" timestamp="1587698471510" />
+    <state x="1280" y="0" width="1280" height="1040" key="dock-window-2/0.0.2560.1040@0.0.2560.1040" timestamp="1590802956330" />
     <state x="0" y="0" width="1280" height="1040" key="dock-window-3" timestamp="1587317774079">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -901,17 +911,17 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="0" y="0" width="1280" height="1040" key="dock-window-9/0.0.2560.1040@0.0.2560.1040" timestamp="1585690906761" />
-    <state x="1447" y="216" width="936" height="752" key="find.popup" timestamp="1590730682606">
+    <state x="1447" y="216" width="936" height="752" key="find.popup" timestamp="1590804192022">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="662" y="144" width="692" height="752" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584584090275" />
     <state x="-1854" y="155" width="738" height="804" key="find.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584417682271" />
-    <state x="1447" y="216" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590730682606" />
-    <state x="1461" y="244" width="672" height="677" key="run.anything.popup" timestamp="1590303756016">
+    <state x="1447" y="216" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590804192022" />
+    <state x="1461" y="244" width="672" height="677" key="run.anything.popup" timestamp="1590803056409">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1096" y="244" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584581008542" />
-    <state x="1461" y="244" width="672" height="677" key="run.anything.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590303756016" />
+    <state x="1461" y="244" width="672" height="677" key="run.anything.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590803056409" />
     <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1590632706825">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>

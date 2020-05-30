@@ -3,6 +3,7 @@ using CyberCore.Manager.Forms;
 using CyberCore.Utils;
 using MiNET;
 using MiNET.UI;
+using Newtonsoft.Json;
 
 namespace CyberCore.Manager.Crate.Form
 {
@@ -12,8 +13,10 @@ namespace CyberCore.Manager.Crate.Form
         {
         }
 
-        public CrateConfirmWindow(MainForm ttype, string desc = "") : base(ttype, desc)
+        // [JsonIgnore] private CrateMain.CrateAction CA;
+        public CrateConfirmWindow(MainForm ttype, /*CrateMain.CrateAction ca,*/string desc = "" ) : base(ttype, desc)
         {
+            // CA = ca;
             Buttons.Add(new Button()
             {
                 Text = "Keep Adding",
@@ -26,26 +29,18 @@ namespace CyberCore.Manager.Crate.Form
             });
         }
 
-        public CrateConfirmWindow(MainForm ttype, MainForm attype, List<Button> bl, string desc = "") : base(ttype, attype, bl, desc)
-        {
-        }
-
         public void trueRun(Player p, SimpleForm simpleForm)
         {
             switch (FT)
             {
                 case MainForm.Crate_Confirm_Add:
-                    CyberCoreMain.GetInstance().CrateMain.SetCrateItemPrimedPlayer.Add(p.getName());
-                    CyberCoreMain.GetInstance().CrateMain.PrimedPlayer.Add(p.getName());
+                    CyberCoreMain.GetInstance().CrateMain.addPrimedPlayer(p.getName().ToLower(),CrateMain.CrateAction.AddItemToCrate);
                     break;
                 case MainForm.Crate_Confirm_Key_Assign:
-                    CyberCoreMain.GetInstance().CrateMain.PrimedPlayer.Add(p.getName());
-                    CyberCoreMain.GetInstance().CrateMain.SetKeyPrimedPlayer.Add(p.getName());
-                    
+                    CyberCoreMain.GetInstance().CrateMain.addPrimedPlayer(p.getName().ToLower(),CrateMain.CrateAction.AddKeyToCrate);
                     break;
                 case MainForm.Crate_Confirm_ADD_Crate:
-                    CyberCoreMain.GetInstance().CrateMain.PrimedPlayer.Add(p.getName());
-                    CyberCoreMain.GetInstance().CrateMain.SetKeyPrimedPlayer.Add(p.getName());
+                    CyberCoreMain.GetInstance().CrateMain.addPrimedPlayer(p.getName().ToLower(),CrateMain.CrateAction.AddCrate);
                     break;
                     
             }

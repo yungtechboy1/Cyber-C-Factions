@@ -108,17 +108,19 @@ namespace CyberCore
         [EventHandler(EventPriority.Highest)]
         public void InteractEvent(PlayerInteractEvent e)
         {
-            var n = e.Player.getName();
+            var n = e.Player.getName().ToLower();
             var b = e.Player.Level.GetBlock(e.Coordinates);
             if (b.Id == new Chest().Id)
             {
                 var x = CyberCoreMain.GetInstance().CrateMain.isCrate(b);
                 if (x != null)
                 {
+                    CrateMain.CrateAction actiontype = plugin.CrateMain.TryGetCrateActionValue(n);
                     e.SetCancelled(true);
-                    if (plugin.CrateMain.PrimedPlayer.Remove(n))
+                    if (actiontype != CrateMain.CrateAction.Null)
                     {
-                        if (plugin.CrateMain.SetKeyPrimedPlayer.Remove(n))
+                        plugin.CrateMain.RemovePrimedPlayer(n);
+                        if (actiontype == CrateMain.CrateAction.AddKeyToCrate)
                         {
                             var cd = x.CD;
                             var hand = e.Player.Inventory.GetItemInHand();
@@ -131,15 +133,16 @@ namespace CyberCore
 //                        s.on
                             e.Player.SendForm(s);
                         }
-                        else if (plugin.CrateMain.RemoveCrate.Remove(n))
+                        else if (actiontype == CrateMain.CrateAction.DelCrate)
                         {
+                            x.delete();
                             e.SetCancelled(false);
                         }
-                        else if (plugin.CrateMain.ViewCrateItems.Remove(n))
+                        else if (actiontype == CrateMain.CrateAction.ViewCrateItems)
                         {
                             e.Player.showFormWindow(new AdminCrateViewItemsWindow(x));
                         }
-                        else if (plugin.CrateMain.SetCrateItemPrimedPlayer.Remove(n))
+                        else if (actiontype == CrateMain.CrateAction.AddItemToCrate)
                         {
                             var cd = x.CD;
                             var hand = e.Player.Inventory.GetItemInHand();
@@ -148,7 +151,7 @@ namespace CyberCore
                                 "Crate - Keep on Adding? ");
                             e.Player.showFormWindow(s);
                         }
-                        else
+                        else if(actiontype == CrateMain.CrateAction.AddCrate)
                         {
                             plugin.CrateMain.addCrate((CorePlayer) e.Player, b.Coordinates);
                             var s = new CrateConfirmWindow(MainForm.Crate_Confirm_ADD_Crate,
@@ -156,14 +159,18 @@ namespace CyberCore
 //                        s.on
                             e.Player.showFormWindow(s);
                         }
+                        else
+                        {
+                            Console.WriteLine($"ERROR!!!! ACTION TYPE IS {actiontype}");
+                        }
                     }
                     else
                     {
                         //Check Key
                         var hand = e.Player.Inventory.GetItemInHand();
-                        e.SetCancelled(true);
                         if (!CrateMain.isItemKey(hand))
                         {
+                            //TODO CHECK CRATE KEY ID
                             e.Player.SendMessage("Error! Item is not a valid Crate Key!");
                             return;
                         }

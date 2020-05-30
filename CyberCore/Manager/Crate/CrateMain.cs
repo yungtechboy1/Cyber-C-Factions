@@ -18,11 +18,46 @@ namespace CyberCore.Manager.Crate
 {
     public class CrateMain
     {
+        public void DeleteCrate(Vector3 k)
+        {
+            CrateChests.Remove(k);
+        }
+
+        public void addPrimedPlayer(string n, CrateAction a)
+        {
+            RemovePrimedPlayer(n);
+            PrimedPlayer.Add(n.ToLower(), a);
+        }
+
+
+        public enum CrateAction
+        {
+            Null,
+            AddCrate,
+            DelCrate,
+            AddKeyToCrate,
+            AddItemToCrate,
+            ViewCrateItems,
+        }
+
+
+        public CrateAction TryGetCrateActionValue(string n)
+        {
+            CrateAction actiontype;
+            if (PrimedPlayer.TryGetValue(n, out actiontype))
+            {
+                return actiontype;
+            }
+            else
+            {
+                return CrateAction.Null;
+            }
+        }
+
+
         public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(CrateMain));
         public static readonly String CK = "CrateKey";
-        public List<String> PrimedPlayer = new List<String>();
-        public List<String> SetKeyPrimedPlayer = new List<String>();
-        public List<String> SetCrateItemPrimedPlayer = new List<String>();
+        private Dictionary<String, CrateAction> PrimedPlayer = new Dictionary<string, CrateAction>();
         public Dictionary<Vector3, CrateObject> CrateChests = new Dictionary<Vector3, CrateObject>();
         public Dictionary<String, KeyData> CrateKeys = new Dictionary<String, KeyData>();
 
@@ -31,9 +66,6 @@ namespace CyberCore.Manager.Crate
         //    private Dictionary<String,Object> CrateLocations = new Dictionary<String,Object>();
         public Dictionary<String, long> cratetxt = new Dictionary<String, long>();
         public CyberCoreMain CCM;
-        public List<String> ViewCrateItems = new List<String>();
-
-        public List<String> RemoveCrate = new List<String>();
 
         //    public Dictionary<String, FloatingTextParticle> cratetxt = new Dictionary<>();
         private Dictionary<String, CrateData> CrateMap = new Dictionary<String, CrateData>();
@@ -98,7 +130,7 @@ namespace CyberCore.Manager.Crate
                         continue;
                     }
 
-                    CrateObject co = new CrateObject(po, l,cda);
+                    CrateObject co = new CrateObject(po, l, cda);
                     if (cda != null)
                     {
                         CrateChests[po.ToVector3()] = co;
@@ -137,13 +169,13 @@ namespace CyberCore.Manager.Crate
         public static bool isItemKey(Item i)
         {
             if (i == null || i.Id == 0) return false;
-            return i.hasCompoundTag() && i.getNamedTag().Contains(CrateMain.CK);
+            return i.hasCompoundTag() && i.getNamedTag().Contains(CK);
         }
 
         public String getKeyIDFromKey(Item i)
         {
-            if (!i.hasCompoundTag() || !i.getNamedTag().Contains(CrateMain.CK)) return null;
-            return i.getNamedTag().Get(CrateMain.CK).StringValue;
+            if (!i.hasCompoundTag() || !i.getNamedTag().Contains(CK)) return null;
+            return i.getNamedTag().Get(CK).StringValue;
         }
 
         public Dictionary<String, CrateData> getCrateMap()
@@ -202,7 +234,7 @@ namespace CyberCore.Manager.Crate
             aa.ItemNBTTag = "DefaultKey";
             crateLocationDataManager.Data[name] = aa;
             crateLocationDataManager.save();
-            
+
             // Dictionary<String, Object> data = new Dictionary<>();
             // data.put("Item-NBT-Tag", "DefaultKey");
             // String save = b.getX() + ":" + b.getY() + ":" + b.getZ();
@@ -214,14 +246,15 @@ namespace CyberCore.Manager.Crate
 
         public bool isKey(String cratename, Item i)
         {
-            CrateLocationData data =  crateLocationDataManager.Data[cratename];
-            return i.getNamedTag().Contains( data.ItemNBTTag);
+            CrateLocationData data = crateLocationDataManager.Data[cratename];
+            return i.getNamedTag().Contains(data.ItemNBTTag);
         }
 
         public CrateObject isCrate(Block b)
         {
             return isCrate(b.Coordinates);
         }
+
         public CrateObject isCrate(Vector3 b)
         {
             if (CrateChests.ContainsKey(b)) return CrateChests[b];
@@ -231,21 +264,21 @@ namespace CyberCore.Manager.Crate
         public void showCrate(BlockCoordinates b, Player p)
         {
             p.SendMessage("Opened"); //Debug
-            
+
             var tileEvent = McpeBlockEvent.CreateObject();
             tileEvent.coordinates = b;
             tileEvent.case1 = 1;
             tileEvent.case2 = 2;
             p.Level.RelayBroadcast(tileEvent);
-            
+
             // inventory.InventoryChange += OnInventoryChange;
             // inventory.AddObserver(this);
-            
-            
-            
+
+
             CustomFloatingTextParticle ft = new CustomFloatingTextParticle(
                 new Vector3((float) (b.X + .5), b.Y + 1, (float) (b.Z + .5)), p.Level, "",
-                ChatFormatting.Obfuscated + "§b|||||||||§r" + ChatColors.Red + "ROLLING Item" + ChatFormatting.Obfuscated +
+                ChatFormatting.Obfuscated + "§b|||||||||§r" + ChatColors.Red + "ROLLING Item" +
+                ChatFormatting.Obfuscated +
                 "§b|||||||||");
             List<Packet> packets = ft.encode();
             if (packets.Count == 1)
@@ -255,7 +288,8 @@ namespace CyberCore.Manager.Crate
             else
             {
                 foreach (Packet packet in
-                packets) {
+                    packets)
+                {
                     p.SendPacket(packet);
                 }
             }
@@ -266,14 +300,14 @@ namespace CyberCore.Manager.Crate
         public void hideCrate(BlockCoordinates b, Player p)
         {
             p.SendMessage("Closed"); //Debug
-            
+
             var tileEvent = McpeBlockEvent.CreateObject();
             tileEvent.coordinates = b;
             tileEvent.case1 = 1;
             tileEvent.case2 = 0;
             p.Level.RelayBroadcast(tileEvent);
-            
-            
+
+
             if (cratetxt.ContainsKey(p.getName()))
             {
                 McpeRemoveEntity mcpeRemoveEntity = McpeRemoveEntity.CreateObject();
@@ -298,19 +332,22 @@ namespace CyberCore.Manager.Crate
 
 
                 Dictionary<String, Object> data = new Dictionary<String, Object>();
-                
-                       data.Add("PlayerName", player.getName());
-                        data.Add("slot", -1);
-                        data.Add("possible-items", items);
-                        data.Add("crate-name", co.CD.Name);
-                        data.Add("pos", b);
-                  
+
+                data.Add("PlayerName", player.getName());
+                data.Add("slot", -1);
+                data.Add("possible-items", items);
+                data.Add("crate-name", co.CD.Name);
+                data.Add("pos", b);
+
                 showCrate(b, player);
-                new CrateTickThread(player.getName(), player.Level,items, co.CD.Name, new Vector3(b.X,b.Y,b.Z));
+                new CrateTickThread(player.getName(), player.Level, items, co.CD.Name, new Vector3(b.X, b.Y, b.Z));
 //            Server.getInstance().getScheduler().scheduleTask(new RollTick(this, data));
             }
         }
+
+        public void RemovePrimedPlayer(string s)
+        {
+            PrimedPlayer.Remove(s);
+        }
     }
-    
-    
 }

@@ -4,6 +4,8 @@ using System.Linq.Expressions;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using AStarNavigator;
+using CyberCore.Manager.Crate;
+using CyberCore.Manager.Crate.Form;
 using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
@@ -142,7 +144,6 @@ namespace CyberCore
         [Command(Name = "tpd", Description = "Deny all teleport requests")]
         public void tpd(CorePlayer player)
         {
-            
             AcceptTPRH.Remove(player.getName().ToLower());
             AcceptTPR.Remove(player.getName().ToLower());
         }
@@ -240,46 +241,96 @@ namespace CyberCore
             }
         }
 
-        [Command(Name = "cash", Aliases = new []{"bal","balance"}, Description = "View your cash balance")]
+        [Command(Name = "cash", Aliases = new[] {"bal", "balance"}, Description = "View your cash balance")]
         public void cash(CorePlayer p)
         {
             var bal = p.getPlayerSettingsData().getCash();
-            p.SendMessage($"{ChatColors.Green}[CASH] Your Balance is: "+bal);
+            p.SendMessage($"{ChatColors.Green}[CASH] Your Balance is: " + bal);
         }
-        [Command(Name = "bank", Aliases = new []{"bank bal"},Description = "View your bank balance")]
+
+        [Command(Name = "bank", Aliases = new[] {"bank bal"}, Description = "View your bank balance")]
         public void bank(CorePlayer p)
         {
             var bal = p.getPlayerSettingsData().BankBal;
-            p.SendMessage($"{ChatColors.Green}[BANK] Your Balance is: "+bal);
+            p.SendMessage($"{ChatColors.Green}[BANK] Your Balance is: " + bal);
         }
-        [Command(Name = "deposit", Aliases = new []{"bank deposit"},Description = "Deposit your cash balance to the bank")]
+
+        [Command(Name = "deposit", Aliases = new[] {"bank deposit"},
+            Description = "Deposit your cash balance to the bank")]
         public void deposit(CorePlayer p, int amt)
         {
             if (!p.getPlayerSettingsData().addToBank(amt))
             {
-                
-                p.SendMessage($"{ChatColors.Red}[BANK] ERROR | You only have: $"+p.getPlayerSettingsData().getCash());
+                p.SendMessage($"{ChatColors.Red}[BANK] ERROR | You only have: $" + p.getPlayerSettingsData().getCash());
                 return;
             }
+
             p.SendMessage($"{ChatColors.Green}[BANK] SUCCESS | ${amt} has been depositied to your account!");
-            p.SendMessage($"{ChatColors.Green}[BANK] Your Bank Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().BankBal}");
-            p.SendMessage($"{ChatColors.Green}[BANK] Your Cash Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().getCash()}");
+            p.SendMessage(
+                $"{ChatColors.Green}[BANK] Your Bank Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().BankBal}");
+            p.SendMessage(
+                $"{ChatColors.Green}[BANK] Your Cash Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().getCash()}");
         }
-        
-        [Command(Name = "withdraw", Aliases = new []{"bank withdraw"},Description = "Withdraw money from the bank")]
+
+        [Command(Name = "withdraw", Aliases = new[] {"bank withdraw"}, Description = "Withdraw money from the bank")]
         public void withdraw(CorePlayer p, int amt)
         {
             if (!p.getPlayerSettingsData().takeFromBank(amt))
             {
-                
-                p.SendMessage($"{ChatColors.Red}[BANK] ERROR | You only have: $"+p.getPlayerSettingsData().BankBal+" in the bank!");
+                p.SendMessage($"{ChatColors.Red}[BANK] ERROR | You only have: $" + p.getPlayerSettingsData().BankBal +
+                              " in the bank!");
                 return;
             }
+
             p.SendMessage($"{ChatColors.Green}[BANK] SUCCESS | ${amt} has been withdrawn to your account!");
-            p.SendMessage($"{ChatColors.Green}[BANK] Your Bank Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().BankBal}");
-            p.SendMessage($"{ChatColors.Green}[BANK] Your Cash Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().getCash()}");
+            p.SendMessage(
+                $"{ChatColors.Green}[BANK] Your Bank Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().BankBal}");
+            p.SendMessage(
+                $"{ChatColors.Green}[BANK] Your Cash Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().getCash()}");
         }
-        
+
+        [Command(Name = "crate key set", Description = "Add a new Crate Key to a Chest")]
+        public void CKS(CorePlayer p)
+        {
+            CCM.CrateMain.addPrimedPlayer(p.getName().ToLower(), CrateMain.CrateAction.AddKeyToCrate);
+            p.SendMessage(
+                $"{ChatColors.Green}[CRATE] Please hold the key item and tap a chest to add the key to the chest.");
+        }
+
+        [Command(Name = "crate del", Description = "Remove a crate")]
+        public void CD(CorePlayer p)
+        {
+            CCM.CrateMain.addPrimedPlayer(p.getName().ToLower(), CrateMain.CrateAction.DelCrate);
+            p.SendMessage(
+                $"{ChatColors.Green}[CRATE] Please break the chest you want to remove");
+        }
+
+        [Command(Name = "crate viewitems", Description = "View Crate Possible Items")]
+        public void CVI(CorePlayer p)
+        {
+            CCM.CrateMain.addPrimedPlayer(p.getName().ToLower(), CrateMain.CrateAction.ViewCrateItems);
+            p.SendMessage(
+                $"{ChatColors.Green}[CRATE] Please tap a crate to view possible items.");
+        }
+
+        [Command(Name = "crate additem", Description = "Add a new Item to a Crate")]
+        public void CAI(CorePlayer p)
+        {
+            CCM.CrateMain.addPrimedPlayer(p.getName().ToLower(), CrateMain.CrateAction.AddItemToCrate);
+            p.SendMessage(
+                $"{ChatColors.Green}[CRATE] Please hold the item and tap a chest to add the item to the crate.");
+        } [Command(Name = "crate create", Description = "Add a new Item to a Crate")]
+        public void CC(CorePlayer p)
+        {
+            CCM.CrateMain.addPrimedPlayer(p.getName().ToLower(), CrateMain.CrateAction.AddCrate);
+            p.SendMessage(
+                $"{ChatColors.Green}[CRATE] Please tap a chest to convert to a crate.");
+        }[Command(Name = "crate admin", Description = "View Crate Main Menu")]
+        public void CA(CorePlayer p)
+        {
+            p.SendForm(new AdminCrateMainMenu());
+        }
+
         // [Command(Name = "loan", Aliases = new []{"bank loan"},Description = "Request a loan from the bank")]
         // public void loan(CorePlayer p, int amt)
         // {

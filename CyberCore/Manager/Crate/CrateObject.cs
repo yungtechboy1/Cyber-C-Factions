@@ -116,5 +116,10 @@ namespace CyberCore.Manager.Crate
             }
             return pi;
         }
+
+        public void delete()
+        {
+            CyberCoreMain.GetInstance().CrateMain.DeleteCrate(Location);
+        }
     }
 }
