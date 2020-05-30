@@ -280,19 +280,19 @@ namespace CyberCore
             p.SendMessage($"{ChatColors.Green}[BANK] Your Cash Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().getCash()}");
         }
         
-        [Command(Name = "loan", Aliases = new []{"bank loan"},Description = "Request a loan from the bank")]
-        public void loan(CorePlayer p, int amt)
-        {
-            if (!p.getPlayerSettingsData().takeLoanFromBank(amt))
-            {
-                
-                p.SendMessage($"{ChatColors.Red}[BANK] ERROR | Your credit limit is: $"+p.getPlayerSettingsData().getMaxLoanAmount()+"!");
-                return;
-            }
-            p.SendMessage($"{ChatColors.Green}[BANK] SUCCESS | You have borrowed ${amt}! You have 12 Days to pay it back! Your Daily payments are ${amt/12}");
-            p.SendMessage($"{ChatColors.Green}[BANK] Your Bank Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().BankBal}");
-            p.SendMessage($"{ChatColors.Green}[BANK] Your Cash Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().getCash()}");
-        }
+        // [Command(Name = "loan", Aliases = new []{"bank loan"},Description = "Request a loan from the bank")]
+        // public void loan(CorePlayer p, int amt)
+        // {
+        //     if (!p.getPlayerSettingsData().takeLoanFromBank(amt))
+        //     {
+        //         
+        //         p.SendMessage($"{ChatColors.Red}[BANK] ERROR | Your credit limit is: $"+p.getPlayerSettingsData().getMaxLoanAmount()+"!");
+        //         return;
+        //     }
+        //     p.SendMessage($"{ChatColors.Green}[BANK] SUCCESS | You have borrowed ${amt}! You have 12 Days to pay it back! Your Daily payments are ${amt/12}");
+        //     p.SendMessage($"{ChatColors.Green}[BANK] Your Bank Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().BankBal}");
+        //     p.SendMessage($"{ChatColors.Green}[BANK] Your Cash Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().getCash()}");
+        // }
 
         //TODO TEST
         [Command(Name = "vi", Description = "Open a Chest")]
