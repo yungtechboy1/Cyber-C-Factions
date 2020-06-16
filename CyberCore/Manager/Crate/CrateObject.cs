@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using CyberCore.Manager.Crate.Data;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Utils;
@@ -40,17 +41,17 @@ namespace CyberCore.Manager.Crate
         {
             if (CD != null)
             {
-                return "===|Crate|===\n" + CD.Name + "\n" + CD.SubName;
+                return $"{ChatColors.Aqua}===|Crate|===\n" + CD.Name + "\n" + CD.SubName;
             }
 
-            return "===|Crate|===";
+            return $"{ChatColors.Aqua}===|Crate|===";
         }
 
         public void init()
         {
             isinit = true;
             ftloaded = true;
-            ft = new CyberFloatingTextContainer(CyberCoreMain.GetInstance().FTM, Location, Lvl,getDisplayText());
+            ft = new CyberFloatingTextContainer(CyberCoreMain.GetInstance().FTM, Location+new Vector3(.5f,.5f,.5f), Lvl,getDisplayText());
             FloatingTextFactory.AddFloatingText(ft);
 //        FloatingTextParticle
         }
@@ -81,14 +82,15 @@ namespace CyberCore.Manager.Crate
 ////        super(c);
 //    }
 
-        public CrateLocationData toConfig()
+        public CrateLocationData toLocConfig()
         {
             var a = new CrateLocationData()
             {
+                Key = CD.Key,
                 X = (int) Location.X,
                 Y = (int) Location.Y,
                 Z = (int) Location.Z,
-                Level = Lvl.LevelName
+                Level = Lvl.LevelId
             };
             return a;
         }

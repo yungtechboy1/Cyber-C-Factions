@@ -1207,7 +1207,7 @@ namespace CyberCore.Manager.Factions
             }
 
             Vector3 hv = h.getVector3();
-            Main.CCM.SQL.Insert($"INSERT INTO `Homes` VALUES (null,{hv.X},{hv.Y},{hv.Z},'{h.getL().LevelName}," +
+            Main.CCM.SQL.Insert($"INSERT INTO `Homes` VALUES (null,{hv.X},{hv.Y},{hv.Z},'{h.getL().LevelId}," +
                                 $"'{h.getFaction()},'{h.getName()}') ;");
 
             HomeCC.invalidate();
@@ -2182,9 +2182,9 @@ namespace CyberCore.Manager.Factions
                 x = (int) pos.X;
                 y = (int) pos.Y;
                 z = (int) pos.Z;
-                LvlName = p.Level.LevelName;
+                LvlName = p.Level.LevelId;
                 this.name = name;
-                var ln = p.Level.LevelName;
+                var ln = p.Level.LevelId;
                 Level tl = CyberCoreMain.GetInstance().getAPI().LevelManager.GetLevel(null, ln);
                 if (tl == null)
                 {
@@ -2200,9 +2200,9 @@ namespace CyberCore.Manager.Factions
                 x = (int) p.KnownPosition.X;
                 y = (int) p.KnownPosition.Y;
                 z = (int) p.KnownPosition.Z;
-                LvlName = p.Level.LevelName;
+                LvlName = p.Level.LevelId;
                 this.name = name;
-                var ln = p.Level.LevelName;
+                var ln = p.Level.LevelId;
                 Level tl = CyberCoreMain.GetInstance().getAPI().LevelManager.GetLevel(null, ln);
                 if (tl == null)
                 {

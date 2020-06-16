@@ -268,7 +268,7 @@ namespace CyberCore.Manager.FloatingText
                         PlayerLocation ppos = p.KnownPosition;
                         if (a.KnownPosition.DistanceTo(ppos) > 200)
                         {
-                            CyberCoreMain.Log.Error("FT AND PLAYER TOO FAR");
+                            // CyberCoreMain.Log.Error("FT AND PLAYER TOO FAR");
                             continue;
                         }
                         //TODO many implement a Quick Check?
@@ -303,7 +303,7 @@ CyberCoreMain.Log.Error("FT AND PLAYER NOT IN SAME LEVEL");
                     // CyberCoreMain.Log.Error("Was LOG ||" + aa++);
                     if (ap.Count == 0)
                     {
-                        CyberCoreMain.Log.Error("YEAH AP WAS NULLLLLLLLLL");
+                        // CyberCoreMain.Log.Error("YEAH AP WAS NULLLLLLLLLL");
                         continue;
                     }
                     //Last time AP

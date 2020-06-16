@@ -50,8 +50,8 @@ namespace CyberCore.Manager.Crate.Form
                 Console.WriteLine("Errrororororo!!!!!");
                 return;
             }
-
-            _C.CrateChests[_V] = new CrateObject(new PlayerLocation(_V), p.Level, cd);
+_C.CreateCrate(_V,p.Level,cd);
+            // _C.CrateChests[_V] = new CrateObject(new PlayerLocation(_V)+new Vector3(.5f,.5f,.5f), p.Level, cd);
             return;
         }
     }

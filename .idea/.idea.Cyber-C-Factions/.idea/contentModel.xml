@@ -230,6 +230,42 @@
           <e p="SqlManager.cs" t="Include" />
           <e p="StaticItems.cs" t="Include" />
         </e>
+        <e p="WorldGen" t="Include">
+          <e p="Biomes" t="Include">
+            <e p="AdvancedBiome.cs" t="Include" />
+            <e p="BeachBiome.cs" t="Include" />
+            <e p="BiomeList.cs" t="Include" />
+            <e p="BiomeManager.cs" t="Include" />
+            <e p="BiomeSelector.cs" t="Include" />
+            <e p="Desert.cs" t="Include" />
+            <e p="ForestBiome.cs" t="Include" />
+            <e p="ForestMountain.cs" t="Include" />
+            <e p="HighPlains.cs" t="Include" />
+            <e p="MainBiome.cs" t="Include" />
+            <e p="Mountains.cs" t="Include" />
+            <e p="Plains.cs" t="Include" />
+            <e p="Populator" t="Include">
+              <e p="GrassPopulator.cs" t="Include" />
+              <e p="OrePopulator.cs" t="Include" />
+              <e p="Populator.cs" t="Include" />
+              <e p="PopulatorData.cs" t="Include" />
+            </e>
+            <e p="SnowForest.cs" t="Include" />
+            <e p="SnowTundra.cs" t="Include" />
+            <e p="SnowyIcyChunk.cs" t="Include" />
+            <e p="TropicalRainForest.cs" t="Include" />
+            <e p="TropicalSeasonalForest.cs" t="Include" />
+            <e p="WaterBiome.cs" t="Include" />
+          </e>
+          <e p="CyberExperimentalWorldProvider.cs" t="Include" />
+          <e p="CyberWorldProvider.cs" t="Include" />
+          <e p="FastNoise.cs" t="Include" />
+          <e p="NukkitGenerator.cs" t="Include" />
+          <e p="Schematic.cs" t="Include" />
+          <e p="TestGenerator.cs" t="Include" />
+          <e p="TestGenerator2.cs" t="Include" />
+          <e p="WorldUtils.cs" t="Include" />
+        </e>
       </e>
       <e p="packages" t="ExcludeRecursive" />
       <e p="Testing" t="IncludeRecursive">

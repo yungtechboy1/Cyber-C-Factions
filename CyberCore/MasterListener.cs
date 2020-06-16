@@ -51,7 +51,6 @@ namespace CyberCore
             Console.WriteLine("YEAAAAA");
             Console.WriteLine("YEAAAAA");
             Console.WriteLine("YEAAAAA");
-            
 
 
             p.loadEPD();
@@ -105,29 +104,36 @@ namespace CyberCore
         {
         }
 
+
         [EventHandler(EventPriority.Highest)]
         public void InteractEvent(PlayerInteractEvent e)
         {
             var n = e.Player.getName().ToLower();
             var b = e.Player.Level.GetBlock(e.Coordinates);
+            Console.Write("INTERACT EVENT" + e.Player.Username + " ||| biD" + b.Id);
             if (b.Id == new Chest().Id)
             {
                 var x = CyberCoreMain.GetInstance().CrateMain.isCrate(b);
+                CrateMain.CrateAction actiontype = plugin.CrateMain.TryGetCrateActionValue(n);
+Console.WriteLine("IM AM GOUNG TO THIS 1    1111111 || "+actiontype);
+                plugin.CrateMain.RemovePrimedPlayer(n);
                 if (x != null)
                 {
-                    CrateMain.CrateAction actiontype = plugin.CrateMain.TryGetCrateActionValue(n);
+                    Console.WriteLine("IM AM GOUNG TO THIS 1    22222222222");
+
                     e.SetCancelled(true);
                     if (actiontype != CrateMain.CrateAction.Null)
-                    {
-                        plugin.CrateMain.RemovePrimedPlayer(n);
+                    {Console.WriteLine("IM AM GOUNG TO THIS 1    333333333333");
+
                         if (actiontype == CrateMain.CrateAction.AddKeyToCrate)
-                        {
+                        {Console.WriteLine("IM AM GOUNG TO THIS 1    44444444444");
+
                             var cd = x.CD;
                             var hand = e.Player.Inventory.GetItemInHand();
                             var ki = plugin.CrateMain.getKeyIDFromKey(hand);
                             if (ki != null) cd.KeyItems.Add(ki);
                             x.CD = cd;
-                            plugin.CrateMain.CrateChests[x.Location] = x;
+                            plugin.CrateMain.CrateChestLocations[x.Location] = x;
                             var s = new CrateConfirmWindow(MainForm.Crate_Confirm_Key_Assign,
                                 "Crate - Keep on Adding KEY ASSSING? ");
 //                        s.on
@@ -151,7 +157,7 @@ namespace CyberCore
                                 "Crate - Keep on Adding? ");
                             e.Player.showFormWindow(s);
                         }
-                        else if(actiontype == CrateMain.CrateAction.AddCrate)
+                        else if (actiontype == CrateMain.CrateAction.AddCrate)
                         {
                             plugin.CrateMain.addCrate((CorePlayer) e.Player, b.Coordinates);
                             var s = new CrateConfirmWindow(MainForm.Crate_Confirm_ADD_Crate,
@@ -166,6 +172,7 @@ namespace CyberCore
                     }
                     else
                     {
+                        e.Player.SendMessage($"{ChatColors.Red}[CRATE] Error! You were suppose to tap a block"+actiontype);
                         //Check Key
                         var hand = e.Player.Inventory.GetItemInHand();
                         if (!CrateMain.isItemKey(hand))
@@ -192,19 +199,223 @@ namespace CyberCore
                         }
                     }
                 }
+                else if (actiontype == CrateMain.CrateAction.AddCrate)
+                {
+                    e.SetCancelled(true);
+                    plugin.CrateMain.addCrate((CorePlayer) e.Player, b.Coordinates);
+//                     var s = new CrateConfirmWindow(MainForm.Crate_Confirm_ADD_Crate,
+//                         "Crate - Keep on Adding Crates? ");
+// //                        s.on
+//                     ce.Player.showFormWindow(s);
+                }
+            }
+        }
+
+
+        [EventHandler]
+        public void BlockPlaceEvent(BlockPlaceEvent e)
+        {
+            Console.Write("BLOCK PLACE EVENT");
+            if (e.Player is CorePlayer)
+            {
+                var p = (CorePlayer) e.Player;
+                var n = p.getName().ToLower();
+                var b = p.Level.GetBlock(e.Block.Coordinates);
+                if (b.Id == new Chest().Id)
+                {
+                    var x = CyberCoreMain.GetInstance().CrateMain.isCrate(b);
+                    if (x != null)
+                    {
+                        CrateMain.CrateAction actiontype = plugin.CrateMain.TryGetCrateActionValue(n);
+                        Console.WriteLine("DA PLAYER CLICK WITH AT"+actiontype);
+                        e.SetCancelled(true);
+                        if (actiontype != CrateMain.CrateAction.Null)
+                        {
+                            plugin.CrateMain.RemovePrimedPlayer(n);
+                            if (actiontype == CrateMain.CrateAction.AddKeyToCrate)
+                            {
+                                var cd = x.CD;
+                                var hand = p.Inventory.GetItemInHand();
+                                var ki = plugin.CrateMain.getKeyIDFromKey(hand);
+                                if (ki != null) cd.KeyItems.Add(ki);
+                                x.CD = cd;
+                                plugin.CrateMain.CrateChestLocations[x.Location] = x;
+                                var s = new CrateConfirmWindow(MainForm.Crate_Confirm_Key_Assign,
+                                    "Crate - Keep on Adding KEY ASSSING? ");
+//                        s.on
+                                p.SendForm(s);
+                            }
+                            else if (actiontype == CrateMain.CrateAction.DelCrate)
+                            {
+                                x.delete();
+                                e.SetCancelled(false);
+                            }
+                            else if (actiontype == CrateMain.CrateAction.ViewCrateItems)
+                            {
+                                p.showFormWindow(new AdminCrateViewItemsWindow(x));
+                            }
+                            else if (actiontype == CrateMain.CrateAction.AddItemToCrate)
+                            {
+                                var cd = x.CD;
+                                var hand = p.Inventory.GetItemInHand();
+                                cd.PossibleItems.Add(new ItemChanceData(hand, 100, hand.Count));
+                                var s = new CrateConfirmWindow(MainForm.Crate_Confirm_Add,
+                                    "Crate - Keep on Adding? ");
+                                p.showFormWindow(s);
+                            }
+                            else if (actiontype == CrateMain.CrateAction.AddCrate)
+                            {
+                                plugin.CrateMain.addCrate((CorePlayer) p, b.Coordinates);
+                                var s = new CrateConfirmWindow(MainForm.Crate_Confirm_ADD_Crate,
+                                    "Crate - Keep on Adding Crates? ");
+//                        s.on
+                                p.showFormWindow(s);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"ERROR!!!! ACTION TYPE IS {actiontype}");
+                            }
+                        }
+                        else
+                        {
+                            //Check Key
+                            var hand = p.Inventory.GetItemInHand();
+                            if (!CrateMain.isItemKey(hand))
+                            {
+                                //TODO CHECK CRATE KEY ID
+                                p.SendMessage("Error! Item is not a valid Crate Key!");
+                                return;
+                            }
+
+                            if (x.checkKey(hand))
+                            {
+                                //Valid Key & Take it
+                                var pi = p.Inventory;
+                                var i = pi.GetItemInHand();
+                                i.Count--;
+                                if (i.Count == 0) i = new ItemAir();
+                                pi.setItemInHand(i);
+                                CyberCoreMain.GetInstance().CrateMain.showCrate(b.Coordinates, p);
+                                CyberCoreMain.GetInstance().CrateMain.rollCrate(b.Coordinates, p);
+                            }
+                            else
+                            {
+                                p.SendMessage("Error! Key was invalid!");
+                            }
+                        }
+                    }
+                }
+
+                if (e.Block.Id == new Chest().Id)
+                    foreach (var v in plugin.CrateMain.CrateChestLocations.Keys)
+                        if (2 > e.Block.Coordinates.DistanceTo(v))
+                        {
+                            e.SetCancelled(true);
+                            ((Player) e.Player)?.SendMessage("error! CHEST BLOCKING!");
+                        }
             }
         }
 
         [EventHandler]
         public void BlockBreakEvent(BlockBreakEvent e)
         {
-            if (e.Block.Id == new Chest().Id)
-                foreach (var v in plugin.CrateMain.CrateChests.Keys)
-                    if (2 > e.Block.Coordinates.DistanceTo(v))
+            Console.Write("BREAK EVENT");
+            if (e.Source is CorePlayer p)
+            {
+                var n = p.getName().ToLower();
+                var b = p.Level.GetBlock(e.Block.Coordinates);
+                if (b.Id == new Chest().Id)
+                {
+                    var x = CyberCoreMain.GetInstance().CrateMain.isCrate(b);
+                    if (x != null)
                     {
+                        CrateMain.CrateAction actiontype = plugin.CrateMain.TryGetCrateActionValue(n);
                         e.SetCancelled(true);
-                        ((Player) e.Source)?.SendMessage("error! CHEST BLOCKING!");
+                        if (actiontype != CrateMain.CrateAction.Null)
+                        {
+                            plugin.CrateMain.RemovePrimedPlayer(n);
+                            if (actiontype == CrateMain.CrateAction.AddKeyToCrate)
+                            {
+                                var cd = x.CD;
+                                var hand = p.Inventory.GetItemInHand();
+                                var ki = plugin.CrateMain.getKeyIDFromKey(hand);
+                                if (ki != null) cd.KeyItems.Add(ki);
+                                x.CD = cd;
+                                plugin.CrateMain.CrateChestLocations[x.Location] = x;
+                                var s = new CrateConfirmWindow(MainForm.Crate_Confirm_Key_Assign,
+                                    "Crate - Keep on Adding KEY ASSSING? ");
+//                        s.on
+                                p.SendForm(s);
+                            }
+                            else if (actiontype == CrateMain.CrateAction.DelCrate)
+                            {
+                                x.delete();
+                                e.SetCancelled(false);
+                            }
+                            else if (actiontype == CrateMain.CrateAction.ViewCrateItems)
+                            {
+                                p.showFormWindow(new AdminCrateViewItemsWindow(x));
+                            }
+                            else if (actiontype == CrateMain.CrateAction.AddItemToCrate)
+                            {
+                                var cd = x.CD;
+                                var hand = p.Inventory.GetItemInHand();
+                                cd.PossibleItems.Add(new ItemChanceData(hand, 100, hand.Count));
+                                var s = new CrateConfirmWindow(MainForm.Crate_Confirm_Add,
+                                    "Crate - Keep on Adding? ");
+                                p.showFormWindow(s);
+                            }
+                            else if (actiontype == CrateMain.CrateAction.AddCrate)
+                            {
+                                plugin.CrateMain.addCrate((CorePlayer) p, b.Coordinates);
+                                var s = new CrateConfirmWindow(MainForm.Crate_Confirm_ADD_Crate,
+                                    "Crate - Keep on Adding Crates? ");
+//                        s.on
+                                p.showFormWindow(s);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"ERROR!!!! ACTION TYPE IS {actiontype}");
+                            }
+                        }
+                        else
+                        {
+                            //Check Key
+                            var hand = p.Inventory.GetItemInHand();
+                            if (!CrateMain.isItemKey(hand))
+                            {
+                                //TODO CHECK CRATE KEY ID
+                                p.SendMessage("Error! Item is not a valid Crate Key!");
+                                return;
+                            }
+
+                            if (x.checkKey(hand))
+                            {
+                                //Valid Key & Take it
+                                var pi = p.Inventory;
+                                var i = pi.GetItemInHand();
+                                i.Count--;
+                                if (i.Count == 0) i = new ItemAir();
+                                pi.setItemInHand(i);
+                                CyberCoreMain.GetInstance().CrateMain.showCrate(b.Coordinates, p);
+                                CyberCoreMain.GetInstance().CrateMain.rollCrate(b.Coordinates, p);
+                            }
+                            else
+                            {
+                                p.SendMessage("Error! Key was invalid!");
+                            }
+                        }
                     }
+                }
+
+                if (e.Block.Id == new Chest().Id)
+                    foreach (var v in plugin.CrateMain.CrateChestLocations.Keys)
+                        if (2 > e.Block.Coordinates.DistanceTo(v))
+                        {
+                            e.SetCancelled(true);
+                            ((Player) e.Source)?.SendMessage("error! CHEST BLOCKING!");
+                        }
+            }
         }
 
 
@@ -782,19 +993,19 @@ namespace CyberCore
         {
             // String Msg = (String) plugin.MainConfig.get("Leave-Message");
             // eeee.setQuitMessage(Msg.replace("{player}", eeee.getPlayer().getName()));
-            
-            CorePlayer p = (CorePlayer)eeee.Player;
+
+            CorePlayer p = (CorePlayer) eeee.Player;
             CorePlayerData.SaveToFile(new CorePlayerData(p));
-            if (p  != null)
+            if (p != null)
             {
-                if ( p.getPlayerClass() != null) plugin.ClassFactory.save(p);
+                if (p.getPlayerClass() != null) plugin.ClassFactory.save(p);
                 if (p.EPD != null)
                 {
                     p.EPD.upload();
                 }
                 else
                 {
-                    CyberCoreMain.Log.Error("Could not save EPD For Player"+p.getName());
+                    CyberCoreMain.Log.Error("Could not save EPD For Player" + p.getName());
                 }
             }
         }

@@ -101,7 +101,7 @@ namespace CyberCore.Manager.Crate
         public CrateKeyData toConfig()
         {
             
-
+            if(ItemKey.ExtraData == null)ItemKey.ExtraData = new NbtCompound();
             String fnt = "";
             var a = new NbtFile();
             a.BigEndian = false;

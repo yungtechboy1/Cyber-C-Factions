@@ -157,11 +157,11 @@ namespace CyberCore.Utils.Data
 
         private void SaveHomes(CorePlayer p)
         {
-                Plugin.SQL.Insert($"DELETE FROM `PlayerHomes` WHERE `owneruuid` LIKE '{p.ClientUuid}'");
+                Plugin.SQL.Insert($"DELETE FROM `PlayerHomes` WHERE `owneruuid` LIKE '{p.ClientUuid}';");
                 foreach (Faction.HomeData h in p.HD)
                 {
                     Plugin.SQL.Insert(
-                        $"INSERT INTO `PlayerHomes` VALUES (0,'{h.getName()}',{h.getX()},{h.getY()},{h.getZ()} ,'{h.getL().LevelName}','{h.getOwnerName()}','{h.getOwnerUUID()}')");
+                        $"INSERT INTO `PlayerHomes` VALUES (0,'{h.getName()}',{h.getX()},{h.getY()},{h.getZ()} ,'{h.getL().LevelId}','{h.getOwnerName()}','{h.getOwnerUUID()}');");
                 }
 
                 CyberCoreMain.Log.Info("Homes saved for " + p.getName());

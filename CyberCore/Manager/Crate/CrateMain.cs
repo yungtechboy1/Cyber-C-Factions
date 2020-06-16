@@ -4,6 +4,7 @@ using System.Numerics;
 using CyberCore.Manager.Crate.Data;
 using CyberCore.Manager.Crate.Form;
 using CyberCore.Manager.FloatingText;
+using CyberCore.Manager.Forms;
 using CyberCore.Utils;
 using CyberCore.Utils.Data;
 using log4net;
@@ -20,7 +21,7 @@ namespace CyberCore.Manager.Crate
     {
         public void DeleteCrate(Vector3 k)
         {
-            CrateChests.Remove(k);
+            CrateChestLocations.Remove(k);
         }
 
         public void addPrimedPlayer(string n, CrateAction a)
@@ -46,6 +47,7 @@ namespace CyberCore.Manager.Crate
             CrateAction actiontype;
             if (PrimedPlayer.TryGetValue(n, out actiontype))
             {
+                if (actiontype == null) return CrateAction.Null;
                 return actiontype;
             }
             else
@@ -58,7 +60,7 @@ namespace CyberCore.Manager.Crate
         public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(CrateMain));
         public static readonly String CK = "CrateKey";
         private Dictionary<String, CrateAction> PrimedPlayer = new Dictionary<string, CrateAction>();
-        public Dictionary<Vector3, CrateObject> CrateChests = new Dictionary<Vector3, CrateObject>();
+        public Dictionary<Vector3, CrateObject> CrateChestLocations = new Dictionary<Vector3, CrateObject>();
         public Dictionary<String, KeyData> CrateKeys = new Dictionary<String, KeyData>();
 
         public Dictionary<String, long> eids = new Dictionary<String, long>();
@@ -68,9 +70,9 @@ namespace CyberCore.Manager.Crate
         public CyberCoreMain CCM;
 
         //    public Dictionary<String, FloatingTextParticle> cratetxt = new Dictionary<>();
-        private Dictionary<String, CrateData> CrateMap = new Dictionary<String, CrateData>();
-        private CrateLocationDataManager crateLocationDataManager;
-        private CrateDataManager crateDataManager;
+        private Dictionary<String, CrateData> CrateData = new Dictionary<String, CrateData>();
+        private CrateLocationDataManager CrateChestLocationsDataManager;
+        private CrateDataManager CrateDataManager;
         private CrateKeyDataManager crateKeyDataManager;
 
 
@@ -80,9 +82,29 @@ namespace CyberCore.Manager.Crate
             CCM = ccm;
             Log.Info("Loaded Crates System");
 //        CCM.getServer().getPluginManager().registerEvents(new CrateListener(CCM), CCM);
-            crateLocationDataManager = new CrateLocationDataManager(ccm, "crate-locations.yml");
-            crateKeyDataManager = new CrateKeyDataManager(ccm, "crate-keys.yml");
-            crateDataManager = new CrateDataManager(ccm, "crate-data.yml");
+            CrateChestLocationsDataManager =
+                new CrateLocationDataManager(ccm).load<CrateLocationDataManager>();
+            crateKeyDataManager = new CrateKeyDataManager(ccm).load<CrateKeyDataManager>();
+            CrateDataManager = new CrateDataManager(ccm).load<CrateDataManager>();
+            if (CrateChestLocationsDataManager == null)
+            {
+                CrateChestLocationsDataManager = new CrateLocationDataManager(ccm);
+                Log.Error("ERROR WITH CL");
+            }
+
+            if (crateKeyDataManager == null)
+            {
+                
+                Log.Error("ERROR WITH CK");
+                crateKeyDataManager = new CrateKeyDataManager(ccm);
+            }
+
+            if (CrateDataManager == null)
+            {
+                
+                Log.Error("ERROR WITH CD");
+                CrateDataManager = new CrateDataManager(ccm);
+            }
 //        c.save();
 //        ck.save();
 //        cc.save();
@@ -92,66 +114,78 @@ namespace CyberCore.Manager.Crate
 
         public void init()
         {
-            Log.Error("Was LOG ||" + crateDataManager.Data);
+            Log.Error("Was LOG ||" + CrateDataManager.Data);
+            Log.Error("Was LOG ||" + CrateDataManager.Data.Count);
             Log.Error("Was LOG ||" + "Loading Crate Data");
             //TODO CDD
             // Dictionary<String, Object> cdd = cd.Data;
-            if (crateDataManager.Data.Count == 0)
+            if (CrateDataManager.Data.Count == 0)
             {
                 CrateData ccd = new CrateData("DEFAULT");
-                crateDataManager.Data["DEFAULT"] = ccd;
-                CrateMap[ccd.Key] = ccd;
-                crateDataManager.save();
+                CrateDataManager.Data[ccd.Key] = ccd;
+                CrateDataManager.save();
+                CrateData[ccd.Key] = ccd;
+                Log.Info("Creating Default Crate");
             }
             else
             {
-                Log.Error("Was LOG ||" + "CD SIZE +=====>>" + crateDataManager.Data.Count);
-                foreach (CrateData o in crateDataManager.Data.Values)
+                Log.Error("Was LOG ||" + "CD SIZE +=====>>" + CrateDataManager.Data.Count);
+                foreach (CrateData o in CrateDataManager.Data.Values)
                 {
                     Log.Info("[CRATE] Crate " + o.Name + " | " + o.Key + " Has been loaded!");
-                    CrateMap[o.Key] = o;
+                    CrateData[o.Key] = o;
                 }
             }
 
             Log.Error("Was LOG ||" + "Loading Crate Locations");
-            if (crateLocationDataManager.Data.Count != 0)
+            if (CrateChestLocationsDataManager.LocData.Count != 0)
             {
-                Log.Error("Was LOG ||" + "CL SIZE +=====>>" + crateLocationDataManager.Data.Count);
-                foreach (CrateLocationData o in crateLocationDataManager.Data.Values)
+                try
                 {
-                    String nme = o.Key;
-                    CrateData cda = CrateMap[nme];
-                    var po = new PlayerLocation(o.X, o.Y, o.Z);
-                    var lvl = o.Level;
-                    var l = CCM.getAPI().LevelManager.GetLevel(null, lvl);
-                    if (l == null)
+                    Log.Error("Was LOG ||" + "CL SIZE +=====>>" + CrateChestLocationsDataManager.LocData.Count);
+                    foreach (CrateLocationData o in CrateChestLocationsDataManager.LocData.Values)
                     {
-                        Log.Error("WHOAAAA!! Error Loading Crate Loaction LEVEL For " + nme);
-                        continue;
-                    }
+                        String nme = o.Key;
+                        CrateData cda = CrateData[nme];
+                        var po = new PlayerLocation(o.X, o.Y, o.Z);
+                        var lvl = o.Level;
+                        var l = CCM.getAPI().LevelManager.GetLevel(null, lvl);
+                        if (l == null)
+                        {
+                            Log.Error("WHOAAAA!! Error Loading Crate Loaction LEVEL For " + nme);
+                            continue;
+                        }
 
-                    CrateObject co = new CrateObject(po, l, cda);
-                    if (cda != null)
-                    {
-                        CrateChests[po.ToVector3()] = co;
-                    }
-                    else
-                    {
-                        Log.Error("Error Loading Chest Crate Location! " + nme);
+                        if (l.GetBlock(po).Id != new Chest().Id)
+                        {
+                            Log.Error("CHEST AT "+po+" Was not able to be loaded because Block was not a chest any mroe!");
+                            continue;
+                        }
+                        CrateObject co = new CrateObject(po, l, cda);
+                        if (cda != null)
+                        {
+                            
+                            CrateChestLocations[po.ToVector3()] = co;
+                        }
+                        else
+                        {
+                            Log.Error("Error Loading Chest Crate Location! " + nme);
+                        }
                     }
                 }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+                CrateChestLocationsDataManager.LocData.Clear();
             }
 
 
             Log.Error("Was LOG ||" + "Loading Crate Keys");
-            Dictionary<string, CrateKeyData> CKC = crateKeyDataManager.Data;
-            if (crateLocationDataManager.Data.Count == 0)
+            if (crateKeyDataManager.KeyData.Count != 0)
             {
-            }
-            else
-            {
-                Log.Error("Was LOG ||" + "CKC SIZE +=====>>" + CKC.Count);
-                foreach (CrateKeyData o in crateKeyDataManager.Data.Values)
+                // Log.Error("Was LOG ||" + "CKC SIZE +=====>>" + CKC.Count);
+                foreach (CrateKeyData o in crateKeyDataManager.KeyData.Values)
                 {
                     String nme = o.Key_Name;
                     if (nme == null || nme.Length == 0)
@@ -164,6 +198,8 @@ namespace CyberCore.Manager.Crate
                     Log.Info("Loaded " + nme + " Crate Key!");
                 }
             }
+            Log.Error("WasDDDDDDDDDDDDDDDDDDD LOG ||" + "Loading Crate Keys");
+
         }
 
         public static bool isItemKey(Item i)
@@ -180,84 +216,110 @@ namespace CyberCore.Manager.Crate
 
         public Dictionary<String, CrateData> getCrateMap()
         {
-            return CrateMap;
+            return CrateData;
         }
 
         public void save()
         {
-            Dictionary<String, Object> config = new Dictionary<String, Object>();
-            foreach (var o in CrateMap.Values)
+            foreach (CrateData o in CrateData.Values)
             {
-                crateDataManager.Data.Add(o.Key, o);
+                CrateDataManager.Data[o.Key] =  o;
+                Console.WriteLine("Saving crateDataManager"+o.Key);
             }
 
-            Dictionary<String, Object> config2 = new Dictionary<String, Object>();
-            foreach (CrateObject o in CrateChests.Values)
+
+            foreach (CrateObject o in CrateChestLocations.Values)
             {
-                crateLocationDataManager.Data[o.Location.ToVector3().ToString()] = o.toConfig();
+                CrateChestLocationsDataManager.LocData[o.Location.ToVector3().toCyberString()] = o.toLocConfig();
+                Console.WriteLine("Saving crateLocationDataManager");
             }
+
 
             foreach (KeyData o in CrateKeys.Values)
             {
-                crateKeyDataManager.Data[o.getKey_Name()] = o.toConfig();
+                crateKeyDataManager.KeyData[o.getKey_Name()] = o.toConfig();
+                Console.WriteLine("Saving crateKeyDataManager");
             }
 
-            crateDataManager.save();
-            crateLocationDataManager.save();
-            crateKeyDataManager.save();
+            Console.WriteLine("Savingggggggg");
+
+            if (CrateDataManager.Data != null)
+            {
+                CrateDataManager.save();
+                Console.WriteLine("Savingggggggg1|" + CrateDataManager.Data.Count + "||" + CrateData.Count);
+            }
+
+            if (CrateChestLocationsDataManager.LocData != null)
+            {
+                CrateChestLocationsDataManager.save();
+                Console.WriteLine("Savingggggggg2");
+                Console.WriteLine($"DATATAAAAA {CrateChestLocations.Count} || {CrateChestLocationsDataManager.LocData.Count}");
+            }
+            
+            if (crateKeyDataManager.KeyData != null)
+            {
+                crateKeyDataManager.save();
+                Console.WriteLine("Savingggggggg3");
+            }
         }
 
 
+        public void CreateCrate(Vector3 v, Level l, CrateData cd)
+        {
+            CrateChestLocations[v] = new CrateObject(new PlayerLocation(v) + new Vector3(.5f, .5f, .5f), l, cd);
+        }
+
         public void reload()
         {
-            crateLocationDataManager = new CrateLocationDataManager(CCM, "crate-locations.yml");
-            crateKeyDataManager = new CrateKeyDataManager(CCM, "crate-keys.yml");
-            crateDataManager = new CrateDataManager(CCM, "crate-data.yml");
+            CrateChestLocationsDataManager = new CrateLocationDataManager(CCM);
+            crateKeyDataManager = new CrateKeyDataManager(CCM);
+            CrateDataManager = new CrateDataManager(CCM);
         }
 
 
         public void addCrate(CorePlayer cp, Vector3 v)
         {
             cp.showFormWindow(new AdminCrateChooseCrateWindow(v, this));
+
 //        CrateLocations.put(Vector3toKey(v),)
         }
 
-        public void createCrate(String name, Vector3 b, Level l)
-        {
-            var a = new CrateData(name);
-            var aa = new CrateLocationData();
-            aa.Key = name;
-            aa.Level = l.LevelName;
-            aa.X = (int) b.X;
-            aa.Y = (int) b.Y;
-            aa.Z = (int) b.Z;
-            aa.ItemNBTTag = "DefaultKey";
-            crateLocationDataManager.Data[name] = aa;
-            crateLocationDataManager.save();
+        // public void createCrate(String name, Vector3 b, Level l)
+        // {
+        //     var a = new CrateData(name);
+        //     var aa = new CrateLocationData();
+        //     aa.Key = name;
+        //     aa.Level = l.LevelName;
+        //     aa.X = (int) b.X;
+        //     aa.Y = (int) b.Y;
+        //     aa.Z = (int) b.Z;
+        //     aa.ItemNBTTag = "DefaultKey";
+        //     crateLocationDataManager.LocData[name] = aa;
+        //     crateLocationDataManager.save();
+        //
+        //     // Dictionary<String, Object> data = new Dictionary<>();
+        //     // data.put("Item-NBT-Tag", "DefaultKey");
+        //     // String save = b.getX() + ":" + b.getY() + ":" + b.getZ();
+        //     // data.put("Loc", save);
+        //     // data.put("Prizes", new List<String>());
+        //     // crateLocationDataManager.set(name, data);
+        //     // crateLocationDataManager.save();
+        // }
 
-            // Dictionary<String, Object> data = new Dictionary<>();
-            // data.put("Item-NBT-Tag", "DefaultKey");
-            // String save = b.getX() + ":" + b.getY() + ":" + b.getZ();
-            // data.put("Loc", save);
-            // data.put("Prizes", new List<String>());
-            // crateLocationDataManager.set(name, data);
-            // crateLocationDataManager.save();
-        }
-
-        public bool isKey(String cratename, Item i)
-        {
-            CrateLocationData data = crateLocationDataManager.Data[cratename];
-            return i.getNamedTag().Contains(data.ItemNBTTag);
-        }
+        // public bool isKey(String cratename, Item i)
+        // {
+        //     CrateLocationData data = CrateChestLocationsDataManager.LocData[cratename];
+        //     return i.getNamedTag().Contains(data.ItemNBTTag);
+        // }
 
         public CrateObject isCrate(Block b)
         {
-            return isCrate(b.Coordinates);
+            return isCrate(b.Coordinates.Floor());
         }
 
         public CrateObject isCrate(Vector3 b)
         {
-            if (CrateChests.ContainsKey(b)) return CrateChests[b];
+            if (CrateChestLocations.ContainsKey(b)) return CrateChestLocations[b];
             return null;
         }
 

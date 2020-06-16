@@ -33,7 +33,7 @@ namespace CyberCore
             Dictionary<String, BlockCoordinates> pos1 = new Dictionary<string, BlockCoordinates>();
 
         Dictionary<String, BlockCoordinates> pos2 = new Dictionary<string, BlockCoordinates>();
-        public static CyberCoreMain CCM;
+        public CyberCoreMain CCM;
 
         public CyberCommands(CyberCoreMain cyberCoreMain)
         {
@@ -322,6 +322,9 @@ namespace CyberCore
         } [Command(Name = "crate create", Description = "Add a new Item to a Crate")]
         public void CC(CorePlayer p)
         {
+            
+            p.SendMessage(
+                $"{ChatColors.Green}[CRATE] Please hold the item and tap a chest to add the item to the crate.");
             CCM.CrateMain.addPrimedPlayer(p.getName().ToLower(), CrateMain.CrateAction.AddCrate);
             p.SendMessage(
                 $"{ChatColors.Green}[CRATE] Please tap a chest to convert to a crate.");
