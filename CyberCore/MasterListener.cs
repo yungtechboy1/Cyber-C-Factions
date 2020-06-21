@@ -111,11 +111,11 @@ namespace CyberCore
             var n = e.Player.getName().ToLower();
             var b = e.Player.Level.GetBlock(e.Coordinates);
             Console.Write("INTERACT EVENT" + e.Player.Username + " ||| biD" + b.Id);
-            if (b.Id == new Chest().Id)
+            if (b.Id == 54) //CHEST
             {
                 var x = CyberCoreMain.GetInstance().CrateMain.isCrate(b);
                 CrateMain.CrateAction actiontype = plugin.CrateMain.TryGetCrateActionValue(n);
-Console.WriteLine("IM AM GOUNG TO THIS 1    1111111 || "+actiontype);
+                Console.WriteLine("IM AM GOUNG TO THIS 1    1111111 || " + actiontype);
                 plugin.CrateMain.RemovePrimedPlayer(n);
                 if (x != null)
                 {
@@ -123,10 +123,12 @@ Console.WriteLine("IM AM GOUNG TO THIS 1    1111111 || "+actiontype);
 
                     e.SetCancelled(true);
                     if (actiontype != CrateMain.CrateAction.Null)
-                    {Console.WriteLine("IM AM GOUNG TO THIS 1    333333333333");
+                    {
+                        Console.WriteLine("IM AM GOUNG TO THIS 1    333333333333");
 
                         if (actiontype == CrateMain.CrateAction.AddKeyToCrate)
-                        {Console.WriteLine("IM AM GOUNG TO THIS 1    44444444444");
+                        {
+                            Console.WriteLine("IM AM GOUNG TO THIS 1    44444444444");
 
                             var cd = x.CD;
                             var hand = e.Player.Inventory.GetItemInHand();
@@ -172,7 +174,8 @@ Console.WriteLine("IM AM GOUNG TO THIS 1    1111111 || "+actiontype);
                     }
                     else
                     {
-                        e.Player.SendMessage($"{ChatColors.Red}[CRATE] Error! You were suppose to tap a block"+actiontype);
+                        e.Player.SendMessage($"{ChatColors.Red}[CRATE] Error! You were suppose to tap a block" +
+                                             actiontype);
                         //Check Key
                         var hand = e.Player.Inventory.GetItemInHand();
                         if (!CrateMain.isItemKey(hand))
@@ -208,6 +211,11 @@ Console.WriteLine("IM AM GOUNG TO THIS 1    1111111 || "+actiontype);
 // //                        s.on
 //                     ce.Player.showFormWindow(s);
                 }
+                else
+                {
+                    var c = (Chest) b;
+                    ((CorePlayer)e.Player)?.CyberOpenInventory(b.Coordinates);
+                }
             }
         }
 
@@ -227,7 +235,7 @@ Console.WriteLine("IM AM GOUNG TO THIS 1    1111111 || "+actiontype);
                     if (x != null)
                     {
                         CrateMain.CrateAction actiontype = plugin.CrateMain.TryGetCrateActionValue(n);
-                        Console.WriteLine("DA PLAYER CLICK WITH AT"+actiontype);
+                        Console.WriteLine("DA PLAYER CLICK WITH AT" + actiontype);
                         e.SetCancelled(true);
                         if (actiontype != CrateMain.CrateAction.Null)
                         {
@@ -1009,6 +1017,15 @@ Console.WriteLine("IM AM GOUNG TO THIS 1    1111111 || "+actiontype);
                 }
             }
         }
+        //
+        // [PacketHandler, Send]
+        // public Packet HandleOutgoing(McpeContainerOpen packet)
+        //    {
+        //        packet.
+        //        
+        //
+        // 	return packet; // Send
+        // }
 
 
         //@TODO Check for BadWords!

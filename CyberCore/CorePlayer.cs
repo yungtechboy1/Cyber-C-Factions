@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -142,7 +143,41 @@ namespace CyberCore
 
         public CorePlayer(MiNetServer server, IPEndPoint endPoint, OpenApi api) : base(server, endPoint, api)
         {
+            
         }
+        //
+        // private void InvChange(Player player, Inventory inventory, byte slot, Item itemStack)
+        // {
+        //
+        // }
+        //
+
+        // public override void HandleMcpeContainerClose(McpeContainerClose message)
+        // {
+        //     base.HandleMcpeContainerClose(message);
+        //     
+        //     _openInventory = 
+        // }
+        //
+        // openinv
+        
+        
+        
+        public void CyberOpenInventory(BlockCoordinates inventoryCoord)
+        {
+         OpenInventory(inventoryCoord);
+         Inventory inventory = Level.InventoryManager.GetInventory(inventoryCoord);
+         if (!inventory.Observers.Contains(this))
+         {
+             return;
+         }
+        
+         var c = Level.GetChunk(inventoryCoord);
+         c.IsDirty = true;
+         c.NeedSave = true;
+         SendMessage("THIS CHUNK WILL NOW BE SAVED!!!");
+        }
+
 
         public bool ShowHTP { get; set; }
 

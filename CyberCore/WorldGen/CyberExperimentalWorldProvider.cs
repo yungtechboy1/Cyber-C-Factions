@@ -7,6 +7,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using CyberCore.Utils;
 using CyberCore.WorldGen.Biomes;
 using fNbt;
 using log4net;
@@ -394,7 +395,7 @@ namespace CyberCore.WorldGen
                         var task = new Task(delegate
                         {
                             var chunks = region.Value;
-                            foreach (var chunkColumn in chunks)
+                            foreach (ChunkColumn chunkColumn in chunks)
                                 if (chunkColumn != null && chunkColumn.NeedSave)
                                 {
                                     SaveChunk(chunkColumn, BasePath);
@@ -783,12 +784,31 @@ namespace CyberCore.WorldGen
             levelTag.Add(entitiesTag);
 
             var blockEntitiesTag = new NbtList("TileEntities", NbtTagType.Compound);
+            int n = 0;
             foreach (var blockEntityNbt in chunk.BlockEntities.Values)
             {
+                Console.WriteLine($"Saving BlockEntity {n} NAME:{blockEntityNbt.Names}");
+                if (blockEntityNbt.Contains("Items"))
+                {
+                    foreach (var v in (NbtList) blockEntityNbt["Items"])
+                    {
+                        if (((NbtInt) v["id"]).Value == 0)
+                        {
+                            Console.WriteLine($"{n}AIR|");
+                        }
+                        else
+                            Console.WriteLine($"#{n} ||||| {v["slot"]} = {v["id"]} | {v["Damage"]} | {v["Count"]}");
+                    }
+                }
+
+                Console.WriteLine("+==================================+");
+
                 var nbtClone = (NbtCompound) blockEntityNbt.Clone();
                 nbtClone.Name = null;
                 blockEntitiesTag.Add(nbtClone);
+                n++;
             }
+            Console.WriteLine( chunk.BlockEntities.Count+" <<<<<<<<<<<<<<<< DA BE SIZE");
 
             levelTag.Add(blockEntitiesTag);
 
@@ -897,7 +917,8 @@ namespace CyberCore.WorldGen
                     }
 
                     // This will turn into a full chunk column
-                    foreach (NbtTag sectionTag in sections) ReadSection(sectionTag, chunk, /*!isPocketEdition*/false);
+                    foreach (NbtTag sectionTag in sections)
+                        ReadSection(sectionTag, chunk, /*!isPocketEdition*/false);
 
                     var entities = dataTag["Entities"] as NbtList;
 
@@ -931,7 +952,8 @@ namespace CyberCore.WorldGen
 
                                 if (blockEntity is Sign)
                                 {
-                                    if (Log.IsDebugEnabled) Log.Debug($"Loaded sign block entity\n{blockEntityTag}");
+                                    if (Log.IsDebugEnabled)
+                                        Log.Debug($"Loaded sign block entity\n{blockEntityTag}");
                                     // Remove the JSON stuff and get the text out of extra data.
                                     // TAG_String("Text2"): "{"extra":["10c a loaf!"],"text":""}"
                                     CleanSignText(blockEntityTag, "Text1");
@@ -1053,7 +1075,8 @@ namespace CyberCore.WorldGen
             arr[idx] |= (byte) (value << ((index & 1) * 4));
         }
 
-        static CyberExperimentalWorldProvider()
+        static CyberExperimentalWorldProvider
+            ()
         {
             var air = new Mapper(0, (i, b) => 0);
             Convert = new Dictionary<int, Tuple<int, Func<int, byte, byte>>>
@@ -1119,7 +1142,8 @@ namespace CyberCore.WorldGen
                 {158, new NoDataMapper(125)}, // minecraft:dropper
                 {166, new NoDataMapper(95)}, // minecraft:barrier		=> (Invisible Bedrock)
                 {
-                    167, new Mapper(167, (i, b) => (byte) (((b & 0x04) << 1) | ((b & 0x08) >> 1) | (3 - (b & 0x03))))
+                    167,
+                    new Mapper(167, (i, b) => (byte) (((b & 0x04) << 1) | ((b & 0x08) >> 1) | (3 - (b & 0x03))))
                 }, //Fix iron_trapdoor
                 {188, new Mapper(85, (i, b) => 1)}, // Spruce Fence		=> Fence
                 {189, new Mapper(85, (i, b) => 2)}, // Birch Fence		=> Fence
