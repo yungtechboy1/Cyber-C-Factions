@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using AStarNavigator;
+using CyberCore.Utils;
 using MiNET.Net;
+using Mono.Cecil.Cil;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Bcpg;
 
 namespace CyberCore
 {
@@ -50,8 +54,16 @@ namespace CyberCore
             Cash = 1000;
             CreditLimit = 1000;
             CreditScore = 350; //Out of 1000
+            BankTime = CyberUtils.getTick();
             UUIDS.Add(p.ClientUuid.ToString());
         }
+
+        /**
+         * GetTick
+         */
+        public long BankTime;
+
+        public int BankBal = 0;
 
         public PlayerSettingsData(Dictionary<string, object> a)
         {
@@ -63,6 +75,11 @@ namespace CyberCore
             CreditScore = (int) a["CreditScore"];
             CreditLimit = (int) a["CreditLimit"];
             UsedCredit = (int) a["UsedCredit"];
+            BankBal = (int) a["BankBal"];
+            var ld = (string) a["LoanData"];
+            if (ld != "{}" && !ld.IsNullOrEmpty())
+                LoanData = JsonConvert.DeserializeObject<LoanDataObject>((string) a["LoanData"]);
+            BankTime = (long) a["BankTime"];
             if ((string) a["PlayerWarnings"] != "[]")
                 PlayerWarnings = JsonConvert.DeserializeObject<List<PlayerWarningEvent>>((string) a["PlayerWarnings"]);
             if ((string) a["PlayerTempBans"] != "[]")
@@ -161,6 +178,93 @@ namespace CyberCore
         {
             if (getCash() < price) return false;
             Cash -= price;
+            return true;
+        }
+
+        public bool addToBank(int price)
+        {
+            if (getCash() < price) return false;
+            Cash -= price;
+            BankBal += price;
+            return true;
+        }
+
+        public bool takeFromBank(int price)
+        {
+            if (BankBal < price) return false;
+            BankBal -= price;
+            Cash += price;
+            return true;
+        }
+
+        public int getMaxLoanAmount()
+        {
+            if (LoanData != null) return 0;
+            return (int) Math.Floor(Math.Pow(CreditScore, 2) * (1 / 100f));
+        }
+
+        public int getDailyLoanPayment()
+        {
+            if (LoanData == null)
+            {
+                return 0;
+            }
+
+            int la = LoanData.LoanAmount;
+            int a = la / 12;
+            if (a < 50)
+            {
+                return LoanData.CurrentLoanAmount;
+            }
+
+            return a;
+        }
+
+        // public int LoanAmount = 0;
+        public LoanDataObject LoanData = null;
+
+        public class LoanDataObject
+        {
+            public int LoanAmount;
+            public int CurrentLoanAmount;
+            public long LoanTime;
+            public int PaymentsMade;
+            public int MissedPayments;
+
+            public LoanDataObject(int loanAmount, long loanTime = -1, int paymentsMade = 0, int currentLoanAmount = -1, int missedPayments = 0)
+            {
+                if (loanTime == -1) loanTime = CyberUtils.getTick();
+                if (currentLoanAmount == -1) currentLoanAmount = loanAmount;
+
+                LoanAmount = loanAmount;
+                LoanTime = loanTime+(20*60*60*24);//Adds 1 Day
+                PaymentsMade = paymentsMade;
+                MissedPayments = missedPayments;
+            }
+
+            public string toJson()
+            {
+                return JsonConvert.SerializeObject(this);
+            }
+        }
+
+        public bool takeLoanFromBank(int price)
+        {
+            int max = getMaxLoanAmount();
+            if (max < price) return false;
+            LoanData = new LoanDataObject(price);
+            Cash += price;
+            return true;
+        }
+        public bool repayLoanFromBak(int price)
+        {
+            if (!takeCash(price))return false;
+            LoanData.CurrentLoanAmount -= price;
+            
+            int max = getMaxLoanAmount();
+            if (max < price) return false;
+            LoanData = new LoanDataObject(price);
+            Cash += price;
             return true;
         }
     }

@@ -26,8 +26,7 @@ namespace CyberCore.Manager.Crate.Form
                     var a = p.Inventory.GetItemSlot(p.Inventory.GetItemInHand());
                     if (a != -1)
                     {
-                        p.Inventory.Slots[a] = hand;
-                        p.Inventory.SendSetSlot(a);
+                        p.Inventory.SetInventorySlot(a,hand);
                     }
                     else
                     {

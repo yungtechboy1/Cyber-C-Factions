@@ -10,6 +10,6 @@ namespace CyberCore.Manager.Crate.Data
         public int Y { get; set; }
         public int Z { get; set; }
         public String Level { get; set; }
-        public String ItemNBTTag { get; set; }
+        // public String ItemNBTTag { get; set; }
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using CyberCore.Manager.AuctionHouse;
@@ -13,8 +15,10 @@ using CyberCore.Manager.Rank;
 using CyberCore.Manager.Warp;
 using CyberCore.Utils;
 using CyberCore.Utils.Data;
+using CyberCore.WorldGen;
 using log4net;
 using MiNET;
+using MiNET.Blocks;
 using MiNET.Net;
 using MiNET.Plugins;
 using MiNET.Sounds;
@@ -24,12 +28,13 @@ using OpenAPI;
 using OpenAPI.Events;
 using OpenAPI.Player;
 using OpenAPI.Plugins;
+using OpenAPI.World;
 
 namespace CyberCore
 {
     [OpenPluginInfo(Name = "CyberCore", Description = "CyberTech++ Core Plugin", Author = "YungTechBoy1",
         Version = "1.0.0.0-PA", Website = "CyberTechpp.com")]
-    public class CyberCoreMain : OpenPlugin , IStartup
+    public class CyberCoreMain : OpenPlugin
     {
         // public Dictionary<String, Object> PlayerIdentification = new Dictionary<string, object>();
         public static ILog Log { get; private set; } = LogManager.GetLogger(typeof(CyberCoreMain));
@@ -53,14 +58,13 @@ namespace CyberCore
         public ServerSqlite ServerSQL { get; set; }
         public WarpManager WarpManager { get; set; }
         public ClassFactory ClassFactory { get; set; }
-        public RankFactory RF { get; set; }
+        public RankFactory RankFactory { get; set; }
         public UserSQL UserSQL { get; set; }
         public CrateMain CrateMain { get; set; }
         
-        public FloatingTextFactory FTM { get; set; }
+        public FloatingTextFactory FTM { get; private set; }
 
-        public List<CyberFloatingTextContainer> SavedFloatingText { get; set; } =
-            new List<CyberFloatingTextContainer>();
+        
 
 
         public bool isInSpawn(CorePlayer p)
@@ -85,12 +89,13 @@ namespace CyberCore
             instance = this;
             SQL = new SqlManager(this);
             WebSQL = new SqlManager(this,"web");
-            RF = new RankFactory(this);
+            RankFactory = new RankFactory(this);
             ServerSQL = new ServerSqlite(this);
             UserSQL = new UserSQL(this);
             ClassFactory = new ClassFactory(this);
             WarpManager = new WarpManager(this);
             // MasterConfig = new Dictionary<String,Object>() {ConfigFileName = "MasterConfig.conf"};
+          
         }
 
         private void RegisterCommands()
@@ -170,12 +175,11 @@ namespace CyberCore
 
         public override void Enabled(OpenApi api)
         {
+              
+           
+            
+            
             API = api;
-            api.LevelManager.LevelCreated += delegate(object? sender, LevelEventArgs args)
-            {
-                var a = args.Level;
-                a.SpawnPoint = new PlayerLocation(0,2,0);
-            };
             API.OpenServer.PlayerFactory = new CyberPlayerFactory(API);
             Console.WriteLine("================Executed startup successfully. Replaced identity managment=========================");
             Log.Info("================Executed startup successfully. Replaced identity managment=========================");
@@ -191,6 +195,52 @@ namespace CyberCore
             api.CommandManager.LoadCommands(new FactionCommands(FM.FFactory));
             api.CommandManager.LoadCommands(new CyberCommands(this));
 
+            
+            FTM = new FloatingTextFactory(this);
+            
+            // CyberExperimentalWorldProvider generator;
+
+            /* generator = new MiNET.Worlds.SuperflatGenerator(Dimension.Overworld)
+             {
+                 BlockLayers = new List<Block>()
+                 {
+                     new Bedrock(),
+                     new Dirt(),
+                     new Dirt(),
+                     new Grass()
+                 }
+             };*/
+            new BiomeManager();
+            Log.Info("DA LENGTH OF TITTTTTTTTTT IS :"+AnvilWorldProvider.Convert.Count);
+            // generator = new CyberExperimentalWorldProvider(Config.GetProperty("Level.Seed", 123123));
+            //
+            // Log.Info("DA LENGTH OF TITTTTTTTTTT IS :"+AnvilWorldProvider.Convert.Count);
+            // var a = new AnvilWorldProvider(Config.GetProperty("PCWorldFolder", "CyberWorld"))
+            // {
+            //     MissingChunkProvider = generator
+            // };
+            
+            Log.Info("DA LENGTH OF TITTTTTTTTTT IS :"+AnvilWorldProvider.Convert.Count);
+            var level = new OpenLevel(api, api.LevelManager, Dimension.Overworld.ToString(),
+                new CyberExperimentalWorldProvider(123123,Config.GetProperty("PCWorldFolder", "CyberWorld")),  api.LevelManager.EntityManager, GameMode.Creative,
+                Difficulty.Peaceful);
+            // generator.Level = level;
+            // ((CyberExperimentalWorldProvider) ((AnvilWorldProvider)((WrappedCachedWorldProvider) level.WorldProvider).CachingWorldProvider).MissingChunkProvider).Level = level;
+
+            api.LevelManager.LoadLevel(level);
+            api.LevelManager.SetDefaultLevel(level);
+            
+            
+            CrateMain = new CrateMain(this);
+            
+            // api.LevelManager.LevelCreated += delegate(object? sender, LevelEventArgs args)
+            // {
+            //     var a = args.Level;
+            //     a.SpawnPoint = new PlayerLocation(0,2,0);
+            // };
+            // var l = getAPI().LevelManager.GetDefaultLevel();
+            // FloatingTextFactory.AddFloatingText(new CyberFloatingTextContainer(FTM,l.SpawnPoint+new PlayerLocation(0,2,0) ,l));
+
 
             // getServer().PlayerFactory.PlayerCreated += (sender, args) =>
             // {
@@ -202,6 +252,29 @@ namespace CyberCore
             // };
 
 
+            //Fix BlockFactory
+
+            Console.WriteLine("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA =>>");
+            var w = new Wood();
+            w.WoodType = "birch";
+            int id = BlockFactory.BlockPalette[w.GetRuntimeId()].Id;
+            Console.WriteLine($"{w.GetRuntimeId()} |||||| {id}");
+            string directoryName = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            string path = Path.Combine(directoryName, "Blocks");
+            path = Path.Combine(path, "blockstates.json");
+            using (StreamReader file = File.OpenText(path))
+            {
+                string json = file.ReadToEnd();
+                BlockFactory.BlockPalette = BlockPalette.FromJson(json);
+                BlockFactory.BlockStates = new HashSet<BlockStateContainer>(BlockFactory.BlockPalette);
+            }
+            
+            w = new Wood();
+            w.WoodType = "birch";
+            id = BlockFactory.BlockPalette[w.GetRuntimeId()].Id;
+            Console.WriteLine($"{w.GetRuntimeId()} || {id}");
+            
+            
 
             // api.CommandManager.RegisterPermissionChecker(new FactionPermissionChecker(FactionManager));
             //
@@ -224,14 +297,10 @@ namespace CyberCore
 
         public override void Disabled(OpenApi api)
         {
+        
+            CrateMain.save();
+            FTM.stop();
             // api.CommandManager.UnloadCommands(CommandsClass);
-        }
-
-        public void HelloWorld(string message, [CallerMemberName] string memberName = "")
-        {
-            StackTrace stackTrace = new StackTrace();
-            var method = stackTrace.GetFrame(1).GetMethod();
-            Log.Info($"[TestPlugin] {(method.DeclaringType.FullName)}.{method.Name}: " + message);
         }
 
         public CorePlayer getPlayer(Player name)
@@ -290,12 +359,12 @@ namespace CyberCore
             return amt;
         }
         public Rank2 getPlayerRank(String p) {
-            return RF.getPlayerRank(p);
+            return RankFactory.getPlayerRank(p);
         }
 
 
         public Rank2 getPlayerRank(CorePlayer p) {
-            return RF.getPlayerRank(p);
+            return RankFactory.getPlayerRank(p);
         }
     }
 }

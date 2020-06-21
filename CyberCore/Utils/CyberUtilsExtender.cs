@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using System.Numerics;
 using CyberCore.Manager.Factions;
 using fNbt;
 using JetBrains.Annotations;
@@ -10,6 +11,7 @@ using MiNET.Effects;
 using MiNET.Items;
 using MiNET.UI;
 using MiNET.Utils;
+using MiNET.Worlds;
 using OpenAPI.Player;
 using Org.BouncyCastle.Asn1.X509;
 using Target = MiNET.Plugins.Target;
@@ -192,6 +194,7 @@ namespace CyberCore.Utils
         
         public static NbtCompound putString(this NbtCompound i, string k, string v)
         {
+            if(i.Contains(k))i.Remove(k);
             i.Add(new NbtString(k, v));
             return i;
         }
@@ -254,6 +257,7 @@ namespace CyberCore.Utils
 
         public static NbtCompound getNamedTag(this Item i)
         {
+            if(i.ExtraData == null)i.ExtraData = new NbtCompound();
             return i.ExtraData;
         }
 
@@ -325,26 +329,46 @@ namespace CyberCore.Utils
 
         public static Item setCustomName(this Item i, string name)
         {
-            if (string.IsNullOrEmpty(name)) return i.clearCustomName();
+            try
+            {
+                if (string.IsNullOrEmpty(name)) return i.clearCustomName();
 
-            var tag = i.ExtraData;
-            if (tag.Contains("display") && tag.Get("display") is NbtCompound)
-            {
-                var a = tag.Get<NbtCompound>("display");
-                a.Add(new NbtString("Name", name));
-            }
-            else
-            {
-                tag.Add(new NbtCompound("display")
+                var tag = i.ExtraData;
+                if (tag != null && tag.Contains("display") && tag.Get("display") is NbtCompound)
                 {
-                    new NbtString("Name", name)
-                });
+                    var a = tag.Get<NbtCompound>("display");
+                    a.Add(new NbtString("Name", name));
+                }
+                else
+                {
+                    tag.Add(new NbtCompound("display")
+                    {
+                        new NbtString("Name", name)
+                    });
+                }
+
+                i.ExtraData = tag;
+            }
+            catch (Exception e)
+            {
+                CyberCoreMain.Log.Error(e);
             }
 
-            i.ExtraData = tag;
             return i;
         }
 
+
+        public static string toCyberString(this Vector3 i)
+        {
+            return i.X + "|" + i.Y + "|" + i.Z;
+        }
+        public static Vector3? V3FromCyberString(this string i)
+        {
+
+            String[] s = i.Split("|");
+            if (s.Length != 3) return null;
+            return new Vector3(int.Parse(s[0]),int.Parse(s[1]),int.Parse(s[2]));
+        }
 
         public static string getName(this Item i)
         {
@@ -356,6 +380,36 @@ namespace CyberCore.Utils
         //     return f;
         // }
 
+        public static PlayerLocation Safe(this PlayerLocation l, Level lvl)
+        {
+            int h = lvl.GetHeight(new BlockCoordinates(l));
+            l.Y = h + 1;
+            for (int i = 255 ; i > 0; i--)
+            {
+                var bid = lvl.GetBlock( new Vector3(l.X,i,l.Z));
+                if (bid.Id != 0)
+                {
+                    l.Y = i + 1;
+                    break;
+                }
+            }
+            return l;
+        }
+        public static BlockCoordinates Safe(this BlockCoordinates l, Level lvl)
+        {
+            int h = lvl.GetHeight(l);
+            l.Y = h + 1;
+            return l;
+        }
+        public static BlockCoordinates Floor(this BlockCoordinates l)
+        {
+            return new BlockCoordinates((int)Math.Floor((double) l.X),(int)Math.Floor((double) l.Y),(int)Math.Floor((double) l.Z));
+        }
+
+        public static void GetBlockIdCyber(this SubChunk c, int x,int y, int z)
+        {
+            
+        }
         public static void showFormWindow(this OpenPlayer p, Form f)
         {
             p.SendForm(f);
@@ -402,7 +456,7 @@ namespace CyberCore.Utils
                 {
                     if (checkNBT)
                     {
-                        if (i.ExtraData.NBTToString().equalsIgnoreCase(item.ExtraData.NBTToString())) return index;
+                        if (item.ExtraData != null && i.ExtraData != null &&i.ExtraData.NBTToString().equalsIgnoreCase(item.ExtraData.NBTToString())) return index;
                         return -1;
                     }
 

@@ -57,7 +57,7 @@ namespace CyberCore.Manager.Warp
                 return;
             }
 
-            if (!l.LevelName.equalsIgnoreCase(p.Level.LevelName))
+            if (!l.LevelId.equalsIgnoreCase(p.Level.LevelId))
             {
                 p.Level.RemovePlayer(p);
                 l.AddPlayer(p,true);

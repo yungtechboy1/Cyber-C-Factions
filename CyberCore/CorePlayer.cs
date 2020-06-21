@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -133,16 +134,50 @@ namespace CyberCore
         protected Dictionary<BuffType, float> lastdata = null;
         private long uct;
         private bool uw;
-        private long WaitingForTP = -1;
+        private long WFTP_TPTick = -1;
 
-        public int WaitingForTPCancelDistance = 2;
-        public bool WaitingForTPEffects;
-        private PlayerLocation WaitingForTPPos;
-        private PlayerLocation WaitingForTPStartPos;
+        public int WFTP_CancelDistance = 2;
+        public bool WFTP_Effects;
+        private PlayerLocation WFTP_ToPlayerLocation;
+        private PlayerLocation WFTP_StartPos;
 
         public CorePlayer(MiNetServer server, IPEndPoint endPoint, OpenApi api) : base(server, endPoint, api)
         {
+            
         }
+        //
+        // private void InvChange(Player player, Inventory inventory, byte slot, Item itemStack)
+        // {
+        //
+        // }
+        //
+
+        // public override void HandleMcpeContainerClose(McpeContainerClose message)
+        // {
+        //     base.HandleMcpeContainerClose(message);
+        //     
+        //     _openInventory = 
+        // }
+        //
+        // openinv
+        
+        
+        
+        public void CyberOpenInventory(BlockCoordinates inventoryCoord)
+        {
+         OpenInventory(inventoryCoord);
+         Inventory inventory = Level.InventoryManager.GetInventory(inventoryCoord);
+         if (!inventory.Observers.Contains(this))
+         {
+             return;
+         }
+        
+         var c = Level.GetChunk(inventoryCoord);
+         c.IsDirty = true;
+         c.NeedSave = true;
+         SendMessage("THIS CHUNK WILL NOW BE SAVED!!!");
+        }
+
 
         public bool ShowHTP { get; set; }
 
@@ -560,12 +595,6 @@ namespace CyberCore
             }
         }
 
-        public PlayerSettingsData GetData()
-        {
-            if (getSettingsData() == null) CreateDefaultSettingsData(this);
-            return getSettingsData();
-        }
-
 
         public override void Disconnect(string reason, bool sendDisconnect = true)
         {
@@ -623,20 +652,18 @@ namespace CyberCore
         public void TakeMoney(double price)
         {
             if (price <= 0) return;
-            var ped = GetData();
-            ped.takeCash(price);
+            getPlayerSettingsData().takeCash(price);
         }
 
         public void AddMoney(double price)
         {
             if (price <= 0) return;
-            var ped = GetData();
-            ped.addCash(price);
+            getPlayerSettingsData().addCash(price);
         }
 
         public double getMoney()
         {
-            return GetData().getCash();
+            return getPlayerSettingsData().getCash();
         }
 
 
@@ -1882,7 +1909,7 @@ namespace CyberCore
                         {
                             if (isReadyToTeleport())
                             {
-                                Teleport(WaitingForTPPos);
+                                Teleport(WFTP_ToPlayerLocation.Safe(Level));
                                 clearWaitingForTP();
                             }
                         }
@@ -2158,7 +2185,7 @@ namespace CyberCore
             HD.Add(homeData);
         }
 
-        public PlayerSettingsData getSettingsData()
+        private PlayerSettingsData getSettingsData()
         {
             return SettingsData;
         }
@@ -2177,8 +2204,8 @@ namespace CyberCore
 
         public PlayerSettingsData getPlayerSettingsData()
         {
-            if (PlayerSettingsData == null) CreateDefaultSettingsData(this);
-            return PlayerSettingsData;
+            if (getSettingsData() == null) CreateDefaultSettingsData(this);
+            return getSettingsData();
         }
 
         public void StartTeleport(CorePlayer pl, int delay)
@@ -2364,9 +2391,9 @@ namespace CyberCore
 
         public bool isReadyToTeleport()
         {
-            if (!(WaitingForTP == -1) && WaitingForTPPos != null)
+            if (!(WFTP_TPTick == -1) && WFTP_ToPlayerLocation != null)
             {
-                return CyberUtils.getTick() >= WaitingForTP;
+                return CyberUtils.getTick() >= WFTP_TPTick;
             }
 
             return false;
@@ -2374,12 +2401,12 @@ namespace CyberCore
 
         public bool isWaitingForTeleport()
         {
-            if (!(WaitingForTP == -1) && WaitingForTPPos != null)
+            if (!(WFTP_TPTick == -1) && WFTP_ToPlayerLocation != null)
             {
-                if (WaitingForTPStartPos != null &&
-                    WaitingForTPStartPos.DistanceTo(WaitingForTPPos) > WaitingForTPCancelDistance)
+                if (WFTP_StartPos != null &&
+                    WFTP_StartPos.DistanceTo(KnownPosition) > WFTP_CancelDistance)
                 {
-                    SendMessage("Error! You moved too much so your Teleport request was canceled");
+                    SendMessage(ChatColors.Red + "Error! You moved too much so your Teleport request was canceled");
                     clearWaitingForTP();
                     return false;
                 }
@@ -2393,8 +2420,8 @@ namespace CyberCore
 
         public void clearWaitingForTP()
         {
-            WaitingForTP = -1;
-            WaitingForTPPos = null;
+            WFTP_TPTick = -1;
+            WFTP_ToPlayerLocation = null;
         }
 
         public bool delayTeleport(Vector3 pos, int secs = 5, bool giveeffects = true, int canceltpdistance = 2)
@@ -2405,20 +2432,20 @@ namespace CyberCore
                 return false;
             }
 
-            WaitingForTP = CyberUtils.getTick() + (secs * 20);
-            WaitingForTPStartPos = (PlayerLocation) KnownPosition.Clone();
-            WaitingForTPPos = new PlayerLocation(pos);
-            WaitingForTPEffects = giveeffects;
-            WaitingForTPCancelDistance = canceltpdistance;
-            if (WaitingForTPEffects)
+            WFTP_TPTick = CyberUtils.getTick() + (secs * 20);
+            WFTP_StartPos = (PlayerLocation) KnownPosition.Clone();
+            WFTP_ToPlayerLocation = new PlayerLocation(pos);
+            WFTP_Effects = giveeffects;
+            WFTP_CancelDistance = canceltpdistance;
+            if (WFTP_Effects)
             {
                 SetEffect(new Nausea()
                 {
-                    Duration = 20 * 5
+                    Duration = 20 * (secs + 3)
                 });
                 SetEffect(new Slowness()
                 {
-                    Duration = 20 * 5
+                    Duration = 20 * (secs + 3)
                 });
             }
 
