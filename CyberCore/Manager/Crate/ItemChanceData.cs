@@ -18,9 +18,10 @@ namespace CyberCore.Manager.Crate
 
         public ItemChanceData(Item i, int chance, int max_Count)
         {
+            Console.WriteLine("ITEMCHANCEDATA FOR ITEM ID:"+i.Id);
             ItemID = i.Id;
             ItemMeta = i.Metadata;
-            NBT = i.ExtraData.NBTToString();
+            if(i.ExtraData != null)NBT = i.ExtraData.NBTToString();
             Max_Count = max_Count;
             Chance = chance;
         }
@@ -47,10 +48,14 @@ namespace CyberCore.Manager.Crate
             {
                 i = ItemFactory.GetItem(ItemID, ItemMeta, 1);
                 // i.ExtraData = 
-                var v = NBTToByte();
-                var a = new NbtFile();
-                a.LoadFromBuffer(v,0,v.Length,NbtCompression.ZLib);
-                i.ExtraData = (NbtCompound) a.RootTag;
+                if (!NBT.IsNullOrEmpty())
+                {
+                    var v = NBTToByte();
+                    var a = new NbtFile();
+                    a.LoadFromBuffer(v, 0, v.Length, NbtCompression.ZLib);
+                    i.ExtraData = (NbtCompound) a.RootTag;
+                }
+
                 // i = Item.get(ItemID, ItemMeta, 1, NBTToByte());
                 CyberCoreMain.Log.Error("ICD >>> NAME>>" + i.getName());
             }

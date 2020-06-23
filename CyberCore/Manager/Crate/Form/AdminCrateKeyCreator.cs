@@ -19,19 +19,16 @@ namespace CyberCore.Manager.Crate.Form
                     Item hand = (Item) p.Inventory.GetItemInHand().Clone();
                     String k1 = getInputResponse(0);
                     String k3 = getInputResponse(2);
-                    if(!string.IsNullOrEmpty(k1) )hand.setCustomName(k1);
+                    if (!string.IsNullOrEmpty(k1))
+                    {
+                        Console.WriteLine("Key Set NNAME"+k1);
+                        hand.setCustomName(k1);
+                    }
                     String k2 = getInputResponse(1);
                     hand.getNamedTag().putString(CrateMain.CK,k2);
                     CyberCoreMain.GetInstance().CrateMain.addCrateKey(new KeyData(hand,k3,k1));
                     var a = p.Inventory.GetItemSlot(p.Inventory.GetItemInHand());
-                    if (a != -1)
-                    {
-                        p.Inventory.SetInventorySlot(a,hand);
-                    }
-                    else
-                    {
-                        CyberCoreMain.Log.Error("WHOA HUGE ERROR IN Admin Crae Key Creator!!!");
-                    }
+                        p.Inventory.SetInventorySlot(p.Inventory.InHandSlot,hand);
                 }
                 else
                 {

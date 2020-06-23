@@ -32,7 +32,7 @@ namespace CyberCore.Manager.Crate.Form
                 foreach (ItemChanceData z in co.CD.PossibleItems)
                 {
                     Item c = z.getItem();
-                    addButton(("Key: " + k + " ID: " + c.Id + " | " + c.getName() + " | " +
+                    addButton(("Key: " + k + " ID: " + (int)c.Id + " | " + c.getName() + " | " +
                                String.Join(",", c.getLore())),delegate(Player player, SimpleForm form) { player.SendForm(new AdminCrateViewItemsWindow(_CO,k)); });
                     k++;
                 }

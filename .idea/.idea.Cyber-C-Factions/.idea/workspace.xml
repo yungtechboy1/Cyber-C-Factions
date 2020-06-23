@@ -4,7 +4,12 @@
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/CorePlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CorePlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/KeyData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/KeyData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateKeyCreator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateKeyCreator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateViewItemsWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateViewItemsWindow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/ItemChanceData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/ItemChanceData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/MasterListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/MasterListener.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -13,7 +18,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="149" />
+    <option name="totalTimeSeconds" value="8148" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="DatabaseView">
@@ -507,8 +512,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Windows/FactionInboxWindow.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Windows/InboxMessageWindow.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/MessageFormater.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionPermSettings.cs" />
@@ -532,7 +535,6 @@
         <option value="$PROJECT_DIR$/CyberCore/CyberCommands.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/Data/UserSQL.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateKeyCreator.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/CrateDataManager.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateChooseCrateWindow.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/Data/JsonDataManager.cs" />
@@ -542,7 +544,6 @@
         <option value="$PROJECT_DIR$/CyberCore/Utils/Data/ServerSqlite.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/CrateLocationData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/CrateKeyDataManager.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/KeyData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/OpenExperimentalWorldProvider.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateObject.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateMain.cs" />
@@ -551,13 +552,17 @@
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/CyberWorldProvider.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestBiome.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CyberCore.csproj" />
         <option value="$PROJECT_DIR$/CyberCore/CorePlayer.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/MasterListener.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/ItemChanceData.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateViewItemsWindow.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Form/AdminCrateKeyCreator.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/MasterListener.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/KeyData.cs" />
       </list>
     </option>
   </component>
@@ -718,7 +723,8 @@
       <workItem from="1592331804942" duration="9524000" />
       <workItem from="1592374358042" duration="1343000" />
       <workItem from="1592511701120" duration="9759000" />
-      <workItem from="1592775932676" duration="730000" />
+      <workItem from="1592775932676" duration="872000" />
+      <workItem from="1592777066457" duration="14561000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />
@@ -779,22 +785,22 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1380" y="100" width="1080" height="840" key="DiffContextDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1585436853249" />
-    <state width="1220" height="259" key="GridCell.Tab.0.bottom" timestamp="1592579490959">
+    <state width="1220" height="259" key="GridCell.Tab.0.bottom" timestamp="1592889058322">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1220" height="259" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1592579490959" />
-    <state width="1220" height="259" key="GridCell.Tab.0.center" timestamp="1592579490958">
+    <state width="1220" height="259" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1592889058322" />
+    <state width="1220" height="259" key="GridCell.Tab.0.center" timestamp="1592889058322">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1220" height="259" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1592579490958" />
-    <state width="1220" height="259" key="GridCell.Tab.0.left" timestamp="1592579490957">
+    <state width="1220" height="259" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1592889058322" />
+    <state width="1220" height="259" key="GridCell.Tab.0.left" timestamp="1592889058322">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1220" height="259" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1592579490957" />
-    <state width="1220" height="259" key="GridCell.Tab.0.right" timestamp="1592579490958">
+    <state width="1220" height="259" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1592889058322" />
+    <state width="1220" height="259" key="GridCell.Tab.0.right" timestamp="1592889058322">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1220" height="259" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1592579490958" />
+    <state width="1220" height="259" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1592889058322" />
     <state width="1220" height="322" key="GridCell.Tab.1.bottom" timestamp="1590301279358">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -959,23 +965,23 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="0" y="0" width="1280" height="1040" key="dock-window-9/0.0.2560.1040@0.0.2560.1040" timestamp="1585690906761" />
-    <state x="1447" y="216" width="936" height="752" key="find.popup" timestamp="1592195399842">
+    <state x="1447" y="216" width="936" height="752" key="find.popup" timestamp="1592850146461">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="662" y="144" width="692" height="752" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584584090275" />
     <state x="-1854" y="155" width="738" height="804" key="find.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584417682271" />
-    <state x="1447" y="216" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1592195399842" />
+    <state x="1447" y="216" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1592850146461" />
     <state x="1461" y="244" width="672" height="677" key="run.anything.popup" timestamp="1590803056409">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1096" y="244" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584581008542" />
     <state x="1461" y="244" width="672" height="677" key="run.anything.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590803056409" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1592512940621">
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1592849848869">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="644" y="227" width="672" height="635" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1584582826054" />
     <state x="-1873" y="244" width="672" height="678" key="search.everywhere.popup/0.0.2048.1112/-2560.1.2048.1112@-2560.1.2048.1112" timestamp="1584412852759" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1592512940621" />
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1592849848869" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1005,19 +1011,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/CyberCore/MasterListener.cs</url>
-          <line>119</line>
-          <properties documentPath="$PROJECT_DIR$/CyberCore/MasterListener.cs" initialLine="119">
-            <startOffsets>
-              <option value="5001" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5015" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

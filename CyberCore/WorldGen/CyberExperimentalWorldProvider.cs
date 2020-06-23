@@ -371,14 +371,17 @@ namespace CyberCore.WorldGen
 
         public int SaveChunks()
         {
+            int a = 0;
             // return 0;
             var count = 0;
             try
             {
                 lock (_chunkCache)
                 {
+                    Console.WriteLine(a++);
                     SaveLevelInfo(new LevelInfo());
 
+                    Console.WriteLine(a++);
                     var regions = new Dictionary<Tuple<int, int>, List<ChunkColumn>>();
                     foreach (var chunkColumn in _chunkCache.OrderBy(pair => pair.Key.X >> 5)
                         .ThenBy(pair => pair.Key.Z >> 5))
@@ -389,6 +392,7 @@ namespace CyberCore.WorldGen
                         regions[regionKey].Add(chunkColumn.Value);
                     }
 
+                    Console.WriteLine(a++);
                     var tasks = new List<Task>();
                     foreach (var region in regions.OrderBy(pair => pair.Key.Item1).ThenBy(pair => pair.Key.Item2))
                     {
@@ -406,8 +410,10 @@ namespace CyberCore.WorldGen
                         tasks.Add(task);
                     }
 
+                    Console.WriteLine(a++);
                     Task.WaitAll(tasks.ToArray());
 
+                    Console.WriteLine(a++);
                     //foreach (var chunkColumn in _chunkCache.OrderBy(pair => pair.Key.X >> 5).ThenBy(pair => pair.Key.Z >> 5))
                     //{
                     //	if (chunkColumn.Value != null && chunkColumn.Value.NeedSave)
@@ -420,11 +426,13 @@ namespace CyberCore.WorldGen
             }
             catch (Exception e)
             {
-                Log.Error("saving 333 chunks", e);
+                Log.Error("saving 0 chunks", e);
             }
 
             return count;
         }
+
+        static object readwrite = new object();
 
         public static void SaveChunk(ChunkColumn chunk, string basePath)
         {
@@ -448,95 +456,97 @@ namespace CyberCore.WorldGen
                 string.Format(@"region{2}r.{0}.{1}.mca", rx, rz, Path.DirectorySeparatorChar));
 
             Log.Debug($"Save chunk X={chunk.X}, Z={chunk.Z} to {filePath}");
-
-            if (!File.Exists(filePath))
+            lock (readwrite)
             {
-                // Make sure directory exist
-                Directory.CreateDirectory(Path.Combine(basePath, "region"));
-
-                // Create empty region file
-                using (var regionFile = File.Open(filePath, FileMode.CreateNew))
+                if (!File.Exists(filePath))
                 {
-                    var buffer = new byte[8192];
-                    regionFile.Write(buffer, 0, buffer.Length);
+                    // Make sure directory exist
+                    Directory.CreateDirectory(Path.Combine(basePath, "region"));
+
+                    // Create empty region file
+                    using (var regionFile = File.Open(filePath, FileMode.CreateNew))
+                    {
+                        var buffer = new byte[8192];
+                        regionFile.Write(buffer, 0, buffer.Length);
+                    }
                 }
-            }
 
-            var testTime = new Stopwatch();
+                var testTime = new Stopwatch();
 
-            using (var regionFile = File.Open(filePath, FileMode.Open))
-            {
-                // Region files begin with an 8kiB header containing information about which chunks are present in the region file, 
-                // when they were last updated, and where they can be found.
-                var buffer = new byte[8192];
-                regionFile.Read(buffer, 0, buffer.Length);
-
-                var xi = coordinates.X % width;
-                if (xi < 0) xi += 32;
-                var zi = coordinates.Z % depth;
-                if (zi < 0) zi += 32;
-                var tableOffset = (xi + zi * width) * 4;
-
-                regionFile.Seek(tableOffset, SeekOrigin.Begin);
-
-                // Location information for a chunk consists of four bytes split into two fields: the first three bytes are a(big - endian) offset in 4KiB sectors 
-                // from the start of the file, and a remaining byte which gives the length of the chunk(also in 4KiB sectors, rounded up).
-                var offsetBuffer = new byte[4];
-                regionFile.Read(offsetBuffer, 0, 3);
-                Array.Reverse(offsetBuffer);
-                var offset = BitConverter.ToInt32(offsetBuffer, 0) << 4;
-                var sectorCount = (byte) regionFile.ReadByte();
-
-                testTime.Restart(); // RESTART
-
-                // Seriaize NBT to get lenght
-                var nbt = CreateNbtFromChunkColumn(chunk);
-
-                testTime.Stop();
-
-                var nbtBuf = nbt.SaveToBuffer(NbtCompression.ZLib);
-                var nbtLength = nbtBuf.Length;
-                var nbtSectorCount = (byte) Math.Ceiling(nbtLength / 4096d);
-
-                // Don't write yet, just use the lenght
-
-                if (offset == 0 || sectorCount == 0 || nbtSectorCount > sectorCount)
+                using (var regionFile = File.Open(filePath, FileMode.Open))
                 {
-                    if (Log.IsDebugEnabled)
-                        if (sectorCount != 0)
-                            Log.Warn(
-                                $"Creating new sectors for this chunk even tho it existed. Old sector count={sectorCount}, new sector count={nbtSectorCount} (lenght={nbtLength})");
+                    // Region files begin with an 8kiB header containing information about which chunks are present in the region file, 
+                    // when they were last updated, and where they can be found.
+                    var buffer = new byte[8192];
+                    regionFile.Read(buffer, 0, buffer.Length);
 
-                    regionFile.Seek(0, SeekOrigin.End);
-                    offset = (int) ((int) regionFile.Position & 0xfffffff0);
+                    var xi = coordinates.X % width;
+                    if (xi < 0) xi += 32;
+                    var zi = coordinates.Z % depth;
+                    if (zi < 0) zi += 32;
+                    var tableOffset = (xi + zi * width) * 4;
 
                     regionFile.Seek(tableOffset, SeekOrigin.Begin);
 
-                    var bytes = BitConverter.GetBytes(offset >> 4);
-                    Array.Reverse(bytes);
-                    regionFile.Write(bytes, 0, 3);
-                    regionFile.WriteByte(nbtSectorCount);
+                    // Location information for a chunk consists of four bytes split into two fields: the first three bytes are a(big - endian) offset in 4KiB sectors 
+                    // from the start of the file, and a remaining byte which gives the length of the chunk(also in 4KiB sectors, rounded up).
+                    var offsetBuffer = new byte[4];
+                    regionFile.Read(offsetBuffer, 0, 3);
+                    Array.Reverse(offsetBuffer);
+                    var offset = BitConverter.ToInt32(offsetBuffer, 0) << 4;
+                    var sectorCount = (byte) regionFile.ReadByte();
+
+                    testTime.Restart(); // RESTART
+
+                    // Seriaize NBT to get lenght
+                    var nbt = CreateNbtFromChunkColumn(chunk);
+
+                    testTime.Stop();
+
+                    var nbtBuf = nbt.SaveToBuffer(NbtCompression.ZLib);
+                    var nbtLength = nbtBuf.Length;
+                    var nbtSectorCount = (byte) Math.Ceiling(nbtLength / 4096d);
+
+                    // Don't write yet, just use the lenght
+
+                    if (offset == 0 || sectorCount == 0 || nbtSectorCount > sectorCount)
+                    {
+                        if (Log.IsDebugEnabled)
+                            if (sectorCount != 0)
+                                Log.Warn(
+                                    $"Creating new sectors for this chunk even tho it existed. Old sector count={sectorCount}, new sector count={nbtSectorCount} (lenght={nbtLength})");
+
+                        regionFile.Seek(0, SeekOrigin.End);
+                        offset = (int) ((int) regionFile.Position & 0xfffffff0);
+
+                        regionFile.Seek(tableOffset, SeekOrigin.Begin);
+
+                        var bytes = BitConverter.GetBytes(offset >> 4);
+                        Array.Reverse(bytes);
+                        regionFile.Write(bytes, 0, 3);
+                        regionFile.WriteByte(nbtSectorCount);
+                    }
+
+                    var lenghtBytes = BitConverter.GetBytes(nbtLength + 1);
+                    Array.Reverse(lenghtBytes);
+
+                    regionFile.Seek(offset, SeekOrigin.Begin);
+                    regionFile.Write(lenghtBytes, 0, 4); // Lenght
+                    regionFile.WriteByte(0x02); // Compression mode zlib
+
+                    regionFile.Write(nbtBuf, 0, nbtBuf.Length);
+
+                    int reminder;
+                    Math.DivRem(nbtLength + 4, 4096, out reminder);
+
+                    var padding = new byte[4096 - reminder];
+                    if (padding.Length > 0) regionFile.Write(padding, 0, padding.Length);
+
+                    testTime.Stop(); // STOP
+
+                    Log.Warn(
+                        $"Took {time.ElapsedMilliseconds}ms to save. And {testTime.ElapsedMilliseconds}ms to generate bytes from NBT");
                 }
-
-                var lenghtBytes = BitConverter.GetBytes(nbtLength + 1);
-                Array.Reverse(lenghtBytes);
-
-                regionFile.Seek(offset, SeekOrigin.Begin);
-                regionFile.Write(lenghtBytes, 0, 4); // Lenght
-                regionFile.WriteByte(0x02); // Compression mode zlib
-
-                regionFile.Write(nbtBuf, 0, nbtBuf.Length);
-
-                int reminder;
-                Math.DivRem(nbtLength + 4, 4096, out reminder);
-
-                var padding = new byte[4096 - reminder];
-                if (padding.Length > 0) regionFile.Write(padding, 0, padding.Length);
-
-                testTime.Stop(); // STOP
-
-                Log.Warn(
-                    $"Took {time.ElapsedMilliseconds}ms to save. And {testTime.ElapsedMilliseconds}ms to generate bytes from NBT");
             }
         }
 
@@ -787,28 +797,31 @@ namespace CyberCore.WorldGen
             int n = 0;
             foreach (var blockEntityNbt in chunk.BlockEntities.Values)
             {
-                Console.WriteLine($"Saving BlockEntity {n} NAME:{blockEntityNbt.Names}");
-                if (blockEntityNbt.Contains("Items"))
-                {
-                    foreach (var v in (NbtList) blockEntityNbt["Items"])
-                    {
-                        if (((NbtInt) v["id"]).Value == 0)
-                        {
-                            Console.WriteLine($"{n}AIR|");
-                        }
-                        else
-                            Console.WriteLine($"#{n} ||||| {v["slot"]} = {v["id"]} | {v["Damage"]} | {v["Count"]}");
-                    }
-                }
-
-                Console.WriteLine("+==================================+");
+                // Console.WriteLine($"Saving BlockEntity {n} NAME:{blockEntityNbt.Names}");
+                // if (blockEntityNbt.Contains("Items"))
+                // {
+                //     foreach (var v in (NbtList) blockEntityNbt["Items"])
+                //     {
+                //         if (((NbtShort) v["id"]).Value == 0)
+                //         {
+                //             Console.WriteLine($"{n}AIR|");
+                //         }
+                //         else
+                //             Console.WriteLine($"#{n} ||||| {v["slot"]} = {v["id"]} | {v["Damage"]} | {v["Count"]}");
+                //
+                //         n++;
+                //     }
+                // }
+                //
+                // Console.WriteLine("+==================================+");
 
                 var nbtClone = (NbtCompound) blockEntityNbt.Clone();
                 nbtClone.Name = null;
                 blockEntitiesTag.Add(nbtClone);
                 n++;
             }
-            Console.WriteLine( chunk.BlockEntities.Count+" <<<<<<<<<<<<<<<< DA BE SIZE");
+
+            Console.WriteLine(chunk.BlockEntities.Count + " <<<<<<<<<<<<<<<< DA BE SIZE");
 
             levelTag.Add(blockEntitiesTag);
 
@@ -844,210 +857,225 @@ namespace CyberCore.WorldGen
                 var filePath = Path.Combine(basePath,
                     string.Format(@"region{2}r.{0}.{1}.mca", rx, rz, Path.DirectorySeparatorChar));
 
-                if (!File.Exists(filePath)) return null;
-
-                using (var regionFile = File.OpenRead(filePath))
+                lock (readwrite)
                 {
-                    var buffer = new byte[8192];
+                    if (!File.Exists(filePath)) return null;
 
-                    regionFile.Read(buffer, 0, 8192);
-
-                    var xi = coordinates.X % width;
-                    if (xi < 0) xi += 32;
-                    var zi = coordinates.Z % depth;
-                    if (zi < 0) zi += 32;
-                    var tableOffset = (xi + zi * width) * 4;
-
-                    regionFile.Seek(tableOffset, SeekOrigin.Begin);
-
-                    var offsetBuffer = new byte[4];
-                    regionFile.Read(offsetBuffer, 0, 3);
-                    Array.Reverse(offsetBuffer);
-                    var offset = BitConverter.ToInt32(offsetBuffer, 0) << 4;
-
-                    var bytes = BitConverter.GetBytes(offset >> 4);
-                    Array.Reverse(bytes);
-                    if (offset != 0 && offsetBuffer[0] != bytes[0] && offsetBuffer[1] != bytes[1] &&
-                        offsetBuffer[2] != bytes[2])
-                        throw new Exception(
-                            $"Not the same buffer\n{Packet.HexDump(offsetBuffer)}\n{Packet.HexDump(bytes)}");
-
-                    var length = regionFile.ReadByte();
-
-                    if (offset == 0 || length == 0)
+                    using (var regionFile = File.OpenRead(filePath))
                     {
-                        return null;
-                    }
+                        var buffer = new byte[8192];
 
-                    regionFile.Seek(offset, SeekOrigin.Begin);
-                    var waste = new byte[4];
-                    regionFile.Read(waste, 0, 4);
-                    var compressionMode = regionFile.ReadByte();
+                        regionFile.Read(buffer, 0, 8192);
 
-                    if (compressionMode != 0x02)
-                        throw new Exception(
-                            $"CX={coordinates.X}, CZ={coordinates.Z}, NBT wrong compression. Expected 0x02, got 0x{compressionMode:X2}. " +
-                            $"Offset={offset}, length={length}\n{Packet.HexDump(waste)}");
+                        var xi = coordinates.X % width;
+                        if (xi < 0) xi += 32;
+                        var zi = coordinates.Z % depth;
+                        if (zi < 0) zi += 32;
+                        var tableOffset = (xi + zi * width) * 4;
 
-                    var nbt = new NbtFile();
-                    nbt.LoadFromStream(regionFile, NbtCompression.ZLib);
+                        regionFile.Seek(tableOffset, SeekOrigin.Begin);
 
-                    var dataTag = (NbtCompound) nbt.RootTag["Level"];
+                        var offsetBuffer = new byte[4];
+                        regionFile.Read(offsetBuffer, 0, 3);
+                        Array.Reverse(offsetBuffer);
+                        var offset = BitConverter.ToInt32(offsetBuffer, 0) << 4;
 
-                    var isPocketEdition = false;
-                    if (dataTag.Contains("MCPE BID")) isPocketEdition = dataTag["MCPE BID"].ByteValue == 1;
+                        var bytes = BitConverter.GetBytes(offset >> 4);
+                        Array.Reverse(bytes);
+                        if (offset != 0 && offsetBuffer[0] != bytes[0] && offsetBuffer[1] != bytes[1] &&
+                            offsetBuffer[2] != bytes[2])
+                            throw new Exception(
+                                $"Not the same buffer\n{Packet.HexDump(offsetBuffer)}\n{Packet.HexDump(bytes)}");
 
-                    var sections = dataTag["Sections"] as NbtList;
+                        var length = regionFile.ReadByte();
 
-                    var chunk = new ChunkColumn
-                    {
-                        X = coordinates.X,
-                        Z = coordinates.Z,
-                        biomeId = dataTag["Biomes"].ByteArrayValue,
-                        IsAllAir = true
-                    };
-
-                    if (chunk.biomeId.Length > 256) throw new Exception();
-
-                    NbtTag heights = dataTag["HeightMap"] as NbtIntArray;
-                    if (heights != null)
-                    {
-                        var intHeights = heights.IntArrayValue;
-                        for (var i = 0; i < 256; i++) chunk.height[i] = (short) intHeights[i];
-                    }
-
-                    // This will turn into a full chunk column
-                    foreach (NbtTag sectionTag in sections)
-                        ReadSection(sectionTag, chunk, /*!isPocketEdition*/false);
-
-                    var entities = dataTag["Entities"] as NbtList;
-
-                    var blockEntities = dataTag["TileEntities"] as NbtList;
-                    if (blockEntities != null)
-                        foreach (var nbtTag in blockEntities)
+                        if (offset == 0 || length == 0)
                         {
-                            var blockEntityTag = (NbtCompound) nbtTag.Clone();
-                            var entityId = blockEntityTag["id"].StringValue;
-                            var x = blockEntityTag["x"].IntValue;
-                            var y = blockEntityTag["y"].IntValue;
-                            var z = blockEntityTag["z"].IntValue;
+                            return null;
+                        }
 
-                            if (entityId.StartsWith("minecraft:"))
+                        regionFile.Seek(offset, SeekOrigin.Begin);
+                        var waste = new byte[4];
+                        regionFile.Read(waste, 0, 4);
+                        var compressionMode = regionFile.ReadByte();
+
+                        if (compressionMode != 0x02)
+                            throw new Exception(
+                                $"CX={coordinates.X}, CZ={coordinates.Z}, NBT wrong compression. Expected 0x02, got 0x{compressionMode:X2}. " +
+                                $"Offset={offset}, length={length}\n{Packet.HexDump(waste)}");
+
+                        var nbt = new NbtFile();
+                        nbt.LoadFromStream(regionFile, NbtCompression.ZLib);
+
+                        var dataTag = (NbtCompound) nbt.RootTag["Level"];
+
+                        var isPocketEdition = false;
+                        if (dataTag.Contains("MCPE BID")) isPocketEdition = dataTag["MCPE BID"].ByteValue == 1;
+
+                        var sections = dataTag["Sections"] as NbtList;
+
+                        var chunk = new ChunkColumn
+                        {
+                            X = coordinates.X,
+                            Z = coordinates.Z,
+                            biomeId = dataTag["Biomes"].ByteArrayValue,
+                            IsAllAir = true
+                        };
+
+                        if (chunk.biomeId.Length > 256) throw new Exception();
+
+                        NbtTag heights = dataTag["HeightMap"] as NbtIntArray;
+                        if (heights != null)
+                        {
+                            var intHeights = heights.IntArrayValue;
+                            for (var i = 0; i < 256; i++) chunk.height[i] = (short) intHeights[i];
+                        }
+
+                        // This will turn into a full chunk column
+                        foreach (NbtTag sectionTag in sections)
+                            ReadSection(sectionTag, chunk, /*!isPocketEdition*/false);
+
+                        var entities = dataTag["Entities"] as NbtList;
+
+                        var blockEntities = dataTag["TileEntities"] as NbtList;
+                        if (blockEntities != null)
+                            foreach (var nbtTag in blockEntities)
                             {
-                                var id = entityId.Split(':')[1];
+                                var blockEntityTag = (NbtCompound) nbtTag.Clone();
+                                var entityId = blockEntityTag["id"].StringValue;
+                                var x = blockEntityTag["x"].IntValue;
+                                var y = blockEntityTag["y"].IntValue;
+                                var z = blockEntityTag["z"].IntValue;
 
-                                entityId = id.First().ToString().ToUpper() + id.Substring(1);
-                                if (entityId == "Flower_pot") entityId = "FlowerPot";
-                                else if (entityId == "Shulker_box") entityId = "ShulkerBox";
-
-                                blockEntityTag["id"] = new NbtString("id", entityId);
-                            }
-
-                            var blockEntity = BlockEntityFactory.GetBlockEntityById(entityId);
-
-                            if (blockEntity != null)
-                            {
-                                blockEntityTag.Name = string.Empty;
-                                blockEntity.Coordinates = new BlockCoordinates(x, y, z);
-
-                                if (blockEntity is Sign)
+                                if (entityId.StartsWith("minecraft:"))
                                 {
-                                    if (Log.IsDebugEnabled)
-                                        Log.Debug($"Loaded sign block entity\n{blockEntityTag}");
-                                    // Remove the JSON stuff and get the text out of extra data.
-                                    // TAG_String("Text2"): "{"extra":["10c a loaf!"],"text":""}"
-                                    CleanSignText(blockEntityTag, "Text1");
-                                    CleanSignText(blockEntityTag, "Text2");
-                                    CleanSignText(blockEntityTag, "Text3");
-                                    CleanSignText(blockEntityTag, "Text4");
+                                    var id = entityId.Split(':')[1];
+
+                                    entityId = id.First().ToString().ToUpper() + id.Substring(1);
+                                    if (entityId == "Flower_pot") entityId = "FlowerPot";
+                                    else if (entityId == "Shulker_box") entityId = "ShulkerBox";
+
+                                    blockEntityTag["id"] = new NbtString("id", entityId);
                                 }
-                                else if (blockEntity is ChestBlockEntity || blockEntity is ShulkerBoxBlockEntity)
+
+                                var blockEntity = BlockEntityFactory.GetBlockEntityById(entityId);
+
+                                if (blockEntity != null)
                                 {
-                                    if (blockEntity is ShulkerBoxBlockEntity)
+                                    blockEntityTag.Name = string.Empty;
+                                    blockEntity.Coordinates = new BlockCoordinates(x, y, z);
+
+                                    if (blockEntity is Sign)
                                     {
-                                        //var meta = chunk.GetMetadata(x & 0x0f, y, z & 0x0f);
-
-                                        //blockEntityTag["facing"] = new NbtByte("facing", (byte) (meta >> 4));
-
-                                        //chunk.SetBlock(x & 0x0f, y, z & 0x0f, 218,(byte) (meta - ((byte) (meta >> 4) << 4)));
+                                        if (Log.IsDebugEnabled)
+                                            Log.Debug($"Loaded sign block entity\n{blockEntityTag}");
+                                        // Remove the JSON stuff and get the text out of extra data.
+                                        // TAG_String("Text2"): "{"extra":["10c a loaf!"],"text":""}"
+                                        CleanSignText(blockEntityTag, "Text1");
+                                        CleanSignText(blockEntityTag, "Text2");
+                                        CleanSignText(blockEntityTag, "Text3");
+                                        CleanSignText(blockEntityTag, "Text4");
                                     }
-
-                                    var items = (NbtList) blockEntityTag["Items"];
-
-                                    if (items != null)
-                                        for (byte i = 0; i < items.Count; i++)
+                                    else if (blockEntity is ChestBlockEntity || blockEntity is ShulkerBoxBlockEntity)
+                                    {
+                                        Console.WriteLine("YEAHHHH CHESTBLOCK IS HERE");
+                                        if (blockEntity is ShulkerBoxBlockEntity)
                                         {
-                                            var item = (NbtCompound) items[i];
+                                            //var meta = chunk.GetMetadata(x & 0x0f, y, z & 0x0f);
 
-                                            var itemName = item["id"].StringValue;
-                                            if (itemName.StartsWith("minecraft:"))
-                                            {
-                                                var id = itemName.Split(':')[1];
+                                            //blockEntityTag["facing"] = new NbtByte("facing", (byte) (meta >> 4));
 
-                                                itemName = id.First().ToString().ToUpper() + id.Substring(1);
-                                            }
-
-                                            var itemId = ItemFactory.GetItemIdByName(itemName);
-                                            item.Remove("id");
-                                            item.Add(new NbtShort("id", itemId));
+                                            //chunk.SetBlock(x & 0x0f, y, z & 0x0f, 218,(byte) (meta - ((byte) (meta >> 4) << 4)));
                                         }
-                                }
-                                else if (blockEntity is BedBlockEntity)
-                                {
-                                    var color = blockEntityTag["color"];
-                                    blockEntityTag.Remove("color");
-                                    blockEntityTag.Add(color is NbtByte
-                                        ? color
-                                        : new NbtByte("color", (byte) color.IntValue));
-                                }
-                                else if (blockEntity is FlowerPotBlockEntity)
-                                {
-                                    var itemName = blockEntityTag["Item"].StringValue;
-                                    if (itemName.StartsWith("minecraft:"))
-                                    {
-                                        var id = itemName.Split(':')[1];
 
-                                        itemName = id.First().ToString().ToUpper() + id.Substring(1);
+                                        var items = (NbtList) blockEntityTag["Items"];
+
+                                        if (items != null)
+                                        {
+                                            Console.WriteLine($"YEAHHHH CHESTBLOCK Items is not Null > {items.Count}");
+                                            for (byte i = 0; i < items.Count; i++)
+                                            {
+                                                var item = (NbtCompound) items[i];
+
+                                                var itemName = item["id"].StringValue;
+                                                Console.WriteLine($"YEAHHHH CHESTBLOCK ITEM {i} IS {itemName}");
+                                                if (itemName != "0")
+                                                {
+                                                }
+
+                                                if (itemName.StartsWith("minecraft:"))
+                                                {
+                                                    var id = itemName.Split(':')[1];
+
+                                                    itemName = id.First().ToString().ToUpper() + id.Substring(1);
+                                                    var itemId = ItemFactory.GetItemIdByName(itemName);
+
+                                                    Console.WriteLine($"YEAHHHH CHESTBLOCK ITEM NEW IS {itemId}");
+                                                    item.Remove("id");
+                                                    item.Add(new NbtShort("id", itemId));
+                                                }
+                                                
+
+                                            }
+                                        }
+                                    }
+                                    else if (blockEntity is BedBlockEntity)
+                                    {
+                                        var color = blockEntityTag["color"];
+                                        blockEntityTag.Remove("color");
+                                        blockEntityTag.Add(color is NbtByte
+                                            ? color
+                                            : new NbtByte("color", (byte) color.IntValue));
+                                    }
+                                    else if (blockEntity is FlowerPotBlockEntity)
+                                    {
+                                        var itemName = blockEntityTag["Item"].StringValue;
+                                        if (itemName.StartsWith("minecraft:"))
+                                        {
+                                            var id = itemName.Split(':')[1];
+
+                                            itemName = id.First().ToString().ToUpper() + id.Substring(1);
+                                        }
+
+                                        var itemId = ItemFactory.GetItemIdByName(itemName);
+                                        blockEntityTag.Remove("Item");
+                                        blockEntityTag.Add(new NbtShort("item", itemId));
+
+                                        var data = blockEntityTag["Data"].IntValue;
+                                        blockEntityTag.Remove("Data");
+                                        blockEntityTag.Add(new NbtInt("mData", data));
+                                    }
+                                    else
+                                    {
+                                        if (Log.IsDebugEnabled) Log.Debug($"Loaded block entity\n{blockEntityTag}");
+                                        blockEntity.SetCompound(blockEntityTag);
+                                        blockEntityTag = blockEntity.GetCompound();
                                     }
 
-                                    var itemId = ItemFactory.GetItemIdByName(itemName);
-                                    blockEntityTag.Remove("Item");
-                                    blockEntityTag.Add(new NbtShort("item", itemId));
-
-                                    var data = blockEntityTag["Data"].IntValue;
-                                    blockEntityTag.Remove("Data");
-                                    blockEntityTag.Add(new NbtInt("mData", data));
+                                    chunk.SetBlockEntity(new BlockCoordinates(x, y, z), blockEntityTag);
                                 }
                                 else
                                 {
-                                    if (Log.IsDebugEnabled) Log.Debug($"Loaded block entity\n{blockEntityTag}");
-                                    blockEntity.SetCompound(blockEntityTag);
-                                    blockEntityTag = blockEntity.GetCompound();
+                                    if (Log.IsDebugEnabled) Log.Debug($"Loaded unknown block entity\n{blockEntityTag}");
                                 }
-
-                                chunk.SetBlockEntity(new BlockCoordinates(x, y, z), blockEntityTag);
                             }
-                            else
-                            {
-                                if (Log.IsDebugEnabled) Log.Debug($"Loaded unknown block entity\n{blockEntityTag}");
-                            }
-                        }
 
-                    //NbtList tileTicks = dataTag["TileTicks"] as NbtList;
+                        //NbtList tileTicks = dataTag["TileTicks"] as NbtList;
 
-                    // if (Dimension == Dimension.Overworld && Config.GetProperty("CalculateLights", false))
-                    // {
-                    //     chunk.RecalcHeight();
-                    //
-                    //     var blockAccess = new SkyLightBlockAccess(this, chunk);
-                    //     new SkyLightCalculations().RecalcSkyLight(chunk, blockAccess);
-                    //     //TODO: Block lights.
-                    // }
+                        // if (Dimension == Dimension.Overworld && Config.GetProperty("CalculateLights", false))
+                        // {
+                        //     chunk.RecalcHeight();
+                        //
+                        //     var blockAccess = new SkyLightBlockAccess(this, chunk);
+                        //     new SkyLightCalculations().RecalcSkyLight(chunk, blockAccess);
+                        //     //TODO: Block lights.
+                        // }
 
-                    chunk.IsDirty = false;
-                    chunk.NeedSave = false;
+                        chunk.IsDirty = false;
+                        chunk.NeedSave = false;
 
-                    return chunk;
+                        return chunk;
+                    }
                 }
             }
             catch (Exception e)

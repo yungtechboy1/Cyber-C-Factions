@@ -327,12 +327,14 @@ namespace CyberCore.Utils
             return i;
         }
 
-        public static Item setCustomName(this Item i, string name)
+        public static Item setCustomName(this Item i, [CanBeNull] string name)
         {
             try
             {
                 if (string.IsNullOrEmpty(name)) return i.clearCustomName();
 
+                if(i.ExtraData == null)i.ExtraData = new NbtCompound();
+                
                 var tag = i.ExtraData;
                 if (tag != null && tag.Contains("display") && tag.Get("display") is NbtCompound)
                 {

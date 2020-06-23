@@ -190,9 +190,9 @@ namespace CyberCore
                             //Valid Key & Take it
                             var pi = e.Player.Inventory;
                             var i = pi.GetItemInHand();
+                            pi.SetInventorySlot(pi.InHandSlot,null);
                             i.Count--;
-                            if (i.Count == 0) i = new ItemAir();
-                            pi.setItemInHand(i);
+                            if (i.Count != 0) pi.SetInventorySlot(pi.InHandSlot,i);
                             CyberCoreMain.GetInstance().CrateMain.showCrate(b.Coordinates, e.Player);
                             CyberCoreMain.GetInstance().CrateMain.rollCrate(b.Coordinates, e.Player);
                         }

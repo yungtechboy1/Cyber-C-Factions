@@ -100,25 +100,27 @@ namespace CyberCore.Manager.Crate
 
         public CrateKeyData toConfig()
         {
-            
-            if(ItemKey.ExtraData == null)ItemKey.ExtraData = new NbtCompound();
-            String fnt = "";
-            var a = new NbtFile();
-            a.BigEndian = false;
-            a.UseVarInt = true;
-            a.RootTag = ItemKey.ExtraData;
-            var aa = (new MemoryStream());
-            a.SaveToStream(aa, NbtCompression.AutoDetect);
-            var aaa = new StreamReader(aa).ReadToEnd();
 
-            if (ItemKey.ExtraData.HasValue) fnt = aaa;
-            
+                String fnt = "";
+            if (ItemKey.ExtraData != null)
+            {
+                var a = new NbtFile();
+                a.BigEndian = false;
+                a.UseVarInt = true;
+                a.RootTag = ItemKey.ExtraData;
+                var aa = (new MemoryStream());
+                a.SaveToStream(aa, NbtCompression.ZLib);
+                var aaa = new StreamReader(aa).ReadToEnd();
+
+                fnt = aaa;
+            }
+
             var z = new CrateKeyData()
             {
                 Item_ID = ItemKey.Id,
                 Item_Meta = ItemKey.Metadata,
                 NBT_Key = NBT_Key,
-                Item_NBT = ItemKey.hasCompoundTag() ? fnt : "",
+                Item_NBT =  fnt ,
                 Key_Name = Key_Name
             };
             return z;

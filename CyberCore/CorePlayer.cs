@@ -160,9 +160,14 @@ namespace CyberCore
         // }
         //
         // openinv
-        
-        
-        
+
+
+
+        // public new void OpenInventory(BlockCoordinates inventoryCoord)
+        // {
+        //     SendMessage("THIS CHU2222222222222222222222222222222222NK WILL NOW BE SAVED!!!");
+        //     
+        // }
         public void CyberOpenInventory(BlockCoordinates inventoryCoord)
         {
          OpenInventory(inventoryCoord);
