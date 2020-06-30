@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using CyberCore.Manager.Forms;
+using CyberCore.Manager.Shop;
 using JetBrains.Annotations;
 using MiNET;
 using MiNET.Plugins;
@@ -46,6 +47,14 @@ namespace CyberCore.Utils
                 ret.Add(entry);
             }
             return ret;
+        } 
+        public static ShopCategory? ShopCategoryFromString( String s)
+        {
+            foreach (var e in Enum.GetValues(typeof(ShopCategory)).Cast<ShopCategory>())
+            {
+                if (e.ToString().equalsIgnoreCase(s)) return e;
+            }
+            return null;
         }
         
         public static MainForm? getMainFromFromInt(int n)

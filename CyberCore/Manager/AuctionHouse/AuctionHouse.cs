@@ -241,7 +241,7 @@ namespace CyberCore.Manager.AuctionHouse
 
         public void ReloadInv()
         {
-            StaticItems si = new StaticItems(Page);
+            AHStaticItems si = new AHStaticItems(Page);
             int k = 9;
             setItem(getSize() - k--, si.Redglass, true);
             setItem(getSize() - k--, si.Paper, true);
@@ -275,7 +275,7 @@ namespace CyberCore.Manager.AuctionHouse
      */
         public void SetupPageToConfirmMultiItem(AuctionItemData aid)
         {
-            StaticItems si = new StaticItems(Page);
+            AHStaticItems si = new AHStaticItems(Page);
             Item item = aid.MakePretty();
             Item confrim = si.Confirm;
             Item deny = si.Deny;

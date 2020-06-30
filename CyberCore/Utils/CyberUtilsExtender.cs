@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 using CyberCore.Manager.Factions;
+using CyberCore.Manager.Shop;
 using fNbt;
 using JetBrains.Annotations;
 using MiNET;
@@ -408,10 +410,7 @@ namespace CyberCore.Utils
             return new BlockCoordinates((int)Math.Floor((double) l.X),(int)Math.Floor((double) l.Y),(int)Math.Floor((double) l.Z));
         }
 
-        public static void GetBlockIdCyber(this SubChunk c, int x,int y, int z)
-        {
-            
-        }
+       
         public static void showFormWindow(this OpenPlayer p, Form f)
         {
             p.SendForm(f);

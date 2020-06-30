@@ -6,7 +6,7 @@ using MiNET.Utils;
 
 namespace CyberCore.Utils
 {
-    public class StaticItems
+    public class AHStaticItems
     {
         public readonly Item Diamond;
         public readonly Item Potato;
@@ -28,7 +28,7 @@ namespace CyberCore.Utils
         public readonly Item Gold;
 
 
-        public StaticItems(int page = -1)
+        public AHStaticItems(int page = -1)
         {
             NbtCompound T = new NbtCompound();
             T.Add(new NbtByte("AHITEM", 1));

@@ -40,6 +40,12 @@ namespace CyberCore
             CCM = cyberCoreMain;
         }
 
+        [Command(Name = "ah", Description = "Auction House")]
+        public void AH(CorePlayer p)
+        {
+            
+        }
+
         [Command(Name = "rank", Description = "Rank Options")]
         public void rank(CorePlayer p)
         {

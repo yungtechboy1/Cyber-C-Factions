@@ -29,8 +29,10 @@
           </e>
           <e p="Items" t="Include">
             <e p="ItemEmerald.cs" t="Include" />
+            <e p="ItemPaper.cs" t="Include" />
             <e p="ItemSlimeBall.cs" t="Include" />
             <e p="NetherStar.cs" t="Include" />
+            <e p="PoisionousPotato.cs" t="Include" />
           </e>
         </e>
         <e p="CyberCommands.cs" t="Include" />
@@ -183,7 +185,10 @@
             <e p="RankList2.cs" t="Include" />
           </e>
           <e p="Shop" t="Include">
+            <e p="ShopCategory.cs" t="Include" />
+            <e p="ShopFactory.cs" t="Include" />
             <e p="ShopInv.cs" t="Include" />
+            <e p="ShopMysqlData.cs" t="Include" />
             <e p="Spawner" t="Include">
               <e p="SpawnerShop.cs" t="Include" />
             </e>
@@ -204,6 +209,7 @@
         <e p="PlayerSettingsData.cs" t="Include" />
         <e p="ServerRankChecker.cs" t="Include" />
         <e p="Utils" t="Include">
+          <e p="AHStaticItems.cs" t="Include" />
           <e p="CacheChecker.cs" t="Include" />
           <e p="CenterText.cs" t="Include" />
           <e p="Cooldowns" t="Include">
@@ -220,6 +226,7 @@
             <e p="JsonDataManager.cs" t="Include" />
             <e p="PlayerDetailedInfo.cs" t="Include" />
             <e p="ServerSqlite.cs" t="Include" />
+            <e p="ShopStaticItems.cs" t="Include" />
             <e p="UserSQL.cs" t="Include" />
           </e>
           <e p="DefaultFontInfo.cs" t="Include" />
@@ -228,7 +235,6 @@
           <e p="InternalPlayerSettings.cs" t="Include" />
           <e p="MessageFormater.cs" t="Include" />
           <e p="SqlManager.cs" t="Include" />
-          <e p="StaticItems.cs" t="Include" />
         </e>
         <e p="WorldGen" t="Include">
           <e p="Biomes" t="Include">
