@@ -16,14 +16,22 @@ namespace CyberCore.Utils
 
         public SqlManager(CyberCoreMain ccm, String key = "")
         {
-            if(key.Length != 0)key +="-";
-            Host = CCM.MasterConfig.GetProperty(key+"Host", null);
-            Username = CCM.MasterConfig.GetProperty(key+"Username", null);
-            Password = CCM.MasterConfig.GetProperty(key+"Password", null);
-            Database = CCM.MasterConfig.GetProperty(key+"db-Server", null);
-            Port = CCM.MasterConfig.GetProperty("Port", 3360);
-            CCM = ccm;
-            init();
+                CCM = ccm;
+            try
+            {
+                if (key.Length != 0) key += "-";
+                Console.WriteLine("Loading DB for " + key);
+                Host = CCM.MasterConfig.GetProperty(key + "Host", null);
+                Username = CCM.MasterConfig.GetProperty(key + "Username", null);
+                Password = CCM.MasterConfig.GetProperty(key + "Password", null);
+                Database = CCM.MasterConfig.GetProperty(key + "db-Server", null);
+                Port = 3360; //CCM.MasterConfig.GetProperty("Port", 3360);
+                init();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
         }
 
         public SqlManager(CyberCoreMain ccm, String host,String username,String password,String db, int port = 3360)
@@ -54,7 +62,7 @@ namespace CyberCore.Utils
                 }
                 catch (Exception e)
                 {
-                    Log.Error("Error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaa:"+Host, e);
+                    Log.Error("Error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaa:"+Host+"|"+Database+"|"+Username+"|"+Password, e);
                 }
             }
             catch (Exception e)

@@ -118,7 +118,7 @@ namespace CyberCore
         public bool MuteMessage = false;
         private Rank2 rank = RankList2.getInstance().getRankFromID(RankEnum.Guest);
         private PlayerSettingsData SettingsData;
-        public ShopInv Shop = null;
+        // public ShopInv Shop = null;
         public SpawnerShop SpawnerShop = null;
 
         private CoolDown SwingCooldown = new CoolDown();

@@ -229,7 +229,7 @@ namespace CyberCore.Utils
         }
         public string GetProperty(string property, string defaultValue)
         {
-            // CyberCoreMain.Log.Info("CALLL 1111111111111111"+defaultValue);
+            // Console.WriteLine("CALLL 1111111111111111"+defaultValue);
             return ReadString(property) ?? defaultValue;
         }
 
@@ -238,7 +238,7 @@ namespace CyberCore.Utils
             // CyberCoreMain.Log.Info("CALLL 22222222222222222222"+property);
             property = property.ToLower();
             
-            // CyberCoreMain.Log.Info("CALLL 3433333333333333333"+KeyValues.ContainsKey(property));
+            // Console.WriteLine("CALLL 3433333333333333333"+KeyValues.ContainsKey(property));
             return KeyValues.ContainsKey(property) ? KeyValues[property] : null;
         }
         

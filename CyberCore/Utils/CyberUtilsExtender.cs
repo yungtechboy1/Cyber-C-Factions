@@ -486,6 +486,16 @@ namespace CyberCore.Utils
         }
 
 
+        public static int getNextOpenSlot(this Inventory i)
+        {
+            for (int j = 0; j < i.Size; j++)
+            {
+                var itm = i.Slots[j];
+                if (itm == null || itm.Id == 0) return j;
+            }
+
+            return -1;
+        }
         public static bool hasEffect(this CorePlayer p, EffectType name)
         {
             return p.Effects.ContainsKey(name);

@@ -12,6 +12,7 @@ using CyberCore.Manager.Crate;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
+using CyberCore.Manager.Shop;
 using CyberCore.Manager.Warp;
 using CyberCore.Utils;
 using CyberCore.Utils.Data;
@@ -274,7 +275,7 @@ namespace CyberCore
             id = BlockFactory.BlockPalette[w.GetRuntimeId()].Id;
             Console.WriteLine($"{w.GetRuntimeId()} || {id}");
             
-            
+            ShopFactory = new ShopFactory(this);
 
             // api.CommandManager.RegisterPermissionChecker(new FactionPermissionChecker(FactionManager));
             //
@@ -283,6 +284,7 @@ namespace CyberCore
         }
 
         public AuctionFactory AF { get; set; }
+        public ShopFactory ShopFactory { get; set; }
 
         private void OnTicking(object sender, PlayerEventArgs e)
         {

@@ -23,6 +23,7 @@
             <e p="CustomDamageCause.cs" t="Include" />
             <e p="PowerEnum.cs" t="Include" />
           </e>
+          <e p="CyberInventory.cs" t="Include" />
           <e p="Events" t="Include">
             <e p="CustomEntityDamageEvent.cs" t="Include" />
             <e p="PlayerTakeDamageEvent.cs" t="Include" />
@@ -185,6 +186,7 @@
             <e p="RankList2.cs" t="Include" />
           </e>
           <e p="Shop" t="Include">
+            <e p="NewShopInv.cs" t="Include" />
             <e p="ShopCategory.cs" t="Include" />
             <e p="ShopFactory.cs" t="Include" />
             <e p="ShopInv.cs" t="Include" />

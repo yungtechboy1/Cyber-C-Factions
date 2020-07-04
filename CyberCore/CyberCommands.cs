@@ -4,11 +4,13 @@ using System.Linq.Expressions;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using AStarNavigator;
+using CyberCore.Manager.AuctionHouse;
 using CyberCore.Manager.Crate;
 using CyberCore.Manager.Crate.Form;
 using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
+using CyberCore.Manager.Shop;
 using CyberCore.Utils;
 using fNbt;
 using log4net.Core;
@@ -276,6 +278,13 @@ namespace CyberCore
                 $"{ChatColors.Green}[BANK] Your Bank Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().BankBal}");
             p.SendMessage(
                 $"{ChatColors.Green}[BANK] Your Cash Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().getCash()}");
+        }
+
+        [Command(Name = "shop", Description = "Buy / Sell Items")]
+        public void Shop(CorePlayer p, int amt)
+        {
+            var a = new ShopFactory(CCM);
+            a.OpenShop(p,1);
         }
 
         [Command(Name = "withdraw", Aliases = new[] {"bank withdraw"}, Description = "Withdraw money from the bank")]

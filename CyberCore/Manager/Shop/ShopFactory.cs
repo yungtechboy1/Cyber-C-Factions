@@ -19,7 +19,7 @@ namespace CyberCore.Manager.Shop
 {
     public class ShopFactory
     {
-        private SqlManager SQL;
+        // private SqlManager SQL;
         CyberCoreMain CCM;
         private List<ShopMysqlData> ShopCache = null;
         private CoolDown ShopCacheReset = null;
@@ -28,109 +28,109 @@ namespace CyberCore.Manager.Shop
         {
             this.CCM = CCM;
 //            InternalPlayerSettings = new Config(new File(CCM.getDataFolder(), "Auctions.yml"), Config.YAML);
-            SQL = new SqlManager(CCM, "shop");
-            LoadAllItems();
+            // SQL = new SqlManager(CCM, "shop");
+            // LoadAllItems();
         }
 
-        public void LoadAllItems()
-        {
-            try
-            {
-                List<Dictionary<String, Object>> data = SQL.executeSelect("SELECT * FROM `AuctionHouse`");
-                if (data == null)
-                {
-                    CyberCoreMain.Log.Error("Error Loading Auctions from Sqlite!");
-                    return;
-                }
-                else
-                {
-                    CyberCoreMain.Log.Info("Loading " + data.Count + " Auction Items!");
-                }
-
-                foreach (Dictionary<String, Object> v in data)
-                {
-//                Console.WriteLine(v+" << "+v.getClass().getName());
-                    AuctionItemData a = new AuctionItemData(v);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("EE21122332112` +>" + e);
-            }
-        }
+//         public void LoadAllItems()
+//         {
+//             try
+//             {
+//                 List<Dictionary<String, Object>> data = SQL.executeSelect("SELECT * FROM `AuctionHouse`");
+//                 if (data == null)
+//                 {
+//                     CyberCoreMain.Log.Error("Error Loading Auctions from Sqlite!");
+//                     return;
+//                 }
+//                 else
+//                 {
+//                     CyberCoreMain.Log.Info("Loading " + data.Count + " Auction Items!");
+//                 }
+//
+//                 foreach (Dictionary<String, Object> v in data)
+//                 {
+// //                Console.WriteLine(v+" << "+v.getClass().getName());
+//                     AuctionItemData a = new AuctionItemData(v);
+//                 }
+//             }
+//             catch (Exception e)
+//             {
+//                 Console.WriteLine("EE21122332112` +>" + e);
+//             }
+//         }
 
         public void AddItemForSale(AuctionItemData aid) {
-            Save(aid);
+            // Save(aid);
         }
-        public AuctionItemData Save(AuctionItemData data)
-        {
-            try
-            {
-                if (data.masterid != -1)
-                    SQL.Insert($"DELETE FROM `AuctionHouse` WHERE `master_id` == '{data.masterid}'");
-                String fnt = "";
-                if (data.item.hasCompoundTag()) fnt = data.item.ExtraData.NBTToString();
-                SQL.Insert(
-                    "INSERT INTO `AuctionHouse` VALUES (null," + data.item.Id + "," + data.item.Metadata + "," +
-                    data.item.Count + ",'" + fnt + "'," + data.Cost + ",'" + data.Soldby + "','" + data.Soldbyn +
-                    "',false)");
-
-                CyberCoreMain.Log.Info("AH saved for " + data.toString());
-                // ExecuteQuerySQLite("SELECT * FROM `AuctionHouse` ");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-            return data;
-        }
+        // public AuctionItemData Save(AuctionItemData data)
+        // {
+        //     try
+        //     {
+        //         if (data.masterid != -1)
+        //             SQL.Insert($"DELETE FROM `AuctionHouse` WHERE `master_id` == '{data.masterid}'");
+        //         String fnt = "";
+        //         if (data.item.hasCompoundTag()) fnt = data.item.ExtraData.NBTToString();
+        //         SQL.Insert(
+        //             "INSERT INTO `AuctionHouse` VALUES (null," + data.item.Id + "," + data.item.Metadata + "," +
+        //             data.item.Count + ",'" + fnt + "'," + data.Cost + ",'" + data.Soldby + "','" + data.Soldbyn +
+        //             "',false)");
+        //
+        //         CyberCoreMain.Log.Info("AH saved for " + data.toString());
+        //         // ExecuteQuerySQLite("SELECT * FROM `AuctionHouse` ");
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         Console.WriteLine(e);
+        //     }
+        //
+        //     return data;
+        // }
+        //
         
-        
-         public List<ShopMysqlData> GetAllItems() {
-        return GetAllItems(false);
-    }
-    public List<ShopMysqlData> GetAllItems(bool admin) {
-        if (ShopCache != null) {
-            if (ShopCacheReset != null) {
-                if (ShopCacheReset.isValid()) {
-                    Console.WriteLine("Using Cache!!!");
-                    return ShopCache;
-                } else {
-                    ShopCache = null;
-                    ShopCacheReset = null;
-                }
-            }
-        }
-        List<ShopMysqlData> l = new List<ShopMysqlData>();
-        try {
-            var rs = SQL.executeSelect("SELECT * FROM `Shop` WHERE "+ (!admin ? "`enabled` = 1 ":"")+"ORDER BY `Itemid` ASC");
-            if (rs != null) {
-                try {
-                    foreach (Dictionary<string, object> d in rs)
-                    {
-                        ShopMysqlData aid = new ShopMysqlData(d);
-//                        Console.WriteLine(">>>!!!+" + aid);
-                        l.Add(aid);
-                    }
-                } catch (Exception ex) {
-                    CyberCoreMain.Log.Error("Error Loading Shop Items3!\n\n\n\n\n"+ex);
-                    return null;
-                }
-                 CyberCoreMain.Log.Info("Loaded " + l.Count + " Items for AH1");
-                List<ShopMysqlData> t = new List<ShopMysqlData>(l);
-                if (t != null) {
-                    ShopCache = t;
-                    ShopCacheReset = new CoolDown("Shop", 0, 15);
-                    //Set Cache
-                }
-                return l;
-            }
-        } catch (Exception e) {
-             CyberCoreMain.Log.Error("SSSSHHHHH ERRRORRROOROORORR", e);
-        }
-        return l;
-    }
+    //      public List<ShopMysqlData> GetAllItems() {
+    //     return GetAllItems(false);
+    // }
+//     public List<ShopMysqlData> GetAllItems(bool admin) {
+//         if (ShopCache != null) {
+//             if (ShopCacheReset != null) {
+//                 if (ShopCacheReset.isValid()) {
+//                     Console.WriteLine("Using Cache!!!");
+//                     return ShopCache;
+//                 } else {
+//                     ShopCache = null;
+//                     ShopCacheReset = null;
+//                 }
+//             }
+//         }
+//         List<ShopMysqlData> l = new List<ShopMysqlData>();
+//         try {
+//             var rs = SQL.executeSelect("SELECT * FROM `Shop` WHERE "+ (!admin ? "`enabled` = 1 ":"")+"ORDER BY `Itemid` ASC");
+//             if (rs != null) {
+//                 try {
+//                     foreach (Dictionary<string, object> d in rs)
+//                     {
+//                         ShopMysqlData aid = new ShopMysqlData(d);
+// //                        Console.WriteLine(">>>!!!+" + aid);
+//                         l.Add(aid);
+//                     }
+//                 } catch (Exception ex) {
+//                     CyberCoreMain.Log.Error("Error Loading Shop Items3!\n\n\n\n\n"+ex);
+//                     return null;
+//                 }
+//                  CyberCoreMain.Log.Info("Loaded " + l.Count + " Items for AH1");
+//                 List<ShopMysqlData> t = new List<ShopMysqlData>(l);
+//                 if (t != null) {
+//                     ShopCache = t;
+//                     ShopCacheReset = new CoolDown("Shop", 0, 15);
+//                     //Set Cache
+//                 }
+//                 return l;
+//             }
+//         } catch (Exception e) {
+//              CyberCoreMain.Log.Error("SSSSHHHHH ERRRORRROOROORORR", e);
+//         }
+//         return l;
+//     }
 
 
     //@Todo
@@ -192,13 +192,13 @@ namespace CyberCore.Manager.Shop
 //        return null;
 //    }
 
-    public List<Item> getListOfItems(bool admin) {
-        List<Item> il = new List<Item>();
-        foreach (ShopMysqlData ahd in GetAllItems(admin)) {
-            il.Add(ahd.getItem());
-        }
-        return il;
-    }
+    // public List<Item> getListOfItems(bool admin) {
+    //     List<Item> il = new List<Item>();
+    //     foreach (ShopMysqlData ahd in GetAllItems(admin)) {
+    //         il.Add(ahd.getItem());
+    //     }
+    //     return il;
+    // }
 
 
 //    public Item getItem(int page, int slot) {
@@ -208,54 +208,54 @@ namespace CyberCore.Manager.Shop
 //        return items.get(key);
 //    }
 
-
-    public Dictionary<int, Item> getPageHash(int page, ShopCategory catg, bool AdminMode) {
-        Dictionary<int, Item> list = new Dictionary<int, Item>();
-        int k = 0;
-        foreach (Item i in getPage(page, catg, AdminMode))
-        {
-            list[k] = i;
-            k++;
-        }
-        return list;
-
-    }
-
-
-    public List<ShopMysqlData> GetAllItemsDataLimit(int start, int stop, bool admin) {
-        List<ShopMysqlData> il = new List<ShopMysqlData>();
-        List<ShopMysqlData> a = GetAllItems(admin);
-        for (int i = start; i < stop; i++) {
-            if (i >= a.Count) break;
-            ShopMysqlData smd = a[i];
-            if (smd != null) il.Add(smd);
-        }
-        return il;
-    }
-
-    public List<Item> GetAllItemsLimit(int start, int stop, ShopCategory catg, bool adminMode) {
-        List<Item> il = new List<Item>();
-        List<ShopMysqlData> a = GetAllItems(adminMode);
-        a = filterShopDataByCategory(a,catg);
-        for (int i = start; i < stop; i++) {
-            if (i >= a.Count) break;
-            ShopMysqlData smd = a[i];
-            if (smd != null) {
-                il.Add(smd.getItem());
-            }
-        }
-        return il;
-    }
-
-    private List<ShopMysqlData> filterShopDataByCategory(List<ShopMysqlData> a, ShopCategory catg) {
-        List<ShopMysqlData> sd = new List<ShopMysqlData>();
-        foreach(ShopMysqlData d in a){
-            if(d.getCategory().Count == 0 && catg != ShopCategory.NA)continue;
-            if(catg != ShopCategory.NA &&!d.getCategory().Contains(catg))continue;
-            sd.Add(d);
-        }
-        return sd;
-    }
+    //
+    // public Dictionary<int, Item> getPageHash(int page, ShopCategory catg, bool AdminMode) {
+    //     Dictionary<int, Item> list = new Dictionary<int, Item>();
+    //     int k = 0;
+    //     foreach (Item i in getPageItems(page, catg, AdminMode))
+    //     {
+    //         list[k] = i;
+    //         k++;
+    //     }
+    //     return list;
+    //
+    // }
+    //
+    //
+    // public List<ShopMysqlData> GetAllItemsDataLimit(int start, int stop, bool admin) {
+    //     List<ShopMysqlData> il = new List<ShopMysqlData>();
+    //     List<ShopMysqlData> a = GetAllItems(admin);
+    //     for (int i = start; i < stop; i++) {
+    //         if (i >= a.Count) break;
+    //         ShopMysqlData smd = a[i];
+    //         if (smd != null) il.Add(smd);
+    //     }
+    //     return il;
+    // }
+    //
+    // public List<Item> GetAllItemsLimit(int start, int stop, ShopCategory catg, bool adminMode) {
+    //     List<Item> il = new List<Item>();
+    //     List<ShopMysqlData> a = GetAllItems(adminMode);
+    //     a = filterShopDataByCategory(a,catg);
+    //     for (int i = start; i < stop; i++) {
+    //         if (i >= a.Count) break;
+    //         ShopMysqlData smd = a[i];
+    //         if (smd != null) {
+    //             il.Add(smd.getItem());
+    //         }
+    //     }
+    //     return il;
+    // }
+    //
+    // private List<ShopMysqlData> filterShopDataByCategory(List<ShopMysqlData> a, ShopCategory catg) {
+    //     List<ShopMysqlData> sd = new List<ShopMysqlData>();
+    //     foreach(ShopMysqlData d in a){
+    //         if(d.getCategory().Count == 0 && catg != ShopCategory.NA)continue;
+    //         if(catg != ShopCategory.NA &&!d.getCategory().Contains(catg))continue;
+    //         sd.Add(d);
+    //     }
+    //     return sd;
+    // }
 //
 //    public List<ShopMysqlData> GetAllItemsLimitData(int start, int stop) {
 //        List<ShopMysqlData> il = new List<>();
@@ -264,67 +264,67 @@ namespace CyberCore.Manager.Shop
 //        }
 //        return il;
 //    }
+    //
+    // public Item getItemFromPage(int page, int slot, ShopCategory catg, bool AdminMode) {
+    //     if (slot > 45) {
+    //          CyberCoreMain.Log.Error("ERROR! Slot out of range! E443 Slot:" + slot);
+    //         return null;
+    //     }
+    //     List<Item> list = getPageItems(page, catg, AdminMode);
+    //     if (slot > list.Count) {
+    //          CyberCoreMain.Log.Error("ERROR! Selected Slot out of List Range! E33342 SLOT:" + slot + " OF " + list.Count);
+    //         return null;
+    //     }
+    //     Item s = list[slot];
+    //     if (s.Id == 0) return null;
+    //     return s;
+    // }
 
-    public Item getItemFromPage(int page, int slot, ShopCategory catg, bool AdminMode) {
-        if (slot > 45) {
-             CyberCoreMain.Log.Error("ERROR! Slot out of range! E443 Slot:" + slot);
-            return null;
-        }
-        Item[] list = getPage(page, catg, AdminMode);
-        if (slot > list.Length) {
-             CyberCoreMain.Log.Error("ERROR! Selected Slot out of List Range! E33342 SLOT:" + slot + " OF " + list.Length);
-            return null;
-        }
-        Item s = list[slot];
-        if (s.Id == 0) return null;
-        return s;
-    }
 
+//     public List<Item> getPageItems(int page, ShopCategory catg, bool adminMode) {
+//         int stop = page * 45;
+//         int start = stop - 45;
+//         List<Item> list2 = GetAllItemsLimit(start, stop,catg,adminMode);
+//         if (45 > list2.Count) {
+//             List<Item> a = new List<Item>();
+//             for (int i = 0; i < 45; i++) {
+// //                list2.iterator().n
+//                 if (list2.Count > i && list2[i] != null) {
+// //                    Console.WriteLine("ADDING ACTUAL ITEM || " + list2.get(i).getId());
+//                     a.Add(list2[i]);
+//                 } else {
+//                     a.Add(new ItemBlock(new Air()));
+// //                    Console.WriteLine("ADDING AIR ||");
+//                 }
+//             }
+//
+//             return a;
+//         } else {
+//             return list2;
+//         }
+//     }
 
-    public Item[] getPage(int page, ShopCategory catg, bool adminMode) {
-        int stop = page * 45;
-        int start = stop - 45;
-        List<Item> list2 = GetAllItemsLimit(start, stop,catg,adminMode);
-        if (45 > list2.Count) {
-            List<Item> a = new List<Item>();
-            for (int i = 0; i < 45; i++) {
-//                list2.iterator().n
-                if (list2.Count > i && list2[i] != null) {
-//                    Console.WriteLine("ADDING ACTUAL ITEM || " + list2.get(i).getId());
-                    a.Add(list2[i]);
-                } else {
-                    a.Add(new ItemBlock(new Air()));
-//                    Console.WriteLine("ADDING AIR ||");
-                }
-            }
-
-            return a.ToArray();
-        } else {
-            return list2.ToArray();
-        }
-    }
-
-    public List<ShopMysqlData> getPageData(int page, bool admin) {
-        int stop = page * 45;
-        int start = stop - 45;
-        List<ShopMysqlData> list2 = GetAllItemsDataLimit(start, stop,admin);
-        if (45 > list2.Count) {
-            List<ShopMysqlData> a = new List<ShopMysqlData>();
-            for (int i = 0; i < 45; i++) {
-//                list2.iterator().n
-                if (list2.Count > i && list2[i] != null) {
-                    a.Add(list2[i]);
-                } else {
-                    a.Add(null);
-//                    Console.WriteLine("ADDING AIR ||");
-                }
-            }
-
-            return a;
-        } else {
-            return list2;
-        }
-    }
+//     public List<ShopMysqlData> getPageData(int page, bool admin) {
+//         int stop = page * 45;
+//         int start = stop - 45;
+//         List<ShopMysqlData> list2 = GetAllItemsDataLimit(start, stop,admin);
+//         if (45 > list2.Count) {
+//             List<ShopMysqlData> a = new List<ShopMysqlData>();
+//             for (int i = 0; i < 45; i++) {
+// //                list2.iterator().n
+//                 if (list2.Count > i && list2[i] != null) {
+//                     a.Add(list2[i]);
+//                 } else {
+//                     a.Add(null);
+// //                    Console.WriteLine("ADDING AIR ||");
+//                 }
+//             }
+//
+//             return a;
+//         } else {
+//             return list2;
+//         }
+//     }
 
 
     public void OpenShop(CorePlayer p, int pg) {
@@ -334,15 +334,16 @@ namespace CyberCore.Manager.Shop
         SpawnFakeBlockAndEntity(p, n);
         
         
-        ShopInv b = new ShopInv(p, CCM, p.KnownPosition.ToVector3(), pg);
+        // ShopInv b = new ShopInv(p, CCM, p.KnownPosition.ToVector3(), pg);
+        var b = new NewShopInv();
         // CyberCoreMain.getInstance().getLogger().info(b.getContents().values().size() + " < SIZZEEE" + b.getSize());
         // CyberCoreMain.getInstance().getServer().getScheduler().scheduleDelayedTask(new OpenShop(p, b), 5);
 //        b.open()
         // AuctionHouse b = new AuctionHouse(p, CCM, p.KnownPosition.ToVector3(), pg);
         // CyberCoreMain.Log.Info(b.getContents().Values.Count + " < SIZZEEE" + b.size);
         //TODO !IMPORTANT
-        p.SetOpenInventory(b.I);
-        p.Shop = b.I;
+        p.SetOpenInventory(b);
+        // p.Shop = b;
     }
 
     public void SpawnFakeBlockAndEntity(Player to, NbtCompound data) {
@@ -781,93 +782,93 @@ namespace CyberCore.Manager.Shop
 //    }
 
     //SetupPageToFinalConfirmItemSell
-    public void PurchaseItem(CorePlayer holder, int page, int slot, int count, bool admin) {
-        ShopMysqlData aid = getItemFrom(page, slot, admin);
-        if (aid == null) {
-            Console.WriteLine("ERROR IN SELECTION!!!!");
-        } else if (aid.getPrice(count) > holder.getMoney() && !holder.Shop.SetupPageToFinalConfirmItemSell) {
-            holder.Shop.SetupPageNotEnoughMoney(aid);
-            return;
-        }
-//        int c = holder.Shop.SetupPageToFinalConfirmItemCount;
-        if (holder.Shop.SetupPageToFinalConfirmItemSell) {
-            holder.AddMoney(aid.getSellPrice(count));
-            Item i = aid.getItem(true);
-            i.setCount(count);
-            holder.getInventory().removeItem(i);
-            holder.Shop.ClearConfirmPurchase();
-            holder.Shop.setPage(1);
-        } else {
+//     public void PurchaseItem(CorePlayer holder, int page, int slot, int count, bool admin) {
+//         ShopMysqlData aid = getItemFrom(page, slot, admin);
+//         if (aid == null) {
+//             Console.WriteLine("ERROR IN SELECTION!!!!");
+//         } else if (aid.getPrice(count) > holder.getMoney() && !holder.Shop.SetupPageToFinalConfirmItemSell) {
+//             holder.Shop.SetupPageNotEnoughMoney(aid);
+//             return;
+//         }
+// //        int c = holder.Shop.SetupPageToFinalConfirmItemCount;
+//         if (holder.Shop.SetupPageToFinalConfirmItemSell) {
+//             holder.AddMoney(aid.getSellPrice(count));
+//             Item i = aid.getItem(true);
+//             i.setCount(count);
+//             holder.getInventory().removeItem(i);
+//             holder.Shop.ClearConfirmPurchase();
+//             holder.Shop.setPage(1);
+//         } else {
+//
+// //        SetBought(aid.getMasterid());
+//             holder.TakeMoney(aid.getPrice(count));
+//             Item i = aid.getItem(true);
+//             i.setCount(count);
+//             holder.getInventory().addItem(i);
+//             holder.Shop.ClearConfirmPurchase();
+//             holder.Shop.setPage(1);
+//         }
+//     }
+//
+//     public void PurchaseItem(CorePlayer holder, ShopMysqlData aid, int count, bool buy) {
+//        if (aid.getPrice(count) > holder.getMoney() && !holder.Shop.SetupPageToFinalConfirmItemSell) {
+//             holder.Shop.SetupPageNotEnoughMoney(aid);
+//             return;
+//         }
+// //        int c = holder.Shop.SetupPageToFinalConfirmItemCount;
+//         if (!buy) {
+//             holder.AddMoney(aid.getSellPrice(count));
+//             Item i = aid.getItem(true);
+//             i.setCount(count);
+//             holder.getInventory().removeItem(i);
+//             holder.Shop.ClearConfirmPurchase();
+//             holder.Shop.setPage(1);
+//         } else {
+//
+// //        SetBought(aid.getMasterid());
+//             holder.TakeMoney(aid.getPrice(count));
+//             Item i = aid.getItem(true);
+//             i.setCount(count);
+//             holder.getInventory().addItem(i);
+//             holder.Shop.ClearConfirmPurchase();
+//             holder.Shop.setPage(1);
+//         }
+//     }
 
-//        SetBought(aid.getMasterid());
-            holder.TakeMoney(aid.getPrice(count));
-            Item i = aid.getItem(true);
-            i.setCount(count);
-            holder.getInventory().addItem(i);
-            holder.Shop.ClearConfirmPurchase();
-            holder.Shop.setPage(1);
-        }
-    }
-
-    public void PurchaseItem(CorePlayer holder, ShopMysqlData aid, int count, bool buy) {
-       if (aid.getPrice(count) > holder.getMoney() && !holder.Shop.SetupPageToFinalConfirmItemSell) {
-            holder.Shop.SetupPageNotEnoughMoney(aid);
-            return;
-        }
-//        int c = holder.Shop.SetupPageToFinalConfirmItemCount;
-        if (!buy) {
-            holder.AddMoney(aid.getSellPrice(count));
-            Item i = aid.getItem(true);
-            i.setCount(count);
-            holder.getInventory().removeItem(i);
-            holder.Shop.ClearConfirmPurchase();
-            holder.Shop.setPage(1);
-        } else {
-
-//        SetBought(aid.getMasterid());
-            holder.TakeMoney(aid.getPrice(count));
-            Item i = aid.getItem(true);
-            i.setCount(count);
-            holder.getInventory().addItem(i);
-            holder.Shop.ClearConfirmPurchase();
-            holder.Shop.setPage(1);
-        }
-    }
-
-    public ShopMysqlData getItemFrom(int page, int slot, bool admin) {
-        List<ShopMysqlData> smd = getPageData(page, admin);
-        if (smd.size() < slot) return null;
-        return smd.get(slot);
-    }
-
-    public void additem(Item i, CorePlayer p, int cost) {
-        AuctionItemData aid = new AuctionItemData(i, cost, p);
-        SQL.AddItemForSale(aid);
-    }
-
-    public ShopMysqlData getItemFrom(int s) {
-        List<ShopMysqlData> is = new List<>();
-        try {
-            ResultSet rs = SQL.ExecuteQuerySQLite("SELECT * FROM `Shop` WHERE `ShopID` = "+ s+"ORDER BY `Itemid` ASC");
-            if (rs != null) {
-                try {
-                    while (rs.next()) {
-                        ShopMysqlData aid = new ShopMysqlData(rs);
-//                        Console.WriteLine(">>>!!!+" + aid);
-                        return aid;
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                     CyberCoreMain.Log.info("Error loading Shop Items3!");
-                    return null;
-                };
-            }
-        } catch (Exception e) {
-             CyberCoreMain.Log.error("SSSSHHHHH ERRRORRROOROORORR", e);
-        }
-        return null;
-    }
-        
+//     public ShopMysqlData getItemFrom(int page, int slot, bool admin) {
+//         List<ShopMysqlData> smd = getPageData(page, admin);
+//         if (smd.size() < slot) return null;
+//         return smd.get(slot);
+//     }
+//
+//     public void additem(Item i, CorePlayer p, int cost) {
+//         AuctionItemData aid = new AuctionItemData(i, cost, p);
+//         SQL.AddItemForSale(aid);
+//     }
+//
+//     public ShopMysqlData getItemFrom(int s) {
+//         List<ShopMysqlData> is = new List<>();
+//         try {
+//             ResultSet rs = SQL.ExecuteQuerySQLite("SELECT * FROM `Shop` WHERE `ShopID` = "+ s+"ORDER BY `Itemid` ASC");
+//             if (rs != null) {
+//                 try {
+//                     while (rs.next()) {
+//                         ShopMysqlData aid = new ShopMysqlData(rs);
+// //                        Console.WriteLine(">>>!!!+" + aid);
+//                         return aid;
+//                     }
+//                 } catch (Exception ex) {
+//                     ex.printStackTrace();
+//                      CyberCoreMain.Log.info("Error loading Shop Items3!");
+//                     return null;
+//                 };
+//             }
+//         } catch (Exception e) {
+//              CyberCoreMain.Log.error("SSSSHHHHH ERRRORRROOROORORR", e);
+//         }
+//         return null;
+//     }
+//         
         
         
         
