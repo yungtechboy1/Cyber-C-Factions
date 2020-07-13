@@ -255,25 +255,25 @@ namespace CyberCore
 
             //Fix BlockFactory
 
-            Console.WriteLine("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA =>>");
-            var w = new Wood();
-            w.WoodType = "birch";
-            int id = BlockFactory.BlockPalette[w.GetRuntimeId()].Id;
-            Console.WriteLine($"{w.GetRuntimeId()} |||||| {id}");
-            string directoryName = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            string path = Path.Combine(directoryName, "Blocks");
-            path = Path.Combine(path, "blockstates.json");
-            using (StreamReader file = File.OpenText(path))
-            {
-                string json = file.ReadToEnd();
-                BlockFactory.BlockPalette = BlockPalette.FromJson(json);
-                BlockFactory.BlockStates = new HashSet<BlockStateContainer>(BlockFactory.BlockPalette);
-            }
-            
-            w = new Wood();
-            w.WoodType = "birch";
-            id = BlockFactory.BlockPalette[w.GetRuntimeId()].Id;
-            Console.WriteLine($"{w.GetRuntimeId()} || {id}");
+            // Console.WriteLine("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA =>>");
+            // var w = new Wood();
+            // w.WoodType = "birch";
+            // int id = BlockFactory.BlockPalette[w.GetRuntimeId()].Id;
+            // Console.WriteLine($"{w.GetRuntimeId()} |||||| {id}");
+            // string directoryName = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            // string path = Path.Combine(directoryName, "Blocks");
+            // path = Path.Combine(path, "blockstates.json");
+            // using (StreamReader file = File.OpenText(path))
+            // {
+            //     string json = file.ReadToEnd();
+            //     BlockFactory.BlockPalette = BlockPalette.FromJson(json);
+            //     BlockFactory.BlockStates = new HashSet<BlockStateContainer>(BlockFactory.BlockPalette);
+            // }
+            //
+            // w = new Wood();
+            // w.WoodType = "birch";
+            // id = BlockFactory.BlockPalette[w.GetRuntimeId()].Id;
+            // Console.WriteLine($"{w.GetRuntimeId()} || {id}");
             
             ShopFactory = new ShopFactory(this);
 

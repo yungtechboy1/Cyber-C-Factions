@@ -25,7 +25,7 @@ namespace CyberCore.Utils
                 Username = CCM.MasterConfig.GetProperty(key + "Username", null);
                 Password = CCM.MasterConfig.GetProperty(key + "Password", null);
                 Database = CCM.MasterConfig.GetProperty(key + "db-Server", null);
-                Port = 3360; //CCM.MasterConfig.GetProperty("Port", 3360);
+                Port = 3306; //CCM.MasterConfig.GetProperty("Port", 3360);
                 init();
             }
             catch (Exception e)

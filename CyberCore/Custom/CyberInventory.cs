@@ -19,6 +19,30 @@ namespace CyberCore.Custom
             blockEntity, inventorySize, slots)
         {
         }
+        
+        private NbtList GetSlots2()
+        {
+            NbtList nbtList = new NbtList("Items");
+            for (byte index = 0; (int) index < (int) this.Size; ++index)
+            {
+                Item slot = this.Slots[(int) index];
+                nbtList.Add((NbtTag) new NbtCompound()
+                {
+                    (NbtTag) new NbtByte("Count", slot.Count),
+                    (NbtTag) new NbtByte("Slot", index),
+                    (NbtTag) new NbtShort("id", slot.Id),
+                    (NbtTag) new NbtShort("Damage", slot.Metadata)
+                });
+            }
+            return nbtList;
+        }
+        
+        public void SetItem(byte slot, Item itemStack)
+        {
+            this.Slots[(int) slot] = itemStack;
+            this.BlockEntity.GetCompound()["Items"] = (NbtTag) GetSlots2();
+            // this.OnInventoryChange(player, slot, itemStack);
+        }
 
         protected virtual void PlayerJoin(Player player)
         {

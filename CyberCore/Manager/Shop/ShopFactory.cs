@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using CyberCore.Manager.AuctionHouse;
 using CyberCore.Manager.Factions.Windows;
 using CyberCore.Utils;
@@ -329,9 +330,16 @@ namespace CyberCore.Manager.Shop
 
     public void OpenShop(CorePlayer p, int pg) {
         
-        var n = new NbtCompound();
-        n.Add(new NbtString("CustomName", "SHOP!"));
+        var n = new NbtCompound("");
+        n.Add(new NbtString("CustomName", "SHOTTP!"));
         SpawnFakeBlockAndEntity(p, n);
+        
+        PlayerLocation a = new PlayerLocation();
+        PlayerLocation aa = new PlayerLocation();
+        a.X = aa.X = p.KnownPosition.X;
+        a.Y = aa.Y = p.KnownPosition.Y - 2;
+        a.Z = aa.Z = p.KnownPosition.Z;
+        aa.Z += 1;
         
         
         // ShopInv b = new ShopInv(p, CCM, p.KnownPosition.ToVector3(), pg);
@@ -344,18 +352,45 @@ namespace CyberCore.Manager.Shop
         //TODO !IMPORTANT
         p.SetOpenInventory(b);
         // p.Shop = b;
+        
+        var containerOpen = McpeContainerOpen.CreateObject();
+        containerOpen.windowId = 10;
+        containerOpen.type = 0;
+        containerOpen.coordinates = (BlockCoordinates) a;
+        containerOpen.runtimeEntityId = -1;
+        p.SendPacket(containerOpen);
+
+        Console.WriteLine("SLOT===============================================");
+        foreach (var s in b.Slots)
+        {
+            if (s == null || s.Id == 0) continue;
+            Console.WriteLine(s.Id + "||| "+s.Metadata);
+        }
+        Console.WriteLine("SLOT===============================================");
+        McpeInventoryContent containerSetContent = McpeInventoryContent.CreateObject();
+        containerSetContent.inventoryId = 10;
+        containerSetContent.input = b.Slots;
+        p.SendPacket(containerSetContent);
     }
 
     public void SpawnFakeBlockAndEntity(Player to, NbtCompound data) {
 
-        SpawnBlock(to, new Chest());
-        SpawnBlockEntity(to, data);
+        BlockCoordinates m = SpawnBlock(to);
+        SpawnBlockEntity(m, data,to);
 
     }
 
 
-        public void SpawnBlock(Player to, Block b)
+        public BlockCoordinates SpawnBlock(Player to)
         {
+            Chest b = new Chest();
+            //0 Right
+            //1 Right
+            //2 Left
+            //3 Right?
+            //4 Down
+            //5 Up
+            b.FacingDirection = 5;
             PlayerLocation a = new PlayerLocation();
             PlayerLocation aa = new PlayerLocation();
             a.X = aa.X = to.KnownPosition.X;
@@ -365,25 +400,29 @@ namespace CyberCore.Manager.Shop
             BlockCoordinates l1 = new BlockCoordinates(a);
             BlockCoordinates l2 = new BlockCoordinates(aa);
             var message = McpeUpdateBlock.CreateObject();
-            message.blockRuntimeId = (uint) new Chest().GetRuntimeId();
+            message.blockRuntimeId = (uint) b.GetRuntimeId();
             message.coordinates = l1;
             message.blockPriority = (int) (McpeUpdateBlock.Flags.AllPriority);
             var message2 = McpeUpdateBlock.CreateObject();
-            message2.blockRuntimeId = (uint) new Chest().GetRuntimeId();
+            message2.blockRuntimeId = (uint) b.GetRuntimeId();
             message2.coordinates = l2;
             message2.blockPriority = (int) (McpeUpdateBlock.Flags.AllPriority);
             to.SendPacket(message);
             to.SendPacket(message2);
+            return l1;
         }
 
-        public void SpawnBlockEntity(Player to, NbtCompound data)
+        public void SpawnBlockEntity(BlockCoordinates bc, NbtCompound data, Player to)
         {
-            PlayerLocation a = new PlayerLocation();
-            PlayerLocation aa = new PlayerLocation();
-            a.X = aa.X = to.KnownPosition.X;
-            a.Y = aa.Y = to.KnownPosition.Y - 2;
-            a.Z = aa.Z = to.KnownPosition.Z;
+            BlockCoordinates a = new BlockCoordinates(bc);
+            BlockCoordinates aa = new BlockCoordinates(bc);
+            // a.X = aa.X = (int) to.KnownPosition.X;
+            // a.Y = aa.Y = (int) (to.KnownPosition.Y - 2);
+            // a.Z = aa.Z = (int) to.KnownPosition.Z;
             aa.Z += 1;
+            data.Add(new NbtInt("pairx",(int) aa.X));
+            data.Add(new NbtInt("pairz",(int) aa.Z));
+            
             var nbt = new Nbt
             {
                 NbtFile = new NbtFile
@@ -393,16 +432,17 @@ namespace CyberCore.Manager.Shop
                     RootTag = data
                 }
             };
+            Console.WriteLine("FIRST NBT1111111111111111");
             var nbt2 = new Nbt
             {
                 NbtFile = new NbtFile
                 {
                     BigEndian = false,
                     UseVarInt = true,
-                    RootTag = new NbtCompound()
+                    RootTag = new NbtCompound("")
                     {
                         new NbtInt("pairx", (int) a.X),
-                        new NbtInt("pairxz", (int) a.Z),
+                        new NbtInt("pairz", (int) a.Z),
                     }
                 }
             };
@@ -410,11 +450,14 @@ namespace CyberCore.Manager.Shop
             BlockCoordinates l2 = new BlockCoordinates(aa);
             McpeBlockEntityData bedp = McpeBlockEntityData.CreateObject();
             McpeBlockEntityData bedp2 = McpeBlockEntityData.CreateObject();
-            bedp.coordinates = l1;
+            bedp.coordinates = (BlockCoordinates) a;
             bedp.namedtag = nbt;
-            bedp2.coordinates = l2;
+            bedp2.coordinates = (BlockCoordinates) aa;
             bedp2.namedtag = nbt2;
-
+            //
+            // Console.WriteLine($"BEPD : {a}");
+            // Console.WriteLine($"BEPD2 : {aa}");
+            
             to.SendPacket(bedp);
             to.SendPacket(bedp2);
         }
