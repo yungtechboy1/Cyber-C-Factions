@@ -22,6 +22,7 @@ using MiNET.BlockEntities;
 using MiNET.Blocks;
 using MiNET.Effects;
 using MiNET.Entities;
+using MiNET.Entities.World;
 using MiNET.Items;
 using MiNET.Net;
 using MiNET.Sounds;
@@ -185,7 +186,18 @@ namespace CyberCore
 
 
         public bool ShowHTP { get; set; }
+        public CustomInvType CustomInvOpen { get; set; } = CustomInvType.NA;
 
+        public NewShopInv ShopInv = null;
+
+        public enum CustomInvType
+        {
+            NA,
+            Shop,
+            AH,
+            SpawnerShop
+        }
+        
         public Dictionary<BuffOrigin, Dictionary<BuffType, Buff>> getBufflist()
         {
             return new Dictionary<BuffOrigin, Dictionary<BuffType, Buff>>(Bufflist);
@@ -235,6 +247,88 @@ namespace CyberCore
         {
             if (!getBufflist().ContainsKey(BuffOrigin.Temp)) return new Dictionary<BuffType, Buff>();
             return new Dictionary<BuffType, Buff>(getBufflist()[BuffOrigin.Temp]);
+        }
+        
+        public override void HandleMcpeContainerClose(McpeContainerClose message)
+        {
+            if (CustomInvOpen != CustomInvType.NA)
+            {
+                CustomInvOpen = CustomInvType.NA;
+                SendMessage("CUSTOM INV HAS BEEN CLOSED INTERNALLY");
+            }
+            base.HandleMcpeContainerClose(message);
+        }
+
+        public override void HandleMcpeInventoryTransaction(McpeInventoryTransaction message)
+        {
+            switch (message.transaction)
+            {
+                case InventoryMismatchTransaction transaction:
+                    Console.WriteLine("IMT");
+                    break;
+                case ItemReleaseTransaction transaction:
+                    Console.WriteLine("IRT");
+                    break;
+                case ItemUseOnEntityTransaction transaction:
+                    Console.WriteLine("IUOET");
+                    break;
+                case ItemUseTransaction transaction:
+                    Console.WriteLine("IUT");
+                    break;
+                case NormalTransaction transaction:
+                    if (CustomInvOpen != CustomInvType.NA)
+                    {
+                        Console.WriteLine("NT");
+                        HandleTransactionRecords2(transaction.TransactionRecords);
+                        return;
+                    }
+                    else break;
+            }
+
+            // Console.WriteLine("THIS TRANSACTION WAS A "+message.transaction);
+            base.HandleMcpeInventoryTransaction(message);
+        }
+        //0 Player Inv
+        //10 Chest
+        //124 Cursor
+        
+        public enum TransactionType
+        {
+            NA = -1,
+            PlayerInv = 0,
+            Chest = 10,
+            Cursor = 124
+        }
+        
+        public  void HandleTransactionRecords2(List<TransactionRecord> transactionRecords)
+        {
+            Item obj1 = (Item) null;
+            Item obj2 = (Item) null;
+            TransactionType from = TransactionType.NA;
+            TransactionType to = TransactionType.NA;
+            
+            ItemEntity itemEntity = (ItemEntity) null;
+            foreach (TransactionRecord transactionRecord1 in transactionRecords)
+            {
+                Item oldItem = transactionRecord1.OldItem;
+                Item itemStack = transactionRecord1.NewItem;
+                int slot1 = transactionRecord1.Slot;
+                switch (transactionRecord1)
+                {
+                    case ContainerTransactionRecord transactionRecord:
+                        int inventoryId = transactionRecord.InventoryId;
+                        Console.WriteLine(inventoryId+"<<<<<");
+                        if (inventoryId == 10)
+                        {
+                            if (CustomInvOpen == CustomInvType.Shop)
+                            {
+                                ShopInv?.MakeSelection(slot1,this);
+                                SendPlayerInventory();
+                            }
+                        }
+                        break;
+                }
+            }
         }
 
         //    private static String TempKey = "TEMPBuffs";

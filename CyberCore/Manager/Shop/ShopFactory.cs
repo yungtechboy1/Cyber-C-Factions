@@ -367,16 +367,16 @@ namespace CyberCore.Manager.Shop
             Console.WriteLine(s.Id + "||| "+s.Metadata);
         }
         Console.WriteLine("SLOT===============================================");
-        McpeInventoryContent containerSetContent = McpeInventoryContent.CreateObject();
-        containerSetContent.inventoryId = 10;
-        containerSetContent.input = b.Slots;
-        p.SendPacket(containerSetContent);
+        b.SendInv(p);
+        p.CustomInvOpen = CorePlayer.CustomInvType.Shop;
+        p.ShopInv = b;
     }
 
     public void SpawnFakeBlockAndEntity(Player to, NbtCompound data) {
 
         BlockCoordinates m = SpawnBlock(to);
         SpawnBlockEntity(m, data,to);
+        Thread.Sleep(100);
 
     }
 

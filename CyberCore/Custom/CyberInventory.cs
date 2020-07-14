@@ -5,6 +5,7 @@ using fNbt;
 using MiNET;
 using MiNET.BlockEntities;
 using MiNET.Items;
+using MiNET.Net;
 
 namespace CyberCore.Custom
 {
@@ -18,6 +19,14 @@ namespace CyberCore.Custom
         public CyberInventory(int id, BlockEntity blockEntity, short inventorySize, NbtList slots) : base(id,
             blockEntity, inventorySize, slots)
         {
+        }
+        
+        public void SendInv(CorePlayer p)
+        {
+            McpeInventoryContent containerSetContent = McpeInventoryContent.CreateObject();
+            containerSetContent.inventoryId = 10;
+            containerSetContent.input = Slots;
+            p.SendPacket(containerSetContent);
         }
         
         private NbtList GetSlots2()

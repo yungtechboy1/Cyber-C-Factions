@@ -259,7 +259,7 @@ namespace CyberCore.Utils
 
         public static NbtCompound getNamedTag(this Item i)
         {
-            if(i.ExtraData == null)i.ExtraData = new NbtCompound();
+            if(i.ExtraData == null)i.ExtraData = new NbtCompound("");
             return i.ExtraData;
         }
 
@@ -335,7 +335,7 @@ namespace CyberCore.Utils
             {
                 if (string.IsNullOrEmpty(name)) return i.clearCustomName();
 
-                if(i.ExtraData == null)i.ExtraData = new NbtCompound();
+                if(i.ExtraData == null)i.ExtraData = new NbtCompound("");
                 
                 var tag = i.ExtraData;
                 if (tag != null && tag.Contains("display") && tag.Get("display") is NbtCompound)

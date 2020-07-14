@@ -18,6 +18,7 @@
             <e p="CustomDamageCause.cs" t="Include" />
             <e p="PowerEnum.cs" t="Include" />
           </e>
+          <e p="CyberGUIInventory.cs" t="Include" />
           <e p="CyberInventory.cs" t="Include" />
           <e p="Events" t="Include">
             <e p="CustomEntityDamageEvent.cs" t="Include" />
