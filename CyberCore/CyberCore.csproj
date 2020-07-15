@@ -12,7 +12,8 @@
 
     <ItemGroup>
       <PackageReference Include="MySqlConnector" Version="0.64.0" />
-      <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.73" />
+      <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.82" />
+      <PackageReference Include="MiNET" Version="1.0.2116" />
 <!--        <PackageReference Include="System.Management" Version="4.0.0" />-->
     </ItemGroup>
 

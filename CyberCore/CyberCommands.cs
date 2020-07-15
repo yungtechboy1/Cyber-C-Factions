@@ -21,11 +21,13 @@ using MiNET.Net;
 using MiNET.Plugins;
 using MiNET.Plugins.Attributes;
 using MiNET.Utils;
+using MiNET.Worlds;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using OpenAPI.Events.Player;
 using OpenAPI.Utils;
 using Level = MiNET.Worlds.Level;
+using Target = MiNET.Plugins.Target;
 
 namespace CyberCore
 {
@@ -285,6 +287,17 @@ namespace CyberCore
         {
             var a = new ShopFactory(CCM);
             a.OpenShop(p,1);
+        }
+        [Command(Name = "gamemode", Description = "Set Gamemode")]
+        public void gm(CorePlayer p, int mode)
+        {
+            if (mode == 0)
+            {
+                p.SetGamemode(GameMode.Survival);
+            }else if (mode == 1)
+            {
+                p.SetGamemode(GameMode.Creative);
+            }
         }
 
         [Command(Name = "withdraw", Aliases = new[] {"bank withdraw"}, Description = "Withdraw money from the bank")]

@@ -34,7 +34,7 @@ namespace CyberCore.Manager.ClassFactory.Window
                 String ppnn = ChatColors.Red + " [Inactive]";
             foreach (var pd in _BC.getClassSettings().getPowerDataList())
             {
-                Console.WriteLine("YEAHHHHH >>> " + pd + " || " + pd.getNeedsLockedSlot() + "||" + pd.getPowerID() + "||" + pd.getPowerID().Name);
+                // Console.WriteLine("YEAHHHHH >>> " + pd + " || " + pd.getNeedsLockedSlot() + "||" + pd.getPowerID() + "||" + pd.getPowerID().Name);
                 if (check(pd)) continue;//Can not Enable LockedSlot Powers here
                 Console.WriteLine("\\/\\/\\/\\/ NExt!!");
                 bool e = pd.getEnabled();

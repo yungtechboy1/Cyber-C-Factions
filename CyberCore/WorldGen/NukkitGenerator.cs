@@ -81,6 +81,11 @@ namespace CyberCore.WorldGen
         private static float[] biomeWeights = new float[25];
 
 
+        public void Initialize(IWorldProvider worldProvider)
+        {
+            // throw new NotImplementedException();
+        }
+
         public ChunkColumn GenerateChunkColumn(ChunkCoordinates chunkCoordinates)
         {
             StackTrace stackTrace = new StackTrace();

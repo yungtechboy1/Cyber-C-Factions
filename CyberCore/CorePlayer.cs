@@ -322,13 +322,57 @@ namespace CyberCore
                         {
                             if (CustomInvOpen == CustomInvType.Shop)
                             {
+                                ClearCursor();
                                 ShopInv?.MakeSelection(slot1,this);
-                                SendPlayerInventory();
+                                
                             }
+                        }else if (inventoryId == 124)
+                        {
+                            Inventory.UiInventory.Cursor = new ItemAir();
+                            SendPlayerInventory();
+                            ClearCursor();
                         }
                         break;
                 }
             }
+        }
+
+        public void ClearCursor()
+        {
+            Inventory.UiInventory/*?*/.Cursor = new ItemAir();
+            SendPlayerInventory();
+            // var a = new ItemStacks();
+            // a.Add(new ItemAir());
+            // McpeInventoryContent inventoryContent1 = Packet<McpeInventoryContent>.CreateObject(1L);
+            // inventoryContent1.inventoryId = 124;
+            // inventoryContent1.input = a;
+            // this.SendPacket((Packet) inventoryContent1);
+            // McpeInventoryContent inventoryContent2 = Packet<McpeInventoryContent>.CreateObject(1L);
+            // inventoryContent2.inventoryId = 119;
+            // inventoryContent2.input = a;
+            // this.SendPacket((Packet) inventoryContent1);
+            // McpeInventoryContent inventoryContent3 = Packet<McpeInventoryContent>.CreateObject(1L);
+            // inventoryContent3.inventoryId = 123;
+            // inventoryContent3.input = a;
+            // this.SendPacket((Packet) inventoryContent1);
+            McpeInventorySlot mis = Packet<McpeInventorySlot>.CreateObject(1l);
+            mis.item = new ItemAir();
+            mis.slot = 0;
+            mis.inventoryId = 124;
+            SendPacket(mis);
+            
+            // McpeInventorySlot mis2 = Packet<McpeInventorySlot>.CreateObject(1l);
+            // mis2.item = new ItemAir();
+            // mis2.slot = 0;
+            // mis2.inventoryId = 119;
+            // SendPacket(mis2);
+            //
+            // McpeInventorySlot mis3 = Packet<McpeInventorySlot>.CreateObject(1l);
+            // mis3.item = new ItemAir();
+            // mis3.slot = 0;
+            // mis3.inventoryId = 123;
+            // SendPacket(mis3);
+            // Inventory.CursorInventory
         }
 
         //    private static String TempKey = "TEMPBuffs";

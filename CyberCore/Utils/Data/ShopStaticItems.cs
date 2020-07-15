@@ -46,12 +46,66 @@ namespace CyberCore.Utils.Data
         public Item WeaponsCatagory;
         public Item BuildingCatagory;
         public Item RaidingCatagory;
+        public Item C_Ore;
+        public Item C_Weapons;
+        public Item C_Armor;
+        public Item C_Farming;
+        public Item C_Building;
+        public Item C_Potions;
+        public Item C_Raiding;
+        public Item C_Crafting;
+        public Item C_NameTag;
+        public Item C_Enchating;
 
 
         public ShopStaticItems(int page = -1)
         {
             NbtCompound T = new NbtCompound("");
             T.putBoolean(KeyName, true);
+
+            C_Armor = new ItemDiamondChestplate {Count = 1};
+            C_Armor.setCompoundTag((NbtCompound) T.Clone());
+            C_Armor.setCustomName(ChatColors.Aqua + "Armor");
+            
+            C_Building = new ItemBlock(new BrickBlock()) {Count = 1};
+            C_Building.setCompoundTag((NbtCompound) T.Clone());
+            C_Building.setCustomName(ChatColors.Aqua + "Building");
+            
+            C_Crafting = new ItemBlock(new CraftingTable()) {Count = 1};
+            C_Crafting.setCompoundTag((NbtCompound) T.Clone());
+            C_Crafting.setCustomName(ChatColors.Aqua + "Crafting");
+            
+            C_Enchating = new ItemBlock(new EnchantingTable()) {Count = 1};
+            C_Enchating.setCompoundTag((NbtCompound) T.Clone());
+            C_Enchating.setCustomName(ChatColors.Aqua + "Enchanting");
+            
+            
+            C_Farming = new ItemCarrot() {Count = 1};
+            C_Farming.setCompoundTag((NbtCompound) T.Clone());
+            C_Farming.setCustomName(ChatColors.Aqua + "Farming");
+            
+            
+            C_Ore = new ItemBlock(new IronOre()) {Count = 1};
+            C_Ore.setCompoundTag((NbtCompound) T.Clone());
+            C_Ore.setCustomName(ChatColors.Aqua + "Ores");
+            
+            
+            C_Potions = new ItemPotion(5) {Count = 1};
+            C_Potions.setCompoundTag((NbtCompound) T.Clone());
+            C_Potions.setCustomName(ChatColors.Aqua + "Potions");
+            
+            
+            C_Raiding = new ItemBlock(new Tnt()) {Count = 1};
+            C_Raiding.setCompoundTag((NbtCompound) T.Clone());
+            C_Raiding.setCustomName(ChatColors.Aqua + "Rading");
+            
+            C_Weapons = new ItemIronSword() {Count = 1};
+            C_Weapons.setCompoundTag((NbtCompound) T.Clone());
+            C_Weapons.setCustomName(ChatColors.Aqua + "Weapons");
+            
+            C_NameTag = new ItemNameTag() {Count = 1};
+            C_NameTag.setCompoundTag((NbtCompound) T.Clone());
+            C_NameTag.setCustomName(ChatColors.Aqua + "NameTags");
 
             RaidingCatagory = new ItemBlock(new Tnt());
             RaidingCatagory.setCompoundTag((NbtCompound) T.Clone());

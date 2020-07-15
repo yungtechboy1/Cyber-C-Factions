@@ -32,9 +32,19 @@ namespace CyberCore.Custom
       }
     }
 
-    public void Initialize()
+    // public void Initialize()
+    // {
+    //   this.BlockLayers = SuperflatGenerator.ParseSeed(this.Seed);
+    // }
+
+    public void Initialize(IWorldProvider worldProvider)
     {
       this.BlockLayers = SuperflatGenerator.ParseSeed(this.Seed);
+    }
+
+    public void Initialize()
+    {
+      // throw new NotImplementedException();
     }
 
     public ChunkColumn GenerateChunkColumn(ChunkCoordinates chunkCoordinates)

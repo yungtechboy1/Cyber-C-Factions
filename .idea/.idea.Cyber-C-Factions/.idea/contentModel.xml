@@ -25,9 +25,6 @@
             <e p="PlayerTakeDamageEvent.cs" t="Include" />
           </e>
           <e p="Items" t="Include">
-            <e p="ItemEmerald.cs" t="Include" />
-            <e p="ItemPaper.cs" t="Include" />
-            <e p="ItemSlimeBall.cs" t="Include" />
             <e p="NetherStar.cs" t="Include" />
             <e p="PoisionousPotato.cs" t="Include" />
           </e>

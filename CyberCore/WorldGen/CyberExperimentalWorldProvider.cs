@@ -965,7 +965,7 @@ namespace CyberCore.WorldGen
                                     blockEntityTag.Name = string.Empty;
                                     blockEntity.Coordinates = new BlockCoordinates(x, y, z);
 
-                                    if (blockEntity is Sign)
+                                    if (blockEntity is SignBlockEntity)
                                     {
                                         if (Log.IsDebugEnabled)
                                             Log.Debug($"Loaded sign block entity\n{blockEntityTag}");
@@ -998,7 +998,7 @@ namespace CyberCore.WorldGen
                                                 var item = (NbtCompound) items[i];
 
                                                 var itemName = item["id"].StringValue;
-                                                Console.WriteLine($"YEAHHHH CHESTBLOCK ITEM {i} IS {itemName}");
+                                                // Console.WriteLine($"YEAHHHH CHESTBLOCK ITEM {i} IS {itemName}");
                                                 if (itemName != "0")
                                                 {
                                                 }
