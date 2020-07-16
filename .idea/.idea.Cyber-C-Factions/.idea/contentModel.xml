@@ -281,6 +281,9 @@
         <e p="Program.cs" t="Include" />
         <e p="Testing.csproj" t="IncludeRecursive" />
       </e>
+      <e p="TestingPlugin" t="IncludeRecursive">
+        <e p="TestingPlugin.csproj" t="IncludeRecursive" />
+      </e>
     </e>
     <e p="C:\Users\Shadow\AppData\local\JetBrains\Rider2020.1\extResources" t="IncludeRecursive" />
     <e p="C:\Users\Shadow\AppData\local\JetBrains\Rider2020.1\resharper-host\local\Transient\ReSharperHost\v201\SolutionCaches\_Cyber-C-Factions.-490216729.00" t="ExcludeRecursive" />

@@ -19,9 +19,11 @@ namespace CyberCore.Manager.Shop
         {
             FillContentsSlots();
             setContentHotbar();
-            SendPage();
+            // SendPage();
         }
 
+        // public 
+        
         public void SendPage()
         {
             switch (CurrentPageEnum)

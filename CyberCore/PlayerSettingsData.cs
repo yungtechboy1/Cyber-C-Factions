@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using AStarNavigator;
 using CyberCore.Utils;
 using MiNET.Net;
-using Mono.Cecil.Cil;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Bcpg;
 
@@ -54,14 +53,14 @@ namespace CyberCore
             Cash = 1000;
             CreditLimit = 1000;
             CreditScore = 350; //Out of 1000
-            BankTime = CyberUtils.getTick();
+            // BankTime = CyberUtils.getTick();
             UUIDS.Add(p.ClientUuid.ToString());
         }
 
         /**
          * GetTick
          */
-        public long BankTime;
+        // public long BankTime;
 
         public int BankBal = 0;
 
@@ -79,7 +78,7 @@ namespace CyberCore
             var ld = (string) a["LoanData"];
             if (ld != "{}" && !ld.IsNullOrEmpty())
                 LoanData = JsonConvert.DeserializeObject<LoanDataObject>((string) a["LoanData"]);
-            BankTime = (long) a["BankTime"];
+            // BankTime = (long) a["BankTime"];
             if ((string) a["PlayerWarnings"] != "[]")
                 PlayerWarnings = JsonConvert.DeserializeObject<List<PlayerWarningEvent>>((string) a["PlayerWarnings"]);
             if ((string) a["PlayerTempBans"] != "[]")

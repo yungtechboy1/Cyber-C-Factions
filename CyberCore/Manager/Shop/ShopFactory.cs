@@ -364,7 +364,7 @@ namespace CyberCore.Manager.Shop
         foreach (var s in b.Slots)
         {
             if (s == null || s.Id == 0) continue;
-            Console.WriteLine(s.Id + "||| "+s.Metadata);
+            // Console.WriteLine(s.Id + "||| "+s.Metadata);
         }
         Console.WriteLine("SLOT===============================================");
         b.SendInv(p);

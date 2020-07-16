@@ -22,6 +22,7 @@ using MiNET;
 using MiNET.Blocks;
 using MiNET.Net;
 using MiNET.Plugins;
+using MiNET.Plugins.Attributes;
 using MiNET.Sounds;
 using MiNET.Utils;
 using MiNET.Worlds;
@@ -34,7 +35,7 @@ using OpenAPI.World;
 namespace CyberCore
 {
     [OpenPluginInfo(Name = "CyberCore", Description = "CyberTech++ Core Plugin", Author = "YungTechBoy1",
-        Version = "1.0.0.0-PA", Website = "CyberTechpp.com")]
+        Version = "1.0.0.1-PA", Website = "CyberTechpp.com")]
     public class CyberCoreMain : OpenPlugin
     {
         // public Dictionary<String, Object> PlayerIdentification = new Dictionary<string, object>();
@@ -82,6 +83,20 @@ namespace CyberCore
         public static CyberCoreMain GetInstance()
         {
             return instance;
+        }
+        
+        
+        [PacketHandler, Receive]
+        public Packet TEST(McpeInventoryTransaction p, Player pp)
+        {
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine("============"+pp.getName());
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            return p;
         }
 
         public CyberCoreMain()
@@ -286,6 +301,19 @@ namespace CyberCore
         public AuctionFactory AF { get; set; }
         public ShopFactory ShopFactory { get; set; }
 
+        [PacketHandler, Receive]
+        public Packet HandleIncoming(McpeMovePlayer packet,Player p)
+        {
+            Console.WriteLine("_--------------"+p.GetType());
+            return packet; // Process
+        }
+        [PacketHandler, Receive]
+        public Packet HandleIncoming2(McpeMovePlayer packet)
+        {
+            Console.WriteLine("_--------------22222222222");
+            return packet; // Process
+        }
+        
         private void OnTicking(object sender, PlayerEventArgs e)
         {
             var player = e.Player;

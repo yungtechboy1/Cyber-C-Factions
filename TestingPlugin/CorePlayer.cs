@@ -4,19 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
-using CyberCore.Custom.Events;
-using CyberCore.CustomEnums;
-using CyberCore.Manager.AuctionHouse;
-using CyberCore.Manager.ClassFactory;
-using CyberCore.Manager.ClassFactory.Powers;
-using CyberCore.Manager.Factions;
-using CyberCore.Manager.Factions.Windows;
-using CyberCore.Manager.Forms;
-using CyberCore.Manager.Rank;
-using CyberCore.Manager.Shop;
-using CyberCore.Manager.Shop.Spawner;
-using CyberCore.Utils;
-using CyberCore.Utils.Cooldowns;
 using MiNET;
 using MiNET.BlockEntities;
 using MiNET.Blocks;
@@ -34,7 +21,6 @@ using OpenAPI;
 using OpenAPI.Events.Entity;
 using OpenAPI.Events.Player;
 using OpenAPI.Player;
-using static CyberCore.Manager.ClassFactory.BuffType;
 
 namespace CyberCore
 {
@@ -48,37 +34,20 @@ namespace CyberCore
         private readonly string Cooldown_EPD = "EPD";
         private readonly string Cooldown_EPD_Valid = "EPDValid";
         private readonly string Scoreboard_Class = "ScoreBoard";
-        public ExtraPlayerData EPD = null;
-        public AuctionHouse AH = null;
         public int banned = 0;
 
         private readonly int BaseSwingSpeed = 7; //Was 10 but felt too slow for good PVP
 
-        // private CustomCraftingTransaction cct;
-        private readonly Dictionary<BuffOrigin, Dictionary<BuffType, Buff>> Bufflist =
-            new Dictionary<BuffOrigin, Dictionary<BuffType, Buff>>
-            {
-                {BuffOrigin.Class, new Dictionary<BuffType, Buff>()}
-            };
-
+     
         public bool BuffsChanced = false;
 
-        private readonly Dictionary<string, CoolDown> CDL = new Dictionary<string, CoolDown>();
 
-        private BaseClass PlayerClass = null;
         private int ClassCheck = -1;
         public CombatData Combat;
         private PlayerLocation CTLastPos;
         public int CustomExtraHP;
         public float CustomMovementSpeed = 0.1f;
         public int deaths;
-
-        private readonly Dictionary<BuffOrigin, Dictionary<BuffType, DeBuff>> DeBufflist =
-            new Dictionary<BuffOrigin, Dictionary<BuffType, DeBuff>>
-            {
-                {BuffOrigin.Class, new Dictionary<BuffType, DeBuff>()}
-            };
-
         public bool DebuffsChanced = false;
 
         //    public String faction_id = null;
@@ -91,12 +60,6 @@ namespace CyberCore
         // public int FactionInviteTimeout = -1;
         public int fixcoins = 0;
 
-        public PlayerFactionSettings fsettings = new PlayerFactionSettings();
-
-        // public List<Enchantment> MasterEnchantigList = null;
-        public List<Faction.HomeData> HD = new List<Faction.HomeData>();
-
-        public CoreSettings InternalPlayerSettings = new CoreSettings();
         // private bool isInTeleportingProcess = false;
 
         // private bool isTeleporting;
@@ -107,8 +70,6 @@ namespace CyberCore
         public int kills;
         private Vector3 lastBreakVector31;
         public string LastMessageSentTo = null;
-        public MainForm LastSentFormType = MainForm.NULL;
-        public SubMenu LastSentSubMenu = SubMenu.NULL;
         public int MaxHomes = 5;
 
         /**
@@ -117,12 +78,7 @@ namespace CyberCore
         public int money = 0;
 
         public bool MuteMessage = false;
-        private Rank2 rank = RankList2.getInstance().getRankFromID(RankEnum.Guest);
-        private PlayerSettingsData SettingsData;
-        // public ShopInv Shop = null;
-        public SpawnerShop SpawnerShop = null;
-
-        private CoolDown SwingCooldown = new CoolDown();
+        
 
         // private CorePlayer TargetTeleporting;
         // private PlayerLocation TargetTeleportingLoc;
@@ -131,8 +87,6 @@ namespace CyberCore
 
         public int TPRTimeout;
 
-        // public Scoreboard PlayerScoreBoard = ScoreboardAPI.createScoreboard();
-        protected Dictionary<BuffType, float> lastdata = null;
         private long uct;
         private bool uw;
         private long WFTP_TPTick = -1;
@@ -186,82 +140,9 @@ namespace CyberCore
 
 
         public bool ShowHTP { get; set; }
-        public CustomInvType CustomInvOpen { get; set; } = CustomInvType.NA;
-
-        public NewShopInv ShopInv = null;
-
-        public enum CustomInvType
-        {
-            NA,
-            Shop,
-            AH,
-            SpawnerShop
-        }
-        
-        public Dictionary<BuffOrigin, Dictionary<BuffType, Buff>> getBufflist()
-        {
-            return new Dictionary<BuffOrigin, Dictionary<BuffType, Buff>>(Bufflist);
-        }
-
-        public Dictionary<BuffOrigin, Dictionary<BuffType, DeBuff>> getDeBufflist()
-        {
-            return new Dictionary<BuffOrigin, Dictionary<BuffType, DeBuff>>(DeBufflist);
-        }
-
-        public Dictionary<BuffType, DeBuff> getClassDeBuffList()
-        {
-            if (!getBufflist().ContainsKey(BuffOrigin.Class)) return new Dictionary<BuffType, DeBuff>();
-            return new Dictionary<BuffType, DeBuff>(getDeBufflist()[BuffOrigin.Class]);
-        }
-
-        //     public class DeathEventArgs
-        //     {
-        //         public CorePlayer Player { get;}
-        //         public Level Level { get;}
-        // // public EntityDamageEvent
-        //         public DamageCause Cause {get;}
-        //         
-        //         
-        //     }
-        //     
-        //     public event EventHandler<PlayerEventArgs> DamageEventHandler;
-        //
-        //     protected virtual void onDamage(PlayerEventArgs e)
-        //     {
-        //         DamageEventHandler?.Invoke(this, e);
-        //     }
-        //     public event EventHandler<PlayerEventArgs> MoveEventHandler;
-        //
-        //     protected virtual void onMove(PlayerEventArgs e)
-        //     {
-        //         MoveEventHandler?.Invoke(this, e);
-        //     }
-
-        public Dictionary<BuffType, Buff> getClassBuffList()
-        {
-            if (!getBufflist().ContainsKey(BuffOrigin.Class)) return new Dictionary<BuffType, Buff>();
-            return new Dictionary<BuffType, Buff>(getBufflist()[BuffOrigin.Class]);
-        }
-
-        public Dictionary<BuffType, Buff> getTempBuff()
-        {
-            if (!getBufflist().ContainsKey(BuffOrigin.Temp)) return new Dictionary<BuffType, Buff>();
-            return new Dictionary<BuffType, Buff>(getBufflist()[BuffOrigin.Temp]);
-        }
-        
-        public override void HandleMcpeContainerClose(McpeContainerClose message)
-        {
-            if (CustomInvOpen != CustomInvType.NA)
-            {
-                CustomInvOpen = CustomInvType.NA;
-                SendMessage("CUSTOM INV HAS BEEN CLOSED INTERNALLY");
-            }
-            base.HandleMcpeContainerClose(message);
-        }
-
-
+       
         public override void HandleMcpeInventoryTransaction(McpeInventoryTransaction message)
-        {                        Console.WriteLine("CALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+        {                        Console.WriteLine("CALLLLLLLLL3333333333LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
 
             switch (message.transaction)
             {
@@ -278,13 +159,13 @@ namespace CyberCore
                     Console.WriteLine("IUT");
                     break;
                 case NormalTransaction transaction:
-                    if (CustomInvOpen != CustomInvType.NA)
-                    {
+                    // if (CustomInvOpen != CustomInvType.NA)
+                    // {
                         Console.WriteLine("NT");
                         HandleTransactionRecords2(transaction.TransactionRecords);
                         return;
-                    }
-                    else break;
+                    // }
+                    // else break;
             }
 
             // Console.WriteLine("THIS TRANSACTION WAS A "+message.transaction);
@@ -326,20 +207,20 @@ namespace CyberCore
                     case ContainerTransactionRecord transactionRecord:
                         int inventoryId = transactionRecord.InventoryId;
                         Console.WriteLine(inventoryId+"<<<<<");
-                        if (inventoryId == 10)
-                        {
-                            if (CustomInvOpen == CustomInvType.Shop)
-                            {
-                                ClearCursor();
-                                ShopInv?.MakeSelection(slot1,this);
-                                
-                            }
-                        }else if (inventoryId == 124)
-                        {
-                            Inventory.CursorInventory.Cursor = new ItemAir();
-                            SendPlayerInventory();
-                            ClearCursor();
-                        }
+                        // if (inventoryId == 10)
+                        // {
+                        //     if (CustomInvOpen == CustomInvType.Shop)
+                        //     {
+                        //         ClearCursor();
+                        //         ShopInv?.MakeSelection(slot1,this);
+                        //         
+                        //     }
+                        // }else if (inventoryId == 124)
+                        // {
+                        //     Inventory.UiInventory.Cursor = new ItemAir();
+                        //     SendPlayerInventory();
+                        //     ClearCursor();
+                        // }
                         break;
                 }
             }
@@ -347,7 +228,7 @@ namespace CyberCore
 
         public void ClearCursor()
         {
-            Inventory.CursorInventory/*?*/.Cursor = new ItemAir();
+            Inventory.UiInventory/*?*/.Cursor = new ItemAir();
             SendPlayerInventory();
             // var a = new ItemStacks();
             // a.Add(new ItemAir());
@@ -383,72 +264,6 @@ namespace CyberCore
             // Inventory.CursorInventory
         }
 
-        //    private static String TempKey = "TEMPBuffs";
-        public void addTemporaryBuff(Buff b)
-        {
-            if (Bufflist.ContainsKey(BuffOrigin.Temp))
-            {
-                var o = Bufflist[BuffOrigin.Temp];
-                o[b.getBt()] = b;
-                Bufflist[BuffOrigin.Temp] = o;
-            }
-            else
-            {
-                //TODO DECIDE SHOULD WE ALLOW THIS TO BE WRITEN OVER WHEN THEIR IS ALREADY A TEMP BUFF SET FOR A BUFF TYPE.... ie I CANT OVER WRITE MOVEMENT BUFF
-
-                Bufflist[BuffOrigin.Temp] = new Dictionary<BuffType, Buff>
-                {
-                    {b.getBt(), b}
-                };
-            }
-        }
-
-        public void delTemporbparyBuff(BuffType b)
-        {
-            if (Bufflist.ContainsKey(BuffOrigin.Temp))
-            {
-                var o = Bufflist[BuffOrigin.Temp];
-                o.Remove(b);
-            }
-        }
-
-        //TODO
-        public void clearClassBuffs()
-        {
-        }
-
-        public void initAllBuffs()
-        {
-            initBuffs();
-        }
-
-        //Used by BaseClass to update players effects and buffs, Debuffs
-        public void initAllClassBuffs()
-        {
-//        initClassDeBuffs();
-//        initClassBuffs();
-            initAllBuffs();
-        }
-
-        public void initClassDeBuffs()
-        {
-            //Class
-            foreach (var b in getClassDeBuffList().Values)
-                switch (b.getBt())
-                {
-                    case Movement:
-                        CustomMovementSpeed = DEFAULT_SPEED / b.getAmount();
-                        setMovementSpeed(CustomMovementSpeed, true);
-                        break;
-//                case SwingSpeed: NO NEED
-                    //COPY
-//                case SwingSpeed:
-//                    CustomMovementSpeed= (DEFAULT_SPEED / b.getAmount());
-//                    setMovementSpeed(CustomMovementSpeed,true);
-//                    break;
-                }
-        }
-
         public void setMovementSpeed(float speed, bool send)
         {
             MovementSpeed = speed;
@@ -460,125 +275,7 @@ namespace CyberCore
             HealthManager.MaxHealth = maxHealth;
         }
 
-        public void initClassBuffs()
-        {
-            foreach (var b in getClassBuffList().Values)
-            {
-                switch (b.getBt())
-                {
-                    case Movement:
-                        CustomMovementSpeed = DEFAULT_SPEED * b.getAmount();
-                        setMovementSpeed(CustomMovementSpeed, true);
-                        break;
-                    case Health:
-                        CustomExtraHP = (int) b.getAmount();
-                        setMaxHealth(20 + CustomExtraHP);
-                        sendAttributes();
-                        break;
-                }
-            }
-        }
-
-        public void initBuffs()
-        {
-            Console.WriteLine("Runing INITBUFFS BUFFFFFFFFFFFFFF");
-            Dictionary<BuffType, float> data = new Dictionary<BuffType, float>();
-            //BUFFS
-            List<Buff> ab = new List<Buff>(getClassBuffList().Values);
-//        ab.addAll(getTempBuff().values());
-            foreach (var b in getClassBuffList().Values)
-            {
-                data[b.getBt()] = b.getAmount();
-            }
-
-            foreach (var b in getClassDeBuffList().Values)
-            {
-                if (data.ContainsKey(b.getBt()))
-                {
-                    float f = data[b.getBt()];
-                    data[b.getBt()] = f / b.getAmount();
-                }
-                else
-                {
-                    data[b.getBt()] = 1 / b.getAmount();
-                }
-            }
-
-            //Temp Buffs  Everything!
-            if (getTempBuff().Count > 0)
-            {
-                Console.WriteLine("HAS TEMPPPPPPPPP BUFFFFFFFFFFFFFF");
-                foreach (var b in getTempBuff().Values)
-                {
-                    data[b.getBt()] = b.getAmount();
-                }
-            }
-
-            if (!data.ContainsKey(Health)) CustomExtraHP = 0;
-            if (!data.ContainsKey(Movement)) setMovementSpeed(DEFAULT_SPEED, true);
-            if (!areequal(data, lastdata))
-            {
-                foreach (var v in data)
-                {
-                    var key = v.Key;
-                    var value = v.Value;
-                    switch (key)
-                    {
-                        case Movement:
-                            setMovementSpeed(DEFAULT_SPEED * value, true);
-                            break;
-                        case NULL:
-                            break;
-                        case Health:
-                            CustomExtraHP = (int) value + 0;
-                            setMaxHealth(20 + CustomExtraHP);
-                            sendAttributes();
-                            break;
-                        case Armor:
-                            break;
-                        case DamageFromPlayer:
-                            break;
-                        case DamageToPlayer:
-                            break;
-                        case DamageToEntity:
-                            break;
-                        case DamageFromEntity:
-                            break;
-                        case Damage:
-                            break;
-                        case SwingSpeed:
-                            break;
-                        case Reach:
-                            break;
-                        case Healing:
-                            break;
-                        case SuperFoodHeartRegin:
-                            break;
-                        case Magic:
-                            break;
-                        case Jump:
-                            break;
-                    }
-                }
-
-                ;
-                lastdata = data;
-            }
-        }
-
-        private bool areequal(Dictionary<BuffType, float> a, Dictionary<BuffType, float> b)
-        {
-            if (a == null || b == null || a.Count != b.Count) return false;
-            foreach (var entry in a)
-            {
-                BuffType k = entry.Key;
-                float v = entry.Value;
-                if (!b.ContainsKey(k) || !v.Equals(b[k])) return false;
-            }
-
-            return true;
-        }
-
+      
 
         public float getHealth()
         {
@@ -586,100 +283,7 @@ namespace CyberCore
         }
 
 
-        public int getMaxHealth()
-        {
-            return 20 + (this.hasEffect(EffectType.HealthBoost)
-                ? 4 * (this.getEffect(EffectType.HealthBoost).Level + 1)
-                : 0) + CustomExtraHP;
-        }
-
-        public void addBuffFromClass(Buff b)
-        {
-            addBuffFromClass(b, false);
-        }
-
-        public void addBuffFromClass(Buff b, bool force)
-        {
-            if (b == null) return;
-            if (!Bufflist.ContainsKey(BuffOrigin.Class) || Bufflist[BuffOrigin.Class] == null)
-            {
-                var hash = new Dictionary<BuffType, Buff>();
-                hash[b.getBt()] = b;
-                Bufflist[BuffOrigin.Class] = hash;
-            }
-            else
-            {
-                Dictionary<BuffType, Buff> bm = Bufflist[BuffOrigin.Class];
-                if (bm.ContainsKey(b.getBt()) && !force) return; //Cant write it something is here
-                bm[b.getBt()] = b;
-                Bufflist[BuffOrigin.Class] = bm;
-            }
-        }
-
-        public void addDeBuffFromClass(DeBuff b)
-        {
-            addDeBuffFromClass(b, false);
-        }
-
-        public void addDeBuffFromClass(DeBuff b, bool force)
-        {
-            if (b == null) return;
-            if (!DeBufflist.ContainsKey(BuffOrigin.Class) || DeBufflist[BuffOrigin.Class] == null)
-            {
-                var hash = new Dictionary<BuffType, DeBuff>();
-                hash[b.getBt()] = b;
-                DeBufflist[BuffOrigin.Class] = hash;
-            }
-            else
-            {
-                Dictionary<BuffType, DeBuff> bm = DeBufflist[BuffOrigin.Class];
-                if (bm.ContainsKey(b.getBt()) && !force) return; //Cant write it something is here
-                bm[b.getBt()] = b;
-                DeBufflist[BuffOrigin.Class] = bm;
-            }
-        }
-
-        //for testing
-//    @
-//    public int dataPacket(DataPacket packet, bool needACK) {
-//        if (!this.connected) {
-//            return -1;
-//        }
-//
-//        if(needACK)return super.dataPacket(packet,needACK);
-//
-////        CyberCoreMain.Log.Error("Was LOG ||"+"Sending >> "+packet);
-//
-//        try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
-//            DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
-//            this.server.getPluginManager().callEvent(ev);
-//            if (ev.isCancelled()) {
-//                return -1;
-//            }
-//
-//            int identifier = this.interfaz.putPacket(this, packet, needACK, false);
-//
-////            if (needACK && identifier != null) {
-////                this.notifyACK();
-////                this.needACK.put(identifier, Boolean.FALSE);
-////                return identifier;
-////            }
-//        }
-//        return 0;
-//    }
-
-        public void SetPlayerClass(BaseClass bc)
-        {
-            PlayerClass = bc;
-            if (PlayerClass != null) PlayerClass.initBuffs();
-        }
-
-        public BaseClass getPlayerClass()
-        {
-            return PlayerClass;
-        }
-
-
+      
         public void sendAttributes()
         {
             SendUpdateAttributes();
@@ -747,18 +351,6 @@ namespace CyberCore
         }
 
 
-        public override void Disconnect(string reason, bool sendDisconnect = true)
-        {
-            base.Disconnect(reason, sendDisconnect);
-            //TODO Save Player Inv
-            CyberCoreMain.GetInstance().ServerSQL.UnLoadPlayer(this);
-        }
-
-        public void CreateDefaultSettingsData(CorePlayer p)
-        {
-            var a = new PlayerSettingsData(p);
-            setSettingsData(a);
-        }
 
 
         // public int addWindow(Inventory inventory, int forceId, bool isPermanent)
@@ -779,60 +371,11 @@ namespace CyberCore
         //     SendMessage("ERROR!!!!!!! I FUCKKKKED UUUUPPP");
         //     return -1;
         // }
-
-        public bool canMakeTransaction(double price)
-        {
-            if (price > getMoney()) return false;
-//        TakeMoney(price);
-            return true;
-        }
-
-        public bool MakeTransaction(double price)
-        {
-            if (price > getMoney()) return false;
-            TakeMoney(price);
-            return true;
-        }
-
-
         // public float getMovementSpeed()
         // {
         //     return super.getMovementSpeed();
         // }
-
-        public void TakeMoney(double price)
-        {
-            if (price <= 0) return;
-            getPlayerSettingsData().takeCash(price);
-        }
-
-        public void AddMoney(double price)
-        {
-            if (price <= 0) return;
-            getPlayerSettingsData().addCash(price);
-        }
-
-        public double getMoney()
-        {
-            return getPlayerSettingsData().getCash();
-        }
-
-
-        public void SetRank(RankEnum r)
-        {
-            rank = RankList2.getInstance().getRankFromID(r);
-        }
-
-        public void SetRank(Rank2 r)
-        {
-            rank = r;
-        }
-
-        public Rank2 GetRank()
-        {
-            return rank;
-        }
-
+        
         public int addDeath()
         {
             return deaths += 1;
@@ -886,11 +429,6 @@ namespace CyberCore
         // }
 
 
-        public void enterCombat()
-        {
-            if (Combat == null) SendMessage(ChatColors.Yellow + "You are now in combat!");
-            Combat = new CombatData(CyberUtils.getTick());
-        }
 
         protected override bool AcceptPlayerMove(McpeMovePlayer message, bool isOnGround, bool isFlyingHorizontally)
         {
@@ -902,112 +440,17 @@ namespace CyberCore
             return base.AcceptPlayerMove(message, isOnGround, isFlyingHorizontally);
         }
 
-        public bool isinCombat()
-        {
-            return checkCombat();
-        }
-
-        public bool checkCombat()
-        {
-            if (Combat == null) return false;
-            if (Combat.getTick() < CyberUtils.getTick())
-            {
-                leaveCombat();
-                return false;
-            }
-
-            return true;
-        }
+  
+       
 
         public int getBaseSwingSpeed()
         {
             return BaseSwingSpeed;
         }
 
-        public int getAttackTime()
-        {
-            Buff b = getClassBuffList()[SwingSpeed];
-            DeBuff db = getClassDeBuffList()[SwingSpeed];
-            if (b == null) b = new Buff(NULL, 1);
-            if (db == null) db = new DeBuff(NULL, 1);
-            return (int) (getBaseSwingSpeed() * b.getAmount() / db.getAmount());
-        }
-
-        public bool attack(CustomEntityDamageEvent source)
-        {
-            // getServer().getPluginManager().callEvent(source);
-            // if (source.isCancelled()) return false;
-            // PlayerTakeDamageEvent e = new PlayerTakeDamageEvent(source);
-            // getServer().getPluginManager().callEvent(e);
-            // setHealth(getHealth() - e.getFinalDamage());
-            return true;
-        }
+      
 
         public int attackTime = 0;
-
-        protected override void EntityAttack(ItemUseOnEntityTransaction transaction)
-        {
-            if (SwingCooldown.isValid())
-            {
-                return;
-                SendMessage(ChatColors.Yellow + "YOU STILL HAVE SWING COOLDONW!!!!!!");
-            }
-
-            base.EntityAttack(transaction);
-            enterCombat();
-            SwingCooldown.Reset(getAttackTime());
-
-
-            // List<DamageCause> da = new List<DamageCause>();
-            // da.Add(DamageCause.Fire);
-            // da.Add(DamageCause.FireTick);
-            // da.Add(DamageCause.Lava);
-            // Entity entity;
-            // if (!Level.TryGetEntity(transaction.EntityId, out entity)) return;
-            // if (entity is CorePlayer target)
-            // {
-            //     
-            // }
-            // if (uw && source.getCause() == EntityDamageEvent.DamageCause.FALL) return false;
-            // if (da.contains(source.getCause()))
-            // {
-            //     var defender = (Player) source.getEntity();
-            //     if (defender == null) return super.attack(source); //Defender not player
-            //     Item cp = defender.getInventory().getChestplate();
-            //     if (cp == null) return super.attack(source); //No Chestplate on
-            //     EntityDamageEvent.DamageCause cause = source.getCause();
-            //     /*//Check if defender has BurnShield
-            //     BurnShield bs =
-            //         (BurnShield) CustomEnchantment.getEnchantFromIDFromItem(cp, CustomEnchantment.BURNSHILED);
-            //     if (bs == null) return super.attack(source);
-            //     int bsl = bs.getLevel();
-            //     switch (cause)
-            //     {
-            //         case FIRE_TICK:
-            //             if (bsl >= 1) return false;
-            //         case FIRE:
-            //             if (bsl >= 2) return false;
-            //         case LAVA:
-            //             if (bsl >= 3) return false;
-            //     }*/
-            // }
-        }
-
-
-        public bool CheckGround()
-        {
-            var a = KnownPosition.Subtract(new PlayerLocation(0, 1, 0));
-            var b = Level.GetBlock(a);
-            if (b == null) return false;
-            if (b.Id != 0)
-            {
-                if (IsOnGround) CyberCoreMain.Log.Info($"SYSTEM ON GROUND FOR PLAYER {Username} works!");
-                return true;
-            }
-
-            return false;
-        }
-
 
 //         public void handleDataPacket(DataPacket packet)
 //         {
@@ -1905,48 +1348,7 @@ namespace CyberCore
 //             ScoreboardAPI.setScoreboard(this, s);
 //         }
 
-        private void AddCoolDown(string key, int secs)
-        {
-            CDL[key] = new CoolDown(key, secs);
-        }
-
-        private CoolDown GetCooldown(string key)
-        {
-            return GetCooldown(key, false);
-        }
-
-        private CoolDown GetCooldown(string key, bool checkvalid)
-        {
-            if (!CDL.ContainsKey(key)) return null;
-//        CyberCoreMain.Log.info(" VALID"+key);
-            CoolDown cd = CDL[key];
-            if (cd == null) return null;
-//        CyberCoreMain.Log.info("CVALID"+!cd.isValidTick()+" | "+cd.Time+"|"+Server.GetInstance().getTick());
-            if (checkvalid && !cd.isValid())
-            {
-//            CyberCoreMain.Log.info(" EXPIRED "+key);
-                CDL.Remove(key);
-                return null;
-            }
-
-//        CyberCoreMain.Log.info(" GOOD "+key);
-            return cd;
-//
-//
-//        for (CoolDown c : (List<CoolDown>) CDL.clone()) {
-//            CyberCoreMain.Log.info("CHECK KEY"+key +" == "+ c.Key);
-//            if (c.Key.equalsIgnoreCase(key)) {
-//                CyberCoreMain.Log.info("CHECK VALID"+checkvalid +" == "+ !c.isValidTick());
-//                if (checkvalid && !c.isValidTick()) {//CT !> Set Time
-//                    CDL.remove(c);
-//                    return null;
-//                }
-//                return c;
-//            }
-//        }
-//        return null;
-        }
-
+      
         public void leaveCombat()
         {
             Combat = null;
@@ -1962,246 +1364,6 @@ namespace CyberCore
             // if (EPD == null) loadEPD();
         }
 
-        public void loadEPD()
-        {
-            List<Dictionary<string, object>> a = CyberCoreMain.GetInstance().SQL
-                .executeSelect($"SELECT * FROM `EPD` WHERE player = '{Username}'");
-            if (a.Count != 0)
-            {
-                CyberCoreMain.Log.Info($" Loading Extra Player Data for {Username}");
-                EPD = new ExtraPlayerData(this, a[0]);
-                return;
-            }
-
-            EPD = new ExtraPlayerData(this);
-            CyberCoreMain.Log.Info($" Extra Player Data NOTTTTTT FOUND DDDD for {Username}");
-        }
-
-        protected override void OnTicked(PlayerEventArgs e)
-        {
-            base.OnTicked(e);
-            onUpdate(CyberUtils.getTick());
-        }
-
-        private long tt = 0;
-
-        public void onUpdate(long currentTick)
-        {
-            tt++;
-            if (tt < 20 * 10) return;
-            if (tt > Int64.MaxValue - 1) tt = 0;
-
-            if (ShowHTP)
-            {
-                ShowHTP = false;
-                SendForm(new HTP_0_Window());
-            }
-
-            //Check for Faction!
-            if (currentTick % 5 == 0) //Only allows 4 Ticks per Sec
-                if (!CooldownLock)
-                {
-                    CooldownLock = true;
-                    if (Combat != null)
-                        if (Combat.getTick() < currentTick) //No Long in combat
-                            leaveCombat();
-                    // var epd = GetCooldown(Cooldown_EPD, true);
-                    // if (epd == null)
-                    // {
-                    //     AddCoolDown(Cooldown_EPD,60*5);//5 Mins
-                    //     if (EPD != null)
-                    //     {
-                    //         EPD.upload();
-                    //     }
-                    //     else
-                    //     {
-                    //         EPD = new ExtraPlayerData(this);
-                    //     }
-                    // }
-                    // var epd1 = GetCooldown(Cooldown_EPD_Valid, true);
-                    // if (epd1 == null)
-                    // {
-                    //     AddCoolDown(Cooldown_EPD_Valid,30);//5 Mins
-                    //     if (EPD != null)
-                    //     {
-                    //         EPD.update();
-                    //     }
-                    //     else
-                    //     {
-                    //         EPD = new ExtraPlayerData(this);
-                    //     }
-                    // }
-                    //            CyberCoreMain.Log.info("RUNNNING "+CDL.size());
-                    var fc = GetCooldown(Cooldown_Faction, true);
-                    if (fc == null)
-                    {
-//                    CyberCoreMain.Log.info("RUNNNING FACTION CHECK IN CP" + CDL.size());
-                        AddCoolDown(Cooldown_Faction, 60); //3 mins
-                        if (Faction == null)
-                        {
-                            Faction f = CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction(this);
-                            if (f == null)
-                                Faction = null;
-                            else
-                                Faction = f.getName();
-                        }
-
-                        //Check to See if Faction Invite Expired
-                        EPD.update();
-                    }
-
-                    //Delay Teleport
-                    var tc = GetCooldown(Cooldown_DTP, true);
-                    if (tc == null)
-                    {
-//                    CyberCoreMain.Log.info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
-                        AddCoolDown(Cooldown_DTP, 2);
-                        if (isWaitingForTeleport())
-                        {
-                            if (isReadyToTeleport())
-                            {
-                                Teleport(WFTP_ToPlayerLocation.Safe(Level));
-                                clearWaitingForTP();
-                            }
-                        }
-                    }
-                    //Class Check
-
-                    //FIX HERE
-                    //TODO FIX HERE
-                    var cc = GetCooldown(Cooldown_Class, true);
-                    if (cc == null)
-                    {
-//                    CyberCoreMain.Log.info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
-                        AddCoolDown(Cooldown_Class, 5);
-                        BaseClass bc = getPlayerClass();
-                        if (bc != null) bc.onUpdate(currentTick);
-                        initAllClassBuffs();
-                    }
-
-//                         var sc = GetCooldown(Scoreboard_Class, true);
-//                         if (sc == null)
-//                         {
-// //                    CyberCoreMain.Log.info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
-//                             AddCoolDown(Scoreboard_Class, 3);
-//                             ReloadScoreBoard();
-//
-//                             //REMOVE SHOP/AH/SpawnShop GUI Items
-//                             var k = 0;
-//                             for (Item i :
-//                             getInventory().getContents().values()) {
-//                                 if (i.hasCompoundTag())
-//                                 {
-//                                     if (i.getNamedTag().contains(ShopInv.StaticItems.KeyName)) getInventory().remove(i);
-//                                     if (i.getNamedTag().contains("AHITEM")) getInventory().remove(i);
-//                                     if (i.getNamedTag().contains(net.yungtechboy1.CyberCore.Factory.Shop.Spawner
-//                                         .SpawnerShop.StaticItems.KeyName))
-//                                         getInventory().remove(i);
-// //                                k++;
-//                                 }
-//                             }
-//                         }
-
-                    CooldownLock = false;
-                }
-
-
-            //Check to see if Player as medic or Restoration
-            HungerManager pf = getFoodData();
-            if (TPR != null && TPRTimeout != 0 && TPRTimeout < currentTick)
-            {
-                TPRTimeout = 0;
-                CorePlayer cp = CyberCoreMain.GetInstance().getPlayer(TPR);
-                if (cp != null)
-                {
-                    var p = new Popup()
-                    {
-                        Duration = 40L,
-                        MessageType = MessageType.Tip,
-                        Message = ChatColors.Yellow + "Teleport request expired"
-                    };
-                    AddPopup(p);
-                    cp.AddPopup(p);
-                }
-
-                ;
-                TPR = null;
-            }
-
-            // if (isInTeleportingProcess)
-            // {
-            //     sendPopup(TeleportTick + "|" + isTeleporting);
-            //     if (TeleportTick != 0 && isTeleporting)
-            //     {
-            //         if (CTLastPos == null)
-            //         {
-            //             CTLastPos = (PlayerLocation) KnownPosition.Clone();
-            //         }
-            //         else
-            //         {
-            //             SendMessage(CTLastPos.DistanceTo(KnownPosition) + "");
-            //             if (CTLastPos.DistanceTo(KnownPosition) > 3) isTeleporting = false;
-            //             //            CTLastPos = getVector3();
-            //         }
-            //
-            //         if (TeleportTick <= currentTick && isTeleporting)
-            //         {
-            //             CyberCoreMain.Log.Error("Was LOG ||" + "AAAAAA");
-            //             if (isTeleporting)
-            //             {
-            //                 RemoveAllEffects(); //TODO use `removeEffect` to only remove that Effect
-            //                 if (TargetTeleporting != null && TargetTeleporting.HealthManager.IsDead)
-            //                 {
-            //                     SendMessage("Error! Player Not found or Dead!!");
-            //                     isInTeleportingProcess = false;
-            //                     TeleportTick = 0;
-            //                     CTLastPos = null;
-            //                     return;
-            //                 }
-            //
-            //                 if (TargetTeleporting == null && TargetTeleportingLoc == null)
-            //                 {
-            //                     SendMessage("Error! No Teleport data found!!!");
-            //                     isInTeleportingProcess = false;
-            //                     TeleportTick = 0;
-            //                     CTLastPos = null;
-            //                     return;
-            //                 }
-            //
-            //                 if (TargetTeleportingLoc != null)
-            //                 {
-            //                     Level.MakeSound(new BlazeFireballSound(KnownPosition));
-            //                     getLevel().addSound(getVector3(), Sound.MOB_ENDERMEN_PORTAL);
-            //                     Teleport(TargetTeleportingLoc);
-            //                     TargetTeleportingLoc = null;
-            //                     TargetTeleporting = null;
-            //                 }
-            //                 else
-            //                 {
-            //                     getLevel().addSound(getVector3(), Sound.MOB_ENDERMEN_PORTAL);
-            //                     Teleport(TargetTeleporting);
-            //                     TargetTeleportingLoc = null;
-            //                     TargetTeleporting = null;
-            //                 }
-            //
-            //                 isInTeleportingProcess = false;
-            //                 TeleportTick = 0;
-            //                 CTLastPos = null;
-            //             }
-            //         }
-            //         else if (isInTeleportingProcess && !isTeleporting)
-            //         {
-            //             removeAllEffects();
-            //             SendMessage("Error! you moved too much!");
-            //             isInTeleportingProcess = false;
-            //             TeleportTick = 0;
-            //             CTLastPos = null;
-            //             TargetTeleportingLoc = null;
-            //             TargetTeleporting = null;
-            //         }
-            //     }
-            // }
-        }
 
         // public List<Enchantment> GetStoredEnchants()
         // {
@@ -2214,21 +1376,6 @@ namespace CyberCore
         //     return MasterEnchantigList;
         // }
 
-        public void LoadHomes(List<Faction.HomeData> hd)
-        {
-            HD.AddRange(hd);
-        }
-
-        public bool CheckHomeKey(string key)
-        {
-            foreach (Faction.HomeData h in HD)
-            {
-                if (h.getName().equalsIgnoreCase(key)) return true;
-            }
-
-            return false;
-        }
-
         public void sendPopup(String msg, long duration = 40l)
         {
             var p = new Popup()
@@ -2240,34 +1387,7 @@ namespace CyberCore
             AddPopup(p);
         }
 
-        public void TeleportToHome(string key)
-        {
-            TeleportToHome(key, false);
-        }
 
-        public void TeleportToHome(string key, int delay)
-        {
-            TeleportToHome(key, false, delay);
-        }
-
-        public void TeleportToHome(string key, bool instant)
-        {
-            TeleportToHome(key, instant, 3);
-        }
-
-        public void TeleportToHome(string key, bool instant, int delay)
-        {
-            foreach (Faction.HomeData h in HD)
-            {
-                if (h.getName().equalsIgnoreCase(key))
-                {
-                    PlayerLocation v3 = h.getPosition();
-                    if (instant) Teleport(v3);
-                    else
-                        StartTeleport(h.getPosition(), 7);
-                }
-            }
-        }
 
         public override void HandleMcpeResourcePackClientResponse(McpeResourcePackClientResponse message)
         {
@@ -2288,76 +1408,6 @@ namespace CyberCore
             }
         }
 
-        public void Start(object o)
-        {
-            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
-            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
-            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
-            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
-            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
-            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
-            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
-            CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
-            if (!this.IsConnected || this.Level != null) CyberCoreMain.Log.Info("YOPOOOOOO SUMMM NULLL");
-            CyberCoreMain.Log.Info("LVELEEEELLL" + CyberCoreMain.GetInstance().getAPI().LevelManager
-                .GetLevel(this, Dimension.Overworld.ToString()));
-            base.Start(o);
-        }
-
-        public bool CanAddHome()
-        {
-            return HD.Count < MaxHomes;
-        }
-
-        public void DelHome(string name)
-        {
-            var k = 0;
-            var kk = 0;
-            foreach (Faction.HomeData h in HD)
-            {
-                k++;
-                if (h.getName().equalsIgnoreCase(name))
-                {
-                    kk = 1;
-                    break;
-                }
-            }
-
-            if (kk == 1) HD.RemoveAt(k);
-        }
-
-        public void AddHome(string name)
-        {
-            HD.Add(new Faction.HomeData(this, name));
-        }
-
-        public void AddHome(Faction.HomeData homeData)
-        {
-            HD.Add(homeData);
-        }
-
-        private PlayerSettingsData getSettingsData()
-        {
-            return SettingsData;
-        }
-
-        public void setSettingsData(PlayerSettingsData settingsData)
-        {
-            SettingsData = settingsData;
-        }
-
-        private PlayerSettingsData PlayerSettingsData = null;
-
-        public void setPlayerSettingsData(PlayerSettingsData playerSettingsData)
-        {
-            PlayerSettingsData = playerSettingsData;
-        }
-
-        public PlayerSettingsData getPlayerSettingsData()
-        {
-            if (getSettingsData() == null) CreateDefaultSettingsData(this);
-            return getSettingsData();
-        }
 
         public void StartTeleport(CorePlayer pl, int delay)
         {
@@ -2521,89 +1571,7 @@ namespace CyberCore
         }
 
 
-        public void tickPowerSource(int tick)
-        {
-            if (PlayerClass != null) PlayerClass.tickPowerSource(tick);
-            //TODO
-        }
-
-        public string getFactionName()
-        {
-            var f = getFaction();
-            if (f == null) return "No Faction";
-            return f.getDisplayName();
-        }
-
-        public Faction getFaction()
-        {
-            if (Faction == null) return null;
-            return CyberCoreMain.GetInstance().FM.FFactory.getFaction(Faction);
-        }
-
-        public bool isReadyToTeleport()
-        {
-            if (!(WFTP_TPTick == -1) && WFTP_ToPlayerLocation != null)
-            {
-                return CyberUtils.getTick() >= WFTP_TPTick;
-            }
-
-            return false;
-        }
-
-        public bool isWaitingForTeleport()
-        {
-            if (!(WFTP_TPTick == -1) && WFTP_ToPlayerLocation != null)
-            {
-                if (WFTP_StartPos != null &&
-                    WFTP_StartPos.DistanceTo(KnownPosition) > WFTP_CancelDistance)
-                {
-                    SendMessage(ChatColors.Red + "Error! You moved too much so your Teleport request was canceled");
-                    clearWaitingForTP();
-                    return false;
-                }
-
-                return true;
-            }
-
-            clearWaitingForTP();
-            return false;
-        }
-
-        public void clearWaitingForTP()
-        {
-            WFTP_TPTick = -1;
-            WFTP_ToPlayerLocation = null;
-        }
-
-        public bool delayTeleport(Vector3 pos, int secs = 5, bool giveeffects = true, int canceltpdistance = 2)
-        {
-            if (isWaitingForTeleport())
-            {
-                SendMessage(ChatColors.Red + "Error! You are already waiting for a Teleport!");
-                return false;
-            }
-
-            WFTP_TPTick = CyberUtils.getTick() + (secs * 20);
-            WFTP_StartPos = (PlayerLocation) KnownPosition.Clone();
-            WFTP_ToPlayerLocation = new PlayerLocation(pos);
-            WFTP_Effects = giveeffects;
-            WFTP_CancelDistance = canceltpdistance;
-            if (WFTP_Effects)
-            {
-                SetEffect(new Nausea()
-                {
-                    Duration = 20 * (secs + 3)
-                });
-                SetEffect(new Slowness()
-                {
-                    Duration = 20 * (secs + 3)
-                });
-            }
-
-            SendMessage(ChatColors.Yellow + $"Teleporting in {secs} Secs! Please stay still!");
-
-            return true;
-        }
+      
 //        if (!this.server.isWhitelisted((this.getName()).toLowerCase())) {
 //            this.kick(PlayerKickEvent.Reason.NOT_WHITELISTED, "Server is white-listed");
 //
@@ -2764,13 +1732,6 @@ namespace CyberCore
             {
                 return getTick(CombatTime);
             }
-        }
-
-        public FactionRank getFactionRank()
-        {
-            var f = getFaction();
-            if (f == null) return FactionRank.None;
-            return f.getPlayerRank(this);
         }
     }
 }

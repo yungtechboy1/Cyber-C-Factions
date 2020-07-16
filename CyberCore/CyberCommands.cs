@@ -22,8 +22,6 @@ using MiNET.Plugins;
 using MiNET.Plugins.Attributes;
 using MiNET.Utils;
 using MiNET.Worlds;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
 using OpenAPI.Events.Player;
 using OpenAPI.Utils;
 using Level = MiNET.Worlds.Level;

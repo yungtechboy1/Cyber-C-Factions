@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Git\\Cyber-C-Factions\\CFactions\\CFactions.csproj": {}
+    "C:\\Git\\Cyber-C-Factions\\TestingPlugin\\TestingPlugin.csproj": {}
   },
   "projects": {
-    "C:\\Git\\Cyber-C-Factions\\CFactions\\CFactions.csproj": {
+    "C:\\Git\\Cyber-C-Factions\\TestingPlugin\\TestingPlugin.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Git\\Cyber-C-Factions\\CFactions\\CFactions.csproj",
-        "projectName": "CFactions",
-        "projectPath": "C:\\Git\\Cyber-C-Factions\\CFactions\\CFactions.csproj",
+        "projectUniqueName": "C:\\Git\\Cyber-C-Factions\\TestingPlugin\\TestingPlugin.csproj",
+        "projectName": "TestingPlugin",
+        "projectPath": "C:\\Git\\Cyber-C-Factions\\TestingPlugin\\TestingPlugin.csproj",
         "packagesPath": "C:\\Users\\Shadow\\.nuget\\packages\\",
-        "outputPath": "C:\\Git\\Cyber-C-Factions\\CFactions\\obj\\",
+        "outputPath": "C:\\Git\\Cyber-C-Factions\\TestingPlugin\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Shadow\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -24,11 +24,7 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "projectReferences": {
-              "C:\\CJ\\openapi\\OpenAPI.csproj": {
-                "projectPath": "C:\\CJ\\openapi\\OpenAPI.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {
@@ -40,13 +36,13 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
-            "MySql.Data": {
+            "MiNET": {
               "target": "Package",
-              "version": "[8.0.19, )"
+              "version": "[1.0.2118, )"
             },
-            "Newtonsoft.Json": {
+            "OpenMiNET.OpenAPI": {
               "target": "Package",
-              "version": "[12.0.3, )"
+              "version": "[1.0.82, )"
             }
           },
           "imports": [

@@ -103,7 +103,7 @@ namespace CyberCore.Utils.Data
             C_Weapons.setCompoundTag((NbtCompound) T.Clone());
             C_Weapons.setCustomName(ChatColors.Aqua + "Weapons");
             
-            C_NameTag = new ItemNameTag() {Count = 1};
+            C_NameTag = new ItemMap() {Count = 1};
             C_NameTag.setCompoundTag((NbtCompound) T.Clone());
             C_NameTag.setCustomName(ChatColors.Aqua + "NameTags");
 
@@ -303,7 +303,7 @@ namespace CyberCore.Utils.Data
             Map.setCompoundTag((NbtCompound) T.Clone());
             Map.setCustomName(ChatColors.Gold + "" + ChatFormatting.Bold + "List Item In Hand");
 
-            Paper = new ItemPaper();
+            Paper = new ItemMap();
             Paper.setCompoundTag((NbtCompound) T.Clone());
             Paper.setCustomName(ChatColors.Gold + "" + ChatFormatting.Bold + "Search Auction House For Item");
         }

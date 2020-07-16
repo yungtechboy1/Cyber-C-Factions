@@ -148,11 +148,13 @@ namespace CyberCore.Manager.ClassFactory.Powers
         }
         public Item getAvailableItem()
         {
-            return new ItemSlimeBall();
+            return new ItemApple();
+            // return new ItemSlimeBall();
         }
         public Item getActiveItem()
         {
-            return new ItemSlimeBall(){Count = 5};
+            return new ItemApple();
+            // return new ItemSlimeBall(){Count = 5};
         }
         public Item getUnActiveItem()
         {
