@@ -9,6 +9,7 @@ using CyberCore.Manager.Shop;
 using fNbt;
 using JetBrains.Annotations;
 using MiNET;
+using MiNET.Blocks;
 using MiNET.Effects;
 using MiNET.Items;
 using MiNET.UI;
@@ -375,6 +376,10 @@ namespace CyberCore.Utils
             return new Vector3(int.Parse(s[0]),int.Parse(s[1]),int.Parse(s[2]));
         }
 
+        public static string getName(this Block i)
+        {
+            return i.GetType().Name;
+        }
         public static string getName(this Item i)
         {
             return i.hasCustomName() ? i.getCustomName() : i.GetType().Name;

@@ -26,16 +26,16 @@ namespace CyberCore.Manager.Shop
         public enum ShopPageEnum
         {
             Main,
-            C_Ore,
-            C_Weapons,
-            C_Armor,
-            C_Farming,
-            C_Building,
-            C_Potions,
-            C_Raiding,
-            C_Crafting,
-            C_NameTag,
-            C_Enchating,
+            C_Ore = 1,
+            C_Weapons = 2,
+            C_Armor = 3,
+            C_Farming = 4,
+            C_Building = 5,
+            C_Potions = 6,
+            C_Raiding = 7,
+            C_Crafting = 8,
+            C_NameTag = 9,
+            C_Enchating = 10,
 
             // C_,
             ConfirmBuy,
@@ -53,7 +53,7 @@ namespace CyberCore.Manager.Shop
             SetItem(50, a.CatagoryChest);
 // SetItem(50,a.CatagoryChest);
             SetItem(53, a.Greenglass);
-            if(!HasNextPage)SetItem(53,new ItemAir());
+            if (!HasNextPage) SetItem(53, new ItemAir());
         }
 
         private int Page = 1;
@@ -68,9 +68,14 @@ namespace CyberCore.Manager.Shop
                 {
                     case 20:
                         //Armor
-                        SetPageArmor(true,p);
+                        CurrentPageEnum = ShopPageEnum.C_Armor;
+                        break;
+                    case 21:
+                        CurrentPageEnum = ShopPageEnum.C_Building;
                         break;
                 }
+
+                SetPageContents();
             }
 
             switch (slot)
@@ -92,6 +97,7 @@ namespace CyberCore.Manager.Shop
                         Page = 1;
                         CurrentPageEnum = ShopPageEnum.Main;
                     }
+
                     SetPageContents();
                     break;
                 case 49:
@@ -105,8 +111,6 @@ namespace CyberCore.Manager.Shop
 
         private void SetPageArmor(bool send, CorePlayer p = null)
         {
-            CurrentPageEnum = ShopPageEnum.C_Armor;
-            SetPageContents();
         }
 
         public int[] GetIDMetaFromString(string s)
@@ -132,9 +136,10 @@ namespace CyberCore.Manager.Shop
             Item itm = null;
             if (id <= 255)
             {
-                var b = BlockFactory.GetBlockById(id);
+                Console.WriteLine($"{id} ||| {meta}");
+                var b = CyberUtils.GetBlockFromIdMeta(id, meta);
                 itm = new ItemBlock(b);
-                itm.setCustomName(b.Name);
+                itm.setCustomName(b.getName());
             }
             else
             {
@@ -146,7 +151,7 @@ namespace CyberCore.Manager.Shop
         }
 
         public bool HasNextPage = false;
-        
+
         public void SetPageContents()
         {
             HasNextPage = true;
@@ -154,49 +159,7 @@ namespace CyberCore.Manager.Shop
             int to = max * Page;
             int from = to - max;
             FillContentsSlots();
-            if (CurrentPageEnum == ShopPageEnum.C_Armor)
-            {
-                var r = CyberCoreMain.GetInstance().SQL
-                    .executeSelect($"SELECT * FROM `Shop` WHERE `Category` = 1 LIMIT {max} OFFSET {from};");
-                byte i = 0;
-                Console.WriteLine(">>>>>>>>WE GOT BACK "+r.Count);
-                if (r.Count <= max) HasNextPage = false;
-                if (r.Count == 0 && Page != 1)
-                {
-                    Page = 1;
-                    SetItem(53, new ItemAir());
-                    return;
-                }
-                foreach (var d in r)
-                {
-                    Console.WriteLine("STARTing #" + i + " || " + d["ID"]);
-                    int id = 0;
-                    int meta = 0;
-                    string ids = (string) d["ID"];
-                    var a = GetIDMetaFromString(ids);
-                    id = a[0];
-                    meta = a[1];
-                    if (id == 0) continue;
-
-                    Console.WriteLine("ID NOT NULL FOR #" + i + " AND IS " + id);
-                    Item itm = GetItemFromIDMeta(id,meta);
-                    if (itm == null) continue;
-                    Console.WriteLine("ITEM FOUND FOR  #" + i + " AND IS " + itm.Id);
-                    var n = itm.getNamedTag();
-                    n.Add(new NbtDouble("buy", Decimal.ToDouble((decimal) d["Buy"])));
-                    n.Add(new NbtDouble("sell", Decimal.ToDouble((decimal) d["Sell"])));
-                    Console.WriteLine("SET CUSTOMNAME FOR ITEM  #" + i + " AND IS " + id);
-                    itm.setCustomName(
-                        $"{ChatColors.Aqua}=={ChatColors.White}{itm.getCustomName()}{ChatColors.Aqua}==\n" +
-                        $"{ChatColors.Green}BUY 1 : ${d["Buy"]}\n" +
-                        $"{ChatColors.Yellow}Sell 1 : ${d["Sell"]}");
-
-                    Console.WriteLine("SET NBT FOR ITEM  #" + i + " AND IS " + id);
-                    SetItem(i, itm);
-                    i++;
-                }
-            }
-            else if (CurrentPageEnum == ShopPageEnum.Main)
+            if (CurrentPageEnum == ShopPageEnum.Main)
             {
                 var si = new ShopStaticItems(1);
                 int s = 2 * 9;
@@ -216,69 +179,115 @@ namespace CyberCore.Manager.Shop
                 SetItem(slot++, si.C_Weapons);
                 SetItem(slot++, si.C_NameTag);
             }
-            else
+            else /*if (CurrentPageEnum == ShopPageEnum.C_Armor)*/
             {
                 var r = CyberCoreMain.GetInstance().SQL
-                    .executeSelect($"SELECT * FROM `Shop` WHERE `MID` <= {to} AND `MID` > {from};");
+                    .executeSelect(
+                        $"SELECT * FROM `Shop` WHERE `Category` = {(int) CurrentPageEnum} LIMIT {max} OFFSET {from};");
                 byte i = 0;
-                Console.WriteLine("START");
+                Console.WriteLine(">>>>>>>>WE GOT BACK " + r.Count);
+                if (r.Count < max) HasNextPage = false;
+                if (r.Count == 0 && Page != 1)
+                {
+                    Page = 1;
+                    SetItem(53, new ItemAir());
+                    return;
+                }
+
                 foreach (var d in r)
                 {
                     Console.WriteLine("STARTing #" + i + " || " + d["ID"]);
                     int id = 0;
                     int meta = 0;
                     string ids = (string) d["ID"];
-                    if (ids.Contains(";"))
-                    {
-                        var a = ids.Split(";");
-                        id = int.Parse(a[0]);
-                        meta = int.Parse(a[1]);
-                    }
-                    else
-                    {
-                        id = int.Parse(ids);
-                    }
-
+                    var a = GetIDMetaFromString(ids);
+                    id = a[0];
+                    meta = a[1];
                     if (id == 0) continue;
 
                     Console.WriteLine("ID NOT NULL FOR #" + i + " AND IS " + id);
-                    Item itm = null;
-                    if (id <= 255)
-                    {
-                        var b = BlockFactory.GetBlockById(id);
-                        itm = new ItemBlock(b);
-                        itm.setCustomName(b.Name);
-                    }
-                    else
-                    {
-                        itm = ItemFactory.GetItem((short) id, (short) meta);
-                        itm.setCustomName(itm.getName());
-                    }
-
+                    Item itm = GetItemFromIDMeta(id, meta);
                     if (itm == null) continue;
                     Console.WriteLine("ITEM FOUND FOR  #" + i + " AND IS " + itm.Id);
-
                     var n = itm.getNamedTag();
-
-                    Console.WriteLine("SET BUY FOR ITEM  #" + i + $" AND IS {d["Buy"]} AND TYPE {d["Buy"].GetType()}");
                     n.Add(new NbtDouble("buy", Decimal.ToDouble((decimal) d["Buy"])));
-
-                    Console.WriteLine("SET SELL FOR ITEM  #" + i + " AND IS " + id);
                     n.Add(new NbtDouble("sell", Decimal.ToDouble((decimal) d["Sell"])));
-
                     Console.WriteLine("SET CUSTOMNAME FOR ITEM  #" + i + " AND IS " + id);
                     itm.setCustomName(
                         $"{ChatColors.Aqua}=={ChatColors.White}{itm.getCustomName()}{ChatColors.Aqua}==\n" +
                         $"{ChatColors.Green}BUY 1 : ${d["Buy"]}\n" +
-                        $"{ChatColors.Yellow}Sell 1 : ${d["Sell"]}");
+                        $"{ChatColors.Yellow}Sell 1 : ${d["Sell"]}\n" +
+                        $"{ChatColors.Gray}{d["MID"]}|{id}|{meta}");
 
                     Console.WriteLine("SET NBT FOR ITEM  #" + i + " AND IS " + id);
                     SetItem(i, itm);
                     i++;
                 }
             }
-            
-            SetContentHotbar();
+            // else
+                // else
+                // {
+                //     var r = CyberCoreMain.GetInstance().SQL
+                //         .executeSelect($"SELECT * FROM `Shop` WHERE `MID` <= {to} AND `MID` > {from};");
+                //     byte i = 0;
+                //     Console.WriteLine("START");
+                //     foreach (var d in r)
+                //     {
+                //         Console.WriteLine("STARTing #" + i + " || " + d["ID"]);
+                //         int id = 0;
+                //         int meta = 0;
+                //         string ids = (string) d["ID"];
+                //         if (ids.Contains(";"))
+                //         {
+                //             var a = ids.Split(";");
+                //             id = int.Parse(a[0]);
+                //             meta = int.Parse(a[1]);
+                //         }
+                //         else
+                //         {
+                //             id = int.Parse(ids);
+                //         }
+                //
+                //         if (id == 0) continue;
+                //
+                //         Console.WriteLine("ID NOT NULL FOR #" + i + " AND IS " + id);
+                //         Item itm = null;
+                //         if (id <= 255)
+                //         {
+                //             var b = BlockFactory.GetBlockById(id);
+                //             itm = new ItemBlock(b);
+                //             itm.setCustomName(b.Name);
+                //         }
+                //         else
+                //         {
+                //             itm = ItemFactory.GetItem((short) id, (short) meta);
+                //             itm.setCustomName(itm.getName());
+                //         }
+                //
+                //         if (itm == null) continue;
+                //         Console.WriteLine("ITEM FOUND FOR  #" + i + " AND IS " + itm.Id);
+                //
+                //         var n = itm.getNamedTag();
+                //
+                //         Console.WriteLine("SET BUY FOR ITEM  #" + i + $" AND IS {d["Buy"]} AND TYPE {d["Buy"].GetType()}");
+                //         n.Add(new NbtDouble("buy", Decimal.ToDouble((decimal) d["Buy"])));
+                //
+                //         Console.WriteLine("SET SELL FOR ITEM  #" + i + " AND IS " + id);
+                //         n.Add(new NbtDouble("sell", Decimal.ToDouble((decimal) d["Sell"])));
+                //
+                //         Console.WriteLine("SET CUSTOMNAME FOR ITEM  #" + i + " AND IS " + id);
+                //         itm.setCustomName(
+                //             $"{ChatColors.Aqua}=={ChatColors.White}{itm.getCustomName()}{ChatColors.Aqua}==\n" +
+                //             $"{ChatColors.Green}BUY 1 : ${d["Buy"]}\n" +
+                //             $"{ChatColors.Yellow}Sell 1 : ${d["Sell"]}");
+                //
+                //         Console.WriteLine("SET NBT FOR ITEM  #" + i + " AND IS " + id);
+                //         SetItem(i, itm);
+                //         i++;
+                //     }
+                // }
+
+                SetContentHotbar();
         }
     }
 }

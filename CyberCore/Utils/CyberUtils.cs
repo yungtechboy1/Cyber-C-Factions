@@ -8,6 +8,8 @@ using CyberCore.Manager.Forms;
 using CyberCore.Manager.Shop;
 using JetBrains.Annotations;
 using MiNET;
+using MiNET.Blocks;
+using MiNET.Items;
 using MiNET.Plugins;
 using MiNET.Utils;
 using OpenAPI.Player;
@@ -29,6 +31,17 @@ namespace CyberCore.Utils
                 ret.Add(entry.Key, entry.Value);
             }
             return ret;
+        }
+
+        public static Block GetBlockFromIdMeta(int id, int meta)
+        {
+            uint rid = BlockFactory.GetRuntimeId(id, (byte) meta);
+            if (rid == -1) return new Air();
+            var s = BlockFactory.BlockPalette[(int) rid].States;
+            var b = BlockFactory.GetBlockById(id);
+            b.SetState(s);
+            b.Metadata = (byte) meta;
+            return b;
         }
         public  static long LongRandom(long min, long max)
         {
