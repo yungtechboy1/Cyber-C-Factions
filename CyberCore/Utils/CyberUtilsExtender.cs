@@ -341,6 +341,7 @@ namespace CyberCore.Utils
                 if (tag != null && tag.Contains("display") && tag.Get("display") is NbtCompound)
                 {
                     var a = tag.Get<NbtCompound>("display");
+                    if (a.Contains("Name")) a.Remove("Name");
                     a.Add(new NbtString("Name", name));
                 }
                 else
