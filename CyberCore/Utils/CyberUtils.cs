@@ -35,13 +35,20 @@ namespace CyberCore.Utils
 
         public static Block GetBlockFromIdMeta(int id, int meta)
         {
-            uint rid = BlockFactory.GetRuntimeId(id, (byte) meta);
-            if (rid == -1) return new Air();
-            var s = BlockFactory.BlockPalette[(int) rid].States;
-            var b = BlockFactory.GetBlockById(id);
-            b.SetState(s);
-            b.Metadata = (byte) meta;
-            return b;
+            try
+            {
+                uint rid = BlockFactory.GetRuntimeId(id, (byte) meta);
+                if (rid == -1) return new Border();
+                var s = BlockFactory.BlockPalette[(int) rid].States;
+                var b = BlockFactory.GetBlockById(id);
+                b.SetState(s);
+                b.Metadata = (byte) meta;
+                return b;
+            }
+            catch (Exception e)
+            {
+                return new Border();
+            }
         }
         public  static long LongRandom(long min, long max)
         {

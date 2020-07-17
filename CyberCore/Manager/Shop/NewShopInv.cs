@@ -35,7 +35,7 @@ namespace CyberCore.Manager.Shop
             C_Raiding = 7,
             C_Crafting = 8,
             C_NameTag = 9,
-            C_Enchating = 10,
+            C_Enchanting = 10,
 
             // C_,
             ConfirmBuy,
@@ -72,6 +72,30 @@ namespace CyberCore.Manager.Shop
                         break;
                     case 21:
                         CurrentPageEnum = ShopPageEnum.C_Building;
+                        break;
+                    case 22:
+                        CurrentPageEnum = ShopPageEnum.C_Crafting;
+                        break;
+                    case 23:
+                        CurrentPageEnum = ShopPageEnum.C_Enchanting;
+                        break;
+                    case 24:
+                        CurrentPageEnum = ShopPageEnum.C_Farming;
+                        break;
+                    case 29:
+                        CurrentPageEnum = ShopPageEnum.C_Ore;
+                        break;
+                    case 30:
+                        CurrentPageEnum = ShopPageEnum.C_Potions;
+                        break;
+                    case 31:
+                        CurrentPageEnum = ShopPageEnum.C_Raiding;
+                        break;
+                    case 32:
+                        CurrentPageEnum = ShopPageEnum.C_Weapons;
+                        break;
+                    case 33:
+                        CurrentPageEnum = ShopPageEnum.C_NameTag;
                         break;
                 }
 
@@ -170,7 +194,7 @@ namespace CyberCore.Manager.Shop
                 SetItem(slot++, si.C_Armor);
                 SetItem(slot++, si.C_Building);
                 SetItem(slot++, si.C_Crafting);
-                SetItem(slot++, si.C_Enchating);
+                SetItem(slot++, si.C_Enchanting);
                 SetItem(slot++, si.C_Farming);
                 slot = (byte) (start + 9);
                 SetItem(slot++, si.C_Ore);

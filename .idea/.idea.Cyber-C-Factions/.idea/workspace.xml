@@ -20,11 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Shop/NewShopInv.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Shop/NewShopInv.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/Data/ShopStaticItems.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/Data/ShopStaticItems.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +32,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="3104" />
+    <option name="totalTimeSeconds" value="5605" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -136,6 +136,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/DA72CFBB-7937-4DE0-97E5-33DE55C21E96/1e/ea7e1651/Block.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/DA72CFBB-7937-4DE0-97E5-33DE55C21E96/71/44d29408/Planks.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/DA72CFBB-7937-4DE0-97E5-33DE55C21E96/36/2e792b9b/BlockFactory.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/DA72CFBB-7937-4DE0-97E5-33DE55C21E96/c7/e34bfa54/InventoryManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/DA72CFBB-7937-4DE0-97E5-33DE55C21E96/3c/7872f305/Player.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/DA72CFBB-7937-4DE0-97E5-33DE55C21E96/f4/d8fc3e11/Border.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C3772002-F1F4-41F5-884E-AF59298E0C9F/bf/d5731d37/PlayerInteractEvent.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C3772002-F1F4-41F5-884E-AF59298E0C9F/23/8836179e/PlayerInputEvent.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E07FFA0B-6E50-4B0E-B2B3-C8EBAE4DE79D/88/9b141387/McpeInventoryTransaction.cs" root0="SKIP_HIGHLIGHTING" />
@@ -353,9 +356,9 @@
         <option value="$PROJECT_DIR$/CyberCore/CorePlayer.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Custom/CyberGUIInventory.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Shop/NewShopInv.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Shop/NewShopInv.cs" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
       </list>
     </option>
   </component>
@@ -534,7 +537,9 @@
       <workItem from="1594823939361" duration="3988000" />
       <workItem from="1594860674750" duration="7524000" />
       <workItem from="1594946925644" duration="4993000" />
-      <workItem from="1594952708030" duration="4036000" />
+      <workItem from="1594952708030" duration="4425000" />
+      <workItem from="1594994584693" duration="3254000" />
+      <workItem from="1595018509070" duration="1474000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />
@@ -589,29 +594,29 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1094" y="463" width="458" height="510" key="#com.intellij.tools.ToolEditorDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1590264141379" />
-    <state width="900" height="271" key="GridCell.Tab.0.bottom" timestamp="1594956847222">
+    <state width="900" height="271" key="GridCell.Tab.0.bottom" timestamp="1595018941556">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="900" height="271" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1594956847222" />
+    <state width="900" height="271" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1595018941556" />
     <state width="1220" height="264" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714151" />
-    <state width="900" height="271" key="GridCell.Tab.0.center" timestamp="1594956847221">
+    <state width="900" height="271" key="GridCell.Tab.0.center" timestamp="1595018941556">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="900" height="271" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1594956847221" />
+    <state width="900" height="271" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1595018941556" />
     <state width="1220" height="264" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714151" />
-    <state width="900" height="271" key="GridCell.Tab.0.left" timestamp="1594956847221">
+    <state width="900" height="271" key="GridCell.Tab.0.left" timestamp="1595018941555">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="900" height="271" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1594956847221" />
+    <state width="900" height="271" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1595018941555" />
     <state width="1220" height="264" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714150" />
-    <state width="900" height="271" key="GridCell.Tab.0.right" timestamp="1594956847222">
+    <state width="900" height="271" key="GridCell.Tab.0.right" timestamp="1595018941556">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="900" height="271" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1594956847222" />
+    <state width="900" height="271" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1595018941556" />
     <state width="1220" height="264" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714151" />
     <state width="1220" height="322" key="GridCell.Tab.1.bottom" timestamp="1590301279358">
       <screen x="0" y="0" width="2560" height="1040" />
@@ -706,10 +711,10 @@
     </state>
     <state x="608" y="154" key="com.intellij.tools.ToolSelectDialog.dimensionServiceKey/0.0.1280.680@0.0.1280.680" timestamp="1594058094533" />
     <state x="1216" y="288" key="com.intellij.tools.ToolSelectDialog.dimensionServiceKey/0.0.2560.1040@0.0.2560.1040" timestamp="1590264143209" />
-    <state x="960" y="0" width="960" height="1040" key="dock-window-1" timestamp="1594954894922">
+    <state x="960" y="0" width="960" height="1040" key="dock-window-1" timestamp="1594995390200">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="960" y="0" width="960" height="1040" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1594954894922" />
+    <state x="960" y="0" width="960" height="1040" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1594995390200" />
     <state x="1280" y="0" width="1280" height="1040" key="dock-window-1/0.0.2560.1040@0.0.2560.1040" timestamp="1593833137260" />
     <state x="0" y="0" width="1280" height="506" key="dock-window-2" timestamp="1593483752859">
       <screen x="0" y="0" width="2560" height="1040" />
@@ -745,11 +750,11 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1461" y="244" width="672" height="677" key="run.anything.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590803056409" />
-    <state x="645" y="226" width="1008" height="637" key="search.everywhere.popup" timestamp="1594956720938">
+    <state x="645" y="226" width="1008" height="637" key="search.everywhere.popup" timestamp="1594995723115">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="430" y="148" width="672" height="416" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1594091032350" />
-    <state x="645" y="226" width="1008" height="637" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1594956720938" />
+    <state x="645" y="226" width="1008" height="637" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1594995723115" />
     <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1593879883856" />
   </component>
   <component name="XDebuggerManager">
