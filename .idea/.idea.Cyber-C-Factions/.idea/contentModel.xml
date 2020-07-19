@@ -29,6 +29,7 @@
             <e p="PoisionousPotato.cs" t="Include" />
           </e>
         </e>
+        <e p="CustomItmStkInvMgr.cs" t="Include" />
         <e p="CyberCommands.cs" t="Include" />
         <e p="CyberCore.csproj" t="IncludeRecursive" />
         <e p="CyberCoreMain.cs" t="Include" />

@@ -144,7 +144,7 @@ namespace CyberCore
 
         public CorePlayer(MiNetServer server, IPEndPoint endPoint, OpenApi api) : base(server, endPoint, api)
         {
-            
+            ItemStackInventoryManager = new CustomItmStkInvMgr(this);
         }
         //
         // private void InvChange(Player player, Inventory inventory, byte slot, Item itemStack)
@@ -336,7 +336,7 @@ namespace CyberCore
                             }
                         }else if (inventoryId == 124)
                         {
-                            Inventory.CursorInventory.Cursor = new ItemAir();
+                            Inventory.UiInventory.Cursor = new ItemAir();
                             SendPlayerInventory();
                             ClearCursor();
                         }
@@ -347,7 +347,7 @@ namespace CyberCore
 
         public void ClearCursor()
         {
-            Inventory.CursorInventory/*?*/.Cursor = new ItemAir();
+            Inventory.UiInventory/*?*/.Cursor = new ItemAir();
             SendPlayerInventory();
             // var a = new ItemStacks();
             // a.Add(new ItemAir());
