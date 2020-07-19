@@ -62,6 +62,8 @@ namespace CyberCore.Utils.Data
         {
             NbtCompound T = new NbtCompound("");
             T.putBoolean(KeyName, true);
+            T.putBoolean("CANNOTBUY",true);
+
 
             C_Armor = new ItemDiamondChestplate {Count = 1};
             C_Armor.setCompoundTag((NbtCompound) T.Clone());

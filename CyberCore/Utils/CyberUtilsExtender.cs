@@ -68,6 +68,16 @@ namespace CyberCore.Utils
             return i.ExtraData != null;
         }
 
+        public static bool getBoolean(this NbtCompound i, string key)
+        {
+            if (i.Contains(key))
+            {
+                var a = (NbtByte) i[key];
+                return a.Value == 0 ? false : true;
+            }
+            else
+                return false;
+        }
         public static NbtCompound putBoolean(this NbtCompound i, string key, bool val)
         {
             i.Add(new NbtByte(key, (byte) (val ? 1 : 0)));

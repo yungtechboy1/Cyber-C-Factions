@@ -10,6 +10,7 @@ namespace CyberCore
     public class CustomItmStkInvMgr : ItemStackInventoryManager
     {
         private Player P;
+
         public CustomItmStkInvMgr(Player player) : base(player)
         {
             P = player;
@@ -18,6 +19,7 @@ namespace CyberCore
         public override List<StackResponseContainerInfo> HandleItemStackActions(int requestId,
             ItemStackActionList actions)
         {
+            bool skip = false;
             List<StackResponseContainerInfo> responseContainerInfoList = new List<StackResponseContainerInfo>();
             uint num = 0;
             foreach (ItemStackAction action1 in (List<ItemStackAction>) actions)
@@ -25,18 +27,6 @@ namespace CyberCore
                 Console.WriteLine($"AN ACTION WAS CALLED WITH {action1}");
                 switch (action1)
                 {
-                    case CraftAction action:
-                        num = this.ProcessCraftAction(action);
-                        continue;
-                    case CraftCreativeAction action:
-                        this.ProcessCraftCreativeAction(action);
-                        continue;
-                    case CraftNotImplementedDeprecatedAction action:
-                        this.ProcessCraftNotImplementedDeprecatedAction(action);
-                        continue;
-                    case CraftResultDeprecatedAction action:
-                        this.ProcessCraftResultDeprecatedAction(action);
-                        continue;
                     case TakeAction action:
                         if (action.Source.ContainerId == 7)
                         {
@@ -46,67 +36,21 @@ namespace CyberCore
                                 var si = CP.ShopInv;
                                 if (si != null)
                                 {
-                                    Console.WriteLine(action.Destination.ContainerId+" |||||||||||1111||||||| "+action.Destination.Slot);
-                                    si.MakeSelection(action.Source.Slot,CP);
+                                    skip = true;
+                                    Console.WriteLine(action.Destination.ContainerId + " |||||||||||1111||||||| " +
+                                                      action.Destination.Slot);
+                                    si.MakeSelection(action.Source.Slot, CP);
                                     continue;
                                 }
                             }
                         }
-                        // PTA(action, responseContainerInfoList);
-                        this.ProcessTakeAction(action, responseContainerInfoList);
                         continue;
-                    case PlaceAction action:
-                        this.ProcessPlaceAction(action, responseContainerInfoList);
-                        continue;
-                    case SwapAction action:
-                        this.ProcessSwapAction(action, responseContainerInfoList);
-                        continue;
-                    case DestroyAction action:
-                        this.ProcessDestroyAction(action, responseContainerInfoList);
-                        continue;
-                    case DropAction action:
-                        this.ProcessDropAction(action, responseContainerInfoList);
-                        continue;
-                    case ConsumeAction action:
-                        this.ProcessConsumeAction(action, responseContainerInfoList);
-                        continue;
-                    default:
-                        throw new ArgumentOutOfRangeException("stackAction");
                 }
             }
 
-            foreach (IGrouping<byte, StackResponseContainerInfo> source1 in responseContainerInfoList
-                .GroupBy<StackResponseContainerInfo, byte>(
-                    (Func<StackResponseContainerInfo, byte>) (r => r.ContainerId)))
-            {
-                if (source1.Count<StackResponseContainerInfo>() > 1)
-                {
-                    byte key1 = source1.Key;
-                    StackResponseSlotInfo responseSlotInfo = (StackResponseSlotInfo) null;
-                    foreach (IGrouping<byte, StackResponseSlotInfo> source2 in source1
-                        .SelectMany<StackResponseContainerInfo, StackResponseSlotInfo>(
-                            (Func<StackResponseContainerInfo, IEnumerable<StackResponseSlotInfo>>) (d =>
-                                (IEnumerable<StackResponseSlotInfo>) d.Slots))
-                        .GroupBy<StackResponseSlotInfo, byte>((Func<StackResponseSlotInfo, byte>) (s => s.Slot)))
-                    {
-                        byte key2 = source2.Key;
-                        if (source2.Count<StackResponseSlotInfo>() > 1)
-                            responseSlotInfo = source2.ToList<StackResponseSlotInfo>().Last<StackResponseSlotInfo>();
-                    }
-
-                    if (responseSlotInfo != null)
-                    {
-                        foreach (StackResponseContainerInfo responseContainerInfo in
-                            (IEnumerable<StackResponseContainerInfo>) source1)
-                        {
-                            if (!responseContainerInfo.Slots.Contains(responseSlotInfo))
-                                responseContainerInfoList.Remove(responseContainerInfo);
-                        }
-                    }
-                }
-            }
-
-            return responseContainerInfoList;
+            if (skip) return new List<StackResponseContainerInfo>();
+            return base.HandleItemStackActions(requestId, actions);
+// return responseContainerInfoList;
         }
 
         public void PTA(
@@ -138,7 +82,7 @@ namespace CyberCore
             }
 
             Console.WriteLine($"THE CONTAINER ID IS {destination.ContainerId} AND SOURCE IS {source.ContainerId}");
-            
+
             this.SetContainerItem1((int) destination.ContainerId, (int) destination.Slot, obj2);
             if (source.ContainerId == (byte) 21 || source.ContainerId == (byte) 22)
             {
@@ -177,119 +121,121 @@ namespace CyberCore
                 }
             });
         }
-        
-        
-    private Item GetContainerItem1(int containerId, int slot)
-    {
-      if (this.P.UsingAnvil && containerId < 3)
-        containerId = 13;
-      Item obj1 = (Item) null;
-      switch (containerId)
-      {
-        case 6:
-          Item obj2;
-          switch (slot)
-          {
-            case 0:
-              obj2 = this.P.Inventory.Helmet;
-              break;
-            case 1:
-              obj2 = this.P.Inventory.Chest;
-              break;
-            case 2:
-              obj2 = this.P.Inventory.Leggings;
-              break;
-            case 3:
-              obj2 = this.P.Inventory.Boots;
-              break;
-            default:
-              obj2 = (Item) null;
-              break;
-          }
-          obj1 = obj2;
-          break;
-        case 7:
-            //I ONLY NEEDZ DIS
-            Console.WriteLine("CASE 7 WAS CALLED OH NO!!!!!");
-          // if (this.P._openInventory is Inventory openInventory)
-          // {
-          //   obj1 = openInventory.GetSlot((byte) slot);
-          //   break;
-          // }
-          break;
-        case 12:
-        case 27:
-        case 28:
-          obj1 = this.P.Inventory.Slots[slot];
-          break;
-        case 13:
-        case 21:
-        case 22:
-        case 41:
-        case 58:
-        case 59:
-          obj1 = this.P.Inventory.UiInventory.Slots[slot];
-          break;
-        case 33:
-          obj1 = this.P.Inventory.OffHand;
-          break;
-        default:
-          Console.WriteLine((object) string.Format("Unknown containerId: {0}", (object) containerId));
-          break;
-      }
-      return obj1;
-    }
 
-    private void SetContainerItem1(int containerId, int slot, Item item)
-    {
-      if (this.P.UsingAnvil && containerId < 3)
-        containerId = 13;
-      switch (containerId)
-      {
-        case 6:
-          switch (slot)
-          {
-            case 0:
-              this.P.Inventory.Helmet = item;
-              return;
-            case 1:
-              this.P.Inventory.Chest = item;
-              return;
-            case 2:
-              this.P.Inventory.Leggings = item;
-              return;
-            case 3:
-              this.P.Inventory.Boots = item;
-              return;
-            default:
-              return;
-          }
-        case 7:
-          Console.WriteLine("OH NO CASE 77 WAS CALLELDDDDDDDDD");
-            // if (!(this.P._openInventory is Inventory openInventory))
-          //   break;
-          // openInventory.SetSlot(this.P, (byte) slot, item);
-          break;
-        case 12:
-        case 27:
-        case 28:
-          this.P.Inventory.Slots[slot] = item;
-          break;
-        case 13:
-        case 21:
-        case 22:
-        case 41:
-        case 58:
-        case 59:
-          this.P.Inventory.UiInventory.Slots[slot] = item;
-          break;
-        case 33:
-          this.P.Inventory.OffHand = item;
-          break;
-        default:
-          Console.WriteLine((object) string.Format("Unknown containerId: {0}", (object) containerId));
-          break;
-      }
-    }
+
+        private Item GetContainerItem1(int containerId, int slot)
+        {
+            if (this.P.UsingAnvil && containerId < 3)
+                containerId = 13;
+            Item obj1 = (Item) null;
+            switch (containerId)
+            {
+                case 6:
+                    Item obj2;
+                    switch (slot)
+                    {
+                        case 0:
+                            obj2 = this.P.Inventory.Helmet;
+                            break;
+                        case 1:
+                            obj2 = this.P.Inventory.Chest;
+                            break;
+                        case 2:
+                            obj2 = this.P.Inventory.Leggings;
+                            break;
+                        case 3:
+                            obj2 = this.P.Inventory.Boots;
+                            break;
+                        default:
+                            obj2 = (Item) null;
+                            break;
+                    }
+
+                    obj1 = obj2;
+                    break;
+                case 7:
+                    //I ONLY NEEDZ DIS
+                    Console.WriteLine("CASE 7 WAS CALLED OH NO!!!!!");
+                    // if (this.P._openInventory is Inventory openInventory)
+                    // {
+                    //   obj1 = openInventory.GetSlot((byte) slot);
+                    //   break;
+                    // }
+                    break;
+                case 12:
+                case 27:
+                case 28:
+                    obj1 = this.P.Inventory.Slots[slot];
+                    break;
+                case 13:
+                case 21:
+                case 22:
+                case 41:
+                case 58:
+                case 59:
+                    obj1 = this.P.Inventory.UiInventory.Slots[slot];
+                    break;
+                case 33:
+                    obj1 = this.P.Inventory.OffHand;
+                    break;
+                default:
+                    Console.WriteLine((object) string.Format("Unknown containerId: {0}", (object) containerId));
+                    break;
+            }
+
+            return obj1;
+        }
+
+        private void SetContainerItem1(int containerId, int slot, Item item)
+        {
+            if (this.P.UsingAnvil && containerId < 3)
+                containerId = 13;
+            switch (containerId)
+            {
+                case 6:
+                    switch (slot)
+                    {
+                        case 0:
+                            this.P.Inventory.Helmet = item;
+                            return;
+                        case 1:
+                            this.P.Inventory.Chest = item;
+                            return;
+                        case 2:
+                            this.P.Inventory.Leggings = item;
+                            return;
+                        case 3:
+                            this.P.Inventory.Boots = item;
+                            return;
+                        default:
+                            return;
+                    }
+                case 7:
+                    Console.WriteLine("OH NO CASE 77 WAS CALLELDDDDDDDDD");
+                    // if (!(this.P._openInventory is Inventory openInventory))
+                    //   break;
+                    // openInventory.SetSlot(this.P, (byte) slot, item);
+                    break;
+                case 12:
+                case 27:
+                case 28:
+                    this.P.Inventory.Slots[slot] = item;
+                    break;
+                case 13:
+                case 21:
+                case 22:
+                case 41:
+                case 58:
+                case 59:
+                    this.P.Inventory.UiInventory.Slots[slot] = item;
+                    break;
+                case 33:
+                    this.P.Inventory.OffHand = item;
+                    break;
+                default:
+                    Console.WriteLine((object) string.Format("Unknown containerId: {0}", (object) containerId));
+                    break;
+            }
+        }
     }
 }

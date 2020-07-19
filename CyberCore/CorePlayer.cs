@@ -118,7 +118,9 @@ namespace CyberCore
 
         public bool MuteMessage = false;
         private Rank2 rank = RankList2.getInstance().getRankFromID(RankEnum.Guest);
+
         private PlayerSettingsData SettingsData;
+
         // public ShopInv Shop = null;
         public SpawnerShop SpawnerShop = null;
 
@@ -155,13 +157,13 @@ namespace CyberCore
 
         // public override void HandleMcpeContainerClose(McpeContainerClose message)
         // {
+        //  Console.WriteLine("CLOSE WAS CALLED");
         //     base.HandleMcpeContainerClose(message);
         //     
-        //     _openInventory = 
+        //     // _openInventory = 
         // }
-        //
-        // openinv
 
+        // openinv
 
 
         // public new void OpenInventory(BlockCoordinates inventoryCoord)
@@ -171,17 +173,17 @@ namespace CyberCore
         // }
         public void CyberOpenInventory(BlockCoordinates inventoryCoord)
         {
-         OpenInventory(inventoryCoord);
-         Inventory inventory = Level.InventoryManager.GetInventory(inventoryCoord);
-         if (!inventory.Observers.Contains(this))
-         {
-             return;
-         }
-        
-         var c = Level.GetChunk(inventoryCoord);
-         c.IsDirty = true;
-         c.NeedSave = true;
-         SendMessage("THIS CHUNK WILL NOW BE SAVED!!!");
+            OpenInventory(inventoryCoord);
+            Inventory inventory = Level.InventoryManager.GetInventory(inventoryCoord);
+            if (!inventory.Observers.Contains(this))
+            {
+                return;
+            }
+
+            var c = Level.GetChunk(inventoryCoord);
+            c.IsDirty = true;
+            c.NeedSave = true;
+            SendMessage("THIS CHUNK WILL NOW BE SAVED!!!");
         }
 
 
@@ -197,7 +199,7 @@ namespace CyberCore
             AH,
             SpawnerShop
         }
-        
+
         public Dictionary<BuffOrigin, Dictionary<BuffType, Buff>> getBufflist()
         {
             return new Dictionary<BuffOrigin, Dictionary<BuffType, Buff>>(Bufflist);
@@ -248,20 +250,31 @@ namespace CyberCore
             if (!getBufflist().ContainsKey(BuffOrigin.Temp)) return new Dictionary<BuffType, Buff>();
             return new Dictionary<BuffType, Buff>(getBufflist()[BuffOrigin.Temp]);
         }
-        
+
         public override void HandleMcpeContainerClose(McpeContainerClose message)
         {
             if (CustomInvOpen != CustomInvType.NA)
             {
                 CustomInvOpen = CustomInvType.NA;
                 SendMessage("CUSTOM INV HAS BEEN CLOSED INTERNALLY");
+                McpeContainerClose mcpeContainerClose = Packet<McpeContainerClose>.CreateObject(1L);
+                mcpeContainerClose.windowId = 10;
+                this.SendPacket((Packet) mcpeContainerClose);
+                
+                // McpeBlockEvent message1 = Packet<McpeBlockEvent>.CreateObject(1L);
+                // message1.coordinates = openInventory.Coordinates;
+                // message1.case1 = 1;
+                // message1.case2 = 0;
+                // this.Level.RelayBroadcast<McpeBlockEvent>(message1);
             }
-            base.HandleMcpeContainerClose(message);
+            else
+                base.HandleMcpeContainerClose(message);
         }
 
 
         public override void HandleMcpeInventoryTransaction(McpeInventoryTransaction message)
-        {                        Console.WriteLine("CALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+        {
+            Console.WriteLine("CALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
 
             switch (message.transaction)
             {
@@ -293,7 +306,7 @@ namespace CyberCore
         //0 Player Inv
         //10 Chest
         //124 Cursor
-        
+
         public enum TransactionType
         {
             NA = -1,
@@ -308,13 +321,13 @@ namespace CyberCore
             base.HandleNormalTransaction(transaction);
         }
 
-        public  void HandleTransactionRecords2(List<TransactionRecord> transactionRecords)
+        public void HandleTransactionRecords2(List<TransactionRecord> transactionRecords)
         {
             Item obj1 = (Item) null;
             Item obj2 = (Item) null;
             TransactionType from = TransactionType.NA;
             TransactionType to = TransactionType.NA;
-            
+
             ItemEntity itemEntity = (ItemEntity) null;
             foreach (TransactionRecord transactionRecord1 in transactionRecords)
             {
@@ -325,21 +338,22 @@ namespace CyberCore
                 {
                     case ContainerTransactionRecord transactionRecord:
                         int inventoryId = transactionRecord.InventoryId;
-                        Console.WriteLine(inventoryId+"<<<<<");
+                        Console.WriteLine(inventoryId + "<<<<<");
                         if (inventoryId == 10)
                         {
                             if (CustomInvOpen == CustomInvType.Shop)
                             {
                                 ClearCursor();
-                                ShopInv?.MakeSelection(slot1,this);
-                                
+                                ShopInv?.MakeSelection(slot1, this);
                             }
-                        }else if (inventoryId == 124)
+                        }
+                        else if (inventoryId == 124)
                         {
                             Inventory.UiInventory.Cursor = new ItemAir();
                             SendPlayerInventory();
                             ClearCursor();
                         }
+
                         break;
                 }
             }
@@ -347,7 +361,7 @@ namespace CyberCore
 
         public void ClearCursor()
         {
-            Inventory.UiInventory/*?*/.Cursor = new ItemAir();
+            Inventory.UiInventory /*?*/.Cursor = new ItemAir();
             SendPlayerInventory();
             // var a = new ItemStacks();
             // a.Add(new ItemAir());
@@ -368,7 +382,7 @@ namespace CyberCore
             mis.slot = 0;
             mis.inventoryId = 124;
             SendPacket(mis);
-            
+
             // McpeInventorySlot mis2 = Packet<McpeInventorySlot>.CreateObject(1l);
             // mis2.item = new ItemAir();
             // mis2.slot = 0;
