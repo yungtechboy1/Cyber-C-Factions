@@ -343,7 +343,7 @@ namespace CyberCore.Manager.Shop
         
         
         // ShopInv b = new ShopInv(p, CCM, p.KnownPosition.ToVector3(), pg);
-        var b = new NewShopInv();
+        var b = new NewShopInv(p);
         // CyberCoreMain.getInstance().getLogger().info(b.getContents().values().size() + " < SIZZEEE" + b.getSize());
         // CyberCoreMain.getInstance().getServer().getScheduler().scheduleDelayedTask(new OpenShop(p, b), 5);
 //        b.open()

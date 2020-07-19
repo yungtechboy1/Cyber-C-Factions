@@ -4,6 +4,8 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Text.Json.Serialization;
+using System.Xml.Schema;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.Shop;
 using fNbt;
@@ -23,16 +25,16 @@ namespace CyberCore.Utils
 {
     public static class CyberUtilsExtender
     {
-
-
         public static bool IsNullOrEmpty(this String c)
         {
             return String.IsNullOrEmpty(c);
         }
+
         public static Faction getFaction(this Player c)
         {
-            return CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction((CorePlayer)c);
+            return CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction((CorePlayer) c);
         }
+
         public static Faction getFaction(this CorePlayer c)
         {
             return CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction(c);
@@ -42,7 +44,7 @@ namespace CyberCore.Utils
         {
             return CyberCoreMain.GetInstance().getPlayer(p);
         }
-        
+
         public static object getOrDefault(this Dictionary<string, object> d, string s, object de)
         {
             if (d.ContainsKey(s)) return d[s];
@@ -78,6 +80,7 @@ namespace CyberCore.Utils
             else
                 return false;
         }
+
         public static NbtCompound putBoolean(this NbtCompound i, string key, bool val)
         {
             i.Add(new NbtByte(key, (byte) (val ? 1 : 0)));
@@ -200,14 +203,15 @@ namespace CyberCore.Utils
         {
             return toString(f);
         }
+
         public static String toString(this FactionErrorString f)
         {
             return FactionErrorStringMethod.toString(f);
         }
-        
+
         public static NbtCompound putString(this NbtCompound i, string k, string v)
         {
-            if(i.Contains(k))i.Remove(k);
+            if (i.Contains(k)) i.Remove(k);
             i.Add(new NbtString(k, v));
             return i;
         }
@@ -221,11 +225,13 @@ namespace CyberCore.Utils
 
             return null;
         }
+
         public static DateTime toDateTimeFromLongTime(this long l)
         {
             // return getTick();
             return new DateTime(l * TimeSpan.TicksPerSecond);
         }
+
         public static Item addLore(this Item i, params string[] lines)
         {
             var tag = getDisplayCompound(i);
@@ -270,7 +276,7 @@ namespace CyberCore.Utils
 
         public static NbtCompound getNamedTag(this Item i)
         {
-            if(i.ExtraData == null)i.ExtraData = new NbtCompound("");
+            if (i.ExtraData == null) i.ExtraData = new NbtCompound("");
             return i.ExtraData;
         }
 
@@ -297,11 +303,12 @@ namespace CyberCore.Utils
         {
             if (i.ExtraData == null) return false;
 
+            Console.WriteLine("OK>......22222...");
             var tag = i.ExtraData;
             if (!tag.Contains("display")) return false;
-
-            var tag1 = tag.Get("display");
-            if (tag1.StringValue != null) return true;
+Console.WriteLine("OK>.........");
+            var tag1 = tag["display"];
+            if (tag1 != null && tag1 is NbtString) return true;
 
             return false;
         }
@@ -346,8 +353,8 @@ namespace CyberCore.Utils
             {
                 if (string.IsNullOrEmpty(name)) return i.clearCustomName();
 
-                if(i.ExtraData == null)i.ExtraData = new NbtCompound("");
-                
+                if (i.ExtraData == null) i.ExtraData = new NbtCompound("");
+
                 var tag = i.ExtraData;
                 if (tag != null && tag.Contains("display") && tag.Get("display") is NbtCompound)
                 {
@@ -373,26 +380,107 @@ namespace CyberCore.Utils
             return i;
         }
 
+        public static Item addToCustomName(this Item i, [CanBeNull] string name)
+        {
+            if (string.IsNullOrEmpty(name)) return i;
+
+            var n = i.getCustomName();
+            n += "\n" + name;
+            i.setCustomName(n);
+
+
+            return i;
+        }
+
 
         public static string toCyberString(this Vector3 i)
         {
             return i.X + "|" + i.Y + "|" + i.Z;
         }
+
         public static Vector3? V3FromCyberString(this string i)
         {
-
             String[] s = i.Split("|");
             if (s.Length != 3) return null;
-            return new Vector3(int.Parse(s[0]),int.Parse(s[1]),int.Parse(s[2]));
+            return new Vector3(int.Parse(s[0]), int.Parse(s[1]), int.Parse(s[2]));
         }
 
         public static string getName(this Block i)
         {
             return i.GetType().Name;
         }
+
         public static string getName(this Item i)
         {
             return i.hasCustomName() ? i.getCustomName() : i.GetType().Name;
+        }
+
+        public static bool ContainsItem(this PlayerInventory i, Item itm, bool checkcount = false,
+            bool checknbt = false)
+        {
+            var a = GetItemSlot(i, itm, checkcount, checknbt);
+            return a == -1 ? false : true;
+        }
+        public static bool ContainsItem(this Inventory i, Item itm, bool checkcount = false, bool checknbt = false)
+        {
+            var a = GetItemSlot(i, itm, checkcount, checknbt);
+            return a == -1 ? false : true;
+        }
+
+        public static int GetItemSlot(this PlayerInventory i, Item itm, bool checkcount = false, bool checknbt = false)
+        {
+            if (itm == null) return -1;
+            for (byte index = 0; (int) index < i.Slots.Count; ++index)
+            {
+                var si = i.Slots[index];
+                if (si.Id == itm.Id && si.Metadata == itm.Metadata)
+                {
+                    if (checkcount)
+                    {
+                        if (si.Count != itm.Count) continue;
+                    }
+                    if (checknbt)
+                    {
+                        var n1 = si.getNamedTag().NBTToString();
+                        var n2 = itm.getNamedTag().NBTToString();
+                        if (!n1.equalsIgnoreCase(n2))
+                        {
+                            continue;
+                        }
+                    }
+                    return index;
+                }                
+            }
+
+            return -1;    
+        }
+        
+        public static int GetItemSlot(this Inventory i, Item itm, bool checkcount = false, bool checknbt = false)
+        {
+            if (itm == null) return -1;
+            for (byte index = 0; (int) index < i.Slots.Count; ++index)
+            {
+                var si = i.Slots[index];
+                if (si.Id == itm.Id && si.Metadata == itm.Metadata)
+                {
+                    if (checkcount)
+                    {
+                        if (si.Count != itm.Count) continue;
+                    }
+                    if (checknbt)
+                    {
+                        var n1 = si.getNamedTag().NBTToString();
+                        var n2 = itm.getNamedTag().NBTToString();
+                        if (!n1.equalsIgnoreCase(n2))
+                        {
+                            continue;
+                        }
+                    }
+                    return index;
+                }                
+            }
+
+            return -1;
         }
 
         // public static int getID(this MainForm f)
@@ -404,29 +492,33 @@ namespace CyberCore.Utils
         {
             int h = lvl.GetHeight(new BlockCoordinates(l));
             l.Y = h + 1;
-            for (int i = 255 ; i > 0; i--)
+            for (int i = 255; i > 0; i--)
             {
-                var bid = lvl.GetBlock( new Vector3(l.X,i,l.Z));
+                var bid = lvl.GetBlock(new Vector3(l.X, i, l.Z));
                 if (bid.Id != 0)
                 {
                     l.Y = i + 1;
                     break;
                 }
             }
+
             return l;
         }
+
         public static BlockCoordinates Safe(this BlockCoordinates l, Level lvl)
         {
             int h = lvl.GetHeight(l);
             l.Y = h + 1;
             return l;
         }
+
         public static BlockCoordinates Floor(this BlockCoordinates l)
         {
-            return new BlockCoordinates((int)Math.Floor((double) l.X),(int)Math.Floor((double) l.Y),(int)Math.Floor((double) l.Z));
+            return new BlockCoordinates((int) Math.Floor((double) l.X), (int) Math.Floor((double) l.Y),
+                (int) Math.Floor((double) l.Z));
         }
 
-       
+
         public static void showFormWindow(this OpenPlayer p, Form f)
         {
             p.SendForm(f);
@@ -436,26 +528,32 @@ namespace CyberCore.Utils
         {
             return r.GetString(r.GetOrdinal(txt));
         }
+
         public static string GetString2(this DbDataReader r, String txt)
         {
             return r.GetString(r.GetOrdinal(txt));
         }
+
         public static int GetInt32(this DbDataReader r, String txt)
         {
             return r.GetInt32(r.GetOrdinal(txt));
         }
+
         public static int GetInt322(this DbDataReader r, String txt)
         {
             return r.GetInt32(r.GetOrdinal(txt));
         }
+
         public static long GetInt64(this DbDataReader r, String txt)
         {
             return r.GetInt64(r.GetOrdinal(txt));
         }
+
         public static double GetDouble(this DbDataReader r, String txt)
         {
             return r.GetDouble(r.GetOrdinal(txt));
         }
+
         public static void setItemInHand(this PlayerInventory pi, Item item)
         {
             var ci = pi.GetItemInHand();
@@ -463,26 +561,28 @@ namespace CyberCore.Utils
             if (c != -1) pi.Slots[c] = item;
             pi.SendSetSlot(c);
         }
-        public static int GetItemSlot(this PlayerInventory pi, Item item, bool checkNBT = true)
-        {
-            for (byte index = 0; (int) index < pi.Slots.Count; ++index)
-            {
-                var i = pi.Slots[index];
 
-                if (i.Id == item.Id && i.Metadata == item.Metadata)
-                {
-                    if (checkNBT)
-                    {
-                        if (item.ExtraData != null && i.ExtraData != null &&i.ExtraData.NBTToString().equalsIgnoreCase(item.ExtraData.NBTToString())) return index;
-                        return -1;
-                    }
-
-                    return index;
-                }
-            }
-
-            return -1;
-        }
+        // public static int GetItemSlot(this PlayerInventory pi, Item item, bool checkNBT = true)
+        // {
+        //     for (byte index = 0; (int) index < pi.Slots.Count; ++index)
+        //     {
+        //         var i = pi.Slots[index];
+        //
+        //         if (i.Id == item.Id && i.Metadata == item.Metadata)
+        //         {
+        //             if (checkNBT)
+        //             {
+        //                 if (item.ExtraData != null && i.ExtraData != null && i.ExtraData.NBTToString()
+        //                     .equalsIgnoreCase(item.ExtraData.NBTToString())) return index;
+        //                 return -1;
+        //             }
+        //
+        //             return index;
+        //         }
+        //     }
+        //
+        //     return -1;
+        // }
 
         public static String NBTToString(this NbtCompound c)
         {
@@ -512,6 +612,7 @@ namespace CyberCore.Utils
 
             return -1;
         }
+
         public static bool hasEffect(this CorePlayer p, EffectType name)
         {
             return p.Effects.ContainsKey(name);
@@ -562,26 +663,32 @@ namespace CyberCore.Utils
         {
             return (int) list[player];
         }
+
         public static String GetString(this Dictionary<string, object> list, string player)
         {
             return (String) list[player];
         }
+
         public static double getDouble(this List<Dictionary<string, object>> list, string player)
         {
             return (double) list[0][player];
         }
+
         public static int GetInt32(this List<Dictionary<string, object>> list, string player)
         {
             return (int) Convert.ToInt32(list[0][player]);
         }
+
         public static bool Read(this List<Dictionary<string, object>> list)
         {
             return list.Count != 0;
         }
+
         public static string GetString(this List<Dictionary<string, object>> list, string player)
         {
             return (string) list[0][player];
         }
+
         public static long GetInt64(this List<Dictionary<string, object>> list, string player)
         {
             return (long) list[0][player];

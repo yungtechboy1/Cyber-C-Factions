@@ -14,9 +14,12 @@ namespace CyberCore.Manager.Shop
 {
     public class NewShopInv : CyberGUIInventory
     {
-        public NewShopInv() : base(850000,
+        private CorePlayer P;
+
+        public NewShopInv(CorePlayer p) : base(850000,
             new ChestBlockEntity(), 54, new NbtList())
         {
+            P = p;
             FillContentsSlots(null, true, true);
             SetPageContents();
         }
@@ -59,7 +62,7 @@ namespace CyberCore.Manager.Shop
 
         private int Page = 1;
 
-        public bool ItemSlected = false;
+        public Item ItemSlected = null;
 
         public bool PurchaseScreen = false;
 
@@ -153,6 +156,7 @@ namespace CyberCore.Manager.Shop
 
             if (!hotbar && !cat)
             {
+                Item i = GetSlot((byte) slot);
                 switch (CurrentPageEnum)
                 {
                     case ShopPageEnum.C_Armor:
@@ -164,12 +168,30 @@ namespace CyberCore.Manager.Shop
                     case ShopPageEnum.C_Potions:
                     case ShopPageEnum.C_Raiding:
                     case ShopPageEnum.C_Weapons:
-                        Item i = GetSlot((byte) slot);
                         if (!i.getNamedTag().getBoolean("CANNOTBUY"))
                         {
                             SetBuyPage(i);
                             CurrentPageEnum = ShopPageEnum.Confirm;
-                            ItemSlected = true;
+                            ItemSlected = i;
+                        }
+
+                        break;
+                    case ShopPageEnum.Confirm:
+                        if (ItemSlected != null)
+                        {
+                            PurchaseScreen = true;
+
+                            if (i.getNamedTag().Contains("ADD"))
+                            {
+                                // p.getMoney()
+                            }
+                            else if (i.getNamedTag().Contains("RMV"))
+                            {
+                            }
+                            else
+                            {
+                                Console.WriteLine("AHHHHHHHHHH RMV AND ADD WAS NOT FOUND!!!");
+                            }
                         }
 
                         break;
@@ -186,18 +208,46 @@ namespace CyberCore.Manager.Shop
         {
             //TODO ASDASDASD
             var si = new ShopStaticItems();
-            if (item == null)
-            {
-                StainedGlass itm = new StainedGlass();
-                itm.Color = "gray";
-                item = new ItemBlock(itm);
-                item.getNamedTag().Add(new NbtByte("CANNOTBUY", 1));
-            }
+            // if (item == null)
+            // {
+            //     StainedGlass itm = new StainedGlass();
+            //     itm.Color = "gray";
+            //     item = new ItemBlock(itm);
+            //     item.getNamedTag().Add(new NbtByte("CANNOTBUY", 1));
+            // }
 
             var iitem = item;
 
+            double money = P.getMoney();
+            double buyprice = ((NbtDouble) item.getNamedTag()["buy"]).Value;
+            double sellprice = ((NbtDouble) item.getNamedTag()["sell"]).Value;
+            // Item i;
+            int m;
             int yy = 6;
             HasNextPage = false;
+
+            Dictionary<int, Item> d = new Dictionary<int, Item>();
+            Dictionary<int, Item> dn = new Dictionary<int, Item>();
+            int dd = 0;
+            d[dd++] = (Item) si.RmvX64.Clone();
+            d[dd++] = (Item) si.RmvX32.Clone();
+            d[dd++] = (Item) si.RmvX10.Clone();
+            d[dd++] = (Item) si.RmvX1.Clone();
+            d[dd++] = null;
+            d[dd++] = (Item) si.AddX1.Clone();
+            d[dd++] = (Item) si.AddX10.Clone();
+            d[dd++] = (Item) si.AddX32.Clone();
+            d[dd++] = (Item) si.AddX64.Clone();
+            dd = 0;
+            dn[dd++] = (Item) si.RmvX64N.Clone();
+            dn[dd++] = (Item) si.RmvX32N.Clone();
+            dn[dd++] = (Item) si.RmvX10N.Clone();
+            dn[dd++] = (Item) si.RmvX1N.Clone();
+            dn[dd++] = null;
+            dn[dd++] = (Item) si.AddX1N.Clone();
+            dn[dd++] = (Item) si.AddX10N.Clone();
+            dn[dd++] = (Item) si.AddX32N.Clone();
+            dn[dd++] = (Item) si.AddX64N.Clone();
             for (int x = 0; x < 9; x++)
             {
                 //X
@@ -209,42 +259,118 @@ namespace CyberCore.Manager.Shop
                     if (y == 5)
                     {
                         var b = new RedstoneBlock();
-                        var i = new ItemBlock(b);
-                        i.setCustomName($"{ChatColors.Red}{ChatFormatting.Bold}Go Back");
-                        i.getNamedTag().Add(new NbtByte("CANNOTBUY", 1));
-                        SetItem((byte)s,i);
-                    }else
-                        switch (x)
-                    {
-                        case 0:
-                            SetItem((byte)s,si.AddX64);
-                            break;
-                        case 1:
-                            SetItem((byte)s,si.AddX32);
-                            break;
-                        case 2:
-                            SetItem((byte)s,si.AddX10);
-                            break;
-                        case 3:
-                            SetItem((byte)s,si.AddX1);
-                            break;
-                        case 4:
-                            SetItem((byte)s,item);
-                            break;
-                        case 5:
-                            SetItem((byte)s,si.RmvX1);
-                            break;
-                        case 6:
-                            SetItem((byte)s,si.RmvX10);
-                            break;
-                        case 7:
-                            SetItem((byte)s,si.RmvX32);
-                            break;
-                        case 8:
-                            SetItem((byte)s,si.RmvX64);
-                            break;
-                        
+                        var ii = new ItemBlock(b);
+                        ii.setCustomName($"{ChatColors.Red}{ChatFormatting.Bold}Go Back");
+                        ii.getNamedTag().Add(new NbtByte("CANNOTBUY", 1));
+                        SetItem((byte) s, ii);
                     }
+                    else
+                        switch (x)
+                        {
+                            //ADD
+                            //RMV
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 5:
+                            case 6:
+                            case 7:
+                            case 8:
+                                var i = (Item) d[x].Clone();
+                                Console.WriteLine($"OK SO {i.getNamedTag().Contains("PRICE")}");
+                                Console.WriteLine("aaaaaaa");
+                                m = ((NbtInt) i.getNamedTag()[x <= 3 ? "RMV" : "ADD"]).Value;
+                                Console.WriteLine("aaaaaaa");
+                                String t = x <= 3 ? "Sell" : "Purchase";
+                                Console.WriteLine("aaaaaaa");
+                                double p = x <= 3 ? sellprice : buyprice;
+                                Console.WriteLine("EEEEEEEEEEEEE");
+                                if (money < m * buyprice && x >= 5)
+                                {
+                                    Console.WriteLine("EEEEE33333333333EEEEEEEE");
+                                    i = (Item) dn[x].Clone();
+                                    if (i.getNamedTag().Contains("PRICE")) i.getNamedTag().Remove("PRICE");
+                                    // i.getNamedTag().Add(new NbtByte("CANNOTBUY", 1));
+                                    Console.WriteLine($"OK SO  NN {i.getNamedTag().Contains("PRICE")}");
+                                    i.addToCustomName($"{ChatColors.Red}Can Not {t} {m} {item.getName()} For {p * m}");
+                                }
+                                else
+                                {
+                                    Item ii = (Item) ItemSlected.Clone();
+                                    int iin = P.Inventory.GetItemSlot(ItemSlected);
+                                    Item pi = P.Inventory.Slots[iin];
+                                    if (pi.Count >= m)
+                                    {
+                                        Console.WriteLine("EE1111111333333333331111EEEEEEEEEEE");
+                                        i.addToCustomName(
+                                            $"{ChatColors.Green}{t} {m} {item.getName()} For {p * m}");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("EE11111111111EEEEEEEEEEE");
+                                        i.addToCustomName($"{ChatColors.Red}Can Not {t} {m} {item.getName()} For {p * m}");
+                                    }
+                                }
+
+                                Console.WriteLine("PRICE HAS BEEN CALLED!!!!!");
+                                if (i.getNamedTag().Contains("PRICE")) i.getNamedTag().Remove("PRICE");
+                                i.getNamedTag().Add(new NbtDouble("PRICE", p * m));
+                                SetItem((byte) s, i);
+                                break;
+                            // case 1:
+                            //     i = si.AddX32;
+                            //     m = ((NbtInt) i.getNamedTag()["ADD"]).Value;
+                            //     i.addToCustomName($"Purchase {m} {item.getName()} For {buyprice * m}");
+                            //     i.getNamedTag().Add(new NbtDouble("PRICE", buyprice * m));
+                            //     SetItem((byte) s, i);
+                            //     break;
+                            // case 2:
+                            //     i = si.AddX10;
+                            //     m = ((NbtInt) i.getNamedTag()["ADD"]).Value;
+                            //     i.addToCustomName($"Purchase {m} {item.getName()} For {buyprice * m}");
+                            //     i.getNamedTag().Add(new NbtDouble("PRICE", buyprice * m));
+                            //     SetItem((byte) s, i);
+                            //     break;
+                            // case 3:
+                            //     i = si.AddX1;
+                            //     m = ((NbtInt) i.getNamedTag()["ADD"]).Value;
+                            //     i.addToCustomName($"Purchase {m} {item.getName()} For {buyprice * m}");
+                            //     i.getNamedTag().Add(new NbtDouble("PRICE", buyprice * m));
+                            //     SetItem((byte) s, i);
+                            //     break;
+                            case 4:
+                                SetItem((byte) s, item);
+                                break;
+                            // case 5:
+                            //     i = si.RmvX1;
+                            //     m = ((NbtInt) i.getNamedTag()["RMV"]).Value;
+                            //     i.addToCustomName($"Purchase {m} {item.getName()} For {buyprice * m}");
+                            //     i.getNamedTag().Add(new NbtDouble("PRICE", buyprice * m));
+                            //     SetItem((byte) s, i);
+                            //     break;
+                            // case 6:
+                            //     i = si.AddX10;
+                            //     m = ((NbtInt) i.getNamedTag()["RMV"]).Value;
+                            //     i.addToCustomName($"Purchase {m} {item.getName()} For {buyprice * m}");
+                            //     i.getNamedTag().Add(new NbtDouble("PRICE", buyprice * m));
+                            //     SetItem((byte) s, i);
+                            //     break;
+                            // case 7:
+                            //     i = si.AddX32;
+                            //     m = ((NbtInt) i.getNamedTag()["RMV"]).Value;
+                            //     i.addToCustomName($"Purchase {m} {item.getName()} For {buyprice * m}");
+                            //     i.getNamedTag().Add(new NbtDouble("PRICE", buyprice * m));
+                            //     SetItem((byte) s, i);
+                            //     break;
+                            // case 8:
+                            //     i = si.AddX64;
+                            //     m = ((NbtInt) i.getNamedTag()["RMV"]).Value;
+                            //     i.addToCustomName($"Purchase {m} {item.getName()} For {buyprice * m}");
+                            //     i.getNamedTag().Add(new NbtDouble("PRICE", buyprice * m));
+                            //     SetItem((byte) s, i);
+                            //     break;
+                        }
                     //
                     //
                     // if (x >= 3)
@@ -259,7 +385,7 @@ namespace CyberCore.Manager.Shop
                     // {
                     //     
                     // }
-                    
+
                     // if (x == 0 || y == 0 || x == 8 || y == yy - 1)
                     // {
                     //     StainedGlass itm = new StainedGlass();
