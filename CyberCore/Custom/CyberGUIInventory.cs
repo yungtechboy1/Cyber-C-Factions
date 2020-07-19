@@ -31,7 +31,7 @@ namespace CyberCore.Custom
                 StainedGlass itm = new StainedGlass();
                 itm.Color = "gray";
                 item = new ItemBlock(itm);
-                item.getNamedTag().Add(new NbtByte("CANNOTBUY",0));
+                item.getNamedTag().Add(new NbtByte("CANNOTBUY",1));
             }
 
             var iitem = item;
@@ -53,7 +53,7 @@ namespace CyberCore.Custom
                     itm.Color = "Red";
                     item = new ItemBlock(itm);
                     item.setCustomName($"#{s} || X:{x} || Y:{y}");
-                    item.getNamedTag().Add(new NbtByte("CANNOTBUY",0));
+                    item.getNamedTag().Add(new NbtByte("CANNOTBUY",1));
                 }
                 else
                 {

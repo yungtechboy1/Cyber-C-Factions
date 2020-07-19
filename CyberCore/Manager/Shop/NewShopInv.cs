@@ -42,6 +42,7 @@ namespace CyberCore.Manager.Shop
             ConfirmSell,
             MoneyBuy,
             MoneySell,
+            Confirm
         }
 
         public void SetContentHotbar()
@@ -167,6 +168,7 @@ namespace CyberCore.Manager.Shop
                         if (!i.getNamedTag().getBoolean("CANNOTBUY"))
                         {
                             SetBuyPage(i);
+                            CurrentPageEnum = ShopPageEnum.Confirm;
                             ItemSlected = true;
                         }
 
@@ -189,7 +191,7 @@ namespace CyberCore.Manager.Shop
                 StainedGlass itm = new StainedGlass();
                 itm.Color = "gray";
                 item = new ItemBlock(itm);
-                item.getNamedTag().Add(new NbtByte("CANNOTBUY", 0));
+                item.getNamedTag().Add(new NbtByte("CANNOTBUY", 1));
             }
 
             var iitem = item;
@@ -204,7 +206,15 @@ namespace CyberCore.Manager.Shop
                     int s = y * 9 + x;
                     Console.WriteLine($"#{s} || X:{x} || Y:{y}");
 
-                    switch (x)
+                    if (y == 5)
+                    {
+                        var b = new RedstoneBlock();
+                        var i = new ItemBlock(b);
+                        i.setCustomName($"{ChatColors.Red}{ChatFormatting.Bold}Go Back");
+                        i.getNamedTag().Add(new NbtByte("CANNOTBUY", 1));
+                        SetItem((byte)s,i);
+                    }else
+                        switch (x)
                     {
                         case 0:
                             SetItem((byte)s,si.AddX64);
