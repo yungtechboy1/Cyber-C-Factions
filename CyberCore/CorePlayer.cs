@@ -814,10 +814,10 @@ namespace CyberCore
         //     return super.getMovementSpeed();
         // }
 
-        public void TakeMoney(double price)
+        public bool TakeMoney(double price)
         {
-            if (price <= 0) return;
-            getPlayerSettingsData().takeCash(price);
+            if (price <= 0) return false;
+            return getPlayerSettingsData().takeCash(price);
         }
 
         public void AddMoney(double price)

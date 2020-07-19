@@ -415,6 +415,16 @@ Console.WriteLine("OK>.........");
             return i.hasCustomName() ? i.getCustomName() : i.GetType().Name;
         }
 
+        public static bool HasEmptySlot(this PlayerInventory inv)
+        {
+            foreach (var i in inv.Slots)
+            {
+                if (i == null || i.Id == 0) return true;
+
+            }
+
+            return false;
+        }
         public static bool ContainsItem(this PlayerInventory i, Item itm, bool checkcount = false,
             bool checknbt = false)
         {

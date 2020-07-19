@@ -45,7 +45,8 @@ namespace CyberCore.Manager.Shop
             ConfirmSell,
             MoneyBuy,
             MoneySell,
-            Confirm
+            Confirm,
+            Purchased
         }
 
         public void SetContentHotbar()
@@ -178,6 +179,12 @@ namespace CyberCore.Manager.Shop
                     }
 
                     break;
+                case ShopPageEnum.Purchased:
+                    ItemSelected = null;
+                    PurchaseScreen = false;
+                    CurrentPageEnum = ShopPageEnum.Main;
+                    SetPageContents();
+                    break;
                 case ShopPageEnum.Confirm:
                     if (y == 5)
                     {
@@ -192,11 +199,34 @@ namespace CyberCore.Manager.Shop
 
                         if (i.getNamedTag().Contains("ADD"))
                         {
+                            StainedGlassPane bb = new StainedGlassPane();
+                            bb.Color = "red";
+                            Item fi = new ItemBlock(bb);
                             // p.getMoney()
+                            double aa = ((NbtDouble)i.getNamedTag()["PRICE"]).Value;
+                            fi.setCustomName(ChatColors.Red+"Error could not complete purchase for $" + aa);
+                            if (P.Inventory.HasEmptySlot())
+                            {
+                                if (p.TakeMoney(aa))
+                                {
+                                    bb.Color = "Green";
+                                    fi.clearCustomName();
+                                    fi.setCustomName(ChatColors.Green+"Purchase was successful for $" + aa);
+                                }
+                            }
+                            else
+                            {
+                                fi.clearCustomName();
+                                fi.setCustomName(ChatColors.Red +
+                                                 "Error You Have no free slots in your inventory!\nPurchase Canceled");
+                            }
+
+                            CurrentPageEnum = ShopPageEnum.Purchased;
+                            FillContentsSlots(fi);
                         }
                         else if (i.getNamedTag().Contains("RMV"))
                         {
-                            
+                            double ar = ((NbtDouble)i.getNamedTag()["PRICE"]).Value;
                         }
                         else
                         {
