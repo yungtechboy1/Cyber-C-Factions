@@ -62,144 +62,150 @@ namespace CyberCore.Manager.Shop
 
         private int Page = 1;
 
-        public Item ItemSlected = null;
+        public Item ItemSelected = null;
 
         public bool PurchaseScreen = false;
 
         public override void MakeSelection(int slot, CorePlayer p)
         {
+            int x = slot % 9;
+            int y = (int) Math.Floor((double) (slot / 9));
+
+            Console.WriteLine($"XXXXXXXXXXXXXX{x}    YYYYYYYYYYYYYYYYYYYYYYYY{y}");
             bool hotbar = false;
             bool cat = false;
             Console.WriteLine("SELECTION MADE AT " + slot);
 
-            if (CurrentPageEnum == ShopPageEnum.Main)
+            Item i = GetSlot((byte) slot);
+            switch (CurrentPageEnum)
             {
-                switch (slot)
-                {
-                    case 20:
-                        //Armor
-                        CurrentPageEnum = ShopPageEnum.C_Armor;
-                        cat = true;
-                        break;
-                    case 21:
-                        CurrentPageEnum = ShopPageEnum.C_Building;
-                        cat = true;
-                        break;
-                    case 22:
-                        CurrentPageEnum = ShopPageEnum.C_Crafting;
-                        cat = true;
-                        break;
-                    case 23:
-                        CurrentPageEnum = ShopPageEnum.C_Enchanting;
-                        cat = true;
-                        break;
-                    case 24:
-                        CurrentPageEnum = ShopPageEnum.C_Farming;
-                        cat = true;
-                        break;
-                    case 29:
-                        CurrentPageEnum = ShopPageEnum.C_Ore;
-                        cat = true;
-                        break;
-                    case 30:
-                        CurrentPageEnum = ShopPageEnum.C_Potions;
-                        cat = true;
-                        break;
-                    case 31:
-                        CurrentPageEnum = ShopPageEnum.C_Raiding;
-                        cat = true;
-                        break;
-                    case 32:
-                        CurrentPageEnum = ShopPageEnum.C_Weapons;
-                        cat = true;
-                        break;
-                    case 33:
-                        CurrentPageEnum = ShopPageEnum.C_NameTag;
-                        cat = true;
-                        break;
-                }
-
-                SetPageContents();
-            }
-
-            switch (slot)
-            {
-                case 53:
-                    if (!HasNextPage) break;
-                    Page++;
-                    SetPageContents();
-                    hotbar = true;
-                    break;
-                case 50:
-                    Page = 1;
-                    CurrentPageEnum = ShopPageEnum.Main;
-                    SetPageContents();
-                    hotbar = true;
-                    break;
-                case 45:
-                    hotbar = true;
-                    if (Page > 1) Page--;
-                    else
+                case ShopPageEnum.Main:
+                    switch (slot)
                     {
-                        Page = 1;
-                        CurrentPageEnum = ShopPageEnum.Main;
+                        case 20:
+                            //Armor
+                            CurrentPageEnum = ShopPageEnum.C_Armor;
+                            cat = true;
+                            break;
+                        case 21:
+                            CurrentPageEnum = ShopPageEnum.C_Building;
+                            cat = true;
+                            break;
+                        case 22:
+                            CurrentPageEnum = ShopPageEnum.C_Crafting;
+                            cat = true;
+                            break;
+                        case 23:
+                            CurrentPageEnum = ShopPageEnum.C_Enchanting;
+                            cat = true;
+                            break;
+                        case 24:
+                            CurrentPageEnum = ShopPageEnum.C_Farming;
+                            cat = true;
+                            break;
+                        case 29:
+                            CurrentPageEnum = ShopPageEnum.C_Ore;
+                            cat = true;
+                            break;
+                        case 30:
+                            CurrentPageEnum = ShopPageEnum.C_Potions;
+                            cat = true;
+                            break;
+                        case 31:
+                            CurrentPageEnum = ShopPageEnum.C_Raiding;
+                            cat = true;
+                            break;
+                        case 32:
+                            CurrentPageEnum = ShopPageEnum.C_Weapons;
+                            cat = true;
+                            break;
+                        case 33:
+                            CurrentPageEnum = ShopPageEnum.C_NameTag;
+                            cat = true;
+                            break;
                     }
 
                     SetPageContents();
                     break;
-                case 49:
-                    SetPageContents();
+                case ShopPageEnum.C_Armor:
+                case ShopPageEnum.C_Building:
+                case ShopPageEnum.C_Crafting:
+                case ShopPageEnum.C_Enchanting:
+                case ShopPageEnum.C_Farming:
+                case ShopPageEnum.C_Ore:
+                case ShopPageEnum.C_Potions:
+                case ShopPageEnum.C_Raiding:
+                case ShopPageEnum.C_Weapons:
+                    if (!i.getNamedTag().getBoolean("CANNOTBUY"))
+                    {
+                        ItemSelected = i;
+                        SetBuyPage(i);
+                        CurrentPageEnum = ShopPageEnum.Confirm;
+                    }
+                    else
+                    {
+                        switch (slot)
+                        {
+                            case 53:
+                                if (!HasNextPage) break;
+                                Page++;
+                                SetPageContents();
+                                hotbar = true;
+                                break;
+                            case 50:
+                                Page = 1;
+                                CurrentPageEnum = ShopPageEnum.Main;
+                                SetPageContents();
+                                hotbar = true;
+                                break;
+                            case 45:
+                                hotbar = true;
+                                if (Page > 1) Page--;
+                                else
+                                {
+                                    Page = 1;
+                                    CurrentPageEnum = ShopPageEnum.Main;
+                                }
 
-                    hotbar = true;
+                                SetPageContents();
+                                break;
+                            case 49:
+                                SetPageContents();
+
+                                hotbar = true;
+                                break;
+                        }
+                    }
+
+                    break;
+                case ShopPageEnum.Confirm:
+                    if (y == 5)
+                    {
+                        ItemSelected = null;
+                        PurchaseScreen = false;
+                        CurrentPageEnum = ShopPageEnum.Main;
+                        SetPageContents();
+                    }
+                    else if (ItemSelected != null)
+                    {
+                        PurchaseScreen = true;
+
+                        if (i.getNamedTag().Contains("ADD"))
+                        {
+                            // p.getMoney()
+                        }
+                        else if (i.getNamedTag().Contains("RMV"))
+                        {
+                            
+                        }
+                        else
+                        {
+                            Console.WriteLine("AHHHHHHHHHH RMV AND ADD WAS NOT FOUND!!!");
+                        }
+                    }
+
                     break;
             }
-
-            if (!hotbar && !cat)
-            {
-                Item i = GetSlot((byte) slot);
-                switch (CurrentPageEnum)
-                {
-                    case ShopPageEnum.C_Armor:
-                    case ShopPageEnum.C_Building:
-                    case ShopPageEnum.C_Crafting:
-                    case ShopPageEnum.C_Enchanting:
-                    case ShopPageEnum.C_Farming:
-                    case ShopPageEnum.C_Ore:
-                    case ShopPageEnum.C_Potions:
-                    case ShopPageEnum.C_Raiding:
-                    case ShopPageEnum.C_Weapons:
-                        if (!i.getNamedTag().getBoolean("CANNOTBUY"))
-                        {
-                            SetBuyPage(i);
-                            CurrentPageEnum = ShopPageEnum.Confirm;
-                            ItemSlected = i;
-                        }
-
-                        break;
-                    case ShopPageEnum.Confirm:
-                        if (ItemSlected != null)
-                        {
-                            PurchaseScreen = true;
-
-                            if (i.getNamedTag().Contains("ADD"))
-                            {
-                                // p.getMoney()
-                            }
-                            else if (i.getNamedTag().Contains("RMV"))
-                            {
-                            }
-                            else
-                            {
-                                Console.WriteLine("AHHHHHHHHHH RMV AND ADD WAS NOT FOUND!!!");
-                            }
-                        }
-
-                        break;
-                    default:
-                        break;
-                }
-            }
-
 
             SendInv(p);
         }
@@ -233,7 +239,7 @@ namespace CyberCore.Manager.Shop
             d[dd++] = (Item) si.RmvX32.Clone();
             d[dd++] = (Item) si.RmvX10.Clone();
             d[dd++] = (Item) si.RmvX1.Clone();
-            d[dd++] = null;
+            d[dd++] = (Item) item.Clone();
             d[dd++] = (Item) si.AddX1.Clone();
             d[dd++] = (Item) si.AddX10.Clone();
             d[dd++] = (Item) si.AddX32.Clone();
@@ -243,7 +249,7 @@ namespace CyberCore.Manager.Shop
             dn[dd++] = (Item) si.RmvX32N.Clone();
             dn[dd++] = (Item) si.RmvX10N.Clone();
             dn[dd++] = (Item) si.RmvX1N.Clone();
-            dn[dd++] = null;
+            dn[dd++] = (Item) item.Clone();
             dn[dd++] = (Item) si.AddX1N.Clone();
             dn[dd++] = (Item) si.AddX10N.Clone();
             dn[dd++] = (Item) si.AddX32N.Clone();
@@ -265,57 +271,90 @@ namespace CyberCore.Manager.Shop
                         SetItem((byte) s, ii);
                     }
                     else
+                    {
+                        Console.WriteLine("MAybe THID");
+                        var i = (Item) d[x].Clone();
+                        Console.WriteLine("MAybe THID");
+                        var ni = (Item) dn[x].Clone();
+                        Console.WriteLine("MAybe THID");
                         switch (x)
                         {
-                            //ADD
-                            //RMV
+                            //RMV OR SELL
                             case 0:
                             case 1:
                             case 2:
                             case 3:
-                            case 5:
-                            case 6:
-                            case 7:
-                            case 8:
-                                var i = (Item) d[x].Clone();
+                                Console.WriteLine("SELLLL");
                                 Console.WriteLine($"OK SO {i.getNamedTag().Contains("PRICE")}");
+                                m = ((NbtInt) i.getNamedTag()["RMV"]).Value;
                                 Console.WriteLine("aaaaaaa");
-                                m = ((NbtInt) i.getNamedTag()[x <= 3 ? "RMV" : "ADD"]).Value;
-                                Console.WriteLine("aaaaaaa");
-                                String t = x <= 3 ? "Sell" : "Purchase";
-                                Console.WriteLine("aaaaaaa");
-                                double p = x <= 3 ? sellprice : buyprice;
-                                Console.WriteLine("EEEEEEEEEEEEE");
-                                if (money < m * buyprice && x >= 5)
+                                Console.WriteLine("EEEEEEEEEEEEE" + ItemSelected);
+                                Console.WriteLine("EEEEEEEEEEEEE" + ItemSelected == null);
+
+                                Item ii = (Item) ItemSelected.Clone();
+                                Console.WriteLine("EEEEEEEEEEEEE" + ii == null);
+                                int iin = P.Inventory.GetItemSlot(ii);
+                                Console.WriteLine("EEEEEEEEEEEEE" + iin);
+                                if (iin != -1)
                                 {
-                                    Console.WriteLine("EEEEE33333333333EEEEEEEE");
-                                    i = (Item) dn[x].Clone();
-                                    if (i.getNamedTag().Contains("PRICE")) i.getNamedTag().Remove("PRICE");
-                                    // i.getNamedTag().Add(new NbtByte("CANNOTBUY", 1));
-                                    Console.WriteLine($"OK SO  NN {i.getNamedTag().Contains("PRICE")}");
-                                    i.addToCustomName($"{ChatColors.Red}Can Not {t} {m} {item.getName()} For {p * m}");
-                                }
-                                else
-                                {
-                                    Item ii = (Item) ItemSlected.Clone();
-                                    int iin = P.Inventory.GetItemSlot(ItemSlected);
                                     Item pi = P.Inventory.Slots[iin];
+
+                                    Console.WriteLine("EEEEEEEEEEEEE" + pi);
+                                    Console.WriteLine("EEEEEEEEEEEEE" + pi.Count);
                                     if (pi.Count >= m)
                                     {
                                         Console.WriteLine("EE1111111333333333331111EEEEEEEEEEE");
                                         i.addToCustomName(
-                                            $"{ChatColors.Green}{t} {m} {item.getName()} For {p * m}");
+                                            $"{ChatColors.Green}Sell {m} {item.getName()} For {sellprice * m}");
                                     }
-                                    else
-                                    {
-                                        Console.WriteLine("EE11111111111EEEEEEEEEEE");
-                                        i.addToCustomName($"{ChatColors.Red}Can Not {t} {m} {item.getName()} For {p * m}");
-                                    }
+                                }
+                                else
+                                {
+                                    i = ni;
+                                    Console.WriteLine("EE11111111111EEEEEEEEEEE");
+                                    // i.getNamedTag().Add(new NbtByte("CANNOTBUY", 1));
+                                    i.addToCustomName(
+                                        $"{ChatColors.Red}Can Not Sell {m} {item.getName()} For {sellprice * m}\n" +
+                                        $"You only have {P.getMoney()}");
                                 }
 
                                 Console.WriteLine("PRICE HAS BEEN CALLED!!!!!");
                                 if (i.getNamedTag().Contains("PRICE")) i.getNamedTag().Remove("PRICE");
-                                i.getNamedTag().Add(new NbtDouble("PRICE", p * m));
+                                i.getNamedTag().Add(new NbtDouble("PRICE", sellprice * m));
+                                SetItem((byte) s, i);
+                                break;
+                                break;
+                            //ADD OR BUY
+                            case 5:
+                            case 6:
+                            case 7:
+                            case 8:
+                                // var i = (Item) d[x].Clone();
+                                Console.WriteLine("BUYYYYYYYY");
+                                Console.WriteLine($"OK SO {i.getNamedTag().Contains("PRICE")}");
+                                m = ((NbtInt) i.getNamedTag()["ADD"]).Value;
+                                Console.WriteLine("EEEEEEEEBBBEEEEE");
+                                if (money < m * buyprice)
+                                {
+                                    i = ni;
+                                    Console.WriteLine("EEEEE33333BBBBB333333EEEEEEEE");
+                                    if (i.getNamedTag().Contains("PRICE")) i.getNamedTag().Remove("PRICE");
+                                    // i.getNamedTag().Add(new NbtByte("CANNOTBUY", 1));
+                                    Console.WriteLine($"OK SO  NNBBB {i.getNamedTag().Contains("PRICE")}");
+                                    i.addToCustomName(
+                                        $"{ChatColors.Red}Can Not Buy {m} {item.getName()} For {buyprice * m}\n" +
+                                        $"You have Only {P.getMoney()}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("EE1111111111BBBBBBBB1EEEEEEEEEEE");
+                                    i.addToCustomName(
+                                        $"{ChatColors.Red}Buy {m} {item.getName()} For {buyprice * m}");
+                                }
+
+                                Console.WriteLine("PRICE BBBBBHAS BEEN CALLED!!!!!");
+                                if (i.getNamedTag().Contains("PRICE")) i.getNamedTag().Remove("PRICE");
+                                i.getNamedTag().Add(new NbtDouble("PRICE", buyprice * m));
                                 SetItem((byte) s, i);
                                 break;
                             // case 1:
@@ -340,6 +379,9 @@ namespace CyberCore.Manager.Shop
                             //     SetItem((byte) s, i);
                             //     break;
                             case 4:
+                                Console.WriteLine($"SOOO I IS " + i);
+                                Console.WriteLine($"SOOO ITEM IS " + item);
+                                Console.WriteLine($"SOOO IITEM IS " + iitem);
                                 SetItem((byte) s, item);
                                 break;
                             // case 5:
@@ -371,6 +413,7 @@ namespace CyberCore.Manager.Shop
                             //     SetItem((byte) s, i);
                             //     break;
                         }
+                    }
                     //
                     //
                     // if (x >= 3)
