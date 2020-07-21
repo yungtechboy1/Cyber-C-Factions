@@ -4,6 +4,7 @@ using CyberCore.Custom;
 using CyberCore.Utils;
 using CyberCore.Utils.Data;
 using fNbt;
+using log4net.Util.TypeConverters;
 using MiNET.BlockEntities;
 using MiNET.Blocks;
 using MiNET.Items;
@@ -207,26 +208,85 @@ namespace CyberCore.Manager.Shop
                             fi.setCustomName(ChatColors.Red+"Error could not complete purchase for $" + aa);
                             if (P.Inventory.HasEmptySlot())
                             {
+                                Console.WriteLine("HAS FREE SLOT");
                                 if (p.TakeMoney(aa))
                                 {
+                                    var si = GetSlot((byte) slot);
+                                    int a = ((NbtInt)si.ExtraData["ADD"]).Value;
+                                    Console.WriteLine("HAS MONEY");
                                     bb.Color = "Green";
-                                    fi.clearCustomName();
-                                    fi.setCustomName(ChatColors.Green+"Purchase was successful for $" + aa);
-                                }
+                                    fi = new ItemBlock(bb);
+                                    fi.setCustomName(ChatColors.Green+"===|Purchase was successful |===\n" +
+                                                     $"===| You Bought {a} |===\n" +
+                                                     "===| for $" + aa+" |===\n" +
+                                                     $"==| You Have {p.getMoney()} |==");
+                                    Item pi = (Item) ItemSelected.Clone();
+                                    pi = pi.ClearShopTags();
+                                    pi.Count = (byte) a;
+                                    p.Inventory.AddItem(pi,true);
+                                    p.SendMessage("ITEM PURCHASEDD!!! \n"+pi);
+                                }else
+                                    Console.WriteLine("HAS NO MONEY");
+                                
                             }
                             else
                             {
-                                fi.clearCustomName();
+                                Console.WriteLine("NO FREE SLOT");
                                 fi.setCustomName(ChatColors.Red +
                                                  "Error You Have no free slots in your inventory!\nPurchase Canceled");
                             }
 
                             CurrentPageEnum = ShopPageEnum.Purchased;
+                            // Console.WriteLine();
                             FillContentsSlots(fi);
                         }
                         else if (i.getNamedTag().Contains("RMV"))
                         {
                             double ar = ((NbtDouble)i.getNamedTag()["PRICE"]).Value;
+                            Item pi = (Item) ItemSelected.Clone();
+                            pi = pi.ClearShopTags();
+                            int m = P.Inventory.GetCountOfItem(pi);
+                            pi.Count = (byte) m;
+                            var si = GetSlot((byte) slot);
+                            int a = ((NbtInt)si.ExtraData["RMV"]).Value;
+                            
+                            
+                            
+                            
+                            
+                            StainedGlassPane bb = new StainedGlassPane();
+                            bb.Color = "red";
+                            Item fi = new ItemBlock(bb);
+                            // p.getMoney()
+                            double aa = ((NbtDouble)i.getNamedTag()["PRICE"]).Value;
+                            fi.setCustomName(ChatColors.Red+"Error could not complete Sell process for $" + aa);
+                            //Has more than or equal items in Inv than Required
+                                Console.WriteLine($"HAS {a} OF(<=) {m}");
+                            if (a <= m && p.Inventory.TakeItem(pi))
+                            {
+                                    Console.WriteLine("Has TAKEN ITEMS"+pi);
+                                    bb.Color = "Green";
+                                    fi = new ItemBlock(bb);
+                                    fi.setCustomName(ChatColors.Green+"===|Sale was successful |===\n" +
+                                                     $"===| You Sold {a} |===\n" +
+                                                     "===| for $" + aa+" |===");
+                                    p.AddMoney(aa);
+                                    p.SendMessage($"SOLDDD {a} ITEM(s) FOR {aa}!!! \n"+pi);
+                                
+                            }
+                            else
+                            {
+                                Console.WriteLine($"PLAYER HAS ONLY {m} of "+pi);
+                                fi.setCustomName(ChatColors.Red +
+                                                 $"You do not have enough of {pi.getName()}\n" +
+                                                 $"You need {a} but only have{m}\n" +
+                                                 $"Purchase Canceled");
+                            }
+
+                            CurrentPageEnum = ShopPageEnum.Purchased;
+                            // Console.WriteLine();
+                            FillContentsSlots(fi);
+                            
                         }
                         else
                         {
@@ -252,7 +312,7 @@ namespace CyberCore.Manager.Shop
             //     item.getNamedTag().Add(new NbtByte("CANNOTBUY", 1));
             // }
 
-            var iitem = item;
+            // var iitem = item;
 
             double money = P.getMoney();
             double buyprice = ((NbtDouble) item.getNamedTag()["buy"]).Value;
@@ -290,7 +350,7 @@ namespace CyberCore.Manager.Shop
                 for (int y = 0; y < yy; y++) //Y
                 {
                     int s = y * 9 + x;
-                    Console.WriteLine($"#{s} || X:{x} || Y:{y}");
+                    // Console.WriteLine($"#{s} || X:{x} || Y:{y}");
 
                     if (y == 5)
                     {
@@ -302,11 +362,11 @@ namespace CyberCore.Manager.Shop
                     }
                     else
                     {
-                        Console.WriteLine("MAybe THID");
+                        // Console.WriteLine("MAybe THID");
                         var i = (Item) d[x].Clone();
-                        Console.WriteLine("MAybe THID");
+                        // Console.WriteLine("MAybe THID");
                         var ni = (Item) dn[x].Clone();
-                        Console.WriteLine("MAybe THID");
+                        // Console.WriteLine("MAybe THID");
                         switch (x)
                         {
                             //RMV OR SELL
@@ -321,21 +381,34 @@ namespace CyberCore.Manager.Shop
                                 Console.WriteLine("EEEEEEEEEEEEE" + ItemSelected);
                                 Console.WriteLine("EEEEEEEEEEEEE" + ItemSelected == null);
 
-                                Item ii = (Item) ItemSelected.Clone();
-                                Console.WriteLine("EEEEEEEEEEEEE" + ii == null);
-                                int iin = P.Inventory.GetItemSlot(ii);
-                                Console.WriteLine("EEEEEEEEEEEEE" + iin);
-                                if (iin != -1)
+                                // Item ii = (Item) item.Clone();
+                                // Console.WriteLine("EEEEEEEEEEEEE" + ii == null);
+                                int countOfItem = P.Inventory.GetCountOfItem(item);
+                                Console.WriteLine("EEEEEEEEEEEEE" + countOfItem);
+                                if (countOfItem != 0)
                                 {
-                                    Item pi = P.Inventory.Slots[iin];
-
-                                    Console.WriteLine("EEEEEEEEEEEEE" + pi);
-                                    Console.WriteLine("EEEEEEEEEEEEE" + pi.Count);
-                                    if (pi.Count >= m)
+                                    // Item pi = P.Inventory.Slots[iin];
+                                    //
+                                    // Console.WriteLine("EEEEEEEEEEEEE" + pi);
+                                    // Console.WriteLine("EEEEEEEEEEEEE" + pi.Count);
+                                    if (countOfItem >= m)
                                     {
                                         Console.WriteLine("EE1111111333333333331111EEEEEEEEEEE");
                                         i.addToCustomName(
-                                            $"{ChatColors.Green}Sell {m} {item.getName()} For {sellprice * m}");
+                                            $"{ChatColors.Green}Sell {m} {item.getName()} For {sellprice * m}\n" +
+                                            $"{ChatColors.Yellow}You have {money}");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("EE111111133333333332222222222222111113333333331111EEEEEEEEEEE");
+                                        i = ni;
+                                        i.addToCustomName(
+                                            $"{ChatColors.Red}Can Not Sell {m} {item.getName()} For {sellprice * m}\n" +
+                                            $"You only have {countOfItem} but need {m} to sell!\n" +
+                                            $"Obtain More and Try Again!\n" +
+                                            $"{ChatColors.Yellow}You have {money}");
+                                        
+                                        
                                     }
                                 }
                                 else
@@ -345,7 +418,8 @@ namespace CyberCore.Manager.Shop
                                     // i.getNamedTag().Add(new NbtByte("CANNOTBUY", 1));
                                     i.addToCustomName(
                                         $"{ChatColors.Red}Can Not Sell {m} {item.getName()} For {sellprice * m}\n" +
-                                        $"You only have {P.getMoney()}");
+                                        $"You do not have any of this block!\n" +
+                                        $"{ChatColors.Yellow}You have {money}");
                                 }
 
                                 Console.WriteLine("PRICE HAS BEEN CALLED!!!!!");
@@ -373,13 +447,14 @@ namespace CyberCore.Manager.Shop
                                     Console.WriteLine($"OK SO  NNBBB {i.getNamedTag().Contains("PRICE")}");
                                     i.addToCustomName(
                                         $"{ChatColors.Red}Can Not Buy {m} {item.getName()} For {buyprice * m}\n" +
-                                        $"You have Only {P.getMoney()}");
+                                        $"You have Only {money}");
                                 }
                                 else
                                 {
                                     Console.WriteLine("EE1111111111BBBBBBBB1EEEEEEEEEEE");
                                     i.addToCustomName(
-                                        $"{ChatColors.Red}Buy {m} {item.getName()} For {buyprice * m}");
+                                        $"{ChatColors.Green}Buy {m} {item.getName()} For {buyprice * m}\n" +
+                                        $"{ChatColors.Yellow}You have {money}");
                                 }
 
                                 Console.WriteLine("PRICE BBBBBHAS BEEN CALLED!!!!!");
@@ -411,7 +486,7 @@ namespace CyberCore.Manager.Shop
                             case 4:
                                 Console.WriteLine($"SOOO I IS " + i);
                                 Console.WriteLine($"SOOO ITEM IS " + item);
-                                Console.WriteLine($"SOOO IITEM IS " + iitem);
+                                // Console.WriteLine($"SOOO IITEM IS " + iitem);
                                 SetItem((byte) s, item);
                                 break;
                             // case 5:

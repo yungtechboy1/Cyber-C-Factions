@@ -306,7 +306,7 @@ namespace CyberCore.Utils
             Console.WriteLine("OK>......22222...");
             var tag = i.ExtraData;
             if (!tag.Contains("display")) return false;
-Console.WriteLine("OK>.........");
+            Console.WriteLine("OK>.........");
             var tag1 = tag["display"];
             if (tag1 != null && tag1 is NbtString) return true;
 
@@ -342,6 +342,24 @@ Console.WriteLine("OK>.........");
                 if (a.Count == 0) tag.Remove("display");
 
                 i.ExtraData = tag;
+            }
+
+            return i;
+        }
+
+        public static Item ClearShopTags(this Item i)
+        {
+            if (i.ExtraData == null) return i;
+
+            var tag = i.ExtraData;
+            if (tag.Contains("display")) tag.Remove("display");
+            if (tag.Contains("buy")) tag.Remove("buy");
+            if (tag.Contains("sell")) tag.Remove("sell");
+            if (tag.Contains("backup") && tag["backup"] is NbtCompound b)
+            {
+                i.ExtraData = b;
+                i.ExtraData.Name = "";
+                // var b = (NbtCompound)
             }
 
             return i;
@@ -415,22 +433,186 @@ Console.WriteLine("OK>.........");
             return i.hasCustomName() ? i.getCustomName() : i.GetType().Name;
         }
 
+        public static bool CheckNbtSame(this NbtCompound i, NbtCompound ii)
+        {
+            var i1 = i.NBTToString();
+            var ii1 = i.NBTToString();
+            return i1 == ii1;
+        }
+
+        public static List<int> GetSlotsOfItem(this PlayerInventory inv, Item itm, bool CheckNametag = true)
+        {
+            List<int> a = new List<int>();
+            for (byte index = 0; (int) index < inv.Slots.Count; ++index)
+            {
+                var i = inv.Slots[index];
+                if (i == null || i.Id == 0) continue;
+                if (i.Id != itm.Id) continue;
+                if (i.Metadata != itm.Metadata) continue;
+                if (CheckNametag && !i.ExtraData.CheckNbtSame(itm.ExtraData)) continue;
+                a.Add(index);
+            }
+
+            return a;
+        }
+
+
+        /// <summary>
+        /// Take the amount of itm from player Invetory
+        /// This Function will check all the Player's Slots
+        /// To Try and remove the Amount of input item
+        /// Returns False if Amount is not enough or an error occured
+        /// </summary>
+        /// <param name="inv"></param>
+        /// <param name="itm"></param>
+        /// <param name="CheckNametag"></param>
+        /// <returns></returns>
+        public static bool TakeItem(this PlayerInventory inv, Item itm, bool CheckNametag = true)
+        {
+            var a = inv.GetSlotsOfItem(itm, CheckNametag);
+            if (a.Count == 0) return false;
+            //ActuallyRemoveList
+            List<int> ActuallyRemoveList = new List<int>();
+            // PartialRemoveInt
+            int PartialRemoveInt = -1;
+            byte takeamt = itm.Count;
+            byte takeamt1 = takeamt;
+
+            foreach (var aa in a)
+            {
+                var i = inv.Slots[aa];
+                if (takeamt > i.Count)
+                {
+                    ActuallyRemoveList.Add(aa);
+                    takeamt -= i.Count;
+                }
+                else if (takeamt == i.Count)
+                {
+                    ActuallyRemoveList.Add(aa);
+                    takeamt = 0;
+                    break;
+                }
+                else
+                {
+                    PartialRemoveInt = aa;
+                    takeamt = 0;
+                    break;
+                }
+            }
+
+            if (takeamt > 0) return false;
+
+            foreach (var ari in ActuallyRemoveList)
+            {
+                var i = inv.Slots[ari];
+                Console.WriteLine($" SLOT {ari} HAD A COUNT OF {i.Count} Which is now 0");
+                inv.Slots[ari] = new ItemAir();
+            }
+
+            if (takeamt1 > 0)
+                Console.WriteLine("GREATTTTT GO AHEAD");
+            else
+                Console.WriteLine("AHHHHHHHH TakeAmt was >>> " + takeamt1);
+
+            if (PartialRemoveInt != -1)
+            {
+                var pri = inv.Slots[PartialRemoveInt];
+                if (pri.Count < takeamt1)Console.WriteLine($"WHAT WHY WAS THIS MORE!!! {pri.Count} < {takeamt1}");
+                pri.Count -= takeamt1;
+                inv.Slots[PartialRemoveInt] = pri;
+            }
+            if (takeamt1 != 0)
+                Console.WriteLine("WHAT TAKE AMT 1 WAS NOT 0 >>> "+takeamt1);
+            else
+                Console.WriteLine("TakeAmt was ========= 0  AFTER ");
+            inv.Player.SendPlayerInventory();
+            return true;
+
+            //
+            // // List<int> rmlist = new List<int>();
+            // for (byte index = 0; (int) index < inv.Slots.Count; ++index)
+            // {
+            //     var i = inv.Slots[index];
+            //     if (i == null || i.Id == 0) continue;
+            //     if (i.Id != itm.Id) continue;
+            //     if (i.Metadata != itm.Metadata) continue;
+            //     if (CheckNametag && !i.ExtraData.CheckNbtSame(itm.ExtraData)) continue;
+            //     if (takeamt > i.Count)
+            //     {
+            //         takeamt -= i.Count;
+            //         i = null;
+            //     }
+            //     else
+            //     {
+            //         i.Count -= takeamt;
+            //         return true;
+            //     }
+            // }
+            //
+            // return amt;
+        }
+
+        /// <summary>
+        /// WILL NOT FIND AIR
+        /// </summary>
+        /// <param name="inv"></param>
+        /// <param name="itm"></param>
+        /// <param name="CheckNametag"></param>
+        /// <returns></returns>
+        public static int GetCountOfItem(this PlayerInventory inv, Item itm, bool CheckNametag = true)
+        {
+            int amt = 0;
+            foreach (var i in inv.Slots)
+            {
+                if (i == null || i.Id == 0) continue;
+                if (i.Id != itm.Id) continue;
+                if (i.Metadata != itm.Metadata) continue;
+                if (CheckNametag && !i.ExtraData.CheckNbtSame(itm.ExtraData)) continue;
+                amt += i.Count;
+            }
+
+            return amt;
+        }
+
+        /// <summary>
+        /// WILL NOT FIND AIR
+        /// </summary>
+        /// <param name="inv"></param>
+        /// <param name="itm"></param>
+        /// <param name="CheckNametag"></param>
+        /// <returns></returns>
+        public static int GetCountOfItem(this Inventory inv, Item itm, bool CheckNametag = true)
+        {
+            int amt = 0;
+            foreach (var i in inv.Slots)
+            {
+                if (i == null || i.Id == 0) continue;
+                if (i.Id != itm.Id) continue;
+                if (i.Metadata != itm.Metadata) continue;
+                if (CheckNametag && !i.ExtraData.CheckNbtSame(itm.ExtraData)) continue;
+                amt += i.Count;
+            }
+
+            return 0;
+        }
+
         public static bool HasEmptySlot(this PlayerInventory inv)
         {
             foreach (var i in inv.Slots)
             {
                 if (i == null || i.Id == 0) return true;
-
             }
 
             return false;
         }
+
         public static bool ContainsItem(this PlayerInventory i, Item itm, bool checkcount = false,
             bool checknbt = false)
         {
             var a = GetItemSlot(i, itm, checkcount, checknbt);
             return a == -1 ? false : true;
         }
+
         public static bool ContainsItem(this Inventory i, Item itm, bool checkcount = false, bool checknbt = false)
         {
             var a = GetItemSlot(i, itm, checkcount, checknbt);
@@ -449,6 +631,7 @@ Console.WriteLine("OK>.........");
                     {
                         if (si.Count != itm.Count) continue;
                     }
+
                     if (checknbt)
                     {
                         var n1 = si.getNamedTag().NBTToString();
@@ -458,13 +641,14 @@ Console.WriteLine("OK>.........");
                             continue;
                         }
                     }
+
                     return index;
-                }                
+                }
             }
 
-            return -1;    
+            return -1;
         }
-        
+
         public static int GetItemSlot(this Inventory i, Item itm, bool checkcount = false, bool checknbt = false)
         {
             if (itm == null) return -1;
@@ -477,6 +661,7 @@ Console.WriteLine("OK>.........");
                     {
                         if (si.Count != itm.Count) continue;
                     }
+
                     if (checknbt)
                     {
                         var n1 = si.getNamedTag().NBTToString();
@@ -486,8 +671,9 @@ Console.WriteLine("OK>.........");
                             continue;
                         }
                     }
+
                     return index;
-                }                
+                }
             }
 
             return -1;
@@ -596,6 +782,7 @@ Console.WriteLine("OK>.........");
 
         public static String NBTToString(this NbtCompound c)
         {
+            if (c == null || c.Count == 0) return "";
             String fnt = "";
             var a = new NbtFile();
             a.BigEndian = false;
