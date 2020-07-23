@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using CyberCore.Utils;
 using MiNET.Entities;
 using MiNET.Utils;
@@ -17,7 +18,7 @@ namespace CyberCore.Manager.FloatingText
             
         }
 
-        public bool CheckKill(int t)
+        public bool CheckKill(long t)
         {
             CyberCoreMain.Log.Info("POPFT> "+t + "|" + ( FTData.Created +  FTData.Lifespan));
             return (t >  FTData.Created +  FTData.Lifespan) || FTData._CE_Done;
@@ -29,8 +30,9 @@ namespace CyberCore.Manager.FloatingText
             OnUpdate(CyberUtils.getTick());
         }
 
-        public new void OnUpdate(int tick) {
+        public void OnUpdate(long tick) {
             base.OnUpdate(tick);
+            Console.WriteLine("ACLLEDDDD");
             if (tick >= FTData._nu) {
                 FTData._nu = tick + FTData.interval;
                 FTData._CE_Done = CheckKill(tick);

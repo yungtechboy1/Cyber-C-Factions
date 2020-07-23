@@ -10,7 +10,7 @@ namespace CyberCore.Manager.FloatingText
         public long Created = -1;
         public int Updates = -1;
         public int interval = 10;
-        public int _nu = -1;//Next Update!
+        public long _nu = -1;//Next Update!
         public new void PrepareForSave()
         {
             _CE_Done = false;

@@ -421,6 +421,7 @@ CyberCoreMain.Log.Error("FT AND PLAYER NOT IN SAME LEVEL");
                 //KDR
                 Double kdr = kills / deaths; //Factions.GetKDR(player.getName());
                 String rank = "Guest|";
+                //DISABLED FOR NOW
                 rank = CCM.getPlayerRank(player.getName()).display_name;
                 if (rank == null) rank = "Guest";
 

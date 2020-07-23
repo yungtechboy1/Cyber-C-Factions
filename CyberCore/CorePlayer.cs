@@ -11,6 +11,7 @@ using CyberCore.Manager.ClassFactory;
 using CyberCore.Manager.ClassFactory.Powers;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.Factions.Windows;
+using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Forms;
 using CyberCore.Manager.Rank;
 using CyberCore.Manager.Shop;
@@ -959,6 +960,43 @@ namespace CyberCore
 
         public int attackTime = 0;
 
+        public void BaseEntityAttack(ItemUseOnEntityTransaction transaction)
+        {
+            Item itemInHand = this.Inventory.GetItemInHand();
+            // if ((int) itemInHand.Id != (int) transaction.Item.Id || (int) itemInHand.Metadata != (int) transaction.Item.Metadata)
+            //     Log.Warn((object) string.Format("Attack item mismatch. Expected {0}, but client reported {1}", (object) itemInHand, (object) transaction.Item));
+            Entity entity;
+            if (!this.Level.TryGetEntity<Entity>(transaction.EntityId, out entity))
+                return;
+            this.LastAttackTarget = entity;
+            if (entity is Player target)
+            {
+                double itemDamage = this.DamageCalculator.CalculateItemDamage(this, itemInHand, target);
+                if (this.IsFalling)
+                    itemDamage += this.DamageCalculator.CalculateFallDamage(this, itemDamage, target);
+                double num = itemDamage + this.DamageCalculator.CalculateEffectDamage(this, itemDamage, target);
+                if (num < 0.0)
+                    num = 0.0;
+                double damage = num + this.DamageCalculator.CalculateDamageIncreaseFromEnchantments(this, itemInHand, target);
+                int playerDamage = (int) this.DamageCalculator.CalculatePlayerDamage((Entity) this, target, itemInHand, damage, DamageCause.EntityAttack);
+                target.HealthManager.TakeHit((Entity) this, itemInHand, playerDamage, DamageCause.EntityAttack);
+                if ((double) playerDamage < damage)
+                    target.Inventory.DamageArmor();
+                short enchantingLevel = itemInHand.GetEnchantingLevel(EnchantingType.FireAspect);
+                if (enchantingLevel > (short) 0)
+                    target.HealthManager.Ignite((int) enchantingLevel * 80);
+            }
+            else
+            {
+                var d = this.CalculateDamage(entity);
+                entity.HealthManager.TakeHit((Entity) this, itemInHand, d, DamageCause.EntityAttack);
+                FloatingTextFactory.AddFloatingText(new PopupFT(CyberCoreMain.GetInstance().FTM,entity.KnownPosition,entity.Level,$"{ChatColors.Red}Damage Given {d}HP"));
+            }
+
+            this.Inventory.DamageItemInHand(ItemDamageReason.EntityAttack, entity, (Block) null);
+            this.HungerManager.IncreaseExhaustion(0.3f);
+        }
+        
         protected override void EntityAttack(ItemUseOnEntityTransaction transaction)
         {
             if (SwingCooldown.isValid())
@@ -967,7 +1005,10 @@ namespace CyberCore
                 SendMessage(ChatColors.Yellow + "YOU STILL HAVE SWING COOLDONW!!!!!!");
             }
 
-            base.EntityAttack(transaction);
+            // CyberCoreMain.GetInstance().FTM.
+
+            BaseEntityAttack(transaction);
+            // base.EntityAttack(transaction);
             enterCombat();
             SwingCooldown.Reset(getAttackTime());
 

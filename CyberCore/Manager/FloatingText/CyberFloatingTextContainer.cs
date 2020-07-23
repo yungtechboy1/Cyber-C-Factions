@@ -395,7 +395,7 @@ namespace CyberCore.Manager.FloatingText
             return packets.ToArray();
         }
 
-        public void OnUpdate(long tick)
+        public virtual void OnUpdate(long tick)
         {
             FTData.LastUpdate = tick;
         }
