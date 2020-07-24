@@ -158,11 +158,13 @@
           </e>
           <e p="FloatingText" t="Include">
             <e p="CustomFloatingTextParticle.cs" t="Include" />
-            <e p="CyberFloatingTextContainer.cs" t="Include" />
             <e p="CyberFloatingTextContainerData.cs" t="Include" />
             <e p="FloatingTextEntity.cs" t="Include" />
             <e p="FloatingTextFactory.cs" t="Include" />
             <e p="FloatingTextType.cs" t="Include" />
+            <e p="GenericCyberFloatingTextContainer.cs" t="Include" />
+            <e p="GenericCyberFloatingTextContainerData.cs" t="Include" />
+            <e p="GenericFloatingTextEntity.cs" t="Include" />
             <e p="PopupFT.cs" t="Include" />
             <e p="PopupFTData.cs" t="Include" />
           </e>

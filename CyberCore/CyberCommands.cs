@@ -60,7 +60,7 @@ namespace CyberCore
         [Command(Name = "ft add", Description = "Add floating text")]
         public void ftadd(CorePlayer p, string text = null)
         {
-            FloatingTextFactory.AddFloatingText(new CyberFloatingTextContainer(CCM.FTM, p, text), true);
+            FloatingTextFactory.AddFloatingText(new CyberGenericFloatingTextContainer(CCM.FTM, (PlayerLocation) p.KnownPosition.Clone(),p.Level, text), true);
             p.SendMessage(ChatColors.Green + "Floating Text Added!");
         }
 
