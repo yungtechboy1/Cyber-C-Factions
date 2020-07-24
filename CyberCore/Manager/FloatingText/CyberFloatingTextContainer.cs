@@ -415,5 +415,10 @@ namespace CyberCore.Manager.FloatingText
             if (FTData.Lvl == null) return false;
             return true;
         }
+
+        public virtual bool CanTick(long tick)
+        {
+            return  tick >= FTData.UpdateTicks + FTData.LastUpdate;
+        }
     }
 }

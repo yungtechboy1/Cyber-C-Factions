@@ -41,7 +41,7 @@ namespace CyberCore.Manager.FloatingText
             //TODO
             // run();
             
-            _tickerHighPrecisionTimer = new HighPrecisionTimer(2000, run, false, false);
+            _tickerHighPrecisionTimer = new HighPrecisionTimer(500, run, false, false);
             //Create New Tick Function and exicute every 40 Ticks
             //Just Call run in here
         }
@@ -205,6 +205,13 @@ namespace CyberCore.Manager.FloatingText
                         continue;
                     }
 
+                    if (!a.CanTick(tick))
+                    {
+                        // CyberCoreMain.Log.Error("FTF>> ERROR! FT WONT TICK Now!!! " + a);
+                        continue;
+                        
+                    }
+
                     int aa = 0;
                     // CyberCoreMain.Log.Error("Was LOG ||"+"|||>||"+a.GetText(null));
                     //Create Blank array if not present!
@@ -289,7 +296,7 @@ CyberCoreMain.Log.Error("FT AND PLAYER NOT IN SAME LEVEL");
 
                     //TODO Alt - Chunk Packet!
 
-                    // CyberCoreMain.Log.Error("Was LOG ||" + aa++);
+                    // CyberCoreMain.Log.Error("Was LOG || CHECK IF DONE "+a.FTData._CE_Done);
                     if (a.FTData._CE_Done)
                     {
                         FTLastSentToRmv[a.EntityId].AddRange(ap);
@@ -367,7 +374,7 @@ CyberCoreMain.Log.Error("FT AND PLAYER NOT IN SAME LEVEL");
                 }
 
                 OpenPlayer pp = null;
-                if (CCM.getAPI().PlayerManager.TryGetPlayer(p, out pp))
+                if (!CCM.getAPI().PlayerManager.TryGetPlayer(p, out pp))
                 {
                     CyberCoreMain.Log.Error("FTF > Error Da Playea twas not foundets");
                     continue;

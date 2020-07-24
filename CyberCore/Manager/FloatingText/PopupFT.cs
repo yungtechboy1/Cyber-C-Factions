@@ -20,21 +20,20 @@ namespace CyberCore.Manager.FloatingText
 
         public bool CheckKill(long t)
         {
-            CyberCoreMain.Log.Info("POPFT> "+t + "|" + ( FTData.Created +  FTData.Lifespan));
+            // CyberCoreMain.Log.Info("POPFT> "+t + "|" + ( FTData.Created +  FTData.Lifespan));
             return (t >  FTData.Created +  FTData.Lifespan) || FTData._CE_Done;
         }
 
-        public override void OnTick(Entity[] entities)
-        {
-            base.OnTick(entities);
-            OnUpdate(CyberUtils.getTick());
-        }
+        // public override void OnTick(Entity[] entities)
+        // {
+        //     base.OnTick(entities);
+        //     OnUpdate(CyberUtils.getTick());
+        // }
 
-        public void OnUpdate(long tick) {
+        public override void OnUpdate(long tick) {
             base.OnUpdate(tick);
-            Console.WriteLine("ACLLEDDDD");
-            if (tick >= FTData._nu) {
-                FTData._nu = tick + FTData.interval;
+            Console.WriteLine("ACLLEDDDD >>>> "+CheckKill(tick));
+                // FTData._nu = tick + FTData.interval;
                 FTData._CE_Done = CheckKill(tick);
                 FTData.Updates++;
                 if (FTData.Updates >= 1 && !FTData.Frozen) {
@@ -42,7 +41,7 @@ namespace CyberCore.Manager.FloatingText
                     KnownPosition = op+ (new PlayerLocation(0, .7, 0));//Raise .7 height
                 }
                 if (FTData.Updates >= 5 && FTData._CE_Done) kill();
-            }
+            
         }
     }
 }
