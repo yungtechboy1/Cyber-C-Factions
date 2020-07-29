@@ -92,6 +92,8 @@ namespace CyberCore.WorldGen.Biomes
 
         public int BorderType { get; set; } = 0;
 
+        public abstract int GetSH(int x,int z, int cx, int cz);
+        
         public bool check(float[] rth)
         {
             return BiomeQualifications.check(rth);

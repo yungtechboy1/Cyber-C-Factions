@@ -32,6 +32,12 @@ namespace CyberCore.WorldGen
             startheight = 90;
         }
 
+        public override int GetSH(int x, int z, int cx, int cz)
+        {
+            return (int)GetNoise(cx * 16 + x, cz * 16 + z, dirtNoise,
+                (int) Math.Floor(dirtNoiseHeight));
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -68,8 +74,7 @@ namespace CyberCore.WorldGen
                         (int) Math.Floor(stoneBaseNoiseHeight));
 
                     int dirtHeight = stoneHeight + (int) Math.Floor(dirtBaseHeight);
-                    dirtHeight += (int)GetNoise(chunk.X * 16 + x, chunk.Z * 16 + z, dirtNoise,
-                        (int) Math.Floor(dirtNoiseHeight));
+                    dirtHeight += GetSH(x, z, chunk.X, chunk.Z);
                     // int riverint = GetNoise(chunk.X * 16 + x, chunk.Z * 16 + z, dirtNoise,
                     //     10);
                     // int riverheight = dirtHeight + GetNoise(chunk.X * 16 + x, chunk.Z * 16 + z, dirtNoise,

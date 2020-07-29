@@ -11,6 +11,13 @@ namespace CyberCore.WorldGen.Populator
         {
         }
 
+        public override int GetSH(int x, int z, int cx, int cz)
+        {
+            return (int) (BiomeQualifications.baseheight +
+                          (int) (GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.035f,
+                              BiomeQualifications.heightvariation)));
+        }
+
         public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn c, float[] rth)
         {
@@ -25,11 +32,9 @@ namespace CyberCore.WorldGen.Populator
                 // int sh = (int) (BiomeQualifications.baseheight +
                 //                 (rth[2] * BiomeQualifications.heightvariation) +
                 //                 (int) (GetNoise(c.X * 16 + x, c.Z * 16 + z, 0.035f, 5)));
-                
-                
-                int sh = (int) (BiomeQualifications.baseheight +
-                                (int) (GetNoise(c.X * 16 + x, c.Z * 16 + z, /*rth[2] / */.035f,
-                                    BiomeQualifications.heightvariation)));
+
+
+                int sh = GetSH(x, z, c.X, c.Z);
                 // int sh= (int) (BiomeQualifications.baseheight + GetNoise(c.X * 16 + x, c.Z * 16 + z,0.035f,(int)((rth[2] )* BiomeQualifications.heightvariation)+10));
                 // int sh= (int) Math.Floor(BiomeQualifications.baseheight + ((rth[2])* BiomeQualifications.heightvariation));
                 int fy = 0;

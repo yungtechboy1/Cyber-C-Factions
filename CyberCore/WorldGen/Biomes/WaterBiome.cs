@@ -66,11 +66,19 @@ namespace CyberCore.WorldGen
             base.SmoothChunk(o, c, rth);
         }
 
+        public override int GetSH(int x, int z, int cx, int cz)
+        {
+            return (int) (BiomeQualifications.baseheight +
+                          (int) (GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.035f,
+                              BiomeQualifications.heightvariation)));
+
+        }
+
         public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn c,
             float[] rth)
         {
-            if (BiomeManager.IsOnBorder(new ChunkCoordinates(c.X,c.Z), LocalID,3))
+            if (BiomeManager.IsOnBorder(new ChunkCoordinates(c.X,c.Z), LocalID,4))
             {
                 // Console.WriteLine($"THIS OCEAN CHUNK IS A BORER CHUNK");
                 new BeachBiome().PopulateChunk(CyberExperimentalWorldProvider,c,rth);
@@ -91,10 +99,8 @@ namespace CyberCore.WorldGen
                 // int sh = (int) (BiomeQualifications.baseheight +
                 //                 (int) (GetNoise(c.X * 16 + x, c.Z * 16 + z, rth[2], BiomeQualifications.heightvariation)))+
                 //                 (int) (GetNoise(c.X * 16 + x, c.Z * 16 + z, 0.035f, 5)); //10
-                
-                int sh = (int) (BiomeQualifications.baseheight +
-                                (int) (GetNoise(c.X * 16 + x, c.Z * 16 + z, /*rth[2] / */.035f,
-                                    BiomeQualifications.heightvariation)));
+
+                int sh = GetSH(x, z, c.X, c.Z);
                 // Console.WriteLine("WATTTTTTTTTEEEEEEEERRRRRRRRRRR >>>>>>>>>>>>>>> " + sh + " |||| " + rth[2]);
                 for (short y = 0; y < 255; y++)
                 {

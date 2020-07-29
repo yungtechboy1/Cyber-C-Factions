@@ -7,41 +7,41 @@ using MiNET.Worlds;
 
 namespace CyberCore.Manager.FloatingText
 {
-    public class PopupFT : CyberFloatingTextContainer
+    public class PopupFT : GenericFloatingTextEntity<PopupFTData>
     {
-        public new PopupFTData FTData = new PopupFTData();
-        public  FloatingTextType TYPE = FloatingTextType.FT_Popup;
-        
+
         public PopupFT(FloatingTextFactory ftf, PlayerLocation pos, Level l, string syntax) : base(ftf, pos, l, syntax)
         {
+            FTData.TYPE = FloatingTextType.FT_Popup;
+            FTData = new PopupFTData();
             FTData.Created = CyberUtils.getTick();
-            
         }
+        //((PopupFTData)FTData)
+        
+        
 
-        public bool CheckKill(long t)
-        {
-            // CyberCoreMain.Log.Info("POPFT> "+t + "|" + ( FTData.Created +  FTData.Lifespan));
-            return (t >  FTData.Created +  FTData.Lifespan) || FTData._CE_Done;
-        }
-
+        
+        //
         // public override void OnTick(Entity[] entities)
         // {
         //     base.OnTick(entities);
-        //     OnUpdate(CyberUtils.getTick());
+        //     Console.WriteLine("WRONG TICK MF!!!!!!!");
+        //     // OnUpdate(CyberUtils.getTick());
         // }
 
-        public override void OnUpdate(long tick) {
+        public override void OnUpdate(long tick)
+        {
             base.OnUpdate(tick);
-            Console.WriteLine("ACLLEDDDD >>>> "+CheckKill(tick));
-                // FTData._nu = tick + FTData.interval;
-                FTData._CE_Done = CheckKill(tick);
-                FTData.Updates++;
-                if (FTData.Updates >= 1 && !FTData.Frozen) {
-                    PlayerLocation op = (PlayerLocation) KnownPosition.Clone();//Old Position
-                    KnownPosition = op+ (new PlayerLocation(0, .7, 0));//Raise .7 height
-                }
-                if (FTData.Updates >= 5 && FTData._CE_Done) kill();
-            
+            Console.WriteLine("ACLLEDDDD");
+            FTData._CE_Done = CheckKill(tick);
+            FTData.Updates++;
+            if (FTData.Updates >= 1 && !FTData.Frozen)
+            {
+                PlayerLocation op = (PlayerLocation) KnownPosition.Clone(); //Old Position
+                KnownPosition = op + (new PlayerLocation(0, .7, 0)); //Raise .7 height
+            }
+
+            // if (FTData.Updates >= 5 && FTData._CE_Done) kill();
         }
     }
 }
