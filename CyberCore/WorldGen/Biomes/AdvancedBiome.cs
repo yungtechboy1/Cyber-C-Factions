@@ -59,6 +59,7 @@ namespace CyberCore.WorldGen.Biomes
 
     public abstract class AdvancedBiome
     {
+        public int waterlevel = 75;
         private static readonly ILog Log = LogManager.GetLogger(typeof(AdvancedBiome));
 
         private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());
@@ -336,7 +337,7 @@ namespace CyberCore.WorldGen.Biomes
             // }
             var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk);
             PopulateChunk(CyberExperimentalWorldProvider, chunk, rth, a);
-            PostPopulate(CyberExperimentalWorldProvider,chunk,rth,a);
+            PostPopulate(CyberExperimentalWorldProvider, chunk, rth, a);
 
             t.Stop();
             // int minWorker, minIOC,maxworker,maxIOC;
@@ -365,9 +366,10 @@ namespace CyberCore.WorldGen.Biomes
             {
                 for (int z = 0; z < 16; z++)
                 {
+                    c.SetBlock(x, 0, z, new Bedrock());
                     for (int y = 1; y < 255; y++)
                     {
-                        SmoothVerticalColumn(y, ints[x,z], x, z, c);
+                        GenerateVerticalColumn(y, ints[x, z], x, z, c);
                     }
                 }
             }
@@ -375,7 +377,6 @@ namespace CyberCore.WorldGen.Biomes
 
         public virtual void PostPopulate(CyberExperimentalWorldProvider cyber, ChunkColumn c, float[] rth, int[,] ints)
         {
-            
         }
 
         public virtual int[,] GenerateUseabelHeightMap(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
@@ -442,53 +443,27 @@ namespace CyberCore.WorldGen.Biomes
         /// </summary>
         /// <param name="yheight"></param>
         /// <param name="maxheight"></param>
-        /// <param name="rxx"></param>
-        /// <param name="rzz"></param>
+        /// <param name="x"></param>
+        /// <param name="z"></param>
         /// <param name="cc"></param>
-        public virtual void SmoothVerticalColumn(int yheight, int maxheight, int rxx, int rzz, ChunkColumn cc)
+        public virtual void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc)
         {
             // var subChunk = cc.GetSubChunk(yheight);
             // var v = subChunk.GetBlockId(rxx, yheight & 0xf, rzz);
             // Console.WriteLine(subChunk);
             // Console.WriteLine(v);
             // Console.WriteLine("++++++++++++++++++++++++++++++++");
-            int bid = cc.GetBlockId(rxx, yheight, rzz);
-            if (bid == new Wood().Id || bid == new Log().Id) return;
-            if (bid == new Water().Id || bid == new FlowingWater().Id) return;
 
+// if(yheight < Sand){}
 
-            if (yheight < maxheight - 1)
+            if (yheight < maxheight)
             {
-                if (yheight <= 90)
-                {
-                    cc.SetBlock(rxx, yheight, rzz, new Sand());
-                }
-                else if (bid == 0) cc.SetBlock(rxx, yheight, rzz, new Stone());
+                    cc.SetBlock(x, yheight, z, new Stone());
             }
             // else if (cc.GetBlockId(rx, y, rz) == 0) break;
-            else if (yheight == maxheight - 1)
-            {
-                // if (x == 0 || z == map.GetLength(0) - 1 || z == 0 || z == map.GetLength(1) - 1)
-                //     cc.SetBlock(rxx, y, rzz, new EmeraldBlock());
-                /*else*/
-                if (yheight <= 90)
-                {
-                    cc.SetBlock(rxx, yheight, rzz, new Sand());
-                }
-                else
-                    cc.SetBlock(rxx, yheight, rzz, new Grass());
-            }
-            else if (yheight == maxheight)
-            {
-                if (bid == 0 || bid == new Wood().Id || bid == new Log().Id) return;
-                cc.SetBlock(rxx, yheight, rzz, new Air());
-            }
             else
             {
-                if (NotAllowedBlocks.Contains(bid))
-                {
-                    cc.SetBlock(rxx, yheight, rzz, new Air());
-                }
+                    cc.SetBlock(x, yheight, z, new Grass());
             }
         }
 

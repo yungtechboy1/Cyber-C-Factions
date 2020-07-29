@@ -22,33 +22,43 @@ namespace CyberCore.WorldGen.Biomes
                        BiomeQualifications.heightvariation);
         }
 
-        public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
-            ChunkColumn c, float[] rth, int[,] ints)
+        //     public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
+        //         ChunkColumn c, float[] rth, int[,] ints)
+        //     {
+        //         for (var x = 0; x < 16; x++)
+        //         for (var z = 0; z < 16; z++)
+        //         {
+        //             var sh = GetSH(x, z, c.X, c.Z);
+        //         
+        //         for (var y = 0; y < 255; y++)
+        //         {
+        //             if (y == 0)
+        //             {
+        //                 c.SetBlock(x, y, z, new Bedrock());
+        //                 continue;
+        //             }
+        //
+        //             if (y <= sh)
+        //             {
+        //                 c.SetBlock(x, y, z, new Stone());
+        //                 continue;
+        //             }
+        //
+        //             c.SetBlock(x, y, z, new RedstoneOre());
+        //             c.SetHeight(x, z, (short) y);
+        //             break;
+        //         }
+        //     }
+        // }
+
+        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc)
         {
-            for (var x = 0; x < 16; x++)
-            for (var z = 0; z < 16; z++)
+            if (yheight <= maxheight)
             {
-                var sh = GetSH(x, z, c.X, c.Z);
-            
-            for (var y = 0; y < 255; y++)
-            {
-                if (y == 0)
-                {
-                    c.SetBlock(x, y, z, new Bedrock());
-                    continue;
-                }
-
-                if (y <= sh)
-                {
-                    c.SetBlock(x, y, z, new Stone());
-                    continue;
-                }
-
-                c.SetBlock(x, y, z, new RedstoneOre());
-                c.SetHeight(x, z, (short) y);
-                break;
+                cc.SetBlock(x, yheight, z, new Stone());
             }
+            else
+                cc.SetBlock(x, yheight, z, new RedstoneOre());
         }
-    }
     }
 }
