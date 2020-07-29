@@ -44,8 +44,9 @@ namespace CyberCore.WorldGen
         /// <param name="CyberExperimentalWorldProvider"></param>
         /// <param name="chunk"></param>
         /// <param name="rtf"></param>
+        /// <param name="ints"></param>
         public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
-            ChunkColumn chunk, float[] rtf)
+            ChunkColumn chunk, float[] rtf, int[,] ints)
         {
             int trees = new Random().Next(0, 10);
             int[,] treeBasePositions = new int[trees, 2];
@@ -58,144 +59,159 @@ namespace CyberCore.WorldGen
                 treeBasePositions[t, 1] = z;
             }
 
+
             for (int x = 0; x < 16; x++)
             {
                 for (int z = 0; z < 16; z++)
                 {
-                    int stoneHeight = (int) Math.Floor(stoneBaseHeight);
-                    waterLevel = stoneHeight;
-                    stoneHeight += (int)GetNoise(chunk.X * 16 + x, chunk.Z * 16 + z, stoneMountainFrequency,
-                        (int) Math.Floor(stoneMountainHeight));
-
-                    if (stoneHeight < stoneMinHeight)
-                        stoneHeight = (int) Math.Floor(stoneMinHeight);
-
-                    stoneHeight += (int)GetNoise(chunk.X * 16 + x, chunk.Z * 16 + z, stoneBaseNoise,
-                        (int) Math.Floor(stoneBaseNoiseHeight));
-
-                    int dirtHeight = stoneHeight + (int) Math.Floor(dirtBaseHeight);
-                    dirtHeight += GetSH(x, z, chunk.X, chunk.Z);
-                    // int riverint = GetNoise(chunk.X * 16 + x, chunk.Z * 16 + z, dirtNoise,
-                    //     10);
-                    // int riverheight = dirtHeight + GetNoise(chunk.X * 16 + x, chunk.Z * 16 + z, dirtNoise,
-                    //     8);
-
-                    // Console.WriteLine($" MORE: S{stoneHeight} D{dirtHeight} <<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-                    for (int y = 0; y < 255; y++)
-                    {
-                        //float y2 = Get3DNoise(chunk.X*16, y, chunk.Z*16, stoneBaseNoise, (int) Math.Floor(stoneBaseNoiseHeight));
-                        if (y <= stoneHeight)
-                        {
-                            chunk.SetBlock(x, y, z, new Stone());
-
-                            //Diamond ore
-                            if (GetRandomNumber(0, 2500) < 5)
-                            {
-                                chunk.SetBlock(x, y, z, new DiamondOre());
-                            }
-
-                            //Coal Ore
-                            if (GetRandomNumber(0, 1500) < 50)
-                            {
-                                chunk.SetBlock(x, y, z, new CoalOre());
-                            }
-
-                            //Iron Ore
-                            if (GetRandomNumber(0, 2500) < 30)
-                            {
-                                chunk.SetBlock(x, y, z, new IronOre());
-                            }
-
-                            //Gold Ore
-                            if (GetRandomNumber(0, 2500) < 20)
-                            {
-                                chunk.SetBlock(x, y, z, new GoldOre());
-                            }
-                        }
-
-                        if (y < waterLevel) //FlowingWater :)
-                        {
-                            if (chunk.GetBlockId(x, y, z) == 2 || chunk.GetBlockId(x, y, z) == 3) //Grass or Dirt?
-                            {
-                                if (GetRandomNumber(1, 40) == 5 && y < waterLevel - 4)
-                                    chunk.SetBlock(x, y, z, new Clay()); //Clay
-                                else
-                                    chunk.SetBlock(x, y, z, new Sand()); //Sand
-                            }
-
-                            if (y < waterLevel - 3)
-                                chunk.SetBlock(x, y + 1, z, new FlowingWater()); //FlowingWater
-                        }
-
-                        // if (riverint <= 1 && y > dirtHeight && riverheight > y)
-                        // {
-                        //     Console.WriteLine($"WATER AT {x} {y} {z}");
-                        //     for (int py = 0; py < riverint; py++)
-                        //     {
-                        //         chunk.SetBlock(x, y - py,z,new Water());
-                        //     }
-                        //     
-                        // }
-
-                        if (y <= dirtHeight && y >= stoneHeight)
-                        {
-                            if (y == dirtHeight)
-                            {
-                                chunk.SetBlock(x, y, z, new Grass()); //Grass Block
-                                chunk.SetHeight(x, z, (short) (y));
-                                if (y > waterLevel)
-                                {
-                                    //Grass
-                                    if (GetRandomNumber(0, 5) == 2)
-                                    {
-                                        chunk.SetBlock(x, y + 1, z, new Tallgrass() {TallGrassType = "tall"});
-                                    }
-
-                                    //flower
-                                    if (GetRandomNumber(0, 65) == 8)
-                                    {
-                                        int meta = GetRandomNumber(0, 8);
-                                        //chunk.SetBlock(x, y + 2, z, 38, (byte) meta);
-                                        chunk.SetBlock(x, y + 1, z, new RedFlower());
-                                    }
-
-                                    for (int pos = 0; pos < trees; pos++)
-                                    {
-                                        if (treeBasePositions[pos, 0] < 14 && treeBasePositions[pos, 0] > 4 &&
-                                            treeBasePositions[pos, 1] < 14 &&
-                                            treeBasePositions[pos, 1] > 4)
-                                        {
-                                            if (y < waterLevel + 2)
-                                                break;
-                                            if (chunk.GetBlockId(treeBasePositions[pos, 0], y ,
-                                                treeBasePositions[pos, 1]) == 2)
-                                            {
-                                                if (y == dirtHeight)
-                                                    GenerateTree(chunk, treeBasePositions[pos, 0], y,
-                                                        treeBasePositions[pos, 1]);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                chunk.SetBlock(x, y, z, new Dirt()); //Dirt
-                                
-                            }
-                        }
-
-                        if (y == 0)
-                        {
-                            chunk.SetBlock(x, y, z, new Bedrock());
-                        }
-                    }
+                    // for (int y = 0; y < 255; y++)
+                    // {
+                    //     
+                    // }
+                    chunk.SetHeight(x,z,(short)ints[x+1,z+1]);
                 }
             }
+
+            // for (int x = 0; x < 16; x++)
+            // {
+            //     for (int z = 0; z < 16; z++)
+            //     {
+            //         int stoneHeight = (int) Math.Floor(stoneBaseHeight);
+            //         waterLevel = stoneHeight;
+            //         stoneHeight += (int)GetNoise(chunk.X * 16 + x, chunk.Z * 16 + z, stoneMountainFrequency,
+            //             (int) Math.Floor(stoneMountainHeight));
+            //
+            //         if (stoneHeight < stoneMinHeight)
+            //             stoneHeight = (int) Math.Floor(stoneMinHeight);
+            //
+            //         stoneHeight += (int)GetNoise(chunk.X * 16 + x, chunk.Z * 16 + z, stoneBaseNoise,
+            //             (int) Math.Floor(stoneBaseNoiseHeight));
+            //
+            //         int dirtHeight = stoneHeight + (int) Math.Floor(dirtBaseHeight);
+            //         dirtHeight += GetSH(x, z, chunk.X, chunk.Z);
+            //         // int riverint = GetNoise(chunk.X * 16 + x, chunk.Z * 16 + z, dirtNoise,
+            //         //     10);
+            //         // int riverheight = dirtHeight + GetNoise(chunk.X * 16 + x, chunk.Z * 16 + z, dirtNoise,
+            //         //     8);
+            //
+            //         // Console.WriteLine($" MORE: S{stoneHeight} D{dirtHeight} <<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+            //         for (int y = 0; y < 255; y++)
+            //         {
+            //             //float y2 = Get3DNoise(chunk.X*16, y, chunk.Z*16, stoneBaseNoise, (int) Math.Floor(stoneBaseNoiseHeight));
+            //             if (y <= stoneHeight)
+            //             {
+            //                 chunk.SetBlock(x, y, z, new Stone());
+            //
+            //                 //Diamond ore
+            //                 if (GetRandomNumber(0, 2500) < 5)
+            //                 {
+            //                     chunk.SetBlock(x, y, z, new DiamondOre());
+            //                 }
+            //
+            //                 //Coal Ore
+            //                 if (GetRandomNumber(0, 1500) < 50)
+            //                 {
+            //                     chunk.SetBlock(x, y, z, new CoalOre());
+            //                 }
+            //
+            //                 //Iron Ore
+            //                 if (GetRandomNumber(0, 2500) < 30)
+            //                 {
+            //                     chunk.SetBlock(x, y, z, new IronOre());
+            //                 }
+            //
+            //                 //Gold Ore
+            //                 if (GetRandomNumber(0, 2500) < 20)
+            //                 {
+            //                     chunk.SetBlock(x, y, z, new GoldOre());
+            //                 }
+            //             }
+            //
+            //             if (y < waterLevel) //FlowingWater :)
+            //             {
+            //                 if (chunk.GetBlockId(x, y, z) == 2 || chunk.GetBlockId(x, y, z) == 3) //Grass or Dirt?
+            //                 {
+            //                     if (GetRandomNumber(1, 40) == 5 && y < waterLevel - 4)
+            //                         chunk.SetBlock(x, y, z, new Clay()); //Clay
+            //                     else
+            //                         chunk.SetBlock(x, y, z, new Sand()); //Sand
+            //                 }
+            //
+            //                 if (y < waterLevel - 3)
+            //                     chunk.SetBlock(x, y + 1, z, new FlowingWater()); //FlowingWater
+            //             }
+            //
+            //             // if (riverint <= 1 && y > dirtHeight && riverheight > y)
+            //             // {
+            //             //     Console.WriteLine($"WATER AT {x} {y} {z}");
+            //             //     for (int py = 0; py < riverint; py++)
+            //             //     {
+            //             //         chunk.SetBlock(x, y - py,z,new Water());
+            //             //     }
+            //             //     
+            //             // }
+            //
+            //             if (y <= dirtHeight && y >= stoneHeight)
+            //             {
+            //                 if (y == dirtHeight)
+            //                 {
+            //                     chunk.SetBlock(x, y, z, new Grass()); //Grass Block
+            //                     chunk.SetHeight(x, z, (short) (y));
+            //                     if (y > waterLevel)
+            //                     {
+            //                         //Grass
+            //                         if (GetRandomNumber(0, 5) == 2)
+            //                         {
+            //                             chunk.SetBlock(x, y + 1, z, new Tallgrass() {TallGrassType = "tall"});
+            //                         }
+            //
+            //                         //flower
+            //                         if (GetRandomNumber(0, 65) == 8)
+            //                         {
+            //                             int meta = GetRandomNumber(0, 8);
+            //                             //chunk.SetBlock(x, y + 2, z, 38, (byte) meta);
+            //                             chunk.SetBlock(x, y + 1, z, new RedFlower());
+            //                         }
+            //
+            //                         for (int pos = 0; pos < trees; pos++)
+            //                         {
+            //                             if (treeBasePositions[pos, 0] < 14 && treeBasePositions[pos, 0] > 4 &&
+            //                                 treeBasePositions[pos, 1] < 14 &&
+            //                                 treeBasePositions[pos, 1] > 4)
+            //                             {
+            //                                 if (y < waterLevel + 2)
+            //                                     break;
+            //                                 if (chunk.GetBlockId(treeBasePositions[pos, 0], y ,
+            //                                     treeBasePositions[pos, 1]) == 2)
+            //                                 {
+            //                                     if (y == dirtHeight)
+            //                                         GenerateTree(chunk, treeBasePositions[pos, 0], y,
+            //                                             treeBasePositions[pos, 1]);
+            //                                 }
+            //                             }
+            //                         }
+            //                     }
+            //                 }
+            //                 else
+            //                 {
+            //                     chunk.SetBlock(x, y, z, new Dirt()); //Dirt
+            //                     
+            //                 }
+            //             }
+            //
+            //             if (y == 0)
+            //             {
+            //                 chunk.SetBlock(x, y, z, new Bedrock());
+            //             }
+            //         }
+            //     }
+            // }
             //
             // return chunk;
         }
-        
+
+      
+
         private void GenerateTree(ChunkColumn chunk, int x, int treebase, int z)
         {
             int treeheight = GetRandomNumber(4, 5);

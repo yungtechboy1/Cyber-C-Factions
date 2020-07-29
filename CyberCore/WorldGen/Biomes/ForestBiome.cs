@@ -150,7 +150,7 @@ namespace CyberCore.WorldGen
         }
 
         public override void PopulateChunk(CyberExperimentalWorldProvider o,
-            ChunkColumn c, float[] rth)
+            ChunkColumn c, float[] rth, int[,] ints)
         {
             // int sh =
 

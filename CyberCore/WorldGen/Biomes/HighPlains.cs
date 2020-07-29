@@ -19,7 +19,7 @@ namespace CyberCore.WorldGen.Biomes
         }
 
         public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
-            ChunkColumn c, float[] rth)
+            ChunkColumn c, float[] rth, int[,] ints)
         {
             // int sh =
 

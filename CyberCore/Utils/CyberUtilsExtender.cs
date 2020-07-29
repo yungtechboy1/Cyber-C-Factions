@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using System.Xml.Schema;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.Shop;
+using CyberCore.WorldGen.Biomes;
 using fNbt;
 using JetBrains.Annotations;
 using MiNET;
@@ -440,6 +441,41 @@ namespace CyberCore.Utils
             return i1 == ii1;
         }
 
+        public static AdvancedBiome.ChunkSide Opposite(this AdvancedBiome.ChunkSide c)
+        {
+            switch (c)
+            {
+                case AdvancedBiome.ChunkSide.North:
+                    return AdvancedBiome.ChunkSide.South;
+                case AdvancedBiome.ChunkSide.East:
+                    return AdvancedBiome.ChunkSide.West;
+                case AdvancedBiome.ChunkSide.West:
+                    return AdvancedBiome.ChunkSide.East;
+                case AdvancedBiome.ChunkSide.South:
+                    return AdvancedBiome.ChunkSide.North;
+            }
+
+            return AdvancedBiome.ChunkSide.NA;    
+        }
+        
+        
+        public static AdvancedBiome.ChunkCorner Opposite(this AdvancedBiome.ChunkCorner c)
+        {
+            switch (c)
+            {
+                case AdvancedBiome.ChunkCorner.NorthWest:
+                    return AdvancedBiome.ChunkCorner.SouthEast;
+                case AdvancedBiome.ChunkCorner.NorthEast:
+                    return AdvancedBiome.ChunkCorner.SouthWest;
+                case AdvancedBiome.ChunkCorner.SouthWest:
+                    return AdvancedBiome.ChunkCorner.NorthEast;
+                case AdvancedBiome.ChunkCorner.SouthEast:
+                    return AdvancedBiome.ChunkCorner.NorthWest;
+            }
+
+            return AdvancedBiome.ChunkCorner.NA;
+        }
+        
         public static List<int> GetSlotsOfItem(this PlayerInventory inv, Item itm, bool CheckNametag = true)
         {
             List<int> a = new List<int>();

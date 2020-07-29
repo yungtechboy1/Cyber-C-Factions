@@ -74,7 +74,7 @@ namespace CyberCore.WorldGen.Biomes
 
         public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn c,
-            float[] rth)
+            float[] rth, int[,] ints)
         {
             // int stopheight =
             //     (int) Math.Floor(BiomeQualifications.baseheight + (rth[2] * BiomeQualifications.heightvariation));

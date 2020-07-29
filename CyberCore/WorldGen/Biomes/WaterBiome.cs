@@ -76,12 +76,12 @@ namespace CyberCore.WorldGen
 
         public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn c,
-            float[] rth)
+            float[] rth, int[,] ints)
         {
             if (BiomeManager.IsOnBorder(new ChunkCoordinates(c.X,c.Z), LocalID,4))
             {
                 // Console.WriteLine($"THIS OCEAN CHUNK IS A BORER CHUNK");
-                new BeachBiome().PopulateChunk(CyberExperimentalWorldProvider,c,rth);
+                // new BeachBiome().PopulateChunk(CyberExperimentalWorldProvider,c,rth);
                 return;
             }
             else if (BiomeManager.IsOnBorder(new ChunkCoordinates(c.X,c.Z), LocalID,5))

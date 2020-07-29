@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using CyberCore.Utils;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Utils;
@@ -92,24 +93,228 @@ namespace CyberCore.WorldGen.Biomes
 
         public int BorderType { get; set; } = 0;
 
-        public abstract int GetSH(int x,int z, int cx, int cz);
-        
+        public abstract int GetSH(int x, int z, int cx, int cz);
+
         public bool check(float[] rth)
         {
             return BiomeQualifications.check(rth);
         }
 
-        public async Task<ChunkColumn> preSmooth(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
-            ChunkColumn chunk,
-            float[] rth)
+        public virtual int[,] GenerateChunkHeightMap(ChunkColumn c)
         {
-            var t = new Stopwatch();
-            t.Start();
-            SmoothChunk(CyberExperimentalWorldProvider, chunk, rth);
-            t.Stop();
+            return GenerateChunkHeightMap(new ChunkCoordinates(c.X, c.Z));
+        }
 
-            if(t.ElapsedMilliseconds > 100)Log.Info($"CHUNK SMOOTHING OF {chunk.X} {chunk.Z} TOOK {t.Elapsed}");
-            return chunk;
+        public enum ChunkCorner
+        {
+            NA,
+            NorthWest,
+            NorthEast,
+            SouthWest,
+            SouthEast
+        }
+
+        public enum ChunkSide
+        {
+            NA,
+
+            // NorthWest,
+            North,
+
+            // NorthEast,
+            West,
+            East,
+
+            // SouthWest,
+            South,
+            // SouthEast
+        }
+
+
+        public virtual int CornerGenerateChunkHeightMap(ChunkCorner side, ChunkCoordinates c)
+        {
+            int r = -1;
+            switch (side)
+            {
+                case ChunkCorner.NorthWest:
+                    r = GetSH(0, 15, c.X, c.Z);
+                    break;
+                case ChunkCorner.NorthEast:
+                    r = GetSH(15, 15, c.X, c.Z);
+                    break;
+                case ChunkCorner.SouthWest:
+                    r = GetSH(0, 0, c.X, c.Z);
+                    break;
+                case ChunkCorner.SouthEast:
+                    r = GetSH(15, 0, c.X, c.Z);
+                    break;
+            }
+
+            return r;
+        }
+
+        /// <summary>
+        /// Relative to THIS CHUNK GET A int[] of Side of Chunk
+        /// </summary>
+        /// <param name="side"></param>
+        /// <returns></returns>
+        public virtual int[] SideGenerateChunkHeightMap(ChunkSide side, ChunkCoordinates c)
+        {
+            int[] r = new int[16];
+            switch (side)
+            {
+                case ChunkSide.North:
+                    for (int x = 0; x < 16; x++)
+                    {
+                        r[x] = GetSH(x, 15, c.X, c.Z);
+                    }
+
+                    break;
+                case ChunkSide.East:
+                    for (int z = 0; z < 16; z++)
+                    {
+                        r[z] = GetSH(15, z, c.X, c.Z);
+                    }
+
+                    break;
+                case ChunkSide.South:
+                    for (int x = 0; x < 16; x++)
+                    {
+                        r[x] = GetSH(x, 0, c.X, c.Z);
+                    }
+
+                    break;
+                case ChunkSide.West:
+                    for (int z = 0; z < 16; z++)
+                    {
+                        r[z] = GetSH(0, z, c.X, c.Z);
+                    }
+
+                    break;
+            }
+
+            return r;
+        }
+
+        public virtual int[,] GenerateChunkHeightMap(ChunkCoordinates c)
+        {
+            var r = new int[16, 16];
+
+            for (int z = 0; z < 16; z++)
+            for (int x = 0; x < 16; x++)
+            {
+                r[x, z] = GetSH(x, z, c.X, c.Z);
+            }
+
+
+            return r;
+        }
+
+        // public async Task<ChunkColumn> preSmooth(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
+        //     ChunkColumn chunk,
+        //     float[] rth)
+        // {
+        //     var t = new Stopwatch();
+        //     t.Start();
+        //     SmoothChunk(CyberExperimentalWorldProvider, chunk, rth);
+        //     t.Stop();
+        //
+        //     if (t.ElapsedMilliseconds > 100) Log.Info($"CHUNK SMOOTHING OF {chunk.X} {chunk.Z} TOOK {t.Elapsed}");
+        //     return chunk;
+        // }
+
+        public virtual int[,] GenerateExtendedChunkHeightMap(int[,] ints, ChunkColumn chunk,
+            CyberExperimentalWorldProvider c)
+        {
+            int[,] r = new int[18, 18];
+            var cw = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X - 1, chunk.Z));
+            var ce = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X + 1, chunk.Z));
+            var cs = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X, chunk.Z - 1));
+            var cn = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X, chunk.Z + 1));
+            var ccnw = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X + 1, chunk.Z - 1));
+            var ccne = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X + 1, chunk.Z + 1));
+            var ccsw = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X - 1, chunk.Z - 1));
+            var ccse = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X + 1, chunk.Z - 1));
+            // int[] west =
+            //     SideGenerateChunkHeightMap(ChunkSide.West.Opposite(), new ChunkCoordinates(chunk.X - 1, chunk.Z));
+            int[] west =
+                cw.SideGenerateChunkHeightMap(ChunkSide.West.Opposite(), new ChunkCoordinates(chunk.X - 1, chunk.Z));
+            int[] north =
+                cn.SideGenerateChunkHeightMap(ChunkSide.North.Opposite(), new ChunkCoordinates(chunk.X, chunk.Z + 1));
+            int[] east =
+                ce.SideGenerateChunkHeightMap(ChunkSide.East.Opposite(), new ChunkCoordinates(chunk.X + 1, chunk.Z));
+            int[] south =
+                cs.SideGenerateChunkHeightMap(ChunkSide.South.Opposite(), new ChunkCoordinates(chunk.X, chunk.Z - 1));
+            for (int x = 0; x <= 17; x++)
+            for (int z = 0; z <= 17; z++)
+            {
+                if (x == 0)
+                {
+                    if (z == 0)
+                    {
+                        //SouthWest
+                        r[x, z] = ccsw.CornerGenerateChunkHeightMap(ChunkCorner.SouthWest.Opposite(),
+                            new ChunkCoordinates(chunk.X - 1, chunk.Z - 1));
+                    }
+                    else if (z == 17)
+                    {
+                        //NorthWest
+                        r[x, z] = ccnw.CornerGenerateChunkHeightMap(ChunkCorner.NorthWest.Opposite(),
+                            new ChunkCoordinates(chunk.X + 1, chunk.Z - 1));
+                    }
+                    else
+                    {
+                        r[x, z] = west[z - 1];
+                    }
+                }
+                //LEFT SIDE FILLED/\/\
+                else if (x == 17)
+                {
+                    //EAST North South
+                    if (z == 0)
+                    {
+                        //SouthEast
+                        r[x, z] = ccsw.CornerGenerateChunkHeightMap(ChunkCorner.SouthEast.Opposite(),
+                            new ChunkCoordinates(chunk.X - 1, chunk.Z + 1));
+                    }
+                    else if (z == 17)
+                    {
+                        //NorthEast
+                        r[x, z] = ccne.CornerGenerateChunkHeightMap(ChunkCorner.NorthEast.Opposite(),
+                            new ChunkCoordinates(chunk.X + 1, chunk.Z + 1));
+                    }
+                    else
+                    {
+                        r[x, z] = east[z - 1];
+                    }
+                }
+                //RIGHT SIDE FILLED /\/\
+                //CORNERS FILLED/\/\
+                else
+                {
+                    //X,Z -> X,Z
+                    //1,0 -> 16,16
+                    /*
+                     * 
+                     */
+                    if (z == 0)
+                    {
+                        //South
+                        r[x, z] = south[x - 1];
+                    }
+                    else if (z == 17)
+                    {
+                        //East
+                        r[x, z] = east[x - 1];
+                    }
+                    else
+                    {
+                        r[x, z] = ints[x - 1, z - 1];
+                    }
+                }
+            }
+
+            return r;
         }
 
         public async Task<ChunkColumn> prePopulate(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
@@ -129,8 +334,9 @@ namespace CyberCore.WorldGen.Biomes
             //     BiomeQualifications.heightvariation = h;
             //     // Console.WriteLine($"THE CHUNK AT {chunk.X} {chunk.Z} IS A BORDER CHUNK WITH VAL {bro} |||");
             // }
-
-            PopulateChunk(CyberExperimentalWorldProvider, chunk, rth);
+            var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk);
+            PopulateChunk(CyberExperimentalWorldProvider, chunk, rth, a);
+            PostPopulate(CyberExperimentalWorldProvider,chunk,rth,a);
 
             t.Stop();
             // int minWorker, minIOC,maxworker,maxIOC;
@@ -139,8 +345,8 @@ namespace CyberCore.WorldGen.Biomes
             // if(minWorker != 20  && !ThreadPool.SetMinThreads(20,20))Console.WriteLine("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 
             // SmoothChunk(openExperimentalWorldProvider,chunk,rth);
-            
-            if(t.ElapsedMilliseconds > 100)Log.Debug($"Chunk Population of X:{chunk.X} Z:{chunk.Z} took {t.Elapsed}");
+
+            if (t.ElapsedMilliseconds > 100) Log.Debug($"Chunk Population of X:{chunk.X} Z:{chunk.Z} took {t.Elapsed}");
             return chunk;
         }
 
@@ -150,9 +356,50 @@ namespace CyberCore.WorldGen.Biomes
         /// <param name="CyberExperimentalWorldProvider"></param>
         /// <param name="c"></param>
         /// <param name="rth"></param>
-        public abstract /*Task*/ void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
+        /// <param name="ints"></param>
+        protected /*Task*/ void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn c,
-            float[] rth);
+            float[] rth, int[,] ints)
+        {
+            for (int x = 0; x < 16; x++)
+            {
+                for (int z = 0; z < 16; z++)
+                {
+                    for (int y = 1; y < 255; y++)
+                    {
+                        SmoothVerticalColumn(y, ints[x,z], x, z, c);
+                    }
+                }
+            }
+        }
+
+        public virtual void PostPopulate(CyberExperimentalWorldProvider cyber, ChunkColumn c, float[] rth, int[,] ints)
+        {
+            
+        }
+
+        public virtual int[,] GenerateUseabelHeightMap(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
+            ChunkColumn c)
+        {
+            var m = GenerateChunkHeightMap(c);
+            m = GenerateExtendedChunkHeightMap(m, c, CyberExperimentalWorldProvider);
+            var nh = SmoothMapV3(m);
+            nh = SmoothMapV4(nh);
+
+            for (int x = 0; x < 16; x++)
+            {
+                for (int z = 0; z < 16; z++)
+                {
+                    // for (int y = 0; y < 255; y++)
+                    // {
+                    //     
+                    // }
+                    c.SetHeight(x, z, (short) nh[x + 1, z + 1]);
+                }
+            }
+
+            return nh;
+        }
 
         public virtual void SetHeightMapToChunks(ChunkColumn[] ca, int[,] map)
         {
@@ -184,10 +431,7 @@ namespace CyberCore.WorldGen.Biomes
                 // {
                 // Console.WriteLine(
                 //     $"{x} {z} > GAVE ({cnx} AND {cnz}) CN VAL {cn} ||  {rx} {rz} ({rzz}) >======== {h}");
-                for (int y = 1; y < 255; y++)
-                {
-                    SmoothVerticalColumn(y, h, rxx, rzz, cc);
-                }
+
 
                 cc.SetHeight(rxx, rzz, (short) h);
             }
@@ -203,7 +447,6 @@ namespace CyberCore.WorldGen.Biomes
         /// <param name="cc"></param>
         public virtual void SmoothVerticalColumn(int yheight, int maxheight, int rxx, int rzz, ChunkColumn cc)
         {
-            
             // var subChunk = cc.GetSubChunk(yheight);
             // var v = subChunk.GetBlockId(rxx, yheight & 0xf, rzz);
             // Console.WriteLine(subChunk);
@@ -237,7 +480,7 @@ namespace CyberCore.WorldGen.Biomes
             }
             else if (yheight == maxheight)
             {
-                if (bid == 0 || bid == new Wood().Id|| bid == new Log().Id) return;
+                if (bid == 0 || bid == new Wood().Id || bid == new Log().Id) return;
                 cc.SetBlock(rxx, yheight, rzz, new Air());
             }
             else
@@ -254,7 +497,8 @@ namespace CyberCore.WorldGen.Biomes
         /// </summary>
         public List<int> NotAllowedBlocks = new List<int>()
         {
-            new Stone().Id, new Stonebrick().Id, new Sand().Id, new Grass().Id, new Dirt().Id, new Grass().Id,new Tallgrass().Id, new DoublePlant().Id,new RedFlower().Id, new ChorusFlower().Id, new YellowFlower().Id
+            new Stone().Id, new Stonebrick().Id, new Sand().Id, new Grass().Id, new Dirt().Id, new Grass().Id,
+            new Tallgrass().Id, new DoublePlant().Id, new RedFlower().Id, new ChorusFlower().Id, new YellowFlower().Id
         };
 
         public int[,] CreateMapFrom8Chunks(ChunkColumn[] ca)
@@ -696,133 +940,134 @@ namespace CyberCore.WorldGen.Biomes
 
         public static int max = 0;
 
-        public virtual void SmoothChunk(CyberExperimentalWorldProvider o, ChunkColumn chunk, float[] rth)
-        {
-            //Smooth Biome
+        // public virtual void SmoothChunk(CyberExperimentalWorldProvider o, ChunkColumn chunk, float[] rth)
+        // {
+        //     //Smooth Biome
+        //
+        //     if (BorderChunk)
+        //     {
+        //         // max++;
+        //         chunk.SetBlock(8, 125, 8, new EmeraldBlock());
+        //         AdvancedBiome n;
+        //         var nc = new ChunkColumn();
+        //         var pos = 0;
+        //         int[,] h = null;
+        //         var i = -1;
+        //
+        //
+        //         ChunkColumn[] chunks = new ChunkColumn[25];
+        //         int ab = 0;
+        //         for (int zz = 2; zz >= -2; zz--)
+        //         for (int xx = -2; xx <= 2; xx++)
+        //         {
+        //             int k = xx + 2 + ((zz + 2) * (int) Math.Sqrt(chunks.Length));
+        //             // Console.WriteLine($"#{ab} || {xx} {zz} || {k}");
+        //             if (xx == 0 && zz == 0) chunks[k] = chunk;
+        //             else
+        //                 chunks[k] = o.OpenPreGenerateChunkColumn(
+        //                     new ChunkCoordinates {X = chunk.X + xx, Z = chunk.Z + zz},
+        //                     false);
+        //             ab++;
+        //         }
+        //
+        //
+        //         h = CreateMapFrom8Chunks(chunks);
+        //         var nh = SmoothMapV3(h);
+        //         nh = SmoothMapV4(nh);
+        //
+        //         // printDisplayTable(h, $"C{chunk.X}{chunk.Z}Pre");
+        //         // printDisplayTable(nh, $"C{chunk.X}{chunk.Z}Post");
+        //
+        //         SetHeightMapToChunks(chunks, nh);
+        //     }
+        //
+        //     // if (pos == 0) 
+        //     // {
+        //     //     Console.WriteLine("ERRRRRRRRRRRR NOOOOOOOOOOaaaaaaaa SMOOOOOOOOOOOOOOTHHHHHHHHH");
+        //     // }
+        //     // else
+        //     // {
+        //     //     // var nh = SmoothMapV2(h);
+        //     //     // printDisplayTable(nh);
+        //     //
+        //     //     // chunk.SetBlock(8, 109, 8, new Netherrack());
+        //     //     // chunk.SetBlock(8, 109 - pos, 8, new EmeraldBlock());
+        //     //     Console.WriteLine($"ABOUT TO SMOOTH BUT POS={pos} NC={nc} ");
+        //     // }
+        //     //
+        //     // if (pos != 0 && nc != null)
+        //     // {
+        //     //     chunk.SetBlock(8, 111, 8, new RedstoneBlock());
+        //     //     Console.WriteLine($"SMOOTHING CHUNK {chunk.X} {chunk.Z}");
+        //     //     var nh = SmoothMapV3(h);
+        //     //
+        //     //     printDisplayTable(nh,$"{chunk.X} {chunk.Z}");
+        //     //     
+        //     //
+        //     //     // var xx = 0;
+        //     //     // var zz = 0;
+        //     //     Console.WriteLine($" X:{nh.GetLength(0)} ||| Z:{nh.GetLength(1)}");
+        //     //     for (var z = 0; z < nh.GetLength(1); z++)
+        //     //     {
+        //     //         for (var x = 0; x < nh.GetLength(0); x++)
+        //     //         {
+        //     //             // Console.WriteLine($"STARTING ON {x} ::: {z}");
+        //     //             // for (var z = sz; z < stopz; z++)
+        //     //             // {
+        //     //             //     for (var x = sx; x < stopx; x++)
+        //     //             //     {
+        //     //             var dif = nh[x, z];
+        //     //             // dif = h[x, z];
+        //     //
+        //     //             // for (var y = 50; y < 255; y++)
+        //     //             // {
+        //     //             //     if (y >= dif)
+        //     //             //         o.Level.SetBlock(new Air()
+        //     //             //         {
+        //     //             //             Coordinates = new BlockCoordinates(sx+x,y,sz+z)
+        //     //             //         });
+        //     //             //     if (o.Level.GetBlock(new PlayerLocation(x, y, z)).Id == 0) break;
+        //     //             // }
+        //     //
+        //     //             if (pos == 1 || pos == 3)
+        //     //             {
+        //     //                 if (pos == 1)
+        //     //                 {
+        //     //                     chunk.SetBlock(8, 110, 8 + 1, new Furnace());
+        //     //                     FormatChunk(x, z, 0, 16, dif, chunk, nc);
+        //     //                 }
+        //     //                 else if (pos == 3)
+        //     //                 {
+        //     //                     chunk.SetBlock(8, 110, 8 - 1, new Furnace());
+        //     //                     FormatChunk(x, z, 0, 16, dif, nc, chunk);
+        //     //                 }
+        //     //             }
+        //     //             else if (pos == 2 || pos == 4)
+        //     //             {
+        //     //                 // if(x == 0 || x == 16 )
+        //     //                 if (pos == 2)
+        //     //                 {
+        //     //                     chunk.SetBlock(8 + 1, 110, 8, new Furnace());
+        //     //                     FormatChunk(x, z, 16, 0, dif, chunk, nc);
+        //     //                 }
+        //     //                 else if (pos == 4)
+        //     //                 {
+        //     //                     chunk.SetBlock(8 - 1, 110, 8, new Furnace());
+        //     //                     FormatChunk(x, z, 16, 0, dif, nc, chunk);
+        //     //                 }
+        //     //             }
+        //     //
+        //     //             // xx++;
+        //     //         }
+        //     //
+        //     //         // xx = 0;
+        //     //         // zz++;
+        //     //     }
+        //     // }
+        // }
 
-            if (BorderChunk)
-            {
-                // max++;
-                chunk.SetBlock(8, 125, 8, new EmeraldBlock());
-                AdvancedBiome n;
-                var nc = new ChunkColumn();
-                var pos = 0;
-                int[,] h = null;
-                var i = -1;
 
-
-                ChunkColumn[] chunks = new ChunkColumn[25];
-                int ab = 0;
-                for (int zz = 2; zz >= -2; zz--)
-                for (int xx = -2; xx <= 2; xx++)
-                {
-                    int k = xx + 2 + ((zz + 2) * (int) Math.Sqrt(chunks.Length));
-                    // Console.WriteLine($"#{ab} || {xx} {zz} || {k}");
-                    if (xx == 0 && zz == 0) chunks[k] = chunk;
-                    else
-                        chunks[k] = o.OpenPreGenerateChunkColumn(new ChunkCoordinates {X = chunk.X + xx, Z = chunk.Z + zz},
-                            false);
-                    ab++;
-                }
-
-
-                h = CreateMapFrom8Chunks(chunks);
-                var nh = SmoothMapV3(h);
-                nh = SmoothMapV4(nh);
-
-                // printDisplayTable(h, $"C{chunk.X}{chunk.Z}Pre");
-                // printDisplayTable(nh, $"C{chunk.X}{chunk.Z}Post");
-
-                SetHeightMapToChunks(chunks, nh);
-            }
-
-            // if (pos == 0) 
-            // {
-            //     Console.WriteLine("ERRRRRRRRRRRR NOOOOOOOOOOaaaaaaaa SMOOOOOOOOOOOOOOTHHHHHHHHH");
-            // }
-            // else
-            // {
-            //     // var nh = SmoothMapV2(h);
-            //     // printDisplayTable(nh);
-            //
-            //     // chunk.SetBlock(8, 109, 8, new Netherrack());
-            //     // chunk.SetBlock(8, 109 - pos, 8, new EmeraldBlock());
-            //     Console.WriteLine($"ABOUT TO SMOOTH BUT POS={pos} NC={nc} ");
-            // }
-            //
-            // if (pos != 0 && nc != null)
-            // {
-            //     chunk.SetBlock(8, 111, 8, new RedstoneBlock());
-            //     Console.WriteLine($"SMOOTHING CHUNK {chunk.X} {chunk.Z}");
-            //     var nh = SmoothMapV3(h);
-            //
-            //     printDisplayTable(nh,$"{chunk.X} {chunk.Z}");
-            //     
-            //
-            //     // var xx = 0;
-            //     // var zz = 0;
-            //     Console.WriteLine($" X:{nh.GetLength(0)} ||| Z:{nh.GetLength(1)}");
-            //     for (var z = 0; z < nh.GetLength(1); z++)
-            //     {
-            //         for (var x = 0; x < nh.GetLength(0); x++)
-            //         {
-            //             // Console.WriteLine($"STARTING ON {x} ::: {z}");
-            //             // for (var z = sz; z < stopz; z++)
-            //             // {
-            //             //     for (var x = sx; x < stopx; x++)
-            //             //     {
-            //             var dif = nh[x, z];
-            //             // dif = h[x, z];
-            //
-            //             // for (var y = 50; y < 255; y++)
-            //             // {
-            //             //     if (y >= dif)
-            //             //         o.Level.SetBlock(new Air()
-            //             //         {
-            //             //             Coordinates = new BlockCoordinates(sx+x,y,sz+z)
-            //             //         });
-            //             //     if (o.Level.GetBlock(new PlayerLocation(x, y, z)).Id == 0) break;
-            //             // }
-            //
-            //             if (pos == 1 || pos == 3)
-            //             {
-            //                 if (pos == 1)
-            //                 {
-            //                     chunk.SetBlock(8, 110, 8 + 1, new Furnace());
-            //                     FormatChunk(x, z, 0, 16, dif, chunk, nc);
-            //                 }
-            //                 else if (pos == 3)
-            //                 {
-            //                     chunk.SetBlock(8, 110, 8 - 1, new Furnace());
-            //                     FormatChunk(x, z, 0, 16, dif, nc, chunk);
-            //                 }
-            //             }
-            //             else if (pos == 2 || pos == 4)
-            //             {
-            //                 // if(x == 0 || x == 16 )
-            //                 if (pos == 2)
-            //                 {
-            //                     chunk.SetBlock(8 + 1, 110, 8, new Furnace());
-            //                     FormatChunk(x, z, 16, 0, dif, chunk, nc);
-            //                 }
-            //                 else if (pos == 4)
-            //                 {
-            //                     chunk.SetBlock(8 - 1, 110, 8, new Furnace());
-            //                     FormatChunk(x, z, 16, 0, dif, nc, chunk);
-            //                 }
-            //             }
-            //
-            //             // xx++;
-            //         }
-            //
-            //         // xx = 0;
-            //         // zz++;
-            //     }
-            // }
-        }
-
-
-        private int[,] SmoothMapV4(int[,] map)
+        public int[,] SmoothMapV4(int[,] map)
         {
             int[,] newmap = map;
             for (int z = 1; z < map.GetLength(1) - 2; z++)
@@ -950,7 +1195,8 @@ namespace CyberCore.WorldGen.Biomes
         /// <param name="chunk"></param>
         /// <param name="rth"></param>
         /// <returns></returns>
-        public virtual async Task<ChunkColumn> GenerateSurfaceItems(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
+        public virtual async Task<ChunkColumn> GenerateSurfaceItems(
+            CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn chunk, float[] rth)
         {
             return chunk;
