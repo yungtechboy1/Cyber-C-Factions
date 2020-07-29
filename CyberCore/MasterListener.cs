@@ -96,6 +96,7 @@ namespace CyberCore
 //            sd.addLine("TEST LINE 0",0);
 //            sd.addLine("TEST LINE 1",1);
 //            sd.addLine("YOUR NAME"+p.getDisplayName(),2);
+//            sd.addLine("YOUR NAME"+p.getDisplayName(),2);
 //            ScoreboardAPI.setScoreboard(p,s);
             loadinv(p);
         }

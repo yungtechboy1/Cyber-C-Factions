@@ -55,13 +55,15 @@ namespace CyberCore.Utils.Data
         public Item C_Raiding;
         public Item C_Crafting;
         public Item C_NameTag;
-        public Item C_Enchating;
+        public Item C_Enchanting;
 
 
         public ShopStaticItems(int page = -1)
         {
             NbtCompound T = new NbtCompound("");
             T.putBoolean(KeyName, true);
+            T.putBoolean("CANNOTBUY",true);
+
 
             C_Armor = new ItemDiamondChestplate {Count = 1};
             C_Armor.setCompoundTag((NbtCompound) T.Clone());
@@ -75,9 +77,9 @@ namespace CyberCore.Utils.Data
             C_Crafting.setCompoundTag((NbtCompound) T.Clone());
             C_Crafting.setCustomName(ChatColors.Aqua + "Crafting");
             
-            C_Enchating = new ItemBlock(new EnchantingTable()) {Count = 1};
-            C_Enchating.setCompoundTag((NbtCompound) T.Clone());
-            C_Enchating.setCustomName(ChatColors.Aqua + "Enchanting");
+            C_Enchanting = new ItemBlock(new EnchantingTable()) {Count = 1};
+            C_Enchanting.setCompoundTag((NbtCompound) T.Clone());
+            C_Enchanting.setCustomName(ChatColors.Aqua + "Enchanting");
             
             
             C_Farming = new ItemCarrot() {Count = 1};

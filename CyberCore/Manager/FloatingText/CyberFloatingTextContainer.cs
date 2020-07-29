@@ -395,7 +395,7 @@ namespace CyberCore.Manager.FloatingText
             return packets.ToArray();
         }
 
-        public void OnUpdate(long tick)
+        public virtual void OnUpdate(long tick)
         {
             FTData.LastUpdate = tick;
         }
@@ -414,6 +414,11 @@ namespace CyberCore.Manager.FloatingText
         {
             if (FTData.Lvl == null) return false;
             return true;
+        }
+
+        public virtual bool CanTick(long tick)
+        {
+            return  tick >= FTData.UpdateTicks + FTData.LastUpdate;
         }
     }
 }

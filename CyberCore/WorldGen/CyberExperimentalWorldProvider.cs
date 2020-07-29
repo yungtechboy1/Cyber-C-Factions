@@ -965,7 +965,7 @@ namespace CyberCore.WorldGen
                                     blockEntityTag.Name = string.Empty;
                                     blockEntity.Coordinates = new BlockCoordinates(x, y, z);
 
-                                    if (blockEntity is Sign)
+                                    if (blockEntity is SignBlockEntity)
                                     {
                                         if (Log.IsDebugEnabled)
                                             Log.Debug($"Loaded sign block entity\n{blockEntityTag}");

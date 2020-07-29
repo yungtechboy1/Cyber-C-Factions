@@ -31,6 +31,8 @@ namespace CyberCore.Custom
                 StainedGlass itm = new StainedGlass();
                 itm.Color = "gray";
                 item = new ItemBlock(itm);
+                item.setCustomName("-");
+                item.getNamedTag().Add(new NbtByte("CANNOTBUY",1));
             }
 
             var iitem = item;
@@ -45,18 +47,21 @@ namespace CyberCore.Custom
             for (int y = 0; y < yy; y++)//Y
             {
                 int s = y * 9 + x;
-                Console.WriteLine($"#{s} || X:{x} || Y:{y}");
+                // Console.WriteLine($"#{s} || X:{x} || Y:{y}");
                 if (color && (x == 0 ||y == 0 ||x == 8 ||y == yy-1))
                 {
                     StainedGlass itm = new StainedGlass();
                     itm.Color = "Red";
                     item = new ItemBlock(itm);
-                    item.setCustomName($"#{s} || X:{x} || Y:{y}");
+                    item.setCustomName("-");
+                    // item.setCustomName($"#{s} || X:{x} || Y:{y}");
+                    item.getNamedTag().Add(new NbtByte("CANNOTBUY",1));
                 }
                 else
                 {
                     item = (Item) iitem.Clone();
-                    item.setCustomName($"#{s} || X:{x} || Y:{y}");
+                    // item.setCustomName($"#{s} || X:{x} || Y:{y}");
+                    // item.getNamedTag().Add(new NbtByte("CANNOTBUY",0));
                     
                 }
                 if(!(Size <= s))SetItem((byte) s, item);

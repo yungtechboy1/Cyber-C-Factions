@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using CyberCore.Utils;
 using MiNET.Entities;
 using MiNET.Utils;
@@ -17,22 +18,22 @@ namespace CyberCore.Manager.FloatingText
             
         }
 
-        public bool CheckKill(int t)
+        public bool CheckKill(long t)
         {
-            CyberCoreMain.Log.Info("POPFT> "+t + "|" + ( FTData.Created +  FTData.Lifespan));
+            // CyberCoreMain.Log.Info("POPFT> "+t + "|" + ( FTData.Created +  FTData.Lifespan));
             return (t >  FTData.Created +  FTData.Lifespan) || FTData._CE_Done;
         }
 
-        public override void OnTick(Entity[] entities)
-        {
-            base.OnTick(entities);
-            OnUpdate(CyberUtils.getTick());
-        }
+        // public override void OnTick(Entity[] entities)
+        // {
+        //     base.OnTick(entities);
+        //     OnUpdate(CyberUtils.getTick());
+        // }
 
-        public new void OnUpdate(int tick) {
+        public override void OnUpdate(long tick) {
             base.OnUpdate(tick);
-            if (tick >= FTData._nu) {
-                FTData._nu = tick + FTData.interval;
+            Console.WriteLine("ACLLEDDDD >>>> "+CheckKill(tick));
+                // FTData._nu = tick + FTData.interval;
                 FTData._CE_Done = CheckKill(tick);
                 FTData.Updates++;
                 if (FTData.Updates >= 1 && !FTData.Frozen) {
@@ -40,7 +41,7 @@ namespace CyberCore.Manager.FloatingText
                     KnownPosition = op+ (new PlayerLocation(0, .7, 0));//Raise .7 height
                 }
                 if (FTData.Updates >= 5 && FTData._CE_Done) kill();
-            }
+            
         }
     }
 }
