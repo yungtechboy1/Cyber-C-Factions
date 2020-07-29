@@ -147,6 +147,7 @@
     <setting file="file://$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalSeasonalForest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Plains.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/Manager/FloatingText/CyberFloatingTextContainer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Populator/PopulatorData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Populator/GrassPopulator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E07FFA0B-6E50-4B0E-B2B3-C8EBAE4DE79D/41/ebbdea3e/Inventory.cs" root0="SKIP_HIGHLIGHTING" />
