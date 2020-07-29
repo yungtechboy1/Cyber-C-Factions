@@ -33,7 +33,7 @@ namespace CyberCore.WorldGen.Biomes
             var bid = cc.GetBlockId(rxx, yheight, rzz);
             if (bid == new Wood().Id || bid == new Log().Id) return;
             int sand = maxheight - 6;
-            if (bid == new Water().Id || bid == new FlowingWater().Id) return;
+            // if (bid == new Water().Id || bid == new FlowingWater().Id) return;
             if (yheight < sand)
             {
                 if (bid == 0) cc.SetBlock(rxx, yheight, rzz, new Stone());
@@ -65,7 +65,13 @@ namespace CyberCore.WorldGen.Biomes
         }
 
         //TODO ADD CLAY
-        
+        public override int GetSH(int x, int z, int cx, int cz)
+        {
+            return BiomeQualifications.baseheight +
+                (int) GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.035f,
+                    BiomeQualifications.heightvariation);
+        }
+
         public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn c,
             float[] rth)
@@ -80,9 +86,7 @@ namespace CyberCore.WorldGen.Biomes
                 //                 (int) (GetNoise(c.X * 16 + x, c.Z * 16 + z, rth[2], BiomeQualifications.heightvariation)))+
                 //                 (int) (GetNoise(c.X * 16 + x, c.Z * 16 + z, 0.035f, 5)); //10
 
-                var sh = BiomeQualifications.baseheight +
-                         (int) GetNoise(c.X * 16 + x, c.Z * 16 + z, /*rth[2] / */.035f,
-                             BiomeQualifications.heightvariation);
+                var sh = GetSH(x, z, c.X, c.Z);
                 // Console.WriteLine("WATTTTTTTTTEEEEEEEERRRRRRRRRRR >>>>>>>>>>>>>>> " + sh + " |||| " + rth[2]);
                 for (short y = 0; y < 255; y++)
                 {

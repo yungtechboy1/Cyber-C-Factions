@@ -197,6 +197,11 @@ namespace CyberCore.WorldGen
 
         public float[] getChunkRTH(ChunkColumn chunk)
         {
+            return getChunkRTH(chunk.X, chunk.Z);
+        }
+
+        public float[] getChunkRTH(int x, int z)
+        {
             //CALCULATE RAIN
             var rainnoise = new FastNoise(123123);
             rainnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
@@ -223,10 +228,9 @@ namespace CyberCore.WorldGen
             // heightnoise.SetFractalGain(1);
 
 
-            var rain = rainnoise.GetNoise(chunk.X, chunk.Z) + 1;
-            var temp = tempnoise.GetNoise(chunk.X, chunk.Z) + 1;
-            var height = GetNoise(chunk.X, chunk.Z, 0.015f, 2);
-            ;
+            var rain = rainnoise.GetNoise(x, z) + 1;
+            var temp = tempnoise.GetNoise(x, z) + 1;
+            var height = GetNoise(x, z, 0.015f, 2);
             return new[] {rain, temp, height};
         }
 
@@ -821,7 +825,8 @@ namespace CyberCore.WorldGen
                 n++;
             }
 
-            Console.WriteLine(chunk.BlockEntities.Count + " <<<<<<<<<<<<<<<< DA BE SIZE");
+            //CHEST DEBUG
+            // Console.WriteLine(chunk.BlockEntities.Count + " <<<<<<<<<<<<<<<< DA BE SIZE");
 
             levelTag.Add(blockEntitiesTag);
 

@@ -13,15 +13,20 @@ namespace CyberCore.WorldGen.Biomes
             BiomeQualifications.baseheight += 10;
         }
 
+        public override int GetSH(int x, int z, int cx, int cz)
+        {
+            return BiomeQualifications.baseheight +
+                (int) GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.015f,
+                    BiomeQualifications.heightvariation);
+        }
+
         public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider, ChunkColumn c,
             float[] rth)
         {
             for (var x = 0; x < 16; x++)
             for (var z = 0; z < 16; z++)
             {
-                var sh = BiomeQualifications.baseheight +
-                         (int) GetNoise(c.X * 16 + x, c.Z * 16 + z, /*rth[2] / */.015f,
-                             BiomeQualifications.heightvariation);
+                var sh = GetSH(x,z,c.X, c.Z);
             for (var y = 0; y < 255; y++)
             {
                 if (y == 0)
