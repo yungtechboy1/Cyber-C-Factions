@@ -173,33 +173,33 @@ using MiNET.Worlds;
                 if (biome.check(rth))
                 {
                     bool BC = false;
-                    for (int zz = -1; zz <= 1; zz++)
-                    for (int xx = -1; xx <= 1; xx++)
-                    {
-                        if (xx == 0 && zz == 0) continue;
-                        var tb = BiomeManager.GetBiome2(getChunkRTH(new ChunkCoordinates()
-                        {
-                            X = chunk.X+xx,
-                            Z = chunk.Z+zz
-                        }));
-                        if (tb.LocalID != biome.LocalID)
-                        {
-                            BC = true;
-                            break;
-                        }
-                    }
+                    // for (int zz = -1; zz <= 1; zz++)
+                    // for (int xx = -1; xx <= 1; xx++)
+                    // {
+                    //     if (xx == 0 && zz == 0) continue;
+                    //     var tb = BiomeManager.GetBiome2(getChunkRTH(new ChunkCoordinates()
+                    //     {
+                    //         X = chunk.X+xx,
+                    //         Z = chunk.Z+zz
+                    //     }));
+                    //     if (tb.LocalID != biome.LocalID)
+                    //     {
+                    //         BC = true;
+                    //         break;
+                    //     }
+                    // }
                     
                     
                     biome.BorderChunk = BC;
                     // CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.name}");
-            
+                
                     return biome;
                 }
 
             CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
             // return new MainBiome();
-            return new WaterBiome();
-            // return new HighPlains();
+            // return new WaterBiome();
+            return new HighPlains();
         }
 
         public static AdvancedBiome GetBiome2(float[] rth)

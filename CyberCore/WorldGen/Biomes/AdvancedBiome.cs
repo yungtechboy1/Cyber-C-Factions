@@ -132,9 +132,33 @@ namespace CyberCore.WorldGen.Biomes
         }
 
 
-        public virtual int CornerGenerateChunkHeightMap(ChunkCorner side, ChunkCoordinates c)
+        public virtual int CornerGenerateChunkHeightMap(ChunkCorner side, ChunkCoordinates c,
+            CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
         {
+            // Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             int r = -1;
+            var cc = cyberExperimentalWorldProvider.GenerateChunkColumn(c, true);
+            if (cc != null)
+            {
+                // Console.WriteLine($"CHUNK AT {c} WAS GENERATED");
+                switch (side)
+                {
+                    case ChunkCorner.NorthWest:
+                        r = cc.GetHeight(0, 15);
+                        break;
+                    case ChunkCorner.NorthEast:
+                        r =  cc.GetHeight(15, 15);
+                        break;
+                    case ChunkCorner.SouthWest:
+                        r =  cc.GetHeight(0, 0);
+                        break;
+                    case ChunkCorner.SouthEast:
+                        r =  cc.GetHeight(15, 0);
+                        break;
+                }
+                
+                return r;
+            }
             switch (side)
             {
                 case ChunkCorner.NorthWest:
@@ -158,10 +182,50 @@ namespace CyberCore.WorldGen.Biomes
         /// Relative to THIS CHUNK GET A int[] of Side of Chunk
         /// </summary>
         /// <param name="side"></param>
+        /// <param name="c"></param>
+        /// <param name="cyberExperimentalWorldProvider"></param>
         /// <returns></returns>
-        public virtual int[] SideGenerateChunkHeightMap(ChunkSide side, ChunkCoordinates c)
+        public virtual int[] SideGenerateChunkHeightMap(ChunkSide side, ChunkCoordinates c,
+            CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
         {
             int[] r = new int[16];
+            var cc = cyberExperimentalWorldProvider.GenerateChunkColumn(c, true);
+            if (cc != null)
+            {
+                // Console.WriteLine($"CHUNK AT {c} WAS GENERATED");
+                switch (side)
+                {
+                    case ChunkSide.North:
+                        for (int x = 0; x < 16; x++)
+                        {
+                            r[x] = cc.GetHeight(x, 15);
+                        }
+                        break;
+                    case ChunkSide.East:
+                        for (int x = 0; x < 16; x++)
+                        {
+                            r[x] = cc.GetHeight(15, x);
+                        }
+                        break;
+                    case ChunkSide.South:
+                        for (int x = 0; x < 16; x++)
+                        {
+                            r[x] = cc.GetHeight(x, 0);
+                        }
+                        break;
+                    case ChunkSide.West:
+                        
+                        for (int x = 0; x < 16; x++)
+                        {
+                            r[x] = cc.GetHeight(0, x);
+                        }
+                        break;
+                }
+                
+                return r;
+            }
+            
+            
             switch (side)
             {
                 case ChunkSide.North:
@@ -227,6 +291,12 @@ namespace CyberCore.WorldGen.Biomes
         public virtual int[,] GenerateExtendedChunkHeightMap(int[,] ints, ChunkColumn chunk,
             CyberExperimentalWorldProvider c)
         {
+            return GenerateExtendedChunkHeightMap(ints, new ChunkCoordinates(chunk.X, chunk.Z), c);
+        }
+
+        public virtual int[,] GenerateExtendedChunkHeightMap(int[,] ints, ChunkCoordinates chunk,
+            CyberExperimentalWorldProvider c)
+        {
             int[,] r = new int[18, 18];
             var cw = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X - 1, chunk.Z));
             var ce = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X + 1, chunk.Z));
@@ -235,17 +305,17 @@ namespace CyberCore.WorldGen.Biomes
             var ccnw = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X + 1, chunk.Z - 1));
             var ccne = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X + 1, chunk.Z + 1));
             var ccsw = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X - 1, chunk.Z - 1));
-            var ccse = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X + 1, chunk.Z - 1));
+            var ccse = BiomeManager.GetBiome(new ChunkCoordinates(chunk.X - 1, chunk.Z + 1));
             // int[] west =
             //     SideGenerateChunkHeightMap(ChunkSide.West.Opposite(), new ChunkCoordinates(chunk.X - 1, chunk.Z));
             int[] west =
-                cw.SideGenerateChunkHeightMap(ChunkSide.West.Opposite(), new ChunkCoordinates(chunk.X - 1, chunk.Z));
+                cw.SideGenerateChunkHeightMap(ChunkSide.West.Opposite(), new ChunkCoordinates(chunk.X - 1, chunk.Z),c);
             int[] north =
-                cn.SideGenerateChunkHeightMap(ChunkSide.North.Opposite(), new ChunkCoordinates(chunk.X, chunk.Z + 1));
+                cn.SideGenerateChunkHeightMap(ChunkSide.North.Opposite(), new ChunkCoordinates(chunk.X, chunk.Z + 1),c);
             int[] east =
-                ce.SideGenerateChunkHeightMap(ChunkSide.East.Opposite(), new ChunkCoordinates(chunk.X + 1, chunk.Z));
+                ce.SideGenerateChunkHeightMap(ChunkSide.East.Opposite(), new ChunkCoordinates(chunk.X + 1, chunk.Z),c);
             int[] south =
-                cs.SideGenerateChunkHeightMap(ChunkSide.South.Opposite(), new ChunkCoordinates(chunk.X, chunk.Z - 1));
+                cs.SideGenerateChunkHeightMap(ChunkSide.South.Opposite(), new ChunkCoordinates(chunk.X, chunk.Z - 1),c);
             for (int x = 0; x <= 17; x++)
             for (int z = 0; z <= 17; z++)
             {
@@ -255,17 +325,18 @@ namespace CyberCore.WorldGen.Biomes
                     {
                         //SouthWest
                         r[x, z] = ccsw.CornerGenerateChunkHeightMap(ChunkCorner.SouthWest.Opposite(),
-                            new ChunkCoordinates(chunk.X - 1, chunk.Z - 1));
+                            new ChunkCoordinates(chunk.X - 1, chunk.Z - 1),c);
                     }
                     else if (z == 17)
                     {
                         //NorthWest
                         r[x, z] = ccnw.CornerGenerateChunkHeightMap(ChunkCorner.NorthWest.Opposite(),
-                            new ChunkCoordinates(chunk.X + 1, chunk.Z - 1));
+                            new ChunkCoordinates(chunk.X + 1, chunk.Z - 1),c);
                     }
                     else
                     {
                         r[x, z] = west[z - 1];
+                        // r[x, z] = 80;
                     }
                 }
                 //LEFT SIDE FILLED/\/\
@@ -276,13 +347,13 @@ namespace CyberCore.WorldGen.Biomes
                     {
                         //SouthEast
                         r[x, z] = ccsw.CornerGenerateChunkHeightMap(ChunkCorner.SouthEast.Opposite(),
-                            new ChunkCoordinates(chunk.X - 1, chunk.Z + 1));
+                            new ChunkCoordinates(chunk.X - 1, chunk.Z + 1),c);
                     }
                     else if (z == 17)
                     {
                         //NorthEast
                         r[x, z] = ccne.CornerGenerateChunkHeightMap(ChunkCorner.NorthEast.Opposite(),
-                            new ChunkCoordinates(chunk.X + 1, chunk.Z + 1));
+                            new ChunkCoordinates(chunk.X + 1, chunk.Z + 1),c);
                     }
                     else
                     {
@@ -306,7 +377,7 @@ namespace CyberCore.WorldGen.Biomes
                     else if (z == 17)
                     {
                         //East
-                        r[x, z] = east[x - 1];
+                        r[x, z] = north[x - 1];
                     }
                     else
                     {
@@ -335,7 +406,7 @@ namespace CyberCore.WorldGen.Biomes
             //     BiomeQualifications.heightvariation = h;
             //     // Console.WriteLine($"THE CHUNK AT {chunk.X} {chunk.Z} IS A BORDER CHUNK WITH VAL {bro} |||");
             // }
-            var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk);
+            var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk,true);
             PopulateChunk(CyberExperimentalWorldProvider, chunk, rth, a);
             PostPopulate(CyberExperimentalWorldProvider, chunk, rth, a);
 
@@ -380,12 +451,15 @@ namespace CyberCore.WorldGen.Biomes
         }
 
         public virtual int[,] GenerateUseabelHeightMap(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
-            ChunkColumn c)
+            ChunkColumn c, bool smooth = true)
         {
             var m = GenerateChunkHeightMap(c);
             m = GenerateExtendedChunkHeightMap(m, c, CyberExperimentalWorldProvider);
-            var nh = SmoothMapV3(m);
-            nh = SmoothMapV4(nh);
+            if (smooth)
+            {
+                m = SmoothMapV3(m);
+                m = SmoothMapV4(m);
+            }
 
             for (int x = 0; x < 16; x++)
             {
@@ -395,11 +469,11 @@ namespace CyberCore.WorldGen.Biomes
                     // {
                     //     
                     // }
-                    c.SetHeight(x, z, (short) nh[x + 1, z + 1]);
+                    c.SetHeight(x, z, (short) m[x + 1, z + 1]);
                 }
             }
 
-            return nh;
+            return m;
         }
 
         public virtual void SetHeightMapToChunks(ChunkColumn[] ca, int[,] map)
@@ -458,12 +532,12 @@ namespace CyberCore.WorldGen.Biomes
 
             if (yheight < maxheight)
             {
-                    cc.SetBlock(x, yheight, z, new Stone());
+                cc.SetBlock(x, yheight, z, new Stone());
             }
             // else if (cc.GetBlockId(rx, y, rz) == 0) break;
             else
             {
-                    cc.SetBlock(x, yheight, z, new Grass());
+                cc.SetBlock(x, yheight, z, new Grass());
             }
         }
 
@@ -630,6 +704,112 @@ namespace CyberCore.WorldGen.Biomes
             }
         }
 
+        public int[,] SmoothMapV4Spiral(int[,] map)
+        {
+            int[,] newmap = new int[map.GetLength(0), map.GetLength(1)];
+                
+            int row = 0, col = 0; 
+              
+                    int boundary = size - 1; 
+                    int sizeLeft = size - 1; 
+                    int flag = 1; 
+              
+                    // Variable to determine the movement 
+                    // r = right, l = left, d = down, u = upper 
+                    char move = 'r'; 
+              
+                    // Array for matrix 
+                    int[, ] matrix = new int[size, size]; 
+              
+                    for (int i = 1; i < size * size + 1; i++) { 
+              
+                        // Assign the value 
+                        matrix[row, col] = i; 
+              
+                        // switch-case to determine the next index 
+                        switch (move) { 
+              
+                        // If right, go right 
+                        case 'r': 
+                            col += 1; 
+                            break; 
+              
+                        // if left, go left 
+                        case 'l': 
+                            col -= 1; 
+                            break; 
+              
+                        // if up, go up 
+                        case 'u': 
+                            row -= 1; 
+                            break; 
+              
+                        // if down, go down 
+                        case 'd': 
+                            row += 1; 
+                            break; 
+                        } 
+              
+                        // Check if the matrix 
+                        // has reached array boundary 
+                        if (i == boundary) { 
+              
+                            // Add the left size for the next boundary 
+                            boundary += sizeLeft; 
+              
+                            // If 2 rotations has been made, 
+                            // decrease the size left by 1 
+                            if (flag != 2) { 
+              
+                                flag = 2; 
+                            } 
+                            else { 
+              
+                                flag = 1; 
+                                sizeLeft -= 1; 
+                            } 
+              
+                            // switch-case to rotate the movement 
+                            switch (move) { 
+              
+                            // if right, rotate to down 
+                            case 'r': 
+                                move = 'd'; 
+                                break; 
+              
+                            // if down, rotate to left 
+                            case 'd': 
+                                move = 'l'; 
+                                break; 
+              
+                            // if left, rotate to up 
+                            case 'l': 
+                                move = 'u'; 
+                                break; 
+              
+                            // if up, rotate to right 
+                            case 'u': 
+                                move = 'r'; 
+                                break; 
+                            } 
+                        } 
+                    } 
+              
+                    // Print the matrix 
+                    for (row = 0; row < size; row++) { 
+                        for (col = 0; col < size; col++) { 
+              
+                            int n = matrix[row, col]; 
+                            Console.Write((n < 10) 
+                                              ? (n + " ") 
+                                              : (n + " ")); 
+                        } 
+              
+                        Console.WriteLine(); 
+                    } 
+
+            return newmap;
+        }
         public int[,] SmoothMapV3(int[,] map)
         {
             int[,] newmap = new int[map.GetLength(0), map.GetLength(1)];

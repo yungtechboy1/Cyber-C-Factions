@@ -22,20 +22,16 @@
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BeachBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BeachBiome.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Desert.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Desert.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestBiome.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestMountain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestMountain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/HighPlains.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/HighPlains.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/MainBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/MainBiome.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Mountains.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Mountains.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Plains.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Plains.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowForest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowForest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowTundra.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowTundra.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowyIcyChunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowyIcyChunk.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalRainForest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalRainForest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalSeasonalForest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalSeasonalForest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/Main.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/Main.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.pdb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +39,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="39760" />
+    <option name="totalTimeSeconds" value="47494" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -379,16 +375,12 @@
         <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" />
         <option value="$PROJECT_DIR$/LevelHeightTest/Class1.cs" />
         <option value="$PROJECT_DIR$/MapTestConsole/Program.cs" />
-        <option value="$PROJECT_DIR$/MapTestConsole/Main.cs" />
-        <option value="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
         <option value="$PROJECT_DIR$/MapTestConsole/LevelMapChunk.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/MainBiome.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BeachBiome.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Desert.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestBiome.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestMountain.cs" />
@@ -400,6 +392,10 @@
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowyIcyChunk.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalRainForest.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalSeasonalForest.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" />
+        <option value="$PROJECT_DIR$/MapTestConsole/Main.cs" />
+        <option value="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" />
       </list>
     </option>
   </component>
@@ -614,7 +610,10 @@
       <workItem from="1595598497819" duration="1697000" />
       <workItem from="1595790217581" duration="8429000" />
       <workItem from="1595896375260" duration="1193000" />
-      <workItem from="1595978891508" duration="14785000" />
+      <workItem from="1595978891508" duration="15387000" />
+      <workItem from="1596035668694" duration="602000" />
+      <workItem from="1596060484334" duration="4770000" />
+      <workItem from="1596071480009" duration="5966000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />
@@ -657,29 +656,29 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1094" y="463" width="458" height="510" key="#com.intellij.tools.ToolEditorDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1590264141379" />
-    <state width="1877" height="262" key="GridCell.Tab.0.bottom" timestamp="1595992353103">
+    <state width="900" height="259" key="GridCell.Tab.0.bottom" timestamp="1596077077742">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="1877" height="262" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1595992353103" />
+    <state width="900" height="259" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1596077077742" />
     <state width="1220" height="264" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714151" />
-    <state width="1877" height="262" key="GridCell.Tab.0.center" timestamp="1595992353103">
+    <state width="900" height="259" key="GridCell.Tab.0.center" timestamp="1596077077742">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="1877" height="262" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1595992353103" />
+    <state width="900" height="259" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1596077077742" />
     <state width="1220" height="264" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714151" />
-    <state width="1877" height="262" key="GridCell.Tab.0.left" timestamp="1595992353103">
+    <state width="900" height="259" key="GridCell.Tab.0.left" timestamp="1596077077742">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="1877" height="262" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1595992353103" />
+    <state width="900" height="259" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1596077077742" />
     <state width="1220" height="264" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714150" />
-    <state width="1877" height="262" key="GridCell.Tab.0.right" timestamp="1595992353103">
+    <state width="900" height="259" key="GridCell.Tab.0.right" timestamp="1596077077742">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="1877" height="262" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1595992353103" />
+    <state width="900" height="259" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1596077077742" />
     <state width="1220" height="264" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714151" />
     <state width="900" height="371" key="GridCell.Tab.1.bottom" timestamp="1595306935573">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -779,10 +778,10 @@
     </state>
     <state x="608" y="154" key="com.intellij.tools.ToolSelectDialog.dimensionServiceKey/0.0.1280.680@0.0.1280.680" timestamp="1594058094533" />
     <state x="1216" y="288" key="com.intellij.tools.ToolSelectDialog.dimensionServiceKey/0.0.2560.1040@0.0.2560.1040" timestamp="1590264143209" />
-    <state x="960" y="0" width="960" height="1040" key="dock-window-1" timestamp="1595552568812">
+    <state x="0" y="0" width="960" height="1040" key="dock-window-1" timestamp="1596075751204">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="960" y="0" width="960" height="1040" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1595552568812" />
+    <state x="0" y="0" width="960" height="1040" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1596075751204" />
     <state x="1280" y="0" width="1280" height="1040" key="dock-window-1/0.0.2560.1040@0.0.2560.1040" timestamp="1593833137260" />
     <state x="0" y="0" width="1280" height="506" key="dock-window-2" timestamp="1593483752859">
       <screen x="0" y="0" width="2560" height="1040" />
