@@ -328,7 +328,7 @@ namespace CyberCore.WorldGen
             var rth = getChunkRTH(chunk);
 
             // Console.WriteLine("STARTING POPULATIOaN");
-            var b = BiomeManager.GetBiome(chunk);
+            var b = BiomeManager.GetBiome(chunk,this);
             chunk = PopulateChunk(this, chunk, rth, b).Result;
 
             // if (smooth)

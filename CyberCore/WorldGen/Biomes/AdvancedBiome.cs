@@ -71,7 +71,21 @@ namespace CyberCore.WorldGen.Biomes
 
         /// <summary>
         /// </summary>
-        public bool BorderChunk = false;
+        public enum BorderChunkDirection
+        {
+            None,
+            North,
+            South,
+            East,
+            West,
+            NW,
+            SW,
+            NE,
+            SE
+        }
+
+        public BorderChunkDirection BorderChunk = BorderChunkDirection.None;
+        public List<ChunkCoordinates> GenerateandSmooth = new List<ChunkCoordinates>();
 
         public FastNoise HeightNoise = new FastNoise(121212);
 
@@ -147,18 +161,19 @@ namespace CyberCore.WorldGen.Biomes
                         r = cc.GetHeight(0, 15);
                         break;
                     case ChunkCorner.NorthEast:
-                        r =  cc.GetHeight(15, 15);
+                        r = cc.GetHeight(15, 15);
                         break;
                     case ChunkCorner.SouthWest:
-                        r =  cc.GetHeight(0, 0);
+                        r = cc.GetHeight(0, 0);
                         break;
                     case ChunkCorner.SouthEast:
-                        r =  cc.GetHeight(15, 0);
+                        r = cc.GetHeight(15, 0);
                         break;
                 }
-                
+
                 return r;
             }
+
             switch (side)
             {
                 case ChunkCorner.NorthWest:
@@ -200,32 +215,36 @@ namespace CyberCore.WorldGen.Biomes
                         {
                             r[x] = cc.GetHeight(x, 15);
                         }
+
                         break;
                     case ChunkSide.East:
                         for (int x = 0; x < 16; x++)
                         {
                             r[x] = cc.GetHeight(15, x);
                         }
+
                         break;
                     case ChunkSide.South:
                         for (int x = 0; x < 16; x++)
                         {
                             r[x] = cc.GetHeight(x, 0);
                         }
+
                         break;
                     case ChunkSide.West:
-                        
+
                         for (int x = 0; x < 16; x++)
                         {
                             r[x] = cc.GetHeight(0, x);
                         }
+
                         break;
                 }
-                
+
                 return r;
             }
-            
-            
+
+
             switch (side)
             {
                 case ChunkSide.North:
@@ -309,13 +328,15 @@ namespace CyberCore.WorldGen.Biomes
             // int[] west =
             //     SideGenerateChunkHeightMap(ChunkSide.West.Opposite(), new ChunkCoordinates(chunk.X - 1, chunk.Z));
             int[] west =
-                cw.SideGenerateChunkHeightMap(ChunkSide.West.Opposite(), new ChunkCoordinates(chunk.X - 1, chunk.Z),c);
+                cw.SideGenerateChunkHeightMap(ChunkSide.West.Opposite(), new ChunkCoordinates(chunk.X - 1, chunk.Z), c);
             int[] north =
-                cn.SideGenerateChunkHeightMap(ChunkSide.North.Opposite(), new ChunkCoordinates(chunk.X, chunk.Z + 1),c);
+                cn.SideGenerateChunkHeightMap(ChunkSide.North.Opposite(), new ChunkCoordinates(chunk.X, chunk.Z + 1),
+                    c);
             int[] east =
-                ce.SideGenerateChunkHeightMap(ChunkSide.East.Opposite(), new ChunkCoordinates(chunk.X + 1, chunk.Z),c);
+                ce.SideGenerateChunkHeightMap(ChunkSide.East.Opposite(), new ChunkCoordinates(chunk.X + 1, chunk.Z), c);
             int[] south =
-                cs.SideGenerateChunkHeightMap(ChunkSide.South.Opposite(), new ChunkCoordinates(chunk.X, chunk.Z - 1),c);
+                cs.SideGenerateChunkHeightMap(ChunkSide.South.Opposite(), new ChunkCoordinates(chunk.X, chunk.Z - 1),
+                    c);
             for (int x = 0; x <= 17; x++)
             for (int z = 0; z <= 17; z++)
             {
@@ -325,13 +346,13 @@ namespace CyberCore.WorldGen.Biomes
                     {
                         //SouthWest
                         r[x, z] = ccsw.CornerGenerateChunkHeightMap(ChunkCorner.SouthWest.Opposite(),
-                            new ChunkCoordinates(chunk.X - 1, chunk.Z - 1),c);
+                            new ChunkCoordinates(chunk.X - 1, chunk.Z - 1), c);
                     }
                     else if (z == 17)
                     {
                         //NorthWest
                         r[x, z] = ccnw.CornerGenerateChunkHeightMap(ChunkCorner.NorthWest.Opposite(),
-                            new ChunkCoordinates(chunk.X + 1, chunk.Z - 1),c);
+                            new ChunkCoordinates(chunk.X + 1, chunk.Z - 1), c);
                     }
                     else
                     {
@@ -347,13 +368,13 @@ namespace CyberCore.WorldGen.Biomes
                     {
                         //SouthEast
                         r[x, z] = ccsw.CornerGenerateChunkHeightMap(ChunkCorner.SouthEast.Opposite(),
-                            new ChunkCoordinates(chunk.X - 1, chunk.Z + 1),c);
+                            new ChunkCoordinates(chunk.X - 1, chunk.Z + 1), c);
                     }
                     else if (z == 17)
                     {
                         //NorthEast
                         r[x, z] = ccne.CornerGenerateChunkHeightMap(ChunkCorner.NorthEast.Opposite(),
-                            new ChunkCoordinates(chunk.X + 1, chunk.Z + 1),c);
+                            new ChunkCoordinates(chunk.X + 1, chunk.Z + 1), c);
                     }
                     else
                     {
@@ -406,9 +427,16 @@ namespace CyberCore.WorldGen.Biomes
             //     BiomeQualifications.heightvariation = h;
             //     // Console.WriteLine($"THE CHUNK AT {chunk.X} {chunk.Z} IS A BORDER CHUNK WITH VAL {bro} |||");
             // }
-            var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk,true);
-            PopulateChunk(CyberExperimentalWorldProvider, chunk, rth, a);
-            PostPopulate(CyberExperimentalWorldProvider, chunk, rth, a);
+            if (GenerateandSmooth.Count == 0)
+            {
+                var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk, true);
+                PopulateChunk(CyberExperimentalWorldProvider, chunk, rth, a);
+                PostPopulate(CyberExperimentalWorldProvider, chunk, rth, a);
+            }
+            else
+            {
+                GenerateWBorderChunks(chunk);
+            }
 
             t.Stop();
             // int minWorker, minIOC,maxworker,maxIOC;
@@ -420,6 +448,83 @@ namespace CyberCore.WorldGen.Biomes
 
             if (t.ElapsedMilliseconds > 100) Log.Debug($"Chunk Population of X:{chunk.X} Z:{chunk.Z} took {t.Elapsed}");
             return chunk;
+        }
+
+        public void GenerateWBorderChunks(ChunkColumn chunk)
+        {
+            bool n = false;
+            bool e = false;
+            bool s = false;
+            bool w = false;
+            bool nw = false;
+            bool ne = false;
+            bool sw = false;
+            bool se = false;
+            foreach (var gsc in GenerateandSmooth)
+            {
+                int dx = gsc.X - chunk.X;
+                int dz = gsc.Z - chunk.Z;
+                if (dx == 1)
+                {
+                    n = true;
+                }
+                else if (dx == -1)
+                {
+                    s = true;
+                }
+                if (dz == 1)
+                {
+                    e = true;
+                }
+                else if (dz == -1)
+                {
+                    w = true;
+                }
+                if (dx == 1 && dz == 1)
+                {
+                    ne = true;
+                }
+                if (dx == 1 && dz == -1)
+                {
+                    se = true;
+                }
+                if (dx == -1 && dz == 1)
+                {
+                    nw = true;
+                }
+                if (dx == -1 && dz == -1)
+                {
+                    sw = true;
+                }
+            }
+            
+            //Calculate Size of Chunks needed to generated and Smoothed
+            int sz = 0;
+            if (n) sz++;
+            if (e) sz++;
+            if (s) sz++;
+            if (w) sz++;
+            if (nw) sz++;
+            if (sw) sz++;
+            if (se) sz++;
+            if (ne) sz++;
+
+            int top = 0;
+            int left = 0;
+            int right = 0;
+            int bottom = 0;
+
+            if (n) top += 16;
+            if (w) left += 16;
+            if (e) right += 16;
+            if (s) bottom += 16;
+
+            int xs = 16 + top + bottom;
+            int zs = 16 + left + right;
+            
+            int[,] map = new int[xs,zs];
+            
+
         }
 
         /// <summary>
@@ -707,109 +812,118 @@ namespace CyberCore.WorldGen.Biomes
         public int[,] SmoothMapV4Spiral(int[,] map)
         {
             int[,] newmap = new int[map.GetLength(0), map.GetLength(1)];
-                
-            int row = 0, col = 0; 
-              
-                    int boundary = size - 1; 
-                    int sizeLeft = size - 1; 
-                    int flag = 1; 
-              
-                    // Variable to determine the movement 
-                    // r = right, l = left, d = down, u = upper 
-                    char move = 'r'; 
-              
-                    // Array for matrix 
-                    int[, ] matrix = new int[size, size]; 
-              
-                    for (int i = 1; i < size * size + 1; i++) { 
-              
-                        // Assign the value 
-                        matrix[row, col] = i; 
-              
-                        // switch-case to determine the next index 
-                        switch (move) { 
-              
-                        // If right, go right 
-                        case 'r': 
-                            col += 1; 
-                            break; 
-              
-                        // if left, go left 
-                        case 'l': 
-                            col -= 1; 
-                            break; 
-              
-                        // if up, go up 
-                        case 'u': 
-                            row -= 1; 
-                            break; 
-              
-                        // if down, go down 
-                        case 'd': 
-                            row += 1; 
-                            break; 
-                        } 
-              
-                        // Check if the matrix 
-                        // has reached array boundary 
-                        if (i == boundary) { 
-              
-                            // Add the left size for the next boundary 
-                            boundary += sizeLeft; 
-              
-                            // If 2 rotations has been made, 
-                            // decrease the size left by 1 
-                            if (flag != 2) { 
-              
-                                flag = 2; 
-                            } 
-                            else { 
-              
-                                flag = 1; 
-                                sizeLeft -= 1; 
-                            } 
-              
-                            // switch-case to rotate the movement 
-                            switch (move) { 
-              
-                            // if right, rotate to down 
-                            case 'r': 
-                                move = 'd'; 
-                                break; 
-              
-                            // if down, rotate to left 
-                            case 'd': 
-                                move = 'l'; 
-                                break; 
-              
-                            // if left, rotate to up 
-                            case 'l': 
-                                move = 'u'; 
-                                break; 
-              
-                            // if up, rotate to right 
-                            case 'u': 
-                                move = 'r'; 
-                                break; 
-                            } 
-                        } 
-                    } 
-              
-                    // Print the matrix 
-                    for (row = 0; row < size; row++) { 
-                        for (col = 0; col < size; col++) { 
-              
-                            int n = matrix[row, col]; 
-                            Console.Write((n < 10) 
-                                              ? (n + " ") 
-                                              : (n + " ")); 
-                        } 
-              
-                        Console.WriteLine(); 
-                    } 
+            int size = 18;
+            int x = 0, z = 0;
+
+            int boundary = size - 1;
+            int sizeLeft = size - 1;
+            int flag = 1;
+
+            // Variable to determine the movement 
+            // r = right, l = left, d = down, u = upper 
+            char move = 'r';
+
+            // Array for matrix 
+            int[,] matrix = new int[size, size];
+
+            for (int i = 1; i < size * size + 1; i++)
+            {
+                // Assign the value 
+                matrix[x, z] = i;
+                if (x == 0 || z == 0 || z == 17 || x == 17)
+                {
+                    matrix[x, z] = map[x, z];
+                }
+                else
+                {
+                }
+
+                // switch-case to determine the next index 
+                switch (move)
+                {
+                    // If right, go right 
+                    case 'r':
+                        z += 1;
+                        break;
+
+                    // if left, go left 
+                    case 'l':
+                        z -= 1;
+                        break;
+
+                    // if up, go up 
+                    case 'u':
+                        x -= 1;
+                        break;
+
+                    // if down, go down 
+                    case 'd':
+                        x += 1;
+                        break;
+                }
+
+                // Check if the matrix 
+                // has reached array boundary 
+                if (i == boundary)
+                {
+                    // Add the left size for the next boundary 
+                    boundary += sizeLeft;
+
+                    // If 2 rotations has been made, 
+                    // decrease the size left by 1 
+                    if (flag != 2)
+                    {
+                        flag = 2;
+                    }
+                    else
+                    {
+                        flag = 1;
+                        sizeLeft -= 1;
+                    }
+
+                    // switch-case to rotate the movement 
+                    switch (move)
+                    {
+                        // if right, rotate to down 
+                        case 'r':
+                            move = 'd';
+                            break;
+
+                        // if down, rotate to left 
+                        case 'd':
+                            move = 'l';
+                            break;
+
+                        // if left, rotate to up 
+                        case 'l':
+                            move = 'u';
+                            break;
+
+                        // if up, rotate to right 
+                        case 'u':
+                            move = 'r';
+                            break;
+                    }
+                }
+            }
+
+            // Print the matrix 
+            for (x = 0; x < size; x++)
+            {
+                for (z = 0; z < size; z++)
+                {
+                    int n = matrix[x, z];
+                    Console.Write((n < 10)
+                        ? (n + " ")
+                        : (n + " "));
+                }
+
+                Console.WriteLine();
+            }
 
             return newmap;
         }
+
         public int[,] SmoothMapV3(int[,] map)
         {
             int[,] newmap = new int[map.GetLength(0), map.GetLength(1)];

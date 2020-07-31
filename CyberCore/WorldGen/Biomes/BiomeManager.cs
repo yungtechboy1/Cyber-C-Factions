@@ -4,6 +4,7 @@ using System.Collections.Generic;
  using CyberCore.WorldGen.Populator;
  using MiNET.Utils;
 using MiNET.Worlds;
+ using Org.BouncyCastle.Asn1.Smime;
 
 
  namespace CyberCore.WorldGen
@@ -35,7 +36,7 @@ using MiNET.Worlds;
 
         public static void AddBiome(AdvancedBiome biome)
         {
-            biome.BorderChunk = false;
+            // biome.BorderChunk = false;
             Biomes.Add(biome);
             biome.LocalID = N;
             BiomeDict[N] = biome;
@@ -157,40 +158,56 @@ using MiNET.Worlds;
            }
          
         //CHECKED 5/10 @ 5:23 And this works fine!
-        public static AdvancedBiome GetBiome(ChunkColumn chunk)
+        public static AdvancedBiome GetBiome(ChunkColumn chunk,CyberExperimentalWorldProvider c)
         {
-            return GetBiome(new ChunkCoordinates(chunk.X, chunk.Z));
+            return GetBiome(new ChunkCoordinates(chunk.X, chunk.Z),c);
         }
 
-        public static AdvancedBiome GetBiome(ChunkCoordinates chunk)
+        public static AdvancedBiome GetBiome(ChunkCoordinates chunk,CyberExperimentalWorldProvider c)
         {
             var rth = getChunkRTH(new ChunkCoordinates()
                     {
                         X = chunk.X,
                         Z = chunk.Z
                     });
-            foreach (var biome in Biomes)
+            foreach (AdvancedBiome biome in Biomes)
                 if (biome.check(rth))
                 {
                     bool BC = false;
-                    // for (int zz = -1; zz <= 1; zz++)
-                    // for (int xx = -1; xx <= 1; xx++)
-                    // {
-                    //     if (xx == 0 && zz == 0) continue;
-                    //     var tb = BiomeManager.GetBiome2(getChunkRTH(new ChunkCoordinates()
-                    //     {
-                    //         X = chunk.X+xx,
-                    //         Z = chunk.Z+zz
-                    //     }));
-                    //     if (tb.LocalID != biome.LocalID)
-                    //     {
-                    //         BC = true;
-                    //         break;
-                    //     }
-                    // }
+
+                    List<ChunkCoordinates> smoothing = new List<ChunkCoordinates>();
+                    List<ChunkCoordinates> fsmoothing = new List<ChunkCoordinates>();
+                    for (int zz = -1; zz <= 1; zz++)
+                    for (int xx = -1; xx <= 1; xx++)
+                    {
+                        if (xx == 0 && zz == 0) continue;
+                        var cc = new ChunkCoordinates()
+                        {
+                            X = chunk.X + xx,
+                            Z = chunk.Z + zz
+                        };
+                        var tb = BiomeManager.GetBiome2(getChunkRTH(cc));
+                        if (tb.LocalID != biome.LocalID)
+                        {
+                            smoothing.Add(cc);
+                            // break;
+                        }
+                    }
                     
+                    if (smoothing.Count > 0)
+                    {
+                        foreach (var sc in smoothing)
+                        {
+                            var tc = c.GenerateChunkColumn(sc, true);
+                            if(tc == null)fsmoothing.Add(sc);
+                        }
+
+                        foreach (var fc in fsmoothing)
+                        {
+                            biome.GenerateandSmooth.Add(fc);
+                        }
+                    }
                     
-                    biome.BorderChunk = BC;
                     // CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.name}");
                 
                     return biome;
@@ -209,8 +226,8 @@ using MiNET.Worlds;
                     return ab;
 
             // return new MainBiome();
-            return new WaterBiome();
-            // return new HighPlains();
+            // return new WaterBiome();
+            return new HighPlains();
         }
 
         public static bool IsOnBorder(ChunkCoordinates chunkColumn, int localId, int size = 1)
