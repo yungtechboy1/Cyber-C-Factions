@@ -52,13 +52,18 @@ namespace MapTestConsole
                 ss.Restart();
                 for (int x = 0; x < MapData.GetLength(0); x++)
                 {
-                    SingleChunkFiles(new ChunkCoordinates(x + Offset, Offset + z), name);
-                    // MapData[x, z] = a;
+                    if (x + Offset == 53 && z + Offset == 59)
+                    // if (true)
+                    {
+                        Console.WriteLine($"ABOUYT TO START GENERATION FOR {x + Offset} {z + Offset}");
+                        SingleChunkFiles(new ChunkCoordinates(x + Offset, Offset + z), name);
+                        // MapData[x, z] = a;
+                    }
                 }
 
                 ss.Stop();
-                Console.WriteLine($"TOTAL CHUNK FOR Z: {z} GENERATION TOOK " + ss.Elapsed + " FOR " +
-                                  MapData.GetLength(0) + " CHUNKS");
+                // Console.WriteLine($"TOTAL CHUNK FOR Z: {z} GENERATION TOOK " + ss.Elapsed + " FOR " +
+                //                   MapData.GetLength(0) + " CHUNKS");
             }
 
             s.Stop();
@@ -71,8 +76,11 @@ namespace MapTestConsole
             var b = BiomeManager.GetBiome(c);
             var f1 = b.GenerateChunkHeightMap(c);
             var f2 = b.GenerateExtendedChunkHeightMap(f1, c, C);
-            var f3 = b.SmoothMapV2(f2);
-            var f4 = b.SmoothMapV3(f3);
+            var f22 = b.CropToSmoothChunks(f2, c, C); 
+            // var f3 = b.SmoothMapV2(f22);
+            // var f4 = b.SmoothMapV3(f3);
+            var f33 = b.LerpX(f22);
+            var f44 = b.LerpZ(f33);
             if (name != null && name.Length != 0)
             {
                 name += "/";
@@ -85,8 +93,10 @@ namespace MapTestConsole
             List<int[,]> l = new List<int[,]>();
             l.Add(f1);
             l.Add(f2);
-            l.Add(f3);
-            l.Add(f4);
+            l.Add(f22);
+            l.Add(f33);
+            l.Add(f44);
+            Console.WriteLine("ABOUT TO SAVE " + c);
             SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F1.csv", IntArrayToString(JoinIntMaps(l)));
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F2.csv", IntArrayToString(f2));
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F3.csv", IntArrayToString(f3));
@@ -112,7 +122,7 @@ namespace MapTestConsole
                     }
                 }
 
-                zz += za+1;
+                zz += za + 1;
             }
 
 
@@ -211,13 +221,13 @@ namespace MapTestConsole
                 }
 
                 sss.Stop();
-                Console.WriteLine($"TOOK {sss.Elapsed} TO CONVER COL {z}/{d.GetLength(1)}");
+                // Console.WriteLine($"TOOK {sss.Elapsed} TO CONVER COL {z}/{d.GetLength(1)}");
 
                 s += "\n";
             }
 
             ss.Stop();
-            Console.WriteLine("TIME THAT IT TOOK TO CONVERT TO STRING " + ss.Elapsed);
+            // Console.WriteLine("TIME THAT IT TOOK TO CONVERT TO STRING " + ss.Elapsed);
             return s;
         }
 

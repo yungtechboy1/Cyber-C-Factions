@@ -12,7 +12,7 @@ namespace CyberCore.WorldGen.Biomes
         public int SandHeight;
 
 
-        public BeachBiome() : base("Beach", new BiomeQualifications(0, 2, 1, 1.75f, 0.5f, 0.25f
+        public BeachBiome() : base("Beach", new BiomeQualifications(0, 2, 1, 1.75f, 0.25f, 0.5f
             , 10))
         {
             BiomeQualifications.baseheight = 83; //30

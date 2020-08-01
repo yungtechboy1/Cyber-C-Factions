@@ -1,13 +1,13 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
- using CyberCore.WorldGen.Biomes;
- using CyberCore.WorldGen.Populator;
- using MiNET.Utils;
+using CyberCore.WorldGen.Biomes;
+using CyberCore.WorldGen.Populator;
+using MiNET.Utils;
 using MiNET.Worlds;
- using Org.BouncyCastle.Asn1.Smime;
+using Org.BouncyCastle.Asn1.Smime;
 
 
- namespace CyberCore.WorldGen
+namespace CyberCore.WorldGen
 {
     public class BiomeManager
     {
@@ -19,6 +19,7 @@ using MiNET.Worlds;
         public BiomeManager()
         {
             // AddBiome(new MainBiome());
+            AddBiome(new RainForestBiome());
             AddBiome(new ForestBiome());
             AddBiome(new SnowyIcyChunk());
             AddBiome(new Desert());
@@ -36,10 +37,11 @@ using MiNET.Worlds;
 
         public static void AddBiome(AdvancedBiome biome)
         {
-            // biome.BorderChunk = false;
+            biome.BorderChunk = false;
             Biomes.Add(biome);
             biome.LocalID = N;
             BiomeDict[N] = biome;
+            Console.WriteLine($"BIOME ADD AT {N} WITH NAME {biome.name}");
             N++;
         }
 
@@ -60,13 +62,14 @@ using MiNET.Worlds;
                     CyberCoreMain.Log.Info($"GETTING BIOME BY NAME {name} returned {ab.name}");
                     return ab;
                 }
+
             CyberCoreMain.Log.Info($"GETTING BIOME BY NAME {name} returned WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
 
             return new WaterBiome();
         }
-        
-        
-         public static float[] getChunkRTH(ChunkCoordinates chunk)
+
+
+        public static float[] getChunkRTH(ChunkCoordinates chunk)
         {
             //CALCULATE RAIN
             var rainnoise = new FastNoise(123123);
@@ -84,96 +87,144 @@ using MiNET.Worlds;
             tempnoise.SetFractalOctaves(1);
             tempnoise.SetFractalLacunarity(.25f);
             tempnoise.SetFractalGain(1);
-            
+
             float rain = rainnoise.GetNoise(chunk.X, chunk.Z) + 1;
             float temp = tempnoise.GetNoise(chunk.X, chunk.Z) + 1;
-            float height = GetChunkHeightNoise(chunk.X, chunk.Z, 0.015f,2);;
-            return new []{rain, temp, height};
+            float height = GetChunkHeightNoise(chunk.X, chunk.Z, 0.015f, 2);
+            ;
+            return new[] {rain, temp, height};
         }
 
-         private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());
+        private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());
 
 
-         /// <summary>
-         /// 
-         /// </summary>
-         /// <param name="x"></param>
-         /// <param name="z"></param>
-         /// <param name="scale"></param>
-         /// <param name="max"></param>
-         /// <returns></returns>
-         public static float GetChunkHeightNoise(int x, int z, float scale, int max)
-         {//CALCULATE HEIGHT
-             var heightnoise = new FastNoise(123123 + 2);
-             heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
-             heightnoise.SetFrequency(scale);
-             heightnoise.SetFractalType(FastNoise.FractalType.FBM);
-             heightnoise.SetFractalOctaves(1);
-             heightnoise.SetFractalLacunarity(2);
-             heightnoise.SetFractalGain(.5f);
-             return (heightnoise.GetNoise(x, z)+1 )*(max/2f);
-             return (float)(OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f);
-         }
-           /// <summary>
-           /// 
-           /// </summary>
-           /// <param name="x"></param>
-           /// <param name="z"></param>
-           /// <param name="max"></param>
-           /// <returns></returns>
-           public static float GetHeightNoiseBlock(int x, int z)
-           {//CALCULATE HEIGHT
-             
-               var heightnoise = new FastNoise(123123 + 2);
-               heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
-               heightnoise.SetFrequency(.015f/16);
-               heightnoise.SetFractalType(FastNoise.FractalType.FBM);
-               heightnoise.SetFractalOctaves(1);
-               heightnoise.SetFractalLacunarity(2);
-               heightnoise.SetFractalGain(.5f);
-               return (heightnoise.GetNoise(x, z)+1 );
-                              
-               // return (float)(OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f);
-           }public static float GetRainNoiseBlock(int x, int z)
-           {//CALCULATE RAIN
-               var rainnoise = new FastNoise(123123);
-               rainnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
-               rainnoise.SetFrequency(.007f/16); //.015
-               rainnoise.SetFractalType(FastNoise.FractalType.FBM);
-               rainnoise.SetFractalOctaves(1);
-               rainnoise.SetFractalLacunarity(.25f);
-               rainnoise.SetFractalGain(1);
-               return (rainnoise.GetNoise(x, z)+1 );
-           }
-           public static float GetTempNoiseBlock(int x, int z)
-           {//CALCULATE TEMP
-               var tempnoise = new FastNoise(123123 + 1);
-               tempnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
-               tempnoise.SetFrequency(.004f/16); //.015f
-               tempnoise.SetFractalType(FastNoise.FractalType.FBM);
-               tempnoise.SetFractalOctaves(1);
-               tempnoise.SetFractalLacunarity(.25f);
-               tempnoise.SetFractalGain(1);
-               return (tempnoise.GetNoise(x, z)+1 );
-           }
-         
-        //CHECKED 5/10 @ 5:23 And this works fine!
-        public static AdvancedBiome GetBiome(ChunkColumn chunk,CyberExperimentalWorldProvider c)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="z"></param>
+        /// <param name="scale"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static float GetChunkHeightNoise(int x, int z, float scale, int max)
         {
-            return GetBiome(new ChunkCoordinates(chunk.X, chunk.Z),c);
+            //CALCULATE HEIGHT
+            var heightnoise = new FastNoise(123123 + 2);
+            heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+            heightnoise.SetFrequency(scale);
+            heightnoise.SetFractalType(FastNoise.FractalType.FBM);
+            heightnoise.SetFractalOctaves(1);
+            heightnoise.SetFractalLacunarity(2);
+            heightnoise.SetFractalGain(.5f);
+            return (heightnoise.GetNoise(x, z) + 1) * (max / 2f);
+            return (float) (OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f);
         }
 
-        public static AdvancedBiome GetBiome(ChunkCoordinates chunk,CyberExperimentalWorldProvider c)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="z"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static float GetHeightNoiseBlock(int x, int z)
+        {
+            //CALCULATE HEIGHT
+
+            var heightnoise = new FastNoise(123123 + 2);
+            heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+            heightnoise.SetFrequency(.015f / 16);
+            heightnoise.SetFractalType(FastNoise.FractalType.FBM);
+            heightnoise.SetFractalOctaves(1);
+            heightnoise.SetFractalLacunarity(2);
+            heightnoise.SetFractalGain(.5f);
+            return (heightnoise.GetNoise(x, z) + 1);
+
+            // return (float)(OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f);
+        }
+
+        public static float GetRainNoiseBlock(int x, int z)
+        {
+            //CALCULATE RAIN
+            var rainnoise = new FastNoise(123123);
+            rainnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+            rainnoise.SetFrequency(.007f / 16); //.015
+            rainnoise.SetFractalType(FastNoise.FractalType.FBM);
+            rainnoise.SetFractalOctaves(1);
+            rainnoise.SetFractalLacunarity(.25f);
+            rainnoise.SetFractalGain(1);
+            return (rainnoise.GetNoise(x, z) + 1);
+        }
+
+        public static float GetTempNoiseBlock(int x, int z)
+        {
+            //CALCULATE TEMP
+            var tempnoise = new FastNoise(123123 + 1);
+            tempnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+            tempnoise.SetFrequency(.004f / 16); //.015f
+            tempnoise.SetFractalType(FastNoise.FractalType.FBM);
+            tempnoise.SetFractalOctaves(1);
+            tempnoise.SetFractalLacunarity(.25f);
+            tempnoise.SetFractalGain(1);
+            return (tempnoise.GetNoise(x, z) + 1);
+        }
+
+        //CHECKED 5/10 @ 5:23 And this works fine!
+        public static AdvancedBiome GetBiome(ChunkColumn chunk)
+        {
+            return GetBiome(new ChunkCoordinates(chunk.X, chunk.Z));
+        }
+
+        public static AdvancedBiome GetBiome(ChunkCoordinates chunk)
         {
             var rth = getChunkRTH(new ChunkCoordinates()
-                    {
-                        X = chunk.X,
-                        Z = chunk.Z
-                    });
-            foreach (AdvancedBiome biome in Biomes)
-                if (biome.check(rth))
+            {
+                X = chunk.X,
+                Z = chunk.Z
+            });
+            foreach (AdvancedBiome bb in Biomes)
+                if (bb.check(rth))
                 {
+                    AdvancedBiome biome = (AdvancedBiome) bb.Clone();
+                    Console.WriteLine($"OK SO BIOME FOUND THAT MATCHES RTH NAMED {biome.name} {biome.LocalID}");
                     bool BC = false;
+                    int bcc = 0;
+
+
+                    bool n = false;
+                    bool e = false;
+                    bool s = false;
+                    bool w = false;
+                    bool nw = false;
+                    bool ne = false;
+                    bool sw = false;
+                    bool se = false;
+                    //Calculate Size of Chunks needed to generated and Smoothed
+                    int sz = 0;
+                    if (n) sz++;
+                    if (e) sz++;
+                    if (s) sz++;
+                    if (w) sz++;
+                    if (nw) sz++;
+                    if (sw) sz++;
+                    if (se) sz++;
+                    if (ne) sz++;
+
+                    int top = 0;
+                    int left = 0;
+                    int right = 0;
+                    int bottom = 0;
+
+                    if (n) top += 16;
+                    if (w) left += 16;
+                    if (e) right += 16;
+                    if (s) bottom += 16;
+
+                    int xs = 16 + top + bottom;
+                    int zs = 16 + left + right;
+
+                    int[,] map = new int[xs, zs];
+
 
                     List<ChunkCoordinates> smoothing = new List<ChunkCoordinates>();
                     List<ChunkCoordinates> fsmoothing = new List<ChunkCoordinates>();
@@ -189,31 +240,144 @@ using MiNET.Worlds;
                         var tb = BiomeManager.GetBiome2(getChunkRTH(cc));
                         if (tb.LocalID != biome.LocalID)
                         {
-                            smoothing.Add(cc);
+                            bcc++;
+                            Console.WriteLine(
+                                $"A BORDER CHUNK WAS FOUND! AT {cc.X} {cc.Z} AND {tb.name} {tb.LocalID} != {biome.LocalID} |||| {xx} {zz}");
+                            // int dx = cc.X ;
+                            // int dz = cc.Z;
+                            if (zz == 1 && xx == 0)
+                            {
+                                n = true;
+                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.North);
+                            }
+                            else if (zz == -1&& xx == 0)
+                            {
+                                s = true;
+                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.South);
+                            }
+
+                            if (xx == 1&& zz == 0)
+                            {
+                                e = true;
+                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.East);
+                            }
+                            else if (xx == -1&& zz == 0)
+                            {
+                                w = true;
+                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.West);
+                            }
+
+                            if (xx == 1 && zz == 1)
+                            {
+                                ne = true;
+                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NE);
+                            }
+
+                            if (xx == 1 && zz == -1)
+                            {
+                                se = true;
+                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SE);
+                            }
+
+                            if (xx == -1 && zz == 1)
+                            {
+                                nw = true;
+                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NW);
+                            }
+
+                            if (xx == -1 && zz == -1)
+                            {
+                                sw = true;
+                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SW);
+                            }
+
                             // break;
                         }
                     }
-                    
-                    if (smoothing.Count > 0)
-                    {
-                        foreach (var sc in smoothing)
-                        {
-                            var tc = c.GenerateChunkColumn(sc, true);
-                            if(tc == null)fsmoothing.Add(sc);
-                        }
 
-                        foreach (var fc in fsmoothing)
-                        {
-                            biome.GenerateandSmooth.Add(fc);
-                        }
+                    Console.WriteLine("THE BCC COUNT WAS >> " + bcc);
+                    Console.WriteLine($"SIDES TOGGELD N:{n} E:{e} S:{s} W:{w} NE:{ne} NW:{nw} SE:{se} SW:{sw}");
+                    if (bcc <= 3)
+                    {
+                        biome.BorderChunk = true;
+                    }
+
+                    Console.WriteLine("THE COUNT OF biome.BorderChunkDirections =>" +
+                                      biome.BorderChunkDirections.Count);
+
+                    //Double Check Smoothing Directions
+                    if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NW) &&
+                        biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North) &&
+                        biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.West))
+                    {
+                        biome.BorderChunkDirections.Clear();
+                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NW);
+                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.North);
+                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.West);
+                    }else if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NE) &&
+                        biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North) &&
+                        biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.East))
+                    {
+                        biome.BorderChunkDirections.Clear();
+                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NE);
+                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.North);
+                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.East);
+                    }else if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SE) &&
+                        biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.South) &&
+                        biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.East))
+                    {
+                        biome.BorderChunkDirections.Clear();
+                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SE);
+                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.South);
+                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.East);
+                    }else if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SW) &&
+                        biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.South) &&
+                        biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.West))
+                    {
+                        biome.BorderChunkDirections.Clear();
+                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SW);
+                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.South);
+                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.West);
+                    }
+                    else
+                    {
+                        Console.WriteLine("AYYYYYY THIS IS A NORTH EAST WST STH TYPE BOREDR SMOOTH");
                     }
                     
+                    Console.WriteLine("THE COUNT OF biome.BorderChunkDirections =>" +
+                                      biome.BorderChunkDirections.Count);
+                    //
+                    // //IF N and W are true
+                    // if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North) && biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.West))
+                    // {
+                    //                         
+                    // }
+                    //
+
+                    //
+                    // if (smoothing.Count > 0)
+                    // {
+                    //     foreach (var sc in smoothing)
+                    //     {
+                    //         var tc = c.GenerateChunkColumn(sc, true);
+                    //         if(tc == null)fsmoothing.Add(sc);
+                    //     }
+                    //
+                    //     foreach (var fc in fsmoothing)
+                    //     {
+                    //         biome.GenerateandSmooth.Add(fc);
+                    //     }
+                    // }
+                    //
                     // CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.name}");
-                
+                    Console.WriteLine($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.name}");
+
                     return biome;
                 }
 
-            CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
+            // CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
+            Console.WriteLine(
+                $"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
             // return new MainBiome();
             // return new WaterBiome();
             return new HighPlains();
@@ -221,6 +385,23 @@ using MiNET.Worlds;
 
         public static AdvancedBiome GetBiome2(float[] rth)
         {
+            foreach (var ab in Biomes)
+                if (ab.check(rth))
+                    return ab;
+
+            // return new MainBiome();
+            // return new WaterBiome();
+            return new HighPlains();
+        }
+
+        public static AdvancedBiome GetBiome2(ChunkCoordinates c)
+        {
+            var rth = getChunkRTH(new ChunkCoordinates()
+            {
+                X = c.X,
+                Z = c.Z
+            });
+
             foreach (var ab in Biomes)
                 if (ab.check(rth))
                     return ab;
@@ -240,7 +421,6 @@ using MiNET.Worlds;
                 {
                     return true;
                 }
-
             }
 
             return false;
