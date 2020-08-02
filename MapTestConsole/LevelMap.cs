@@ -52,7 +52,7 @@ namespace MapTestConsole
                 ss.Restart();
                 for (int x = 0; x < MapData.GetLength(0); x++)
                 {
-                    if (x + Offset == 57 && z + Offset == 55)
+                    if (x + Offset == 57 && z + Offset == 56)
                     if (true)
                     {
                         Console.WriteLine($"ABOUYT TO START GENERATION FOR {x + Offset} {z + Offset}");

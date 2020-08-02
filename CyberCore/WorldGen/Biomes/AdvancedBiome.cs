@@ -530,9 +530,9 @@ namespace CyberCore.WorldGen.Biomes
             // }
             // if (GenerateandSmooth.Count == 0)
             // {
-                var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk, true);
-                PopulateChunk(CyberExperimentalWorldProvider, chunk, rth, a);
-                PostPopulate(CyberExperimentalWorldProvider, chunk, rth, a);
+            var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk, true);
+            PopulateChunk(CyberExperimentalWorldProvider, chunk, rth, a);
+            PostPopulate(CyberExperimentalWorldProvider, chunk, rth, a);
             // }
             // else
             // {
@@ -664,18 +664,28 @@ namespace CyberCore.WorldGen.Biomes
         {
             var m = GenerateChunkHeightMap(c);
             // if (smooth && BorderChunk)
-            // {
+            // {BIOMEMANAGER:
             //     m = SmoothMapV3(m);
             //     m = SmoothMapV4(m);
             // }
             // if (BorderChunk)
             if (BorderChunkDirections.Count > 0)
             {
-                m = GenerateExtendedChunkHeightMap(m, c, CyberExperimentalWorldProvider);
-                m = CropToSmoothChunks(m, new ChunkCoordinates(c.X,c.Z), CyberExperimentalWorldProvider); 
-                m = LerpX(m);
-                m = LerpZ(m);
-                m = FinalCropTo16(m);
+                Console.WriteLine(
+                    $"ABOUT TO GENERATEUSEABLEHEIGHTMAP {c.X} {c.Z} =>> HAS BCD::{BorderChunkDirections.Count}");
+                foreach (var bb in BorderChunkDirections)
+                {
+                    Console.WriteLine("????????????????????????" + bb);
+                }
+
+                if (true)
+                {
+                    m = GenerateExtendedChunkHeightMap(m, c, CyberExperimentalWorldProvider);
+                    m = CropToSmoothChunks(m, new ChunkCoordinates(c.X, c.Z), CyberExperimentalWorldProvider);
+                    m = LerpX(m);
+                    m = LerpZ(m);
+                    m = FinalCropTo16(m);
+                }
             }
 
             for (int x = 0; x < 16; x++)
@@ -686,7 +696,7 @@ namespace CyberCore.WorldGen.Biomes
                     // {
                     //     
                     // }
-                    c.SetHeight(x, z, (short) m[x , z]);
+                    c.SetHeight(x, z, (short) m[x, z]);
                 }
             }
 
@@ -1635,9 +1645,21 @@ namespace CyberCore.WorldGen.Biomes
         //         }
         //     }
         // }
+        /// <summary>
+        /// DO NOT USE
+        /// </summary>
+        /// <returns></returns>
         public object Clone()
         {
             return this.MemberwiseClone();
+        }
+
+        public AdvancedBiome CClone()
+        {
+            AdvancedBiome a = (AdvancedBiome) Clone();
+            a.BorderChunkDirections.Clear();
+            a.BorderChunk = false;
+            return a;
         }
 
         public int[,] CropToSmoothChunks(int[,] f2, ChunkCoordinates chunkCoordinates,
@@ -1653,10 +1675,10 @@ namespace CyberCore.WorldGen.Biomes
             bool sw = false;
             bool se = false;
 
-            if (f2[f2.GetLength(0) - 1, 0] == -1) ne = true;
+            if (f2[f2.GetLength(0) - 1, 0] == -1) nw = true;
             if (f2[0, 0] == -1) sw = true;
             if (f2[0, f2.GetLength(1) - 1] == -1) se = true;
-            if (f2[f2.GetLength(0) - 1, f2.GetLength(1) - 1] == -1) nw = true;
+            if (f2[f2.GetLength(0) - 1, f2.GetLength(1) - 1] == -1) ne = true;
 
             for (int i = 1; i <= 16; i++)
             {
@@ -1670,9 +1692,13 @@ namespace CyberCore.WorldGen.Biomes
                 bool ww = f2[0, i] == -1;
                 if (!ww && !w)
                 {
-                    // Console.WriteLine("WW"+f2[i, 0]);
+                    Console.WriteLine("WW" + f2[0, i]);
                     w = true;
                 }
+                // else
+                // {
+                //     Console.WriteLine("WW WAS GOOD "+ww+"|||"+f2[0,i]);
+                // }
 
                 bool nn = f2[i, f2.GetLength(1) - 1] == -1;
                 if (!nn && !n)
@@ -1697,11 +1723,12 @@ namespace CyberCore.WorldGen.Biomes
 
 
             Console.WriteLine($"SIDES222222 TOGGELD N:{n} E:{e} S:{s} W:{w} NE:{ne} NW:{nw} SE:{se} SW:{sw}");
-Console.WriteLine($"YOOOO BUT THE BORDER CHUNK DIRECTSIONS>>:");
-foreach (var bcd in BorderChunkDirections)
-{
-    Console.WriteLine($"############:{bcd}");
-}
+            Console.WriteLine($"YOOOO BUT THE BORDER CHUNK DIRECTSIONS>>:");
+            foreach (var bcd in BorderChunkDirections)
+            {
+                Console.WriteLine($"############:{bcd}");
+            }
+
             int rzt = 0;
             int rzb = 0;
             int rxr = 0;
@@ -1743,46 +1770,63 @@ foreach (var bcd in BorderChunkDirections)
 
         public int[,] LerpX(int[,] f22)
         {
-            int[,] r = new int[f22.GetLength(0),f22.GetLength(1)];
+            int[,] r = new int[f22.GetLength(0), f22.GetLength(1)];
             for (int z = 0; z < f22.GetLength(1); z++)
             {
                 int startx = f22[0, z];
-                int stopx = f22[f22.GetLength(0)-1, z];
+                int stopx = f22[f22.GetLength(0) - 1, z];
                 // Console.WriteLine($"starting LERP X ON Z:{z} STARTING X: {startx} AND {stopx}");
                 for (int x = 0; x < f22.GetLength(0); x++)
                 {
-                    if (z == 0 || z == f22.GetLength(1))
+                    if (z == 0 && !BorderChunkDirections.Contains(BorderChunkDirection.South))
                     {
                         r[x, z] = f22[x, z];
-                    }else
+                    }
+                    else if (z == f22.GetLength(1) && !BorderChunkDirections.Contains(BorderChunkDirection.North))
                     {
-                        int v = (int) Lerp(startx, stopx, (float)x / (f22.GetLength(0) - 1));
+                        r[x, z] = f22[x, z];
+                    }
+                    else
+                    {
+                        int v = (int) Lerp(startx, stopx, (float) x / (f22.GetLength(0) - 1));
                         // if (z == 1)
                         // {
                         //     // Console.WriteLine($"TEST =>> {x / (f22.GetLength(0) - 1)} || {(x / (f22.GetLength(0) - 1)).GetType()} || {(float)x / (f22.GetLength(0) - 1)}");
                         //     Console.WriteLine($"SO SMOOTHING Z:{z} STRT:{startx} => {v} => {stopx} ||| %%%{(float)(x )/ (f22.GetLength(0) - 1)} || {x} / {f22.GetLength(0)-1}");
                         // }
-                    r[x, z] = v;
-                }
+                        r[x, z] = v;
+                    }
                 }
             }
 
             return r;
         }
-        
-        
+
+
         public int[,] LerpZ(int[,] f22)
         {
-            int[,] r = new int[f22.GetLength(0),f22.GetLength(1)];
-            
-                for (int x = 0; x < f22.GetLength(0); x++)
-                {
+            int[,] r = new int[f22.GetLength(0), f22.GetLength(1)];
+
+            for (int x = 0; x < f22.GetLength(0); x++)
+            {
                 int startz = f22[x, 0];
-                int stopz = f22[x, f22.GetLength(1)-1];
+                int stopz = f22[x, f22.GetLength(1) - 1];
                 // Console.WriteLine($"starting LERP Z ON X:{x} STARTING X: {startz} AND {stopz}");
-                for (int z = 0; z < f22.GetLength(1); z++)
+
+                for (int z = 0; z < f22.GetLength(0); z++)
                 {
-                    r[x, z] = (int) Lerp(startz, stopz, (float)z / (f22.GetLength(1) - 1));
+                    if (x == 0 &&! BorderChunkDirections.Contains(BorderChunkDirection.West))
+                    {
+                        r[x, z] = f22[x, z];
+                    }
+                    else if (x == f22.GetLength(0) && !BorderChunkDirections.Contains(BorderChunkDirection.East))
+                    {
+                        r[x, z] = f22[x, z];
+                    }
+                    else
+                    {
+                        r[x, z] = (int) Lerp(startz, stopz, (float) z / (f22.GetLength(1) - 1));
+                    }
                 }
             }
 
@@ -1799,8 +1843,8 @@ foreach (var bcd in BorderChunkDirections)
             bool ne = BorderChunkDirections.Contains(BorderChunkDirection.NE);
             bool sw = BorderChunkDirections.Contains(BorderChunkDirection.SW);
             bool se = BorderChunkDirections.Contains(BorderChunkDirection.SE);
-           
-            
+
+
             int rzt = 0;
             int rzb = 0;
             int rxr = 0;
@@ -1810,7 +1854,7 @@ foreach (var bcd in BorderChunkDirections)
                 rzt++;
             }
 
-            if (e &&(ne || se))
+            if (e && (ne || se))
             {
                 rxr++;
             }
@@ -1841,7 +1885,6 @@ foreach (var bcd in BorderChunkDirections)
 
 
             return f2;
-
         }
     }
 }

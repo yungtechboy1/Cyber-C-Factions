@@ -185,8 +185,18 @@ namespace CyberCore.WorldGen
             foreach (AdvancedBiome bb in Biomes)
                 if (bb.check(rth))
                 {
-                    AdvancedBiome biome = (AdvancedBiome) bb.Clone();
-                    Console.WriteLine($"OK SO BIOME FOUND THAT MATCHES RTH NAMED {biome.name} {biome.LocalID}");
+                    if (bb.BorderChunkDirections.Count > 0)
+                    {
+                        Console.WriteLine("HUGE ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+bb.BorderChunkDirections.Count);
+                        bb.BorderChunkDirections.Clear();
+                    }
+                    AdvancedBiome biome = (AdvancedBiome) bb.CClone();
+                    if (biome.BorderChunkDirections.Count > 0)
+                    {
+                        Console.WriteLine("HUGE ERROR22222!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+bb.BorderChunkDirections.Count);
+                        bb.BorderChunkDirections.Clear();
+                    }
+                    Console.WriteLine($"BIOMEMANAGER 1: OK SO BIOME FOUND THAT MATCHES RTH NAMED {biome.name} {biome.LocalID} @ {chunk.X} {chunk.Z}");
                     bool BC = false;
                     int bcc = 0;
 
@@ -295,14 +305,14 @@ namespace CyberCore.WorldGen
                         }
                     }
 
-                    Console.WriteLine("THE BCC COUNT WAS >> " + bcc);
-                    Console.WriteLine($"SIDES TOGGELD N:{n} E:{e} S:{s} W:{w} NE:{ne} NW:{nw} SE:{se} SW:{sw}");
+                    Console.WriteLine("BIOMEMANAGER2: THE BCC COUNT WAS >> " + bcc);
+                    Console.WriteLine($"BIOMEMANAGER3: SIDES TOGGELD N:{n} E:{e} S:{s} W:{w} NE:{ne} NW:{nw} SE:{se} SW:{sw}");
                     if (bcc <= 3)
                     {
                         biome.BorderChunk = true;
                     }
 
-                    Console.WriteLine("THE COUNT OF biome.BorderChunkDirections =>" +
+                    Console.WriteLine("BIOMEMANAGER4: THE COUNT OF biome.BorderChunkDirections =>" +
                                       biome.BorderChunkDirections.Count);
 
                     //Double Check Smoothing Directions
@@ -344,7 +354,8 @@ namespace CyberCore.WorldGen
                     }
                     else
                     {
-                        Console.WriteLine("AYYYYYY THIS IS A NORTH EAST WST STH TYPE BOREDR SMOOTH");
+                        Console.WriteLine("BIOMEMANAGER5: AYYYYYY THIS IS A NORTH EAST WST STH TYPE BOREDR SMOOTH");
+                     
                         if (biome.BorderChunkDirections.Count == 1 && (
                                 biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NE) ||
                                 biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SW) ||
@@ -354,10 +365,15 @@ namespace CyberCore.WorldGen
                         {
                             //Only Single Chunk was selected for Smoothing!
                         }
+                        bb.BorderChunkDirections.Clear();
                     }
 
-                    Console.WriteLine("THE COUNT OF biome.BorderChunkDirections =>" +
+                    Console.WriteLine("BIOMEMANAGER6: THE COUNT OF biome.BorderChunkDirections =>" +
                                       biome.BorderChunkDirections.Count);
+                    foreach (var b in biome.BorderChunkDirections)
+                    {
+                        Console.WriteLine($"BIOMEMANAGER7: ======================>{b}");
+                    }
                     //
                     // //IF N and W are true
                     // if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North) && biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.West))
@@ -382,14 +398,14 @@ namespace CyberCore.WorldGen
                     // }
                     //
                     // CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.name}");
-                    Console.WriteLine($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.name}");
+                    Console.WriteLine($"BIOMEMANAGER9: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.name}");
 
                     return biome;
                 }
 
             // CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
             Console.WriteLine(
-                $"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
+                $"BIOMEMANAGER10: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
             // return new MainBiome();
             // return new WaterBiome();
             return new HighPlains();
@@ -399,7 +415,10 @@ namespace CyberCore.WorldGen
         {
             foreach (var ab in Biomes)
                 if (ab.check(rth))
-                    return ab;
+                {
+                    var aa = ab.CClone();
+                    return (AdvancedBiome) aa;
+                }
 
             // return new MainBiome();
             // return new WaterBiome();
