@@ -52,8 +52,8 @@ namespace MapTestConsole
                 ss.Restart();
                 for (int x = 0; x < MapData.GetLength(0); x++)
                 {
-                    if (x + Offset == 53 && z + Offset == 59)
-                    // if (true)
+                    if (x + Offset == 57 && z + Offset == 55)
+                    if (true)
                     {
                         Console.WriteLine($"ABOUYT TO START GENERATION FOR {x + Offset} {z + Offset}");
                         SingleChunkFiles(new ChunkCoordinates(x + Offset, Offset + z), name);
@@ -99,7 +99,7 @@ namespace MapTestConsole
             l.Add(f44);
             l.Add(f55);
             Console.WriteLine("ABOUT TO SAVE " + c);
-            SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F1.csv", IntArrayToString(JoinIntMaps(l)));
+            SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F1.csv", IntArrayToString(JoinIntMaps(l))+"\n,"+b.BorderChunkDirections.Count);
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F2.csv", IntArrayToString(f2));
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F3.csv", IntArrayToString(f3));
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F4.csv", IntArrayToString(f4));

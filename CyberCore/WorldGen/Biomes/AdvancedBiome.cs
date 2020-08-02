@@ -528,16 +528,16 @@ namespace CyberCore.WorldGen.Biomes
             //     BiomeQualifications.heightvariation = h;
             //     // Console.WriteLine($"THE CHUNK AT {chunk.X} {chunk.Z} IS A BORDER CHUNK WITH VAL {bro} |||");
             // }
-            if (GenerateandSmooth.Count == 0)
-            {
+            // if (GenerateandSmooth.Count == 0)
+            // {
                 var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk, true);
                 PopulateChunk(CyberExperimentalWorldProvider, chunk, rth, a);
                 PostPopulate(CyberExperimentalWorldProvider, chunk, rth, a);
-            }
-            else
-            {
-                GenerateWBorderChunks(chunk);
-            }
+            // }
+            // else
+            // {
+            //     GenerateWBorderChunks(chunk);
+            // }
 
             t.Stop();
             // int minWorker, minIOC,maxworker,maxIOC;
