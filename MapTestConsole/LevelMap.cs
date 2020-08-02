@@ -81,6 +81,7 @@ namespace MapTestConsole
             // var f4 = b.SmoothMapV3(f3);
             var f33 = b.LerpX(f22);
             var f44 = b.LerpZ(f33);
+            var f55 = b.FinalCropTo16(f44);
             if (name != null && name.Length != 0)
             {
                 name += "/";
@@ -96,6 +97,7 @@ namespace MapTestConsole
             l.Add(f22);
             l.Add(f33);
             l.Add(f44);
+            l.Add(f55);
             Console.WriteLine("ABOUT TO SAVE " + c);
             SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F1.csv", IntArrayToString(JoinIntMaps(l)));
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F2.csv", IntArrayToString(f2));

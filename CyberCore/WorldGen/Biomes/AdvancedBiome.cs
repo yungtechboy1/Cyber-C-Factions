@@ -86,7 +86,7 @@ namespace CyberCore.WorldGen.Biomes
         }
 
         public List<BorderChunkDirection> BorderChunkDirections = new List<BorderChunkDirection>();
-        public bool BorderChunk = true;
+        public bool BorderChunk = false;
         public List<ChunkCoordinates> GenerateandSmooth = new List<ChunkCoordinates>();
 
         public FastNoise HeightNoise = new FastNoise(121212);
@@ -663,12 +663,20 @@ namespace CyberCore.WorldGen.Biomes
             ChunkColumn c, bool smooth = true)
         {
             var m = GenerateChunkHeightMap(c);
-            m = GenerateExtendedChunkHeightMap(m, c, CyberExperimentalWorldProvider);
             // if (smooth && BorderChunk)
             // {
             //     m = SmoothMapV3(m);
             //     m = SmoothMapV4(m);
             // }
+            // if (BorderChunk)
+            if (BorderChunkDirections.Count > 0)
+            {
+                m = GenerateExtendedChunkHeightMap(m, c, CyberExperimentalWorldProvider);
+                m = CropToSmoothChunks(m, new ChunkCoordinates(c.X,c.Z), CyberExperimentalWorldProvider); 
+                m = LerpX(m);
+                m = LerpZ(m);
+                m = FinalCropTo16(m);
+            }
 
             for (int x = 0; x < 16; x++)
             {
@@ -678,7 +686,7 @@ namespace CyberCore.WorldGen.Biomes
                     // {
                     //     
                     // }
-                    c.SetHeight(x, z, (short) m[x + 1, z + 1]);
+                    c.SetHeight(x, z, (short) m[x , z]);
                 }
             }
 
@@ -1635,7 +1643,7 @@ namespace CyberCore.WorldGen.Biomes
         public int[,] CropToSmoothChunks(int[,] f2, ChunkCoordinates chunkCoordinates,
             CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
         {
-            Console.WriteLine("STARTING TO CROP");
+            // Console.WriteLine("STARTING TO CROP");
             bool n = false;
             bool e = false;
             bool s = false;
@@ -1689,7 +1697,11 @@ namespace CyberCore.WorldGen.Biomes
 
 
             Console.WriteLine($"SIDES222222 TOGGELD N:{n} E:{e} S:{s} W:{w} NE:{ne} NW:{nw} SE:{se} SW:{sw}");
-
+Console.WriteLine($"YOOOO BUT THE BORDER CHUNK DIRECTSIONS>>:");
+foreach (var bcd in BorderChunkDirections)
+{
+    Console.WriteLine($"############:{bcd}");
+}
             int rzt = 0;
             int rzb = 0;
             int rxr = 0;
@@ -1725,7 +1737,7 @@ namespace CyberCore.WorldGen.Biomes
                 f1[x, z] = f2[xx, zz];
             }
 
-            Console.WriteLine("DONE TO CROP");
+            // Console.WriteLine("DONE TO CROP");
             return f1;
         }
 
@@ -1736,13 +1748,22 @@ namespace CyberCore.WorldGen.Biomes
             {
                 int startx = f22[0, z];
                 int stopx = f22[f22.GetLength(0)-1, z];
+                // Console.WriteLine($"starting LERP X ON Z:{z} STARTING X: {startx} AND {stopx}");
                 for (int x = 0; x < f22.GetLength(0); x++)
                 {
                     if (z == 0 || z == f22.GetLength(1))
                     {
                         r[x, z] = f22[x, z];
                     }else
-                    r[x, z] = (int) Lerp(startx, stopx, x / f22.GetLength(0) - 1);
+                    {
+                        int v = (int) Lerp(startx, stopx, (float)x / (f22.GetLength(0) - 1));
+                        // if (z == 1)
+                        // {
+                        //     // Console.WriteLine($"TEST =>> {x / (f22.GetLength(0) - 1)} || {(x / (f22.GetLength(0) - 1)).GetType()} || {(float)x / (f22.GetLength(0) - 1)}");
+                        //     Console.WriteLine($"SO SMOOTHING Z:{z} STRT:{startx} => {v} => {stopx} ||| %%%{(float)(x )/ (f22.GetLength(0) - 1)} || {x} / {f22.GetLength(0)-1}");
+                        // }
+                    r[x, z] = v;
+                }
                 }
             }
 
@@ -1758,13 +1779,69 @@ namespace CyberCore.WorldGen.Biomes
                 {
                 int startz = f22[x, 0];
                 int stopz = f22[x, f22.GetLength(1)-1];
+                // Console.WriteLine($"starting LERP Z ON X:{x} STARTING X: {startz} AND {stopz}");
                 for (int z = 0; z < f22.GetLength(1); z++)
                 {
-                    r[x, z] = (int) Lerp(startz, stopz, z / f22.GetLength(1) - 1);
+                    r[x, z] = (int) Lerp(startz, stopz, (float)z / (f22.GetLength(1) - 1));
                 }
             }
 
             return r;
+        }
+
+        public int[,] FinalCropTo16(int[,] f2)
+        {
+            bool n = BorderChunkDirections.Contains(BorderChunkDirection.North);
+            bool e = BorderChunkDirections.Contains(BorderChunkDirection.East);
+            bool s = BorderChunkDirections.Contains(BorderChunkDirection.South);
+            bool w = BorderChunkDirections.Contains(BorderChunkDirection.West);
+            bool nw = BorderChunkDirections.Contains(BorderChunkDirection.NW);
+            bool ne = BorderChunkDirections.Contains(BorderChunkDirection.NE);
+            bool sw = BorderChunkDirections.Contains(BorderChunkDirection.SW);
+            bool se = BorderChunkDirections.Contains(BorderChunkDirection.SE);
+           
+            
+            int rzt = 0;
+            int rzb = 0;
+            int rxr = 0;
+            int rxl = 0;
+            if (n && (ne || nw))
+            {
+                rzt++;
+            }
+
+            if (e &&(ne || se))
+            {
+                rxr++;
+            }
+
+            if (s && (se || sw))
+            {
+                rzb++;
+            }
+
+            if (w && (sw || nw))
+            {
+                rxl++;
+            }
+
+            int fx = f2.GetLength(0) - rxl - rxr;
+            int fz = f2.GetLength(1) - rzb - rzt;
+            int[,] f1 = new int[fx, fz];
+            for (int z = 0; z < fz; z++)
+            for (int x = 0; x < fx; x++)
+            {
+                int xx = x + rxl;
+                int zz = z + rzb;
+                f1[x, z] = f2[xx, zz];
+            }
+
+            // Console.WriteLine("DONE TO CROP");
+            return f1;
+
+
+            return f2;
+
         }
     }
 }
