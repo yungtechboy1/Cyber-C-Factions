@@ -365,6 +365,7 @@ namespace CyberCore.WorldGen.Biomes
             var ssw = ccsw.GenerateChunkHeightMap(new ChunkCoordinates(chunk.X - 1, chunk.Z - 1));
             var ccnw = BiomeManager.GetBiome2(new ChunkCoordinates(chunk.X - 1, chunk.Z + 1));
             var nnw = ccnw.GenerateChunkHeightMap(new ChunkCoordinates(chunk.X - 1, chunk.Z + 1));
+            Console.WriteLine($"WW {ww.Length} EE {ee.Length} SS {ss.Length} NN {nn.Length} nne {nne.Length} nnw {nnw.Length} ssw {ssw.Length} sse {sse.Length}");
             // int[] west =
             //     SideGenerateChunkHeightMap(ChunkSide.West.Opposite(), new ChunkCoordinates(chunk.X - 1, chunk.Z));
             // int[] west =
@@ -450,15 +451,16 @@ namespace CyberCore.WorldGen.Biomes
                 {
                     //E-5
                     r[x, z] = ee[x-32, z-16];
-                }else if (xx == 1 && zz == 0)
+                }else if (xx == 0 && zz == 2)
                 {
                     //NW-6
+                    // Console.WriteLine($"R {x} {z} >> NNW {x} {z-32} >>>> {nnw[x,z-32]}");
                     r[x, z] = nnw[x, z-32];
-                }else if (xx == 1 && zz == 0)
+                }else if (xx == 1 && zz == 2)
                 {
                     //N-7
                     r[x, z] = nn[x-16, z-32];
-                }else if (xx == 1 && zz == 0)
+                }else if (xx == 2 && zz == 2)
                 {
                     //NE-8
                     r[x, z] = nne[x-32, z-32];
@@ -1743,7 +1745,17 @@ namespace CyberCore.WorldGen.Biomes
                     }
                     else
                     {
-                        int v = ((int) Lerp(startx, stopx, (float) x / (f22.GetLength(0) - 1)) + f22[x, z]) / 2;
+                        // int v = ((int) Lerp(startx, stopx, (float) x / (f22.GetLength(0) - 1)) + f22[x, z]) / 2;            
+                        int ah = 0;
+                        int ac = 0;
+                        for (int i = -2; i < 2; i++)
+                        {
+                            if (0 > x + i || f22.GetLength(0) <= x +i) continue;
+                            ah += f22[x + i, z];
+                            ac++;
+                        }
+
+                        int v = ah / ac;
                         // if (z == 1)
                         // {
                         //     // Console.WriteLine($"TEST =>> {x / (f22.GetLength(0) - 1)} || {(x / (f22.GetLength(0) - 1)).GetType()} || {(float)x / (f22.GetLength(0) - 1)}");
@@ -1776,7 +1788,17 @@ namespace CyberCore.WorldGen.Biomes
                     }
                     else
                     {
-                        r[x, z] = ((int) Lerp(startz, stopz, (float) z / (f22.GetLength(1) - 1)) + f22[x, z]) / 2;
+                        // r[x, z] = ((int) Lerp(startz, stopz, (float) z / (f22.GetLength(1) - 1)) + f22[x, z]) / 2;
+                        int ah = 0;
+                        int ac = 0;
+                        for (int i = -2; i < 2; i++)
+                        {
+                            if (0 > z + i|| f22.GetLength(1) <= z +i) continue;
+                            ah += f22[x , z+i];
+                            ac++;
+                        }
+
+                        r[x, z] = ah / ac;
                     }
                 }
             }

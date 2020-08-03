@@ -81,6 +81,8 @@ namespace MapTestConsole
             // var f4 = b.SmoothMapV3(f3);
             var f33 = b.LerpX(f2);
             var f44 = b.LerpZ(f33);
+            var ff444 = b.LerpX(f44);
+            ff444 = b.LerpZ(ff444);
             // var f55 = b.FinalCropTo16(f44);
             if (name != null && name.Length != 0)
             {
@@ -99,7 +101,9 @@ namespace MapTestConsole
             l.Add(f44);
             // l.Add(f55);
             Console.WriteLine("ABOUT TO SAVE " + c);
-            SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F1.csv", IntArrayToString(JoinIntMaps(l))+"\n,"+b.BorderChunkDirections.Count);
+            SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F1.csv", IntArrayToString(f2)+"\n,"+b.BorderChunkDirections.Count);
+            SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F2.csv", IntArrayToString(f44)+"\n,"+b.BorderChunkDirections.Count);
+            SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F3.csv", IntArrayToString(ff444)+"\n,"+b.BorderChunkDirections.Count);
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F2.csv", IntArrayToString(f2));
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F3.csv", IntArrayToString(f3));
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F4.csv", IntArrayToString(f4));
@@ -109,8 +113,8 @@ namespace MapTestConsole
         {
             int[,] r = new int[0, 0];
             if (l.Count == 0) return r;
-            int s = (l.Count * 18) + (l.Count - 1);
-            r = new int[16*4+1, 16*4+1];
+            // int s = (l.Count * 18) + (l.Count - 1);
+            r = new int[16*10+1, 16*20+1];
             int zz = 0;
             foreach (var ll in l)
             {
@@ -120,7 +124,11 @@ namespace MapTestConsole
                 {
                     for (int x = 0; x < xa; x++)
                     {
-                        r[x, z + zz] = ll[x, z];
+                        // Console.WriteLine();
+                        Console.WriteLine($" R{x} {z+zz} || LL{x} {z}");
+                        Console.WriteLine($" R{r[x, z + zz]}");
+                        Console.WriteLine($" R{ll[x, z]}");
+                        if(ll.GetLength(0) > x && ll.GetLength(1) > z)r[x, z + zz] = ll[x, z];
                     }
                 }
 
