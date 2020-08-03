@@ -6,7 +6,6 @@ using MiNET.Worlds;
 
 namespace CyberCore.WorldGen.Biomes
 {
-    
     public class ForestMountain : AdvancedBiome
     {
         public ForestMountain() : base("ForestMountain", new BiomeQualifications(1, 2, .5f, 1.75f, 1.25f, 2, 30))
@@ -20,34 +19,22 @@ namespace CyberCore.WorldGen.Biomes
                        BiomeQualifications.heightvariation);
         }
 
-        public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider, ChunkColumn c,
-            float[] rth)
-        {for (var x = 0; x < 16; x++)
-            for (var z = 0; z < 16; z++){
-                
-                var sh = GetSH(x,z,c.X,c.Z);
-            for (var y = 0; y < 255; y++)
+        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc)
+        {
+            if (yheight == 0)
             {
-                if (y == 0)
-                {
-                    c.SetBlock(x, y, z, new Bedrock());
-                    continue;
-                }
-
-                if (y <= sh)
-                {
-                    c.SetBlock(x, y, z, new Stone());
-                    continue;
-                }
-
+                cc.SetBlock(x, yheight, z, new Bedrock());
+            }
+            else if (yheight <= maxheight)
+            {
+                cc.SetBlock(x, yheight, z, new Stone());
+            }
+            else
+            {
                 var w = new Wool();
                 w.Color = "green";
-                c.SetBlock(x, y, z, w);
-                c.SetHeight(x, z, (short) y);
-                break;
+                cc.SetBlock(x, yheight, z, w);
             }
         }
-        }
     }
-
 }

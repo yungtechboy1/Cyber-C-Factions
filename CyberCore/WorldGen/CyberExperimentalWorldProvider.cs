@@ -331,10 +331,10 @@ namespace CyberCore.WorldGen
             var b = BiomeManager.GetBiome(chunk);
             chunk = PopulateChunk(this, chunk, rth, b).Result;
 
-            if (smooth)
-            {
-                chunk = SmoothChunk(this, chunk, rth, b).Result;
-            }
+            // if (smooth)
+            // {
+            //     chunk = SmoothChunk(this, chunk, rth, b).Result;
+            // }
 
             // else if(b.BorderChunk)
             // {
@@ -838,7 +838,7 @@ namespace CyberCore.WorldGen
         }
 
 
-        /// <summary>
+        /// <summary>Try to get chunk from File Task
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="basePath"></param>
@@ -1238,13 +1238,13 @@ namespace CyberCore.WorldGen
             return (byte) ((arr[index >> 1] >> ((index & 1) * 4)) & 0xF);
         }
 
-        public async Task<ChunkColumn> SmoothChunk(CyberExperimentalWorldProvider cewp,
-            ChunkColumn chunk,
-            float[] rth, AdvancedBiome b)
-        {
-            var a = await b.preSmooth(cewp, chunk, rth);
-            return a;
-        }
+        // public async Task<ChunkColumn> SmoothChunk(CyberExperimentalWorldProvider cewp,
+        //     ChunkColumn chunk,
+        //     float[] rth, AdvancedBiome b)
+        // {
+        //     var a = await b.preSmooth(cewp, chunk, rth);
+        //     return a;
+        // }
 
         public async Task<ChunkColumn> PopulateChunk(CyberExperimentalWorldProvider cewp,
             ChunkColumn chunk,

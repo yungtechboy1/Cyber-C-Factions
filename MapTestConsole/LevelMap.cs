@@ -29,11 +29,106 @@ namespace MapTestConsole
         private int Size = 5;
         private int Offset = 5;
         private CyberExperimentalWorldProvider C;
+
         public LevelMap(CyberExperimentalWorldProvider cyberExperimentalWorldProvider, int size = 5, int offset = 0)
         {
             Size = size;
             Offset = offset;
             C = cyberExperimentalWorldProvider;
+            new BiomeManager();
+        }
+
+        public void GenerateTestChunkMaps(String name = null)
+        {
+            TType = LevelType.ChunkColumn;
+            var s = new Stopwatch();
+            var ss = new Stopwatch();
+            s.Restart();
+            ss.Restart();
+            X = Z = Size;
+            MapData = new ChunkColumn[X, Z];
+            for (int z = 0; z < MapData.GetLength(1); z++)
+            {
+                ss.Restart();
+                for (int x = 0; x < MapData.GetLength(0); x++)
+                {
+                    if (x + Offset == 57 && z + Offset == 56)
+                    if (true)
+                    {
+                        Console.WriteLine($"ABOUYT TO START GENERATION FOR {x + Offset} {z + Offset}");
+                        SingleChunkFiles(new ChunkCoordinates(x + Offset, Offset + z), name);
+                        // MapData[x, z] = a;
+                    }
+                }
+
+                ss.Stop();
+                // Console.WriteLine($"TOTAL CHUNK FOR Z: {z} GENERATION TOOK " + ss.Elapsed + " FOR " +
+                //                   MapData.GetLength(0) + " CHUNKS");
+            }
+
+            s.Stop();
+            Console.WriteLine("TOTAL CHUNK GENERATION TOOK " + s.Elapsed +
+                              $" FOR {MapData.GetLength(1) * MapData.GetLength(0)}");
+        }
+
+        public void SingleChunkFiles(ChunkCoordinates c, String name = null)
+        {
+            var b = BiomeManager.GetBiome(c);
+            var f1 = b.GenerateChunkHeightMap(c);
+            var f2 = b.GenerateExtendedChunkHeightMap(f1, c, C);
+            // var f22 = b.CropToSmoothChunks(f2, c, C); 
+            // var f3 = b.SmoothMapV2(f22);
+            // var f4 = b.SmoothMapV3(f3);
+            var f33 = b.LerpX(f2);
+            var f44 = b.LerpZ(f33);
+            // var f55 = b.FinalCropTo16(f44);
+            if (name != null && name.Length != 0)
+            {
+                name += "/";
+            }
+            else
+            {
+                name = "";
+            }
+
+            List<int[,]> l = new List<int[,]>();
+            l.Add(f1);
+            l.Add(f2);
+            // l.Add(f22);
+            l.Add(f33);
+            l.Add(f44);
+            // l.Add(f55);
+            Console.WriteLine("ABOUT TO SAVE " + c);
+            SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F1.csv", IntArrayToString(JoinIntMaps(l))+"\n,"+b.BorderChunkDirections.Count);
+            // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F2.csv", IntArrayToString(f2));
+            // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F3.csv", IntArrayToString(f3));
+            // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F4.csv", IntArrayToString(f4));
+        }
+
+        public int[,] JoinIntMaps(List<int[,]> l)
+        {
+            int[,] r = new int[0, 0];
+            if (l.Count == 0) return r;
+            int s = (l.Count * 18) + (l.Count - 1);
+            r = new int[16*4+1, 16*4+1];
+            int zz = 0;
+            foreach (var ll in l)
+            {
+                int za = ll.GetLength(1);
+                int xa = ll.GetLength(0);
+                for (int z = 0; z < za; z++)
+                {
+                    for (int x = 0; x < xa; x++)
+                    {
+                        r[x, z + zz] = ll[x, z];
+                    }
+                }
+
+                zz += za + 1;
+            }
+
+
+            return r;
         }
 
         public void generateViaChunkColumn()
@@ -50,8 +145,8 @@ namespace MapTestConsole
                 ss.Restart();
                 for (int x = 0; x < MapData.GetLength(0); x++)
                 {
-                    var a = C.OpenGenerateChunkColumn(new ChunkCoordinates(x+Offset, Offset+z));
-                    MapData[x, z] = a.Result;
+                    var a = C.OpenPreGenerateChunkColumn(new ChunkCoordinates(x + Offset, Offset + z));
+                    MapData[x, z] = a;
                 }
 
                 ss.Stop();
@@ -95,13 +190,15 @@ namespace MapTestConsole
                             // }
                         }
                     }
+
                     sss.Stop();
                     Console.WriteLine($"GETTING HEIGHT DATA FOR CHUNK {x} {z} > TOOK {sss.Elapsed}");
                 }
+
                 ss.Stop();
                 Console.WriteLine($"GETTING HEIGHT DATA FOR CHUNK COLUME {x} > TOOK {ss.Elapsed}");
-
             }
+
             s.Stop();
             Console.WriteLine($"TOTAL TIME FOR GETTING HEIGHT DATA FOR CHUNKZ > TOOK {s.Elapsed}");
 
@@ -116,6 +213,7 @@ namespace MapTestConsole
             ss.Restart();
             sss.Restart();
             string s = "";
+            //            for (int z = d.GetLength(1)-1; z >= 0; z--)
             for (int z = 0; z < d.GetLength(1); z++)
             {
                 sss.Restart();
@@ -123,13 +221,15 @@ namespace MapTestConsole
                 {
                     s += d[x, z] + ",";
                 }
+
                 sss.Stop();
-                Console.WriteLine($"TOOK {sss.Elapsed} TO CONVER COL {z}/{d.GetLength(1)}");
+                // Console.WriteLine($"TOOK {sss.Elapsed} TO CONVER COL {z}/{d.GetLength(1)}");
 
                 s += "\n";
             }
+
             ss.Stop();
-Console.WriteLine("TIME THAT IT TOOK TO CONVERT TO STRING "+ss.Elapsed);
+            // Console.WriteLine("TIME THAT IT TOOK TO CONVERT TO STRING " + ss.Elapsed);
             return s;
         }
 
@@ -139,7 +239,7 @@ Console.WriteLine("TIME THAT IT TOOK TO CONVERT TO STRING "+ss.Elapsed);
             s.Restart();
             System.IO.File.WriteAllText(@datCsv, text);
             s.Stop();
-            Console.WriteLine("FILE WRITE TIME WAS "+s.Elapsed);
+            Console.WriteLine("FILE WRITE TIME WAS " + s.Elapsed);
         }
     }
 }

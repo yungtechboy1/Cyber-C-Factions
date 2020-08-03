@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CyberCore.WorldGen;
-using CyberCore.WorldGen.Biomes;
 using log4net;
 using MiNET.Blocks;
 using MiNET.Utils;
 using MiNET.Worlds;
 
-namespace CyberCore.WorldGen
+namespace CyberCore.WorldGen.Biomes
 {
-    public class ForestBiome : AdvancedBiome
+    public class RainForestBiome : AdvancedBiome
     {
         public static int ccc = 0;
 
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ForestBiome));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(RainForestBiome));
 
-        public ForestBiome() : base("ForestBiome", new BiomeQualifications(.75f, 1.25f, 0.5f, 1.5f, 0.5f, 1.25f
+        public RainForestBiome() : base("ForestBiome", new BiomeQualifications(1.25f, 2f, 1f, 2f, 0.5f, 1.25f
             , 30))
         {
         }
