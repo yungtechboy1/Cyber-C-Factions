@@ -353,10 +353,10 @@ namespace CyberCore.WorldGen.Biomes
             var ce = BiomeManager.GetBiome2(new ChunkCoordinates(chunk.X + 1, chunk.Z));
             var cs = BiomeManager.GetBiome2(new ChunkCoordinates(chunk.X, chunk.Z - 1));
             var cn = BiomeManager.GetBiome2(new ChunkCoordinates(chunk.X, chunk.Z + 1));
-            var ccnw = BiomeManager.GetBiome2(new ChunkCoordinates(chunk.X + 1, chunk.Z - 1));
+            var ccse = BiomeManager.GetBiome2(new ChunkCoordinates(chunk.X + 1, chunk.Z - 1));
             var ccne = BiomeManager.GetBiome2(new ChunkCoordinates(chunk.X + 1, chunk.Z + 1));
             var ccsw = BiomeManager.GetBiome2(new ChunkCoordinates(chunk.X - 1, chunk.Z - 1));
-            var ccse = BiomeManager.GetBiome2(new ChunkCoordinates(chunk.X - 1, chunk.Z + 1));
+            var ccnw = BiomeManager.GetBiome2(new ChunkCoordinates(chunk.X - 1, chunk.Z + 1));
             // int[] west =
             //     SideGenerateChunkHeightMap(ChunkSide.West.Opposite(), new ChunkCoordinates(chunk.X - 1, chunk.Z));
             int[] west =
@@ -420,28 +420,28 @@ namespace CyberCore.WorldGen.Biomes
                     if (z == 0)
                     {
                         //SouthWest
-                        if (BorderChunkDirections.Contains(BorderChunkDirection.SW))
+                        // if (BorderChunkDirections.Contains(BorderChunkDirection.SW))
                             r[x, z] = ccsw.CornerGenerateChunkHeightMap(ChunkCorner.SouthWest.Opposite(),
                                 new ChunkCoordinates(chunk.X - 1, chunk.Z - 1), c);
-                        else
-                            r[x, z] = -1;
+                        // else
+                        //     r[x, z] = -1;
                     }
                     else if (z == 17)
                     {
                         //NorthWest
 
-                        if (BorderChunkDirections.Contains(BorderChunkDirection.NW))
+                        // if (BorderChunkDirections.Contains(BorderChunkDirection.NW))
                             r[x, z] = ccnw.CornerGenerateChunkHeightMap(ChunkCorner.NorthWest.Opposite(),
                                 new ChunkCoordinates(chunk.X + 1, chunk.Z - 1), c);
-                        else
-                            r[x, z] = -1;
+                        // else
+                        //     r[x, z] = -1;
                     }
                     else
                     {
-                        if (BorderChunkDirections.Contains(BorderChunkDirection.West))
+                        // if (BorderChunkDirections.Contains(BorderChunkDirection.West))
                             r[x, z] = west[z - 1];
-                        else
-                            r[x, z] = -1;
+                        // else
+                        //     r[x, z] = -1;
                         // r[x, z] = 80;
                     }
                 }
@@ -452,28 +452,28 @@ namespace CyberCore.WorldGen.Biomes
                     if (z == 0)
                     {
                         //SouthEast
-                        if (BorderChunkDirections.Contains(BorderChunkDirection.SE))
-                            r[x, z] = ccsw.CornerGenerateChunkHeightMap(ChunkCorner.SouthEast.Opposite(),
+                        // if (BorderChunkDirections.Contains(BorderChunkDirection.SE))
+                            r[x, z] = ccse.CornerGenerateChunkHeightMap(ChunkCorner.SouthEast.Opposite(),
                                 new ChunkCoordinates(chunk.X - 1, chunk.Z + 1), c);
-                        else
-                            r[x, z] = -1;
+                        // else
+                        //     r[x, z] = -1;
                     }
                     else if (z == 17)
                     {
                         //NorthEast
 
-                        if (BorderChunkDirections.Contains(BorderChunkDirection.NE))
+                        // if (BorderChunkDirections.Contains(BorderChunkDirection.NE))
                             r[x, z] = ccne.CornerGenerateChunkHeightMap(ChunkCorner.NorthEast.Opposite(),
                                 new ChunkCoordinates(chunk.X + 1, chunk.Z + 1), c);
-                        else
-                            r[x, z] = -1;
+                        // else
+                        //     r[x, z] = -1;
                     }
                     else
                     {
-                        if (BorderChunkDirections.Contains(BorderChunkDirection.East))
+                        // if (BorderChunkDirections.Contains(BorderChunkDirection.East))
                             r[x, z] = east[z - 1];
-                        else
-                            r[x, z] = -1;
+                        // else
+                        //     r[x, z] = -1;
                     }
                 }
                 //RIGHT SIDE FILLED /\/\
@@ -488,18 +488,18 @@ namespace CyberCore.WorldGen.Biomes
                     if (z == 0)
                     {
                         //South
-                        if (BorderChunkDirections.Contains(BorderChunkDirection.South))
+                        // if (BorderChunkDirections.Contains(BorderChunkDirection.South))
                             r[x, z] = south[x - 1];
-                        else
-                            r[x, z] = -1;
+                        // else
+                        //     r[x, z] = -1;
                     }
                     else if (z == 17)
                     {
                         //East
-                        if (BorderChunkDirections.Contains(BorderChunkDirection.North))
+                        // if (BorderChunkDirections.Contains(BorderChunkDirection.North))
                             r[x, z] = north[x - 1];
-                        else
-                            r[x, z] = -1;
+                        // else
+                        //     r[x, z] = -1;
                     }
                     else
                     {
@@ -681,12 +681,14 @@ namespace CyberCore.WorldGen.Biomes
                 if (true)
                 {
                     m = GenerateExtendedChunkHeightMap(m, c, CyberExperimentalWorldProvider);
-                    m = CropToSmoothChunks(m, new ChunkCoordinates(c.X, c.Z), CyberExperimentalWorldProvider);
+                    // m = CropToSmoothChunks(m, new ChunkCoordinates(c.X, c.Z), CyberExperimentalWorldProvider);
                     m = LerpX(m);
                     m = LerpZ(m);
                     m = FinalCropTo16(m);
+                    m[7, 7] = 100;
                 }
             }
+
 
             for (int x = 0; x < 16; x++)
             {
@@ -1778,17 +1780,13 @@ namespace CyberCore.WorldGen.Biomes
                 // Console.WriteLine($"starting LERP X ON Z:{z} STARTING X: {startx} AND {stopx}");
                 for (int x = 0; x < f22.GetLength(0); x++)
                 {
-                    if (z == 0 && !BorderChunkDirections.Contains(BorderChunkDirection.South))
-                    {
-                        r[x, z] = f22[x, z];
-                    }
-                    else if (z == f22.GetLength(1) && !BorderChunkDirections.Contains(BorderChunkDirection.North))
+                    if (z == 0 && z == f22.GetLength(1)-1)
                     {
                         r[x, z] = f22[x, z];
                     }
                     else
                     {
-                        int v = (int) Lerp(startx, stopx, (float) x / (f22.GetLength(0) - 1));
+                        int v = ((int) Lerp(startx, stopx, (float) x / (f22.GetLength(0) - 1))+f22[x,z])/2;
                         // if (z == 1)
                         // {
                         //     // Console.WriteLine($"TEST =>> {x / (f22.GetLength(0) - 1)} || {(x / (f22.GetLength(0) - 1)).GetType()} || {(float)x / (f22.GetLength(0) - 1)}");
@@ -1815,17 +1813,13 @@ namespace CyberCore.WorldGen.Biomes
 
                 for (int z = 0; z < f22.GetLength(0); z++)
                 {
-                    if (x == 0 &&! BorderChunkDirections.Contains(BorderChunkDirection.West))
-                    {
-                        r[x, z] = f22[x, z];
-                    }
-                    else if (x == f22.GetLength(0) && !BorderChunkDirections.Contains(BorderChunkDirection.East))
+                    if (x == 0  || x == f22.GetLength(0)-1)
                     {
                         r[x, z] = f22[x, z];
                     }
                     else
                     {
-                        r[x, z] = (int) Lerp(startz, stopz, (float) z / (f22.GetLength(1) - 1));
+                        r[x, z] = ((int) Lerp(startz, stopz, (float) z / (f22.GetLength(1) - 1))+f22[x,z])/2;
                     }
                 }
             }
@@ -1869,15 +1863,17 @@ namespace CyberCore.WorldGen.Biomes
                 rxl++;
             }
 
-            int fx = f2.GetLength(0) - rxl - rxr;
-            int fz = f2.GetLength(1) - rzb - rzt;
-            int[,] f1 = new int[fx, fz];
-            for (int z = 0; z < fz; z++)
-            for (int x = 0; x < fx; x++)
+            // int fx = f2.GetLength(0) - rxl - rxr;
+            // int fz = f2.GetLength(1) - rzb - rzt;
+            int fx = f2.GetLength(0) -1;
+            int fz = f2.GetLength(1) -1;
+            int[,] f1 = new int[fx-1, fz-1];
+            for (int z = 1; z < fz; z++)
+            for (int x = 1; x < fx; x++)
             {
                 int xx = x + rxl;
                 int zz = z + rzb;
-                f1[x, z] = f2[xx, zz];
+                f1[x-1, z-1] = f2[x, z];
             }
 
             // Console.WriteLine("DONE TO CROP");

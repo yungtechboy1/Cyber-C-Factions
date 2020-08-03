@@ -76,10 +76,10 @@ namespace MapTestConsole
             var b = BiomeManager.GetBiome(c);
             var f1 = b.GenerateChunkHeightMap(c);
             var f2 = b.GenerateExtendedChunkHeightMap(f1, c, C);
-            var f22 = b.CropToSmoothChunks(f2, c, C); 
+            // var f22 = b.CropToSmoothChunks(f2, c, C); 
             // var f3 = b.SmoothMapV2(f22);
             // var f4 = b.SmoothMapV3(f3);
-            var f33 = b.LerpX(f22);
+            var f33 = b.LerpX(f2);
             var f44 = b.LerpZ(f33);
             var f55 = b.FinalCropTo16(f44);
             if (name != null && name.Length != 0)
@@ -94,7 +94,7 @@ namespace MapTestConsole
             List<int[,]> l = new List<int[,]>();
             l.Add(f1);
             l.Add(f2);
-            l.Add(f22);
+            // l.Add(f22);
             l.Add(f33);
             l.Add(f44);
             l.Add(f55);
