@@ -22,6 +22,7 @@
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" afterDir="false" />
@@ -37,7 +38,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="85329" />
+    <option name="totalTimeSeconds" value="88302" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -391,9 +392,9 @@
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/RainForestBiome.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BeachBiome.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" />
-        <option value="$PROJECT_DIR$/MapTestConsole/Main.cs" />
         <option value="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" />
+        <option value="$PROJECT_DIR$/MapTestConsole/Main.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" />
       </list>
     </option>
@@ -662,29 +663,29 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1094" y="463" width="458" height="510" key="#com.intellij.tools.ToolEditorDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1590264141379" />
-    <state width="900" height="259" key="GridCell.Tab.0.bottom" timestamp="1596420287100">
+    <state width="900" height="259" key="GridCell.Tab.0.bottom" timestamp="1596501769489">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="900" height="259" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1596420287100" />
+    <state width="900" height="259" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1596501769489" />
     <state width="1220" height="264" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714151" />
-    <state width="900" height="259" key="GridCell.Tab.0.center" timestamp="1596420287100">
+    <state width="900" height="259" key="GridCell.Tab.0.center" timestamp="1596501769488">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="900" height="259" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1596420287100" />
+    <state width="900" height="259" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1596501769488" />
     <state width="1220" height="264" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714151" />
-    <state width="900" height="259" key="GridCell.Tab.0.left" timestamp="1596420287100">
+    <state width="900" height="259" key="GridCell.Tab.0.left" timestamp="1596501769488">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="900" height="259" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1596420287100" />
+    <state width="900" height="259" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1596501769488" />
     <state width="1220" height="264" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714150" />
-    <state width="900" height="259" key="GridCell.Tab.0.right" timestamp="1596420287100">
+    <state width="900" height="259" key="GridCell.Tab.0.right" timestamp="1596501769489">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="900" height="259" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1596420287100" />
+    <state width="900" height="259" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1596501769489" />
     <state width="1220" height="264" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714151" />
     <state width="900" height="371" key="GridCell.Tab.1.bottom" timestamp="1595306935573">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -800,11 +801,11 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1280" y="0" width="1280" height="1040" key="dock-window-4/0.0.2560.1040@0.0.2560.1040" timestamp="1591778721946" />
-    <state x="1039" y="216" width="881" height="817" key="find.popup" timestamp="1596405614596">
+    <state x="1039" y="216" width="881" height="817" key="find.popup" timestamp="1596501739975">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="693" y="141" width="587" height="534" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1594093093748" />
-    <state x="1039" y="216" width="881" height="817" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596405614596" />
+    <state x="1039" y="216" width="881" height="817" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596501739975" />
     <state x="1447" y="216" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1593877587572" />
     <state x="1096" y="244" width="504" height="677" key="run.anything.popup" timestamp="1595598864673">
       <screen x="0" y="0" width="1920" height="1040" />

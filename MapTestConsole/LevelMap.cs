@@ -81,7 +81,9 @@ namespace MapTestConsole
             // var f4 = b.SmoothMapV3(f3);
             var f33 = b.LerpX(f2);
             var f44 = b.LerpZ(f33);
-            var f55 = b.FinalCropTo16(f44);
+            var f55 = b.LerpX(f44);
+            var f66 = b.LerpZ(f55);
+            var f77 = b.FinalCropTo16(f66);
             if (name != null && name.Length != 0)
             {
                 name += "/";
@@ -98,6 +100,8 @@ namespace MapTestConsole
             l.Add(f33);
             l.Add(f44);
             l.Add(f55);
+            l.Add(f66);
+            l.Add(f77);
             Console.WriteLine("ABOUT TO SAVE " + c);
             SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F1.csv", IntArrayToString(JoinIntMaps(l))+"\n,"+b.BorderChunkDirections.Count);
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F2.csv", IntArrayToString(f2));

@@ -87,7 +87,7 @@ namespace CyberCore.WorldGen.Biomes
 
         public List<BorderChunkDirection> BorderChunkDirections = new List<BorderChunkDirection>();
         public bool BorderChunk = false;
-        public List<ChunkCoordinates> GenerateandSmooth = new List<ChunkCoordinates>();
+        // public List<ChunkCoordinates> GenerateandSmooth = new List<ChunkCoordinates>();
 
         public FastNoise HeightNoise = new FastNoise(121212);
 
@@ -551,85 +551,85 @@ namespace CyberCore.WorldGen.Biomes
             return chunk;
         }
 
-        public void GenerateWBorderChunks(ChunkColumn chunk)
-        {
-            bool n = false;
-            bool e = false;
-            bool s = false;
-            bool w = false;
-            bool nw = false;
-            bool ne = false;
-            bool sw = false;
-            bool se = false;
-            foreach (var gsc in GenerateandSmooth)
-            {
-                int dx = gsc.X - chunk.X;
-                int dz = gsc.Z - chunk.Z;
-                if (dx == 1)
-                {
-                    n = true;
-                }
-                else if (dx == -1)
-                {
-                    s = true;
-                }
-
-                if (dz == 1)
-                {
-                    e = true;
-                }
-                else if (dz == -1)
-                {
-                    w = true;
-                }
-
-                if (dx == 1 && dz == 1)
-                {
-                    ne = true;
-                }
-
-                if (dx == 1 && dz == -1)
-                {
-                    se = true;
-                }
-
-                if (dx == -1 && dz == 1)
-                {
-                    nw = true;
-                }
-
-                if (dx == -1 && dz == -1)
-                {
-                    sw = true;
-                }
-            }
-
-            //Calculate Size of Chunks needed to generated and Smoothed
-            int sz = 0;
-            if (n) sz++;
-            if (e) sz++;
-            if (s) sz++;
-            if (w) sz++;
-            if (nw) sz++;
-            if (sw) sz++;
-            if (se) sz++;
-            if (ne) sz++;
-
-            int top = 0;
-            int left = 0;
-            int right = 0;
-            int bottom = 0;
-
-            if (n) top += 16;
-            if (w) left += 16;
-            if (e) right += 16;
-            if (s) bottom += 16;
-
-            int xs = 16 + top + bottom;
-            int zs = 16 + left + right;
-
-            int[,] map = new int[xs, zs];
-        }
+        // public void GenerateWBorderChunks(ChunkColumn chunk)
+        // {
+        //     bool n = false;
+        //     bool e = false;
+        //     bool s = false;
+        //     bool w = false;
+        //     bool nw = false;
+        //     bool ne = false;
+        //     bool sw = false;
+        //     bool se = false;
+        //     foreach (var gsc in GenerateandSmooth)
+        //     {
+        //         int dx = gsc.X - chunk.X;
+        //         int dz = gsc.Z - chunk.Z;
+        //         if (dx == 1)
+        //         {
+        //             n = true;
+        //         }
+        //         else if (dx == -1)
+        //         {
+        //             s = true;
+        //         }
+        //
+        //         if (dz == 1)
+        //         {
+        //             e = true;
+        //         }
+        //         else if (dz == -1)
+        //         {
+        //             w = true;
+        //         }
+        //
+        //         if (dx == 1 && dz == 1)
+        //         {
+        //             ne = true;
+        //         }
+        //
+        //         if (dx == 1 && dz == -1)
+        //         {
+        //             se = true;
+        //         }
+        //
+        //         if (dx == -1 && dz == 1)
+        //         {
+        //             nw = true;
+        //         }
+        //
+        //         if (dx == -1 && dz == -1)
+        //         {
+        //             sw = true;
+        //         }
+        //     }
+        //
+        //     //Calculate Size of Chunks needed to generated and Smoothed
+        //     int sz = 0;
+        //     if (n) sz++;
+        //     if (e) sz++;
+        //     if (s) sz++;
+        //     if (w) sz++;
+        //     if (nw) sz++;
+        //     if (sw) sz++;
+        //     if (se) sz++;
+        //     if (ne) sz++;
+        //
+        //     int top = 0;
+        //     int left = 0;
+        //     int right = 0;
+        //     int bottom = 0;
+        //
+        //     if (n) top += 16;
+        //     if (w) left += 16;
+        //     if (e) right += 16;
+        //     if (s) bottom += 16;
+        //
+        //     int xs = 16 + top + bottom;
+        //     int zs = 16 + left + right;
+        //
+        //     int[,] map = new int[xs, zs];
+        // }
 
         /// <summary>
         ///     Populate Chunk from Biome
@@ -684,8 +684,14 @@ namespace CyberCore.WorldGen.Biomes
                     // m = CropToSmoothChunks(m, new ChunkCoordinates(c.X, c.Z), CyberExperimentalWorldProvider);
                     m = LerpX(m);
                     m = LerpZ(m);
+                    m = LerpX(m);
+                    m = LerpZ(m);
                     m = FinalCropTo16(m);
                     m[7, 7] = 100;
+                    if (BorderChunkDirections.Contains(BorderChunkDirection.North)) m[7, 8] = 101;
+                    if (BorderChunkDirections.Contains(BorderChunkDirection.East)) m[8, 7] = 101;
+                    if (BorderChunkDirections.Contains(BorderChunkDirection.South)) m[7, 6] = 101;
+                    if (BorderChunkDirections.Contains(BorderChunkDirection.West)) m[6, 7] = 101;
                 }
             }
 
@@ -1653,13 +1659,13 @@ namespace CyberCore.WorldGen.Biomes
         /// <returns></returns>
         public object Clone()
         {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
 
         public AdvancedBiome CClone()
         {
-            AdvancedBiome a = (AdvancedBiome) Clone();
-            a.BorderChunkDirections.Clear();
+            AdvancedBiome a = (AdvancedBiome) MemberwiseClone();
+            a.BorderChunkDirections = new List<BorderChunkDirection>();
             a.BorderChunk = false;
             return a;
         }
@@ -1786,13 +1792,23 @@ namespace CyberCore.WorldGen.Biomes
                     }
                     else
                     {
-                        int v = ((int) Lerp(startx, stopx, (float) x / (f22.GetLength(0) - 1))+f22[x,z])/2;
+                        int ah = 0;
+                        int ac = 0;
+                        for (int i = -2; i < 2; i++)
+                        {
+                            if (0 > x + i|| f22.GetLength(0) <= x +i) continue;
+                            ah += f22[x+i , z];
+                            ac++;
+                        }
+
+                        r[x, z] = ah / ac;
+                        // int v = ((int) Lerp(startx, stopx, (float) x / (f22.GetLength(0) - 1))+f22[x,z])/2;
                         // if (z == 1)
                         // {
                         //     // Console.WriteLine($"TEST =>> {x / (f22.GetLength(0) - 1)} || {(x / (f22.GetLength(0) - 1)).GetType()} || {(float)x / (f22.GetLength(0) - 1)}");
                         //     Console.WriteLine($"SO SMOOTHING Z:{z} STRT:{startx} => {v} => {stopx} ||| %%%{(float)(x )/ (f22.GetLength(0) - 1)} || {x} / {f22.GetLength(0)-1}");
                         // }
-                        r[x, z] = v;
+                        // r[x, z] = v;
                     }
                 }
             }
@@ -1819,7 +1835,17 @@ namespace CyberCore.WorldGen.Biomes
                     }
                     else
                     {
-                        r[x, z] = ((int) Lerp(startz, stopz, (float) z / (f22.GetLength(1) - 1))+f22[x,z])/2;
+                        int ah = 0;
+                        int ac = 0;
+                        for (int i = -2; i < 2; i++)
+                        {
+                            if (0 > z + i|| f22.GetLength(1) <= z +i) continue;
+                            ah += f22[x , z+i];
+                            ac++;
+                        }
+
+                        r[x, z] = ah / ac;
+                        // r[x, z] = ((int) Lerp(startz, stopz, (float) z / (f22.GetLength(1) - 1))+f22[x,z])/2;
                     }
                 }
             }
