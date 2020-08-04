@@ -178,12 +178,7 @@ namespace CyberCore.WorldGen
 
         public static void DoAdvancedStuff(AdvancedBiome biome, ChunkCoordinates chunk)
         {
-            if (biome.BorderChunkDirections.Count > 0)
-                    {
-                        Console.WriteLine("HUGE ERROR22222!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+biome.BorderChunkDirections.Count);
-                        biome.BorderChunkDirections.Clear();
-                    }
-                    Console.WriteLine($"BIOMEMANAGER 1: OK SO BIOME FOUND THAT MATCHES RTH NAMED {biome.name} {biome.LocalID} @ {chunk.X} {chunk.Z}AND "+biome.BorderChunkDirections.Count);
+                    Console.WriteLine($"BIOMEMANAGER 1: OK SO BIOME FOUND THAT MATCHES RTH NAMED {biome.name} {biome.LocalID} @ {chunk.X} {chunk.Z}");
                     bool BC = false;
                     int bcc = 0;
 
@@ -225,7 +220,6 @@ namespace CyberCore.WorldGen
                             {
                                 s = true;
                                 biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.South);
-                                Console.WriteLine("BIOMEMANAGER .5 S "+biome.BorderChunkDirections.Count);
                             }
 
                             if (xx == 1 && zz == 0)
@@ -267,12 +261,8 @@ namespace CyberCore.WorldGen
                             //                   biome.BorderChunkDirections.Count);
                             // break;
                         }
-                        Console.WriteLine("BIOMEMANAGER1.25: THE COUNT OF biome.BorderChunkDirections =>" +
-                                          biome.BorderChunkDirections.Count);
                     }
                     
-                    Console.WriteLine("BIOMEMANAGER1.5: THE COUNT OF biome.BorderChunkDirections =>" +
-                                      biome.BorderChunkDirections.Count);
                     
 
                     //Calculate Size of Chunks needed to generated and Smoothed
@@ -312,57 +302,57 @@ namespace CyberCore.WorldGen
                                       biome.BorderChunkDirections.Count);
 
                     //Double Check Smoothing Directions
-                    if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NW) &&
-                        biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North) &&
-                        biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.West))
-                    {
-                        biome.BorderChunkDirections.Clear();
-                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NW);
-                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.North);
-                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.West);
-                    }
-                    else if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NE) &&
-                             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North) &&
-                             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.East))
-                    {
-                        biome.BorderChunkDirections.Clear();
-                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NE);
-                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.North);
-                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.East);
-                    }
-                    else if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SE) &&
-                             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.South) &&
-                             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.East))
-                    {
-                        biome.BorderChunkDirections.Clear();
-                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SE);
-                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.South);
-                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.East);
-                    }
-                    else if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SW) &&
-                             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.South) &&
-                             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.West))
-                    {
-                        biome.BorderChunkDirections.Clear();
-                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SW);
-                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.South);
-                        biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.West);
-                    }
-                    else
-                    {
-                        Console.WriteLine("BIOMEMANAGER5: AYYYYYY THIS IS A NORTH EAST WST STH TYPE BOREDR SMOOTH");
-                     
-                        if (biome.BorderChunkDirections.Count == 1 && (
-                                biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NE) ||
-                                biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SW) ||
-                                biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NW) ||
-                                biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SE))
-                        )
-                        {
-                            //Only Single Chunk was selected for Smoothing!
-                        }
-                        // bb.BorderChunkDirections.Clear();
-                    }
+                    // if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NW) &&
+                    //     biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North) &&
+                    //     biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.West))
+                    // {
+                    //     biome.BorderChunkDirections.Clear();
+                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NW);
+                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.North);
+                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.West);
+                    // }
+                    // else if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NE) &&
+                    //          biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North) &&
+                    //          biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.East))
+                    // {
+                    //     biome.BorderChunkDirections.Clear();
+                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NE);
+                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.North);
+                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.East);
+                    // }
+                    // else if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SE) &&
+                    //          biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.South) &&
+                    //          biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.East))
+                    // {
+                    //     biome.BorderChunkDirections.Clear();
+                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SE);
+                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.South);
+                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.East);
+                    // }
+                    // else if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SW) &&
+                    //          biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.South) &&
+                    //          biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.West))
+                    // {
+                    //     biome.BorderChunkDirections.Clear();
+                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SW);
+                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.South);
+                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.West);
+                    // }
+                    // else
+                    // {
+                    //     Console.WriteLine("BIOMEMANAGER5: AYYYYYY THIS IS A NORTH EAST WST STH TYPE BOREDR SMOOTH");
+                    //  
+                    //     if (biome.BorderChunkDirections.Count == 1 && (
+                    //             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NE) ||
+                    //             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SW) ||
+                    //             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NW) ||
+                    //             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SE))
+                    //     )
+                    //     {
+                    //         //Only Single Chunk was selected for Smoothing!
+                    //     }
+                    //     // bb.BorderChunkDirections.Clear();
+                    // }
 
                     Console.WriteLine("BIOMEMANAGER6: THE COUNT OF biome.BorderChunkDirections =>" +
                                       biome.BorderChunkDirections.Count);
@@ -413,7 +403,7 @@ namespace CyberCore.WorldGen
                         // bb.BorderChunkDirections.Clear();
                     }
                     AdvancedBiome biome = (AdvancedBiome) bb.CClone();
-                    Console.WriteLine($"AFTER CLONE {biome.BorderChunkDirections.Count} VS OLD {bb.BorderChunkDirections.Count}");
+                    // Console.WriteLine($"AFTER CLONE {biome.BorderChunkDirections.Count} VS OLD {bb.BorderChunkDirections.Count}");
                     DoAdvancedStuff(biome,chunk);
                     Console.WriteLine($"BIOMEMANAGER9: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.name}");
 
