@@ -10,9 +10,9 @@ namespace MapTestConsole
         {
             new BiomeManager();
             LM = new LevelMap(c,11,50);
-            LM.GenerateTestChunkMaps();
+            // LM.GenerateTestChunkMaps();
             LM.generateViaChunkColumn();
-            LM.SaveViaCSV("/MapTesting/dat2.csv",LM.IntArrayToString(LM.HeightDataToCSV()));
+            LevelMap.SaveViaCSV("/MapTesting/dat2.csv",LevelMap.IntArrayToString(LM.HeightDataToCSV()));
         }
     }
 }

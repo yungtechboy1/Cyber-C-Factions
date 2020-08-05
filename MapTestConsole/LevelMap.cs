@@ -279,7 +279,7 @@ namespace MapTestConsole
             return f;
         }
 
-        public string IntArrayToString(int[,] d)
+        public static string IntArrayToString(int[,] d)
         {
             var ss = new Stopwatch();
             var sss = new Stopwatch();
@@ -306,7 +306,7 @@ namespace MapTestConsole
             return s;
         }
 
-        public void SaveViaCSV(string datCsv, string text)
+        public static void SaveViaCSV(string datCsv, string text)
         {
             var s = new Stopwatch();
             s.Restart();
