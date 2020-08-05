@@ -21,16 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/Main.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/Main.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.pdb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +31,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="100845" />
+    <option name="totalTimeSeconds" value="103778" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -374,7 +367,6 @@
         <option value="$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" />
         <option value="$PROJECT_DIR$/LevelHeightTest/Class1.cs" />
         <option value="$PROJECT_DIR$/MapTestConsole/Program.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
         <option value="$PROJECT_DIR$/MapTestConsole/LevelMapChunk.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/MainBiome.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Desert.cs" />
@@ -395,6 +387,7 @@
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" />
         <option value="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" />
         <option value="$PROJECT_DIR$/MapTestConsole/Main.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" />
       </list>
     </option>
@@ -622,7 +615,8 @@
       <workItem from="1596381466828" duration="7268000" />
       <workItem from="1596402112979" duration="11366000" />
       <workItem from="1596587161032" duration="1206000" />
-      <workItem from="1596599126968" duration="6713000" />
+      <workItem from="1596599126968" duration="7319000" />
+      <workItem from="1596657533771" duration="4649000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />
@@ -665,29 +659,29 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1094" y="463" width="458" height="510" key="#com.intellij.tools.ToolEditorDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1590264141379" />
-    <state width="900" height="252" key="GridCell.Tab.0.bottom" timestamp="1596605776661">
+    <state width="900" height="252" key="GridCell.Tab.0.bottom" timestamp="1596606529034">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="900" height="252" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1596605776661" />
+    <state width="900" height="252" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1596606529034" />
     <state width="1220" height="264" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714151" />
-    <state width="900" height="252" key="GridCell.Tab.0.center" timestamp="1596605776661">
+    <state width="900" height="252" key="GridCell.Tab.0.center" timestamp="1596606529034">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="900" height="252" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1596605776661" />
+    <state width="900" height="252" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1596606529034" />
     <state width="1220" height="264" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714151" />
-    <state width="900" height="252" key="GridCell.Tab.0.left" timestamp="1596605776661">
+    <state width="900" height="252" key="GridCell.Tab.0.left" timestamp="1596606529034">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="900" height="252" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1596605776661" />
+    <state width="900" height="252" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1596606529034" />
     <state width="1220" height="264" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714150" />
-    <state width="900" height="252" key="GridCell.Tab.0.right" timestamp="1596605776661">
+    <state width="900" height="252" key="GridCell.Tab.0.right" timestamp="1596606529034">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
-    <state width="900" height="252" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1596605776661" />
+    <state width="900" height="252" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1596606529034" />
     <state width="1220" height="264" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1593878714151" />
     <state width="900" height="371" key="GridCell.Tab.1.bottom" timestamp="1595306935573">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -803,22 +797,22 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1280" y="0" width="1280" height="1040" key="dock-window-4/0.0.2560.1040@0.0.2560.1040" timestamp="1591778721946" />
-    <state x="1039" y="216" width="881" height="817" key="find.popup" timestamp="1596502586291">
+    <state x="1039" y="216" width="881" height="817" key="find.popup" timestamp="1596662283903">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="693" y="141" width="587" height="534" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1594093093748" />
-    <state x="1039" y="216" width="881" height="817" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596502586291" />
+    <state x="1039" y="216" width="881" height="817" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596662283903" />
     <state x="1447" y="216" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1593877587572" />
     <state x="1096" y="244" width="504" height="677" key="run.anything.popup" timestamp="1595598864673">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1096" y="244" width="504" height="677" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1595598864673" />
     <state x="1461" y="244" width="672" height="677" key="run.anything.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1590803056409" />
-    <state x="645" y="226" width="1008" height="637" key="search.everywhere.popup" timestamp="1596503335977">
+    <state x="645" y="226" width="1008" height="637" key="search.everywhere.popup" timestamp="1596661869344">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="430" y="148" width="672" height="416" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1594091032350" />
-    <state x="645" y="226" width="1008" height="637" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596503335977" />
+    <state x="645" y="226" width="1008" height="637" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596661869344" />
     <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1593879883856" />
   </component>
   <component name="XDebuggerManager">

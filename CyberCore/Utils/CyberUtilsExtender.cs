@@ -441,6 +441,32 @@ namespace CyberCore.Utils
             return i1 == ii1;
         }
 
+        public static AdvancedBiome.BorderChunkDirection Opposite(this AdvancedBiome.BorderChunkDirection c)
+        {
+            switch (c)
+            {
+                case AdvancedBiome.BorderChunkDirection.North:
+                    return AdvancedBiome.BorderChunkDirection.South;
+                case AdvancedBiome.BorderChunkDirection.East:
+                    return AdvancedBiome.BorderChunkDirection.West;
+                case AdvancedBiome.BorderChunkDirection.South:
+                    return AdvancedBiome.BorderChunkDirection.North;
+                case AdvancedBiome.BorderChunkDirection.West:
+                    return AdvancedBiome.BorderChunkDirection.East;
+                case AdvancedBiome.BorderChunkDirection.NW:
+                    return AdvancedBiome.BorderChunkDirection.SE;
+                case AdvancedBiome.BorderChunkDirection.NE:
+                    return AdvancedBiome.BorderChunkDirection.SW;
+                case AdvancedBiome.BorderChunkDirection.SW:
+                    return AdvancedBiome.BorderChunkDirection.NE;
+                case AdvancedBiome.BorderChunkDirection.SE:
+                    return AdvancedBiome.BorderChunkDirection.NW;
+            }
+
+            Console.WriteLine("ERROR OPPOSITE GAVE AN NONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            return AdvancedBiome.BorderChunkDirection.None;
+        }
+
         public static AdvancedBiome.ChunkSide Opposite(this AdvancedBiome.ChunkSide c)
         {
             switch (c)
@@ -455,10 +481,10 @@ namespace CyberCore.Utils
                     return AdvancedBiome.ChunkSide.North;
             }
 
-            return AdvancedBiome.ChunkSide.NA;    
+            return AdvancedBiome.ChunkSide.NA;
         }
-        
-        
+
+
         public static AdvancedBiome.ChunkCorner Opposite(this AdvancedBiome.ChunkCorner c)
         {
             switch (c)
@@ -475,7 +501,7 @@ namespace CyberCore.Utils
 
             return AdvancedBiome.ChunkCorner.NA;
         }
-        
+
         public static List<int> GetSlotsOfItem(this PlayerInventory inv, Item itm, bool CheckNametag = true)
         {
             List<int> a = new List<int>();
@@ -553,12 +579,13 @@ namespace CyberCore.Utils
             if (PartialRemoveInt != -1)
             {
                 var pri = inv.Slots[PartialRemoveInt];
-                if (pri.Count < takeamt1)Console.WriteLine($"WHAT WHY WAS THIS MORE!!! {pri.Count} < {takeamt1}");
+                if (pri.Count < takeamt1) Console.WriteLine($"WHAT WHY WAS THIS MORE!!! {pri.Count} < {takeamt1}");
                 pri.Count -= takeamt1;
                 inv.Slots[PartialRemoveInt] = pri;
             }
+
             if (takeamt1 != 0)
-                Console.WriteLine("WHAT TAKE AMT 1 WAS NOT 0 >>> "+takeamt1);
+                Console.WriteLine("WHAT TAKE AMT 1 WAS NOT 0 >>> " + takeamt1);
             else
                 Console.WriteLine("TakeAmt was ========= 0  AFTER ");
             inv.Player.SendPlayerInventory();

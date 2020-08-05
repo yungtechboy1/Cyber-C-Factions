@@ -900,6 +900,39 @@ namespace CyberCore.WorldGen.Biomes
             return mm;
         }
 
+        public int[] GetChunkSideHeight(BorderChunkDirection direction, ChunkCoordinates cc,CyberExperimentalWorldProvider c)
+        {
+            ChunkCoordinates tcc;
+            int[] d = new int[0];
+            if (direction == BorderChunkDirection.North)
+            {
+                tcc = cc + new ChunkCoordinates(0, 1);
+                var tb = BiomeManager.GetBiome(tcc);
+                d = tb.SideGenerateChunkHeightMap(ChunkSide.North, tcc, c);
+            }else if (direction == BorderChunkDirection.East)
+            {
+                tcc = cc + new ChunkCoordinates(1, 0);
+                var tb = BiomeManager.GetBiome(tcc);
+                d = tb.SideGenerateChunkHeightMap(ChunkSide.East, tcc, c);
+            }else if (direction == BorderChunkDirection.South)
+            {
+                tcc = cc + new ChunkCoordinates(0, -1);
+                var tb = BiomeManager.GetBiome(tcc);
+                d = tb.SideGenerateChunkHeightMap(ChunkSide.South, tcc, c);
+            }else if (direction == BorderChunkDirection.West)
+            {
+                tcc = cc + new ChunkCoordinates(-1, 0);
+                var tb = BiomeManager.GetBiome(tcc);
+                d = tb.SideGenerateChunkHeightMap(ChunkSide.West, tcc, c);
+            }
+            else
+            {
+                throw new Exception("ERror! GETCHUNKSIDEHEIGHT RETURNED NOT N E W S");
+            }
+
+            return d;
+        }
+
         public int[,] GenerateExtendedChunkHeightMap(BorderChunkDirection direction, int[,] ints,
             int[,] sischunkbiome, CyberExperimentalWorldProvider c)
         {
@@ -907,39 +940,39 @@ namespace CyberCore.WorldGen.Biomes
             int[,] r;
             if (direction == BorderChunkDirection.North || direction == BorderChunkDirection.South)
             {
-                r = new int[16, 16 * 2];
+                r = new int[16+2, (16 * 2)+2];
                 ns = true;
                 for (int z = 0; z < r.GetLength(1); z++)
                 for (int x = 0; x < r.GetLength(0); x++)
                 {
                     if (z < 16)
                     {
-                        r[x, z] = direction != BorderChunkDirection.North ? ints[x, z] : sischunkbiome[x, z];
+                        r[x+1, z+1] = direction != BorderChunkDirection.North ? ints[x, z] : sischunkbiome[x, z];
                     }
                     else
                     {
-                        r[x, z] = direction != BorderChunkDirection.North ? sischunkbiome[x, z - 16] : ints[x, z - 16];
+                        r[x+1, z+1] = direction != BorderChunkDirection.North ? sischunkbiome[x, z - 16] : ints[x, z - 16];
                     }
 
-                    Console.WriteLine($"ZZAAZZ {x} {z} || " + r[x, z]);
+                    // Console.WriteLine($"ZZAAZZ {x} {z} || " + r[x, z]);
                 }
             }
             else
             {
-                r = new int[16 * 2, 16];
+                r = new int[2+(16 * 2), 2+16];
                 for (int z = 0; z < r.GetLength(1); z++)
                 for (int x = 0; x < r.GetLength(0); x++)
                 {
                     if (x < 16)
                     {
-                        r[x, z] = direction == BorderChunkDirection.West ? ints[x, z] : sischunkbiome[x, z];
+                        r[x+1, z+1] = direction == BorderChunkDirection.West ? ints[x, z] : sischunkbiome[x, z];
                     }
                     else
                     {
-                        r[x, z] = direction == BorderChunkDirection.West ? sischunkbiome[x - 16, z] : ints[x - 16, z];
+                        r[x+1, z+1] = direction == BorderChunkDirection.West ? sischunkbiome[x - 16, z] : ints[x - 16, z];
                     }
 
-                    Console.WriteLine($"AAAAAAZZ" + r[x, z]);
+                    // Console.WriteLine($"AAAAAAZZ" + r[x, z]);
                 }
             }
 
