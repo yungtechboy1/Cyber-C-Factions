@@ -41,7 +41,7 @@ namespace CyberCore.WorldGen
                 if (r == 3) cc.SetBlock(x, yheight, z, new Stone());
             }
             else
-                cc.SetBlock(x, yheight, z, new Grass());
+                cc.SetBlock(x, yheight, z, new Air());
         }
 
         /// <summary>

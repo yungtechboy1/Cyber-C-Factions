@@ -5,7 +5,7 @@ using MiNET.Worlds;
 
 namespace CyberCore.WorldGen.Populator
 {
-   public class Plains : AdvancedBiome
+    public class Plains : AdvancedBiome
     {
         public Plains() : base("Plains", new BiomeQualifications(0.5f, 1.5f, 0.5f, 1.75f, 0.5f, .75f, 5))
         {
@@ -24,13 +24,11 @@ namespace CyberCore.WorldGen.Populator
             {
                 cc.SetBlock(x, yheight, z, new Bedrock());
             }
-
-            if (yheight <= maxheight - 5)
+            else if (yheight <= maxheight - 5)
             {
                 cc.SetBlock(x, yheight, z, new Stone());
             }
-
-            if (yheight < maxheight)
+            else if (yheight < maxheight)
             {
                 int r = (RNDM).Next(0, 3);
                 if (r == 0) cc.SetBlock(x, yheight, z, new Stone());
@@ -38,8 +36,8 @@ namespace CyberCore.WorldGen.Populator
                 if (r == 2) cc.SetBlock(x, yheight, z, new Dirt());
                 if (r == 3) cc.SetBlock(x, yheight, z, new Stone());
             }
-
-            cc.SetBlock(x, yheight, z, new Grass());
+            else
+                cc.SetBlock(x, yheight, z, new Air());
         }
 
 
@@ -170,5 +168,4 @@ namespace CyberCore.WorldGen.Populator
         //     }
         // }
     }
-
 }

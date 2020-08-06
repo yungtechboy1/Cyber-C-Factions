@@ -31,7 +31,7 @@ namespace CyberCore.WorldGen.Biomes
                 cc.SetBlock(x, yheight, z, new Stone());
             }
             else
-                cc.SetBlock(x, yheight, z, new Stonebrick());
+                cc.SetBlock(x, yheight, z, new Air());
         }
 
         // public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider, ChunkColumn c,
