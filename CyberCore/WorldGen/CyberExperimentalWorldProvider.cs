@@ -250,6 +250,16 @@ namespace CyberCore.WorldGen
             return v;
         }
 
+        public int getBlockHeight(int x, int z)
+        {
+            int cx = x >> 4;
+            int cz = z >> 4;
+            int tx = x % 16;
+            int tz = z % 16;
+            AdvancedBiome tb = BiomeManager.GetBiome(new ChunkCoordinates(cx, cz));
+            return tb.GetSH(tx, tz, cx, cz);
+        }
+
         public static void AddBlocksToBeAddedDuringChunkGeneration(ChunkCoordinates chunkCoordinates,
             List<Block> blocks)
         {

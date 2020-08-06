@@ -723,7 +723,7 @@ namespace CyberCore.WorldGen.Biomes
                 {
                     ChunkCoordinates sischunkcords;
                     AdvancedBiome sischunkbiome;
-                    // if (c.X == 60)
+                    // if (c.X == 53)
                         if (BorderChunkDirections.Contains(BorderChunkDirection.South))
                         {
                             //South Sis Chunk
@@ -732,9 +732,16 @@ namespace CyberCore.WorldGen.Biomes
                             if (sischunkbiome.BorderChunkDirections.Contains(BorderChunkDirection.North))
                             {
                                 //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
+                                /// |ORIGINAL CHUNK   | N
+                                /// --------------
+                                /// NEW CHUNK          | S
+                                ///0,0
+                                ///
+                                /// 
                                 m = GenerateExtendedChunkHeightMap(BorderChunkDirection.North, m,
                                     sischunkbiome.GenerateChunkHeightMap(sischunkcords),
                                     CyberExperimentalWorldProvider);
+                                // m = GenerateExtendedChunkHeightMapBorder(m,BorderChunkDirection.North, c,CyberExperimentalWorldProvider);
                                 var mmm = SquareSmooth(m);
                                 m = FinalCropTo16(mmm, BorderChunkDirection.North);
                                 m[10, 10] = 120;
@@ -764,11 +771,17 @@ namespace CyberCore.WorldGen.Biomes
                                 m = GenerateExtendedChunkHeightMap(BorderChunkDirection.South, m,
                                     sischunkbiome.GenerateChunkHeightMap(sischunkcords),
                                     CyberExperimentalWorldProvider);
+                                // SaveViaCSV($"/MapTesting/MAPCHUNK PRE SMOOTH PRE EXPAND {c.X} {c.Z}.csv", IntArrayToString(m));
+                                m = GenerateExtendedChunkHeightMapBorder(m,BorderChunkDirection.North, c,CyberExperimentalWorldProvider);
+                                // SaveViaCSV($"/MapTesting/MAPCHUNK PRE SMOOTH EXPAND {c.X} {c.Z}.csv", IntArrayToString(m));
                                 var mmm = SquareSmooth(m);
+                                // SaveViaCSV($"/MapTesting/MAPCHUNK POST SMOOTH {c.X} {c.Z}.csv", IntArrayToString(mmm));
+                                mmm = ShrinkFromExpand(mmm);
+                                SaveViaCSV($"/MapTesting/MAPCHUNK POST SMOOTH SHRINK {c.X} {c.Z}.csv", IntArrayToString(mmm));
                                 // Console.WriteLine($"AHHHH PLZ WORK {mmm.GetLength(0)} {mmm.GetLength(1)}");
                                 m = FinalCropTo16(mmm, BorderChunkDirection.North);
                                 m[10, 10] = 120;
-                                // SaveViaCSV($"/MapTesting/MAPCHUNK {c.X} {c.Z}.csv", IntArrayToString(m));
+                                SaveViaCSV($"/MapTesting/MAPCHUNK {c.X} {c.Z}.csv", IntArrayToString(m));
                                 // Console.WriteLine($"SMOOTHIGN SOUTH >> {c.X} {c.Z}");
                                 //FINISH SISTER CHUNK
                                 var mm = FinalCropTo16(mmm, BorderChunkDirection.South);
@@ -838,6 +851,57 @@ namespace CyberCore.WorldGen.Biomes
             }
 
             return m;
+        }
+
+        private int[,] ShrinkFromExpand(int[,] mmm)
+        {
+            int[,] m = new int[mmm.GetLength(0)-2,mmm.GetLength(1)-2];
+            for (int z = 0; z < mmm.GetLength(1)-1; z++)
+            for (int x = 0; x < mmm.GetLength(0)-1; x++)
+            {
+                if (x == 0 || z == 0 ){
+                    continue;
+                }
+                else
+                {
+                    Console.WriteLine($"M {x-1} {z-1} ||| mmm {x} {z} || {m.GetLength(0)} {m.GetLength(1)} || {mmm.GetLength(0)} {mmm.GetLength(1)}");
+                    m[x-1,z-1] = mmm[x , z ];
+                }
+            }
+
+            return m;
+        }
+
+        private int[,] GenerateExtendedChunkHeightMapBorder(int[,] ints, BorderChunkDirection direction,
+            ChunkColumn chunkColumn,CyberExperimentalWorldProvider c)
+        {
+            var zaxis = false;
+            if (direction == BorderChunkDirection.North || direction == BorderChunkDirection.South) zaxis = true;
+            ChunkCoordinates cc =new ChunkCoordinates(chunkColumn.X,chunkColumn.Z);
+            if (direction != BorderChunkDirection.North && direction != BorderChunkDirection.West)
+            {
+                if(direction == BorderChunkDirection.South)cc += new ChunkCoordinates(0,1);
+                if(direction == BorderChunkDirection.East)cc += new ChunkCoordinates(1,0);
+            }
+            int[,] m = zaxis ? new int[16 + 2, (16 * 2) + 2]:new int[(16*2)+2,16+2];
+            int sx = cc.X * 16-1;
+            int sz = cc.Z * 16-1;
+            for (int z = 0; z < m.GetLength(1); z++)
+            for (int x = 0; x < m.GetLength(0); x++)
+            {
+                if (x == 0 || x == m.GetLength(0) - 1 || z == 0 || z == m.GetLength(1)-1)
+                {
+                    m[x, z] = c.getBlockHeight(sx+x, sz+z);
+                }
+                else
+                {
+                    Console.WriteLine($"M {x} {z} ||| ints {x-1} {z-1} || {m.GetLength(0)} {m.GetLength(1)} || {ints.GetLength(0)} {ints.GetLength(1)}");
+                    m[x,z] = ints[x - 1, z - 1];
+                }
+            }
+
+            return m;
+
         }
 
         /// <summary>
@@ -940,18 +1004,18 @@ namespace CyberCore.WorldGen.Biomes
             int[,] r;
             if (direction == BorderChunkDirection.North || direction == BorderChunkDirection.South)
             {
-                r = new int[16+2, (16 * 2)+2];
+                r = new int[16, (16 * 2)];
                 ns = true;
                 for (int z = 0; z < r.GetLength(1); z++)
                 for (int x = 0; x < r.GetLength(0); x++)
                 {
                     if (z < 16)
                     {
-                        r[x+1, z+1] = direction != BorderChunkDirection.North ? ints[x, z] : sischunkbiome[x, z];
+                        r[x, z] = direction == BorderChunkDirection.South ? ints[x, z] : sischunkbiome[x, z];
                     }
                     else
                     {
-                        r[x+1, z+1] = direction != BorderChunkDirection.North ? sischunkbiome[x, z - 16] : ints[x, z - 16];
+                        r[x, z] = direction == BorderChunkDirection.South ? sischunkbiome[x, z - 16] : ints[x, z - 16];
                     }
 
                     // Console.WriteLine($"ZZAAZZ {x} {z} || " + r[x, z]);
@@ -959,17 +1023,17 @@ namespace CyberCore.WorldGen.Biomes
             }
             else
             {
-                r = new int[2+(16 * 2), 2+16];
+                r = new int[(16 * 2), 16];
                 for (int z = 0; z < r.GetLength(1); z++)
                 for (int x = 0; x < r.GetLength(0); x++)
                 {
                     if (x < 16)
                     {
-                        r[x+1, z+1] = direction == BorderChunkDirection.West ? ints[x, z] : sischunkbiome[x, z];
+                        r[x, z] = direction == BorderChunkDirection.West ? ints[x, z] : sischunkbiome[x, z];
                     }
                     else
                     {
-                        r[x+1, z+1] = direction == BorderChunkDirection.West ? sischunkbiome[x - 16, z] : ints[x - 16, z];
+                        r[x, z] = direction == BorderChunkDirection.West ? sischunkbiome[x - 16, z] : ints[x - 16, z];
                     }
 
                     // Console.WriteLine($"AAAAAAZZ" + r[x, z]);
