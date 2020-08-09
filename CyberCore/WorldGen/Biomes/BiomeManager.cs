@@ -207,8 +207,8 @@ namespace CyberCore.WorldGen
                         if (tb.LocalID != biome.LocalID)
                         {
                             bcc++;
-                            Console.WriteLine(
-                                $"A BORDER CHUNK WAS FOUND! AT {cc.X} {cc.Z} AND {tb.name} {tb.LocalID} != {biome.LocalID} |||| {xx} {zz}");
+                            // Console.WriteLine(
+                            //     $"A BORDER CHUNK WAS FOUND! AT {cc.X} {cc.Z} AND {tb.name} {tb.LocalID} != {biome.LocalID} |||| {xx} {zz}");
                             // int dx = cc.X ;
                             // int dz = cc.Z;
                             if (zz == 1 && xx == 0)
@@ -292,14 +292,14 @@ namespace CyberCore.WorldGen
                     // int[,] map = new int[xs, zs];
 
                     Console.WriteLine("BIOMEMANAGER2: THE BCC COUNT WAS >> " + bcc);
-                    Console.WriteLine($"BIOMEMANAGER3: SIDES TOGGELD N:{n} E:{e} S:{s} W:{w} NE:{ne} NW:{nw} SE:{se} SW:{sw}");
+                    Console.WriteLine($"BIOMEMANAGER3: SIDES TOGGELD ${chunk.X}|{chunk.Z} N:{n} E:{e} S:{s} W:{w} NE:{ne} NW:{nw} SE:{se} SW:{sw}");
                     // if (bcc <= 3)
                     // {
                         biome.BorderChunk = true;
                     // }
 
-                    Console.WriteLine("BIOMEMANAGER4: THE COUNT OF biome.BorderChunkDirections =>" +
-                                      biome.BorderChunkDirections.Count);
+                    // Console.WriteLine("BIOMEMANAGER4: THE COUNT OF biome.BorderChunkDirections =>" +
+                    //                   biome.BorderChunkDirections.Count);
 
                     //Double Check Smoothing Directions
                     // if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NW) &&
@@ -354,12 +354,12 @@ namespace CyberCore.WorldGen
                     //     // bb.BorderChunkDirections.Clear();
                     // }
 
-                    Console.WriteLine("BIOMEMANAGER6: THE COUNT OF biome.BorderChunkDirections =>" +
-                                      biome.BorderChunkDirections.Count);
-                    foreach (var b in biome.BorderChunkDirections)
-                    {
-                        Console.WriteLine($"BIOMEMANAGER7: ======================>{b}");
-                    }
+                    // Console.WriteLine("BIOMEMANAGER6: THE COUNT OF biome.BorderChunkDirections =>" +
+                    //                   biome.BorderChunkDirections.Count);
+                    // foreach (var b in biome.BorderChunkDirections)
+                    // {
+                    //     Console.WriteLine($"BIOMEMANAGER7: ======================>{b}");
+                    // }
                     //
                     // //IF N and W are true
                     // if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North) && biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.West))
@@ -387,8 +387,11 @@ namespace CyberCore.WorldGen
                     
         }
         
+        public static Dictionary<ChunkCoordinates,AdvancedBiome> BiomeCache = new Dictionary<ChunkCoordinates, AdvancedBiome>();
+        
         public static AdvancedBiome GetBiome(ChunkCoordinates chunk)
         {
+            if (BiomeCache.ContainsKey(chunk)) return BiomeCache[chunk];
             var rth = getChunkRTH(new ChunkCoordinates()
             {
                 X = chunk.X,
@@ -406,7 +409,7 @@ namespace CyberCore.WorldGen
                     // Console.WriteLine($"AFTER CLONE {biome.BorderChunkDirections.Count} VS OLD {bb.BorderChunkDirections.Count}");
                     DoAdvancedStuff(biome,chunk);
                     Console.WriteLine($"BIOMEMANAGER9: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.name}");
-
+                    BiomeCache[chunk] = biome;
                     return biome;
                 }
 
@@ -417,6 +420,7 @@ namespace CyberCore.WorldGen
             // return new WaterBiome();
             var bbb = new HighPlains().CClone();
             DoAdvancedStuff(bbb,chunk);
+            BiomeCache[chunk] = bbb;
             return bbb;
 
         }

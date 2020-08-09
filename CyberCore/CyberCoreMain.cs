@@ -18,6 +18,7 @@ using CyberCore.Utils;
 using CyberCore.Utils.Data;
 using CyberCore.WorldGen;
 using log4net;
+using log4net.Util.TypeConverters;
 using MiNET;
 using MiNET.Blocks;
 using MiNET.Net;
@@ -237,7 +238,7 @@ namespace CyberCore
             // };
             
             Log.Info("DA LENGTH OF TITTTTTTTTTT IS :"+AnvilWorldProvider.Convert.Count);
-            var level = new OpenLevel(api, api.LevelManager, Dimension.Overworld.ToString(),
+            var level = new OpenLevel(api, api.LevelManager, Dimension.Overworld.ToString()+"CT",
                 new CyberExperimentalWorldProvider(123123,Config.GetProperty("PCWorldFolder", "CyberWorld")),  api.LevelManager.EntityManager, GameMode.Creative,
                 Difficulty.Peaceful);
             // generator.Level = level;
@@ -245,6 +246,8 @@ namespace CyberCore
 
             api.LevelManager.LoadLevel(level);
             api.LevelManager.SetDefaultLevel(level);
+            Console.WriteLine(">>>>>>>>>>>>||||>>>>"+api.LevelManager.Levels.Count);
+            Console.WriteLine(">>>>>>>>>>>>||||>>>>"+api.LevelManager.GetDefaultLevel().LevelId);
             
             
             CrateMain = new CrateMain(this);

@@ -64,6 +64,12 @@ namespace CyberCore
             p.SendMessage(ChatColors.Green + "Floating Text Added!");
         }
 
+        [Command(Name = "lvl", Description = "Get Level info")]
+        public void lvl(CorePlayer p)
+        {
+            p.SendMessage($"LVEL ID: {p.Level.LevelId} TYTPE{p.Level.WorldProvider.GetType()}");
+        }
+
         [Command(Name = "ft reload", Description = "Reload floating text")]
         public void ftreload(CorePlayer p)
         {

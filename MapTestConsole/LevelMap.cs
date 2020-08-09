@@ -56,7 +56,7 @@ namespace MapTestConsole
                     if (true)
                     {
                         Console.WriteLine($"ABOUYT TO START GENERATION FOR {x + Offset} {z + Offset}");
-                        SingleChunkFiles(new ChunkCoordinates(x + Offset, Offset + z), name);
+                        SingleChunkFiles(new ChunkCoordinates(x + Offset, Offset + z), C,name);
                         // MapData[x, z] = a;
                     }
                 }
@@ -71,7 +71,7 @@ namespace MapTestConsole
                               $" FOR {MapData.GetLength(1) * MapData.GetLength(0)}");
         }
 
-        public void SingleChunkFiles(ChunkCoordinates c, String name = null)
+        public void SingleChunkFiles(ChunkCoordinates c,CyberExperimentalWorldProvider CyberExperimentalWorldProvider, String name = null)
         {
             int[,] m;
             int[,] f2;
@@ -82,7 +82,7 @@ namespace MapTestConsole
             var b = BiomeManager.GetBiome(c);
             
             List<int[,]> l = new List<int[,]>();
-            var f1 = b.GenerateChunkHeightMap(c);
+            var f1 = b.GenerateChunkHeightMap(c,CyberExperimentalWorldProvider);
                 l.Add(f1);
             if (b.BorderChunkDirections.Count > 0)
             {
@@ -97,7 +97,7 @@ namespace MapTestConsole
                         {
                             //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
                             f2 = b.GenerateExtendedChunkHeightMap(AdvancedBiome.BorderChunkDirection.North, f1,
-                                sischunkbiome.GenerateChunkHeightMap(sischunkcords),
+                                sischunkbiome.GenerateChunkHeightMap(sischunkcords,CyberExperimentalWorldProvider),
                                 C);
                             f3 = b.LerpXZ2X(f2);
                             f4 = b.FinalCropTo16(f3, AdvancedBiome.BorderChunkDirection.North);
@@ -125,7 +125,7 @@ namespace MapTestConsole
                         {
                             //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
                             f2 = b.GenerateExtendedChunkHeightMap(AdvancedBiome.BorderChunkDirection.South, f1,
-                                sischunkbiome.GenerateChunkHeightMap(sischunkcords), 
+                                sischunkbiome.GenerateChunkHeightMap(sischunkcords,CyberExperimentalWorldProvider), 
                                 C);
                             f3 = b.LerpXZ2X(f2);
                             f4 = b.FinalCropTo16(f3, AdvancedBiome.BorderChunkDirection.South);

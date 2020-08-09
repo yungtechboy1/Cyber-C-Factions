@@ -21,17 +21,18 @@ namespace CyberCore.WorldGen.Biomes
                        BiomeQualifications.heightvariation);
         }
 
-        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc)
+        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc, bool setair)
         {
-            if (yheight <= maxheight)
+            if (yheight < maxheight-1)
             {
                 cc.SetBlock(x, yheight, z, new Stone());
-            }
-
+            }else if(yheight<maxheight)
             cc.SetBlock(x, yheight, z, new Leaves()
             {
                 OldLeafType = "jungle"
             });
+            else if(setair)
+                cc.SetBlock(x,yheight,z,new Air());
         }
 
         //     public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,

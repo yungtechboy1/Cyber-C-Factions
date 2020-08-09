@@ -20,18 +20,21 @@ namespace CyberCore.WorldGen.Biomes
         }
 
 
-        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc)
+        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
+            bool setair)
         {
             if (yheight == 0)
             {
                 cc.SetBlock(x, yheight, z, new Bedrock());
             }
-            else if (yheight <= maxheight)
+            else if (yheight < maxheight - 1)
             {
                 cc.SetBlock(x, yheight, z, new Stone());
             }
-
-            cc.SetBlock(x, yheight, z, new BlueIce());
+            else if (yheight < maxheight)
+                cc.SetBlock(x, yheight, z, new BlueIce());
+            else if (setair)
+                cc.SetBlock(x, yheight, z, new Air());
         }
 
         // public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider, ChunkColumn c,

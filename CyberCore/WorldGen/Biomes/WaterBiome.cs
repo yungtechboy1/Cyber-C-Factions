@@ -7,7 +7,7 @@ using MiNET.Worlds;
 
 namespace CyberCore.WorldGen
 {
-        public class WaterBiome : AdvancedBiome
+    public class WaterBiome : AdvancedBiome
     {
         public WaterBiome() : base("Water", new BiomeQualifications(0, 2, 1, 1.75f, 0.25f, 0f
             , 50))
@@ -16,8 +16,8 @@ namespace CyberCore.WorldGen
         }
 
 
-
-        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc)
+        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
+            bool setair)
         {
             int sand = maxheight - 6;
             if (yheight < sand)
@@ -39,14 +39,11 @@ namespace CyberCore.WorldGen
                     cc.SetBlock(x, yheight, z, new Sand());
             }
             else if (yheight == maxheight)
-            {
                 cc.SetBlock(x, yheight, z, new Sand());
-            }
             else if (yheight <= waterlevel)
-            {
                 cc.SetBlock(x, yheight, z, new Water());
-
-            }
+            else if (setair)
+                cc.SetBlock(x, yheight, z, new Air());
         }
 
         public override int GetSH(int x, int z, int cx, int cz)
@@ -54,7 +51,6 @@ namespace CyberCore.WorldGen
             return (int) (BiomeQualifications.baseheight +
                           (int) (GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.035f,
                               BiomeQualifications.heightvariation)));
-
         }
     }
 }

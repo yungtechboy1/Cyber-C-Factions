@@ -18,7 +18,8 @@ namespace CyberCore.WorldGen.Biomes
                        BiomeQualifications.heightvariation);
         }
 
-        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc)
+        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
+            bool setair)
         {
             if (yheight == 0)
             {
@@ -36,7 +37,7 @@ namespace CyberCore.WorldGen.Biomes
                 if (r == 2) cc.SetBlock(x, yheight, z, new Dirt());
                 if (r == 3) cc.SetBlock(x, yheight, z, new Stone());
             }
-            else
+            else if (setair)
                 cc.SetBlock(x, yheight, z, new Air());
 
             // if (RNDM.Next(0, 100) < 15)

@@ -51,14 +51,16 @@ namespace CyberCore.WorldGen.Biomes
         //     }
         // }
 
-        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc)
+        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc, bool setair)
         {
-            if (yheight <= maxheight)
+            if (yheight < maxheight-1)
             {
                 cc.SetBlock(x, yheight, z, new Stone());
             }
-            else
+            else if(yheight < maxheight)
                 cc.SetBlock(x, yheight, z, new RedstoneOre());
+            else if(setair)
+                cc.SetBlock(x,yheight,z,new Air());
         }
     }
 }

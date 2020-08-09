@@ -19,21 +19,24 @@ namespace CyberCore.WorldGen.Biomes
                        BiomeQualifications.heightvariation);
         }
 
-        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc)
+        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc, bool setair)
         {
             if (yheight == 0)
             {
                 cc.SetBlock(x, yheight, z, new Bedrock());
             }
-            else if (yheight <= maxheight)
+            else if (yheight < maxheight-1)
             {
                 cc.SetBlock(x, yheight, z, new Stone());
             }
-            else
+            else if(yheight < maxheight)
             {
                 var w = new Wool();
                 w.Color = "green";
                 cc.SetBlock(x, yheight, z, w);
+            }else if (setair)
+            {
+                cc.SetBlock(x,yheight,z,new Air());
             }
         }
     }

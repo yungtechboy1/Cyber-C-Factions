@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using CyberCore.WorldGen;
 using CyberCore.WorldGen.Biomes;
 using MiNET.Blocks;
@@ -19,14 +20,18 @@ namespace CyberCore.WorldGen.Biomes
                        BiomeQualifications.heightvariation);
         }
 
-        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc)
+        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc, bool setair)
         {
-            if (yheight <= maxheight)
+            if (yheight < maxheight-1)
             {
                 cc.SetBlock(x, yheight, z, new Stone());
             }
-            else
+            else if(yheight < maxheight)
                 cc.SetBlock(x, yheight, z, new PackedIce());
+            else if (setair)
+            {
+                cc.SetBlock(x,yheight,z,new Air());
+            }
         }
 
 

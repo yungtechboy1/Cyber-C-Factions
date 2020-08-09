@@ -20,7 +20,8 @@ namespace CyberCore.WorldGen.Biomes
             SandHeight = waterlevel;
         }
 
-        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc)
+        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
+            bool setair)
         {
             //MAX
             //Sand
@@ -31,25 +32,24 @@ namespace CyberCore.WorldGen.Biomes
             {
                 cc.SetBlock(x, yheight, z, new Stone());
             }
-            else
+            else if (yheight <= maxheight - 3)
             {
-                if (yheight <= maxheight - 3)
-                {
-                    var r = new Random().Next(0, 10);
-                    if (r > 3)
-                        cc.SetBlock(x, yheight, z, new Gravel());
-                    else
-                        cc.SetBlock(x, yheight, z, new Sand());
-                }
+                var r = new Random().Next(0, 10);
+                if (r > 3)
+                    cc.SetBlock(x, yheight, z, new Gravel());
                 else
-                {
-                    var r = new Random().Next(0, 10);
-                    if (r > 3)
-                        cc.SetBlock(x, yheight, z, new Clay());
-                    else
-                        cc.SetBlock(x, yheight, z, new Sand());
-                }
+                    cc.SetBlock(x, yheight, z, new Sand());
             }
+            else if (yheight < maxheight)
+            {
+                var r = new Random().Next(0, 10);
+                if (r > 3)
+                    cc.SetBlock(x, yheight, z, new Clay());
+                else
+                    cc.SetBlock(x, yheight, z, new Sand());
+            }
+            else if (setair)
+                cc.SetBlock(x, yheight, z, new Air());
         }
 
         //TODO ADD CLAY
