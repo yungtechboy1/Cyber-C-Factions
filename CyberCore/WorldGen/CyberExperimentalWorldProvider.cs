@@ -258,13 +258,13 @@ namespace CyberCore.WorldGen
             int tz = z % 16;
             if (tx < 0) tx += 16;
             if (tz < 0) tz += 16;
-            Console.WriteLine($" GETTING BLOCK HEIGHT CHUNKCORDZ: {cx} {cz} || {tx} {tz} || FROM {x} {z}");
+            // Console.WriteLine($" GETTING BLOCK HEIGHT CHUNKCORDZ: {cx} {cz} || {tx} {tz} || FROM {x} {z}");
             AdvancedBiome tb = BiomeManager.GetBiome(new ChunkCoordinates(cx, cz));
             var c = GenerateChunkColumn(new ChunkCoordinates(cx, cz),true);
             if (c != null)
             {
                 // Console.WriteLine($"{tx} ||| {tz}");
-                Console.WriteLine($"DA CHUNK AT {cx} {cz} WAS ALREADY GENERATED AND AT {x} {z} >> {tx} {tz} >> HAS {c.GetHeight(tx, tz)}^^^ ");
+                // Console.WriteLine($"DA CHUNK AT {cx} {cz} WAS ALREADY GENERATED AND AT {x} {z} >> {tx} {tz} >> HAS {c.GetHeight(tx, tz)}^^^ ");
                 return c.GetHeight(tx, tz);
             }
 
