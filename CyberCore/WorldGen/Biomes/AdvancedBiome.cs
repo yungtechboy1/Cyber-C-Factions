@@ -552,7 +552,10 @@ namespace CyberCore.WorldGen.Biomes
 
             // SmoothChunk(openExperimentalWorldProvider,chunk,rth);
 
-            if (t.ElapsedMilliseconds > 100) Log.Debug($"Chunk Population of X:{chunk.X} Z:{chunk.Z} took {t.Elapsed}");
+            if (t.ElapsedMilliseconds > 100)
+            {
+                Log.Debug($"Chunk Population of X:{chunk.X} Z:{chunk.Z} took {t.Elapsed}");
+            }
             return chunk;
         }
 
@@ -727,232 +730,121 @@ namespace CyberCore.WorldGen.Biomes
                 {
                     ChunkCoordinates sischunkcords;
                     AdvancedBiome sischunkbiome;
-                    // if (true)
-                    // {
-                    //     HandleSmothingAndGeneration(m,new ChunkCoordinates(c.X,c.Z), BorderChunkDirections);
-                    // }
+
+
+                    // HandleSmoothing(m,new ChunkCoordinates(c.X,c.Z),)
                     if (c.X == 55 && c.Z == 57)
                     {
-                        if (BorderChunkDirections.Contains(BorderChunkDirection.South))
+                        if (true)
                         {
-                            //South Sis Chunk
-                            sischunkcords = new ChunkCoordinates(c.X, c.Z - 1);
-                            sischunkbiome = BiomeManager.GetBiome(sischunkcords);
-                            if (sischunkbiome.BorderChunkDirections.Contains(BorderChunkDirection.North))
-                            {
-                                //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
-                                /// |ORIGINAL CHUNK   | N
-                                /// --------------
-                                /// NEW CHUNK          | S
-                                ///0,0
-                                ///
-                                /// 
-                                m = GenerateExtendedChunkHeightMap(BorderChunkDirection.North, m,
-                                    sischunkbiome.GenerateChunkHeightMap(sischunkcords, CyberExperimentalWorldProvider),
-                                    CyberExperimentalWorldProvider);
-                                m = GenerateExtendedChunkHeightMapBorder(m, BorderChunkDirection.South, c,
-                                    CyberExperimentalWorldProvider);
-                                var mmm = SquareSmooth(m);
-                                m = FinalCropTo16(mmm, BorderChunkDirection.North);
-                                m[10, 10] = 110;
-                                //FINISH SISTER CHUNK
-                                // Console.WriteLine($"AHHHH PLZ WORK {mmm.GetLength(0)} {mmm.GetLength(1)}");
-                                // Console.WriteLine($"SMOOTHIGN NORTH >> {c.X} {c.Z}");
-                                var mm = FinalCropTo16(mmm, BorderChunkDirection.South);
-                                mm[10, 10] = 115;
-                                var nc = new ChunkColumn();
-                                nc.X = sischunkcords.X;
-                                nc.Z = sischunkcords.Z;
-                                sischunkbiome.GenerateChunkFromSmoothOrder(CyberExperimentalWorldProvider, nc,
-                                    BiomeManager.getChunkRTH(sischunkcords), mm);
-                                CyberExperimentalWorldProvider._chunkCache[sischunkcords] = nc;
-                                SaveViaCSV($"/MapTesting/MAPCHUNK SSSS {c.X} {c.Z} GENERATED {nc.X} {nc.Z}.csv",
-                                    IntArrayToString(mm));
-                                Console.WriteLine($"#{c.X}:{c.Z} SMOOTH SOUTH TO {sischunkcords}");
-                            }
+                            SmoothingMap sm = HandleSmothingAndGeneration(m, new ChunkCoordinates(c.X, c.Z),
+                                BorderChunkDirections,
+                                CyberExperimentalWorldProvider);
+                            sm.SquareSmooth();
+                            m = sm.SetChunks(CyberExperimentalWorldProvider,BCD);
                         }
+                        // // else
+                        // if (BorderChunkDirections.Contains(BorderChunkDirection.North))
+                        // {
+                        //     //North Sis Chunk
+                        //     sischunkcords = new ChunkCoordinates(c.X, c.Z + 1);
+                        //     sischunkbiome = BiomeManager.GetBiome(sischunkcords);
+                        //     if (sischunkbiome.BorderChunkDirections.Contains(BorderChunkDirection.South))
+                        //     {
+                        //         //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
+                        //         m = GenerateExtendedChunkHeightMap(BorderChunkDirection.South, m,
+                        //             sischunkbiome.GenerateChunkHeightMap(sischunkcords, CyberExperimentalWorldProvider),
+                        //             CyberExperimentalWorldProvider);
+                        //         // SaveViaCSV($"/MapTesting/MAPCHUNK PRE SMOOTH PRE EXPAND {c.X} {c.Z}.csv", IntArrayToString(m));
+                        //         m = GenerateExtendedChunkHeightMapBorder(m, BorderChunkDirection.North, c,
+                        //             CyberExperimentalWorldProvider);
+                        //         SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN PRE SMOOTH EXPAND {c.X} {c.Z}.csv",
+                        //             IntArrayToString(m));
+                        //         var mmm = SquareSmooth(m, 3);
+                        //         // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN222 POST SMOOTH {c.X} {c.Z}.csv",
+                        //         //     IntArrayToString(mmm));
+                        //         SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH {c.X} {c.Z}.csv",
+                        //             IntArrayToString(mmm));
+                        //         mmm = ShrinkFromExpand(mmm);
+                        //         SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH SHRINK {c.X} {c.Z}.csv",
+                        //             IntArrayToString(mmm));
+                        //         // Console.WriteLine($"AHHHH PLZ WORK {mmm.GetLength(0)} {mmm.GetLength(1)}");
+                        //         m = FinalCropTo16(mmm, BorderChunkDirection.North);
+                        //         m[10, 10] = 110;
+                        //         SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN {c.X} {c.Z}.csv", IntArrayToString(m));
+                        //         // Console.WriteLine($"SMOOTHIGN SOUTH >> {c.X} {c.Z}");
+                        //         //FINISH SISTER CHUNK
+                        //         var mm = FinalCropTo16(mmm, BorderChunkDirection.South);
+                        //         mm[10, 10] = 115;
+                        //         var nc = new ChunkColumn();
+                        //         nc.X = sischunkcords.X;
+                        //         nc.Z = sischunkcords.Z;
+                        //         sischunkbiome.GenerateChunkFromSmoothOrder(CyberExperimentalWorldProvider, nc,
+                        //             BiomeManager.getChunkRTH(sischunkcords), mm);
+                        //         SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN {c.X} {c.Z} GENERATED {nc.X} {nc.Z}.csv",
+                        //             IntArrayToString(mm));
+                        //         CyberExperimentalWorldProvider._chunkCache[sischunkcords] = nc;
+                        //         SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN {c.X} {c.Z} GENERATED FOUND {nc.X} {nc.Z}.csv",
+                        //             IntArrayToString(ChunkToIntMap(
+                        //                 CyberExperimentalWorldProvider.GenerateChunkColumn(sischunkcords, true))));
+                        //         Console.WriteLine($"#{c.X}:{c.Z} SMOOTH North TO {sischunkcords}");
+                        //     }
+                        // }
+                        //
+                        // // else
+                        // if (BorderChunkDirections.Contains(BorderChunkDirection.East))
+                        // {
+                        //     //East Sis Chunk
+                        //     sischunkcords = new ChunkCoordinates(c.X + 1, c.Z);
+                        //     sischunkbiome = BiomeManager.GetBiome(sischunkcords);
+                        //     if (sischunkbiome.BorderChunkDirections.Contains(BorderChunkDirection.West))
+                        //     {
+                        //         //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
+                        //         m = GenerateExtendedChunkHeightMap(BorderChunkDirection.West, m,
+                        //             sischunkbiome.GenerateChunkHeightMap(sischunkcords, CyberExperimentalWorldProvider),
+                        //             CyberExperimentalWorldProvider);
+                        //         // SaveViaCSV($"/MapTesting/MAPCHUNK PRE SMOOTH PRE EXPAND {c.X} {c.Z}.csv", IntArrayToString(m));
+                        //         m = GenerateExtendedChunkHeightMapBorder(m, BorderChunkDirection.East, c,
+                        //             CyberExperimentalWorldProvider, 3);
+                        //         SaveViaCSV($"/MapTesting/MAPCHUNK EEEEEEE PRE SMOOTH EXPAND {c.X} {c.Z}.csv",
+                        //             IntArrayToString(m));
+                        //         var mmm = SquareSmooth(m);
+                        //         SaveViaCSV($"/MapTesting/MAPCHUNK EEEEEEE POST SMOOTH {c.X} {c.Z}.csv",
+                        //             IntArrayToString(mmm));
+                        //         mmm = ShrinkFromExpand(mmm, 3);
+                        //         SaveViaCSV($"/MapTesting/MAPCHUNK EEEEEEE POST SMOOTH SHRINK {c.X} {c.Z}.csv",
+                        //             IntArrayToString(mmm));
+                        //         // Console.WriteLine($"AHHHH PLZ WORK {mmm.GetLength(0)} {mmm.GetLength(1)}");
+                        //         m = FinalCropTo16(mmm, BorderChunkDirection.East);
+                        //         m[10, 10] = 110;
+                        //         SaveViaCSV($"/MapTesting/MAPCHUNK EEEEEEE {c.X} {c.Z}.csv", IntArrayToString(m));
+                        //         // Console.WriteLine($"SMOOTHIGN SOUTH >> {c.X} {c.Z}");
+                        //         //FINISH SISTER CHUNK
+                        //         var mm = FinalCropTo16(mmm, BorderChunkDirection.West);
+                        //         mm[10, 10] = 115;
+                        //         var nc = new ChunkColumn();
+                        //         nc.X = sischunkcords.X;
+                        //         nc.Z = sischunkcords.Z;
+                        //         sischunkbiome.GenerateChunkFromSmoothOrder(CyberExperimentalWorldProvider, nc,
+                        //             BiomeManager.getChunkRTH(sischunkcords), mm);
+                        //         SaveViaCSV($"/MapTesting/MAPCHUNK EEEEEEE {c.X} {c.Z} GENERATED {nc.X} {nc.Z}.csv",
+                        //             IntArrayToString(mm));
+                        //         CyberExperimentalWorldProvider._chunkCache[sischunkcords] = nc;
+                        //         Console.WriteLine($"#{c.X}:{c.Z} SMOOTH EAST TO {sischunkcords}");
+                        //     }
+                        // }
 
-                        // else
-                        if (BorderChunkDirections.Contains(BorderChunkDirection.North))
-                        {
-                            //North Sis Chunk
-                            sischunkcords = new ChunkCoordinates(c.X, c.Z + 1);
-                            sischunkbiome = BiomeManager.GetBiome(sischunkcords);
-                            if (sischunkbiome.BorderChunkDirections.Contains(BorderChunkDirection.South))
-                            {
-                                //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
-                                m = GenerateExtendedChunkHeightMap(BorderChunkDirection.South, m,
-                                    sischunkbiome.GenerateChunkHeightMap(sischunkcords, CyberExperimentalWorldProvider),
-                                    CyberExperimentalWorldProvider);
-                                // SaveViaCSV($"/MapTesting/MAPCHUNK PRE SMOOTH PRE EXPAND {c.X} {c.Z}.csv", IntArrayToString(m));
-                                m = GenerateExtendedChunkHeightMapBorder(m, BorderChunkDirection.North, c,
-                                    CyberExperimentalWorldProvider);
-                                SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN PRE SMOOTH EXPAND {c.X} {c.Z}.csv",
-                                    IntArrayToString(m));
-                                var mmm = SquareSmooth(m,3);
-                                // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN222 POST SMOOTH {c.X} {c.Z}.csv",
-                                //     IntArrayToString(mmm));
-                                SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH {c.X} {c.Z}.csv",
-                                    IntArrayToString(mmm));
-                                mmm = ShrinkFromExpand(mmm);
-                                SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH SHRINK {c.X} {c.Z}.csv",
-                                    IntArrayToString(mmm));
-                                // Console.WriteLine($"AHHHH PLZ WORK {mmm.GetLength(0)} {mmm.GetLength(1)}");
-                                m = FinalCropTo16(mmm, BorderChunkDirection.North);
-                                m[10, 10] = 110;
-                                SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN {c.X} {c.Z}.csv", IntArrayToString(m));
-                                // Console.WriteLine($"SMOOTHIGN SOUTH >> {c.X} {c.Z}");
-                                //FINISH SISTER CHUNK
-                                var mm = FinalCropTo16(mmm, BorderChunkDirection.South);
-                                mm[10, 10] = 115;
-                                var nc = new ChunkColumn();
-                                nc.X = sischunkcords.X;
-                                nc.Z = sischunkcords.Z;
-                                sischunkbiome.GenerateChunkFromSmoothOrder(CyberExperimentalWorldProvider, nc,
-                                    BiomeManager.getChunkRTH(sischunkcords), mm);
-                                SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN {c.X} {c.Z} GENERATED {nc.X} {nc.Z}.csv",
-                                    IntArrayToString(mm));
-                                CyberExperimentalWorldProvider._chunkCache[sischunkcords] = nc;
-                                SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN {c.X} {c.Z} GENERATED FOUND {nc.X} {nc.Z}.csv",
-                                    IntArrayToString(ChunkToIntMap(
-                                        CyberExperimentalWorldProvider.GenerateChunkColumn(sischunkcords, true))));
-                                Console.WriteLine($"#{c.X}:{c.Z} SMOOTH North TO {sischunkcords}");
-                            }
-                        }
-
-                        // else
-                        if (BorderChunkDirections.Contains(BorderChunkDirection.East))
-                        {
-                            //East Sis Chunk
-                            sischunkcords = new ChunkCoordinates(c.X + 1, c.Z);
-                            sischunkbiome = BiomeManager.GetBiome(sischunkcords);
-                            if (sischunkbiome.BorderChunkDirections.Contains(BorderChunkDirection.West))
-                            {
-                                //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
-                                m = GenerateExtendedChunkHeightMap(BorderChunkDirection.West, m,
-                                    sischunkbiome.GenerateChunkHeightMap(sischunkcords, CyberExperimentalWorldProvider),
-                                    CyberExperimentalWorldProvider);
-                                // SaveViaCSV($"/MapTesting/MAPCHUNK PRE SMOOTH PRE EXPAND {c.X} {c.Z}.csv", IntArrayToString(m));
-                                m = GenerateExtendedChunkHeightMapBorder(m, BorderChunkDirection.East, c,
-                                    CyberExperimentalWorldProvider,3);
-                                SaveViaCSV($"/MapTesting/MAPCHUNK EEEEEEE PRE SMOOTH EXPAND {c.X} {c.Z}.csv",
-                                    IntArrayToString(m));
-                                var mmm = SquareSmooth(m);
-                                SaveViaCSV($"/MapTesting/MAPCHUNK EEEEEEE POST SMOOTH {c.X} {c.Z}.csv",
-                                    IntArrayToString(mmm));
-                                mmm = ShrinkFromExpand(mmm,3);
-                                SaveViaCSV($"/MapTesting/MAPCHUNK EEEEEEE POST SMOOTH SHRINK {c.X} {c.Z}.csv",
-                                    IntArrayToString(mmm));
-                                // Console.WriteLine($"AHHHH PLZ WORK {mmm.GetLength(0)} {mmm.GetLength(1)}");
-                                m = FinalCropTo16(mmm, BorderChunkDirection.East);
-                                m[10, 10] = 110;
-                                SaveViaCSV($"/MapTesting/MAPCHUNK EEEEEEE {c.X} {c.Z}.csv", IntArrayToString(m));
-                                // Console.WriteLine($"SMOOTHIGN SOUTH >> {c.X} {c.Z}");
-                                //FINISH SISTER CHUNK
-                                var mm = FinalCropTo16(mmm, BorderChunkDirection.West);
-                                mm[10, 10] = 115;
-                                var nc = new ChunkColumn();
-                                nc.X = sischunkcords.X;
-                                nc.Z = sischunkcords.Z;
-                                sischunkbiome.GenerateChunkFromSmoothOrder(CyberExperimentalWorldProvider, nc,
-                                    BiomeManager.getChunkRTH(sischunkcords), mm);
-                                SaveViaCSV($"/MapTesting/MAPCHUNK EEEEEEE {c.X} {c.Z} GENERATED {nc.X} {nc.Z}.csv",
-                                    IntArrayToString(mm));
-                                CyberExperimentalWorldProvider._chunkCache[sischunkcords] = nc;
-                                Console.WriteLine($"#{c.X}:{c.Z} SMOOTH EAST TO {sischunkcords}");
-                            }
-                        }
-
-                        // else
-                        if (BorderChunkDirections.Contains(BorderChunkDirection.West))
-                        {
-                            //North Sis Chunk
-                            sischunkcords = new ChunkCoordinates(c.X - 1, c.Z);
-                            sischunkbiome = BiomeManager.GetBiome(sischunkcords);
-                            var tc = CyberExperimentalWorldProvider.GenerateChunkColumn(sischunkcords, true);
-                            int[,] t;
-                            if (tc != null)
-                            {
-                                t = ChunkToIntMap(tc);
-                            }
-                            else
-                                t = sischunkbiome.GenerateChunkHeightMap(sischunkcords, CyberExperimentalWorldProvider);
-
-//CHECK THIS?!?!?!? TODO
-//TODO BUG
-                            if (sischunkbiome.BorderChunkDirections.Contains(BorderChunkDirection.East))
-                            {
-                                //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
-                                m = GenerateExtendedChunkHeightMap(BorderChunkDirection.East, m,
-                                    t,
-                                    CyberExperimentalWorldProvider);
-                                // SaveViaCSV($"/MapTesting/MAPCHUNK PRE SMOOTH PRE EXPAND {c.X} {c.Z}.csv", IntArrayToString(m));
-                                m = GenerateExtendedChunkHeightMapBorder(m, BorderChunkDirection.West, c,
-                                    CyberExperimentalWorldProvider);
-                                // SaveViaCSV($"/MapTesting/MAPCHUNK PRE SMOOTH EXPAND {c.X} {c.Z}.csv", IntArrayToString(m));
-                                var mmm = SquareSmooth(m);
-                                // SaveViaCSV($"/MapTesting/MAPCHUNK POST SMOOTH {c.X} {c.Z}.csv", IntArrayToString(mmm));
-                                mmm = ShrinkFromExpand(mmm);
-                                SaveViaCSV($"/MapTesting/MAPCHUNK WWWWW POST SMOOTH SHRINK {c.X} {c.Z}.csv",
-                                    IntArrayToString(mmm));
-                                // Console.WriteLine($"AHHHH PLZ WORK {mmm.GetLength(0)} {mmm.GetLength(1)}");
-                                m = FinalCropTo16(mmm, BorderChunkDirection.West);
-                                m[10, 10] = 110;
-                                SaveViaCSV($"/MapTesting/MAPCHUNK WWWWW {c.X} {c.Z}.csv", IntArrayToString(m));
-                                // Console.WriteLine($"SMOOTHIGN SOUTH >> {c.X} {c.Z}");
-                                //FINISH SISTER CHUNK
-                                var mm = FinalCropTo16(mmm, BorderChunkDirection.East);
-                                mm[10, 10] = 115;
-                                var nc = new ChunkColumn();
-                                nc.X = sischunkcords.X;
-                                nc.Z = sischunkcords.Z;
-                                sischunkbiome.GenerateChunkFromSmoothOrder(CyberExperimentalWorldProvider, nc,
-                                    BiomeManager.getChunkRTH(sischunkcords), mm);
-                                SaveViaCSV($"/MapTesting/MAPCHUNK WWWWW {c.X} {c.Z} GENERATED {nc.X} {nc.Z}.csv",
-                                    IntArrayToString(mm));
-                                CyberExperimentalWorldProvider._chunkCache[sischunkcords] = nc;
-                                Console.WriteLine($"#{c.X}:{c.Z} SMOOTH WEST TO {sischunkcords}");
-                            }
-                        }
                     }
-                    // // else
-                    // {
-                    //     m[7, 7] = 100;
-                    //     if (BorderChunkDirections.Contains(BorderChunkDirection.North)) m[7, 8] = 101;
-                    //     if (BorderChunkDirections.Contains(BorderChunkDirection.East)) m[8, 7] = 101;
-                    //     if (BorderChunkDirections.Contains(BorderChunkDirection.South)) m[7, 6] = 101;
-                    //     if (BorderChunkDirections.Contains(BorderChunkDirection.West)) m[6, 7] = 101;
-                    //     if (BorderChunkDirections.Contains(BorderChunkDirection.NE)) m[8, 8] = 101;
-                    //     if (BorderChunkDirections.Contains(BorderChunkDirection.SE)) m[8, 6] = 101;
-                    //     if (BorderChunkDirections.Contains(BorderChunkDirection.SW)) m[6, 6] = 101;
-                    //     if (BorderChunkDirections.Contains(BorderChunkDirection.NW)) m[6, 8] = 101;
-                    //     for (int x = 0; x < 16; x++)
-                    //     {
-                    //         for (int z = 0; z < 16; z++)
-                    //         {
-                    //             // for (int y = 0; y < 255; y++)
-                    //             // {
-                    //             //     
-                    //             // }
-                    //             c.SetHeight(x, z, (short) m[x, z]);
-                    //         }
-                    //     }
-                    //
-                    //     return m;
-                    // }
-
-                    // m = GenerateExtendedChunkHeightMap(m, c, CyberExperimentalWorldProvider);
-                    // m = CropToSmoothChunks(m, new ChunkCoordinates(c.X, c.Z), CyberExperimentalWorldProvider);
 
                     m[7, 7] = 100;
-                    if (BorderChunkDirections.Contains(BorderChunkDirection.North)) m[7, 8] = 101;
-                    if (BorderChunkDirections.Contains(BorderChunkDirection.East)) m[8, 7] = 101;
-                    if (BorderChunkDirections.Contains(BorderChunkDirection.South)) m[7, 6] = 101;
-                    if (BorderChunkDirections.Contains(BorderChunkDirection.West)) m[6, 7] = 101;
-                    if (BorderChunkDirections.Contains(BorderChunkDirection.NE)) m[8, 8] = 101;
-                    if (BorderChunkDirections.Contains(BorderChunkDirection.SE)) m[8, 6] = 101;
-                    if (BorderChunkDirections.Contains(BorderChunkDirection.SW)) m[6, 6] = 101;
-                    if (BorderChunkDirections.Contains(BorderChunkDirection.NW)) m[6, 8] = 101;
+                    // if (BCD.Contains(BorderChunkDirection.North)) m[7, 8] = 101;
+                    // if (BCD.Contains(BorderChunkDirection.East)) m[8, 7] = 101;
+                    // if (BCD.Contains(BorderChunkDirection.South)) m[7, 6] = 101;
+                    // if (BCD.Contains(BorderChunkDirection.West)) m[6, 7] = 101;
+                    // if (BCD.Contains(BorderChunkDirection.NE)) m[8, 8] = 101;
+                    // if (BCD.Contains(BorderChunkDirection.SE)) m[8, 6] = 101;
+                    // if (BCD.Contains(BorderChunkDirection.SW)) m[6, 6] = 101;
+                    // if (BCD.Contains(BorderChunkDirection.NW)) m[6, 8] = 101;
                 }
             }
 
@@ -984,56 +876,193 @@ namespace CyberCore.WorldGen.Biomes
             return r;
         }
 
-        // private void HandleSmothingAndGeneration(int[,] ints, ChunkCoordinates c, List<BorderChunkDirection> borderChunkDirections)
-        // {
-        //     sischunkcords = new ChunkCoordinates(c.X, c.Z - 1);
-        //                 sischunkbiome = BiomeManager.GetBiome(sischunkcords);
-        //                 if (sischunkbiome.BorderChunkDirections.Contains(BorderChunkDirection.North))
-        //                 {
-        //                     //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
-        //                     /// |ORIGINAL CHUNK   | N
-        //                     /// --------------
-        //                     /// NEW CHUNK          | S
-        //                     ///0,0
-        //                     ///
-        //                     /// 
-        //                     m = GenerateExtendedChunkHeightMap(BorderChunkDirection.North, m,
-        //                         sischunkbiome.GenerateChunkHeightMap(sischunkcords),
-        //                         CyberExperimentalWorldProvider);
-        //                     m = GenerateExtendedChunkHeightMapBorder(m,BorderChunkDirection.South, c,CyberExperimentalWorldProvider);
-        //                    var mmm = SquareSmooth(m);
-        //                     m = FinalCropTo16(mmm, BorderChunkDirection.North);
-        //                     m[10, 10] = 110;
-        //                     //FINISH SISTER CHUNK
-        //                     // Console.WriteLine($"AHHHH PLZ WORK {mmm.GetLength(0)} {mmm.GetLength(1)}");
-        //                     // Console.WriteLine($"SMOOTHIGN NORTH >> {c.X} {c.Z}");
-        //                     var mm = FinalCropTo16(mmm, BorderChunkDirection.South);
-        //                     mm[10, 10] = 115;
-        //                     var nc = new ChunkColumn();
-        //                     nc.X = sischunkcords.X;
-        //                     nc.Z = sischunkcords.Z;
-        //                     sischunkbiome.GenerateChunkFromSmoothOrder(CyberExperimentalWorldProvider, nc,
-        //                         BiomeManager.getChunkRTH(sischunkcords), mm);
-        //                     CyberExperimentalWorldProvider._chunkCache[sischunkcords] = nc;
-        //                     SaveViaCSV($"/MapTesting/MAPCHUNK SSSS {c.X} {c.Z} GENERATED {nc.X} {nc.Z}.csv",
-        //                         IntArrayToString(mm));
-        // }
-        // }
-        //
+        public class SmoothingMap
+        {
+            public int[,] Map = new int[16 * 3 * 2, 16 * 3 + 2];
+
+            public ChunkCoordinates getCenterCords()
+            {
+                return ZeroCords + new ChunkCoordinates(1, 1);
+            }
+
+            public ChunkCoordinates ZeroCords;
+            // public ChunkCoordinates CenterCords;
+
+            public SmoothingMap(ChunkCoordinates centerchunkcords, int[,] data = null)
+            {
+                ZeroCords = centerchunkcords + new ChunkCoordinates(-1, -1);
+                if (data != null)
+                {
+                    AddChunk(centerchunkcords, data);
+                }
+            }
+
+            public int[,] GetChunk(ChunkCoordinates c)
+            {
+                int[,] data = new int[16, 16];
+                int xo = 0;
+                int zo = 0;
+                int cdx = c.X - ZeroCords.X;
+                int cdz = c.Z - ZeroCords.Z;
+                xo = cdx * 16;
+                zo = cdz * 16;
+                for (int z = 0; z < 16; z++)
+                {
+                    for (int x = 0; x < 16; x++)
+                    {
+                        //TODO FIX
+                        data[x, z] = data[xo + x, zo + z];
+                    }
+                }
+
+                return data;
+            }
+
+            public void AddChunk(ChunkCoordinates c, int[,] data)
+            {
+                int xo = 0;
+                int zo = 0;
+                int cdx = c.X - ZeroCords.X;
+                int cdz = c.Z - ZeroCords.Z;
+                xo = cdx * 16;
+                zo = cdz * 16;
+                for (int z = zo; z < zo + 16; z++)
+                {
+                    for (int x = xo; x < xo + 16; x++)
+                    {
+                        Map[x, z] = data[x - xo, z - zo];
+                    }
+                }
+            }
+
+            public void SquareSmooth(int w = 2, bool cel = true)
+            {
+                for (int z = 0; z < Map.GetLength(1); z++)
+                for (int x = 0; x < Map.GetLength(0); x++)
+                {
+                    int ah = 0;
+                    int ac = 0;
+                    for (int zz = w * -1; zz <= w; zz++)
+                    for (int xx = w * -1; xx <= w; xx++)
+                    {
+                        int tx = x + xx;
+                        int tz = z + zz;
+                        // if (0 > z + i || f22.GetLength(1) <= z + i) continue; 
+                        if (0 > tx || 0 > tz || Map.GetLength(0) <= tx || Map.GetLength(1) <= tz) continue;
+                        ac++;
+                        ah += Map[tx, tz];
+                    }
+
+                    float alpha = .35f;
+                    if (cel)
+                    {
+                        int vv = (int) Math.Ceiling(ah / (double) ac);
+                        // int vvv = Interpolate(vv, ints[x, z], alpha);
+                        int vvv = vv; //Interpolate(vv, ints[x, z], alpha);
+                        // Console.WriteLine($"INTERPOLATION VALUE FROM {vv} TO {vvv} WITH #{ints[x, z]} AND A {alpha}");
+                        Map[x, z] = vvv;
+                    }
+                    else
+                        Map[x, z] = ah / ac;
+                }
+            }
+
+            public int[,] SetChunks(CyberExperimentalWorldProvider cyberExperimentalWorldProvider,
+                List<BorderChunkDirection> bcd)
+            {
+                foreach (var b in bcd)
+                {
+                    int[,] data = new int[16, 16];
+                    int xo = 0;
+                    int zo = 0;
+                    int cdx = (b.GetX() + getCenterCords().X)-ZeroCords.X;
+                    int cdz = (b.GetZ() + getCenterCords().Z)-ZeroCords.Z;
+
+                    ChunkCoordinates tc = new  ChunkCoordinates((b.GetX() + getCenterCords().X),
+                        (b.GetZ() + getCenterCords().Z));
+                    
+                    data = GetChunk(tc);
+
+                    var sischunkcords = tc;
+                    var sischunkbiome = BiomeManager.GetBiome(sischunkcords);
+                    var nc = new ChunkColumn();
+                    nc.X = sischunkcords.X;
+                    nc.Z = sischunkcords.Z;
+                    sischunkbiome.GenerateChunkFromSmoothOrder(cyberExperimentalWorldProvider, nc,
+                        BiomeManager.getChunkRTH(sischunkcords), data);
+                    cyberExperimentalWorldProvider._chunkCache[sischunkcords] = nc;
+                    // return data;
+                }
+                return GetChunk(getCenterCords());
+            }
+        }
+
+        public List<BorderChunkDirection> BCD = null;
+        
+        private SmoothingMap HandleSmothingAndGeneration(int[,] ints, ChunkCoordinates c,
+            List<BorderChunkDirection> borderChunkDirections,
+            CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
+        {
+            ChunkCoordinates sischunkcords;
+            AdvancedBiome sischunkbiome;
+            SmoothingMap sm = new SmoothingMap(c, ints);
+            BorderChunkDirection d = BorderChunkDirection.North;
+            CheckAndAddChunkDirection(d, borderChunkDirections, c, sm, cyberExperimentalWorldProvider);
+
+            d = BorderChunkDirection.East;
+            CheckAndAddChunkDirection(d, borderChunkDirections, c, sm, cyberExperimentalWorldProvider);
+
+            d = BorderChunkDirection.South;
+            CheckAndAddChunkDirection(d, borderChunkDirections, c, sm, cyberExperimentalWorldProvider);
+
+            d = BorderChunkDirection.West;
+            CheckAndAddChunkDirection(d, borderChunkDirections, c, sm, cyberExperimentalWorldProvider);
+
+            d = BorderChunkDirection.NE;
+            CheckAndAddChunkDirection(d, borderChunkDirections, c, sm, cyberExperimentalWorldProvider);
+            d = BorderChunkDirection.SE;
+            CheckAndAddChunkDirection(d, borderChunkDirections, c, sm, cyberExperimentalWorldProvider);
+            d = BorderChunkDirection.SW;
+            CheckAndAddChunkDirection(d, borderChunkDirections, c, sm, cyberExperimentalWorldProvider);
+            d = BorderChunkDirection.NW;
+            CheckAndAddChunkDirection(d, borderChunkDirections, c, sm, cyberExperimentalWorldProvider);
+            BCD = borderChunkDirections;
+
+            return sm;
+        }
+
+        private void CheckAndAddChunkDirection(BorderChunkDirection b,
+            List<BorderChunkDirection> bcd, ChunkCoordinates cordz, SmoothingMap sm,
+            CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
+        {
+            if (bcd.Contains(b))
+            {
+                var sischunkcords = new ChunkCoordinates(cordz.X + b.GetX(), cordz.Z + b.GetZ());
+                var sischunkbiome = BiomeManager.GetBiome(sischunkcords);
+                if (sischunkbiome.BorderChunkDirections.Contains(b.Opposite()))
+                {
+                    sm.AddChunk(cordz + new ChunkCoordinates(b.GetX(), b.GetZ()),
+                        sischunkbiome.GenerateChunkHeightMap(sischunkcords, cyberExperimentalWorldProvider));
+                }
+                else
+                    bcd.Remove(b);
+            }
+        }
+
         private int[,] ShrinkFromExpand(int[,] mmm, int xtra = 1)
         {
-            int[,] m = new int[mmm.GetLength(0) - 2*xtra, mmm.GetLength(1) - 2*xtra];
+            int[,] m = new int[mmm.GetLength(0) - 2 * xtra, mmm.GetLength(1) - 2 * xtra];
             for (int z = 0; z < mmm.GetLength(1) - 1; z++)
             for (int x = 0; x < mmm.GetLength(0) - 1; x++)
             {
-                if (x <= xtra-1 || z >= xtra-1)
+                if (x <= xtra - 1 || z >= xtra - 1)
                 {
                     continue;
                 }
                 else
                 {
                     Console.WriteLine(
-                    $"M {x - xtra} {z - xtra} |{xtra}||| mmm {x} {z} || {m.GetLength(0)} {m.GetLength(1)} || {mmm.GetLength(0)} {mmm.GetLength(1)}");
+                        $"M {x - xtra} {z - xtra} |{xtra}||| mmm {x} {z} || {m.GetLength(0)} {m.GetLength(1)} || {mmm.GetLength(0)} {mmm.GetLength(1)}");
                     m[x - xtra, z - xtra] = mmm[x, z];
                 }
             }
@@ -1060,22 +1089,25 @@ namespace CyberCore.WorldGen.Biomes
                 if (direction == BorderChunkDirection.South) cc += new ChunkCoordinates(0, 1);
                 if (direction == BorderChunkDirection.West) cc += new ChunkCoordinates(1, 0);
             }
+
             //Get Chunk in Top Left Corner or Closer to 0,0
             // int xtra = 3;
-            int[,] m = zaxis ? new int[16 + 2*xtra, (16 * 2) + 2*xtra] : new int[(16 * 2) + 2*xtra, 16 + 2*xtra];
+            int[,] m = zaxis
+                ? new int[16 + 2 * xtra, (16 * 2) + 2 * xtra]
+                : new int[(16 * 2) + 2 * xtra, 16 + 2 * xtra];
             int sx = cc.X * 16 - xtra;
             int sz = cc.Z * 16 - xtra;
             for (int z = 0; z < m.GetLength(1); z++)
             for (int x = 0; x < m.GetLength(0); x++)
             {
-                if (x <= xtra-1 || x >= m.GetLength(0) - xtra-1 || z <= xtra-1 || z >= m.GetLength(1) - xtra-1)
+                if (x <= xtra - 1 || x >= m.GetLength(0) - xtra - 1 || z <= xtra - 1 || z >= m.GetLength(1) - xtra - 1)
                 {
                     m[x, z] = c.getBlockHeight(sx + x, sz + z);
                 }
                 else
                 {
                     Console.WriteLine(
-                    $"M {x} {z} ||| ints {x - xtra} {z - xtra} || {m.GetLength(0)} {m.GetLength(1)} || {ints.GetLength(0)} {ints.GetLength(1)}");
+                        $"M {x} {z} ||| ints {x - xtra} {z - xtra} || {m.GetLength(0)} {m.GetLength(1)} || {ints.GetLength(0)} {ints.GetLength(1)}");
                     m[x, z] = ints[x - xtra, z - xtra];
                 }
             }
@@ -1111,7 +1143,7 @@ namespace CyberCore.WorldGen.Biomes
                 {
                     int vv = (int) Math.Ceiling(ah / (double) ac);
                     // int vvv = Interpolate(vv, ints[x, z], alpha);
-                    int vvv = vv;//Interpolate(vv, ints[x, z], alpha);
+                    int vvv = vv; //Interpolate(vv, ints[x, z], alpha);
                     // Console.WriteLine($"INTERPOLATION VALUE FROM {vv} TO {vvv} WITH #{ints[x, z]} AND A {alpha}");
                     ints[x, z] = vvv;
                 }

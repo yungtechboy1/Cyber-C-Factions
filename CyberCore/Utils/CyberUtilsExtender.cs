@@ -441,6 +441,44 @@ namespace CyberCore.Utils
             return i1 == ii1;
         }
 
+        public static int GetX(this AdvancedBiome.BorderChunkDirection c)
+        {
+            switch (c)
+            {
+                case AdvancedBiome.BorderChunkDirection.North:
+                case AdvancedBiome.BorderChunkDirection.South:
+                    return 0;
+                case AdvancedBiome.BorderChunkDirection.West:
+                case AdvancedBiome.BorderChunkDirection.NW:
+                case AdvancedBiome.BorderChunkDirection.SW:
+                    return -1;
+                case AdvancedBiome.BorderChunkDirection.NE:
+                case AdvancedBiome.BorderChunkDirection.SE:
+                case AdvancedBiome.BorderChunkDirection.East:
+                    return 1;
+                default:
+                    return 0;
+            }
+        }
+        public static int GetZ(this AdvancedBiome.BorderChunkDirection c)
+        {
+            switch (c)
+            {
+                case AdvancedBiome.BorderChunkDirection.North:
+                case AdvancedBiome.BorderChunkDirection.NE:
+                case AdvancedBiome.BorderChunkDirection.NW:
+                    return 1;
+                case AdvancedBiome.BorderChunkDirection.SE:
+                case AdvancedBiome.BorderChunkDirection.SW:
+                case AdvancedBiome.BorderChunkDirection.South:
+                    return -1;
+                case AdvancedBiome.BorderChunkDirection.West:
+                case AdvancedBiome.BorderChunkDirection.East:
+                default:
+                    return 0;
+            }
+        }
+        
         public static AdvancedBiome.BorderChunkDirection Opposite(this AdvancedBiome.BorderChunkDirection c)
         {
             switch (c)
