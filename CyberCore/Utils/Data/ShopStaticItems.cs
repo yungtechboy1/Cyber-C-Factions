@@ -71,12 +71,13 @@ namespace CyberCore.Utils.Data
             Gold = ItemFactory.GetItem(new ItemGoldIngot().Id);
             Gold.setCompoundTag(T);
             Gold.setCustomName(ChatColors.Gold + " Your money: ");
-
+Console.WriteLine("ADDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             AddX1 = new ItemBlock(new EmeraldBlock());
             AddX1.setCompoundTag(T);
             AddX1.getNamedTag().putInt("ADD", 1);
             AddX1.Count = 1;
             AddX1.setCustomName(ChatColors.Green + " Buy 1");
+            Console.WriteLine("ADDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 
             Spawner = new ItemBlock(new MobSpawner());
             Spawner.setCompoundTag(T);
@@ -94,12 +95,14 @@ namespace CyberCore.Utils.Data
             CatagoryChest.Count = 1;
             CatagoryChest.setCustomName(ChatColors.Yellow + " Categories");
 
+            Console.WriteLine("ADDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             AddX10 = new ItemBlock(new EmeraldBlock());
             AddX10.setCompoundTag(T);
             AddX10.getNamedTag().putInt("ADD", 10);
             AddX10.Count = 10;
             AddX10.setCustomName(ChatColors.Green + " Buy 10");
 
+            Console.WriteLine("ADDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 
             AddX32 = new ItemBlock(new EmeraldBlock());
             AddX32.setCompoundTag(T);
@@ -107,24 +110,28 @@ namespace CyberCore.Utils.Data
             AddX32.Count = 32;
             AddX32.setCustomName(ChatColors.Green + " Buy 32");
 
+            Console.WriteLine("ADDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             AddX64 = new ItemBlock(new EmeraldBlock());
             AddX64.setCompoundTag(T);
             AddX64.getNamedTag().putInt("ADD", 64);
             AddX64.Count = 64;
             AddX64.setCustomName(ChatColors.Green + " Buy 64");
 
+            Console.WriteLine("ADDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             AddX1N = new ItemBlock(new IronBlock());
             AddX1N.setCompoundTag(T);
             AddX1N.getNamedTag().putInt("ADD", 1);
             AddX1N.Count = 1;
             AddX1N.setCustomName(ChatColors.Green + "Cannot Buy 1");
 
+            Console.WriteLine("ADDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             AddX10N = new ItemBlock(new IronBlock());
             AddX10N.setCompoundTag(T);
             AddX10N.getNamedTag().putInt("ADD", 10);
             AddX10N.Count = 10;
             AddX10N.setCustomName(ChatColors.Green + "Cannot Buy 10");
 
+            Console.WriteLine("ADDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 
             AddX32N = new ItemBlock(new IronBlock());
             AddX32N.setCompoundTag(T);
@@ -132,12 +139,14 @@ namespace CyberCore.Utils.Data
             AddX32N.Count = 32;
             AddX32N.setCustomName(ChatColors.Green + "Cannot Buy 32");
 
+            Console.WriteLine("ADDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             AddX64N = new ItemBlock(new IronBlock());
             AddX64N.setCompoundTag(T);
             AddX64N.getNamedTag().putInt("ADD", 64);
             AddX64N.Count = 64;
             AddX64N.setCustomName(ChatColors.Green + "Cannot Buy 64");
 
+            Console.WriteLine("ADDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 
             RmvX1 = new ItemBlock(new YellowGlazedTerracotta());
             RmvX1N = new ItemBlock(new IronBlock());

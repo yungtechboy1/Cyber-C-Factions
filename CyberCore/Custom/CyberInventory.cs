@@ -5,6 +5,7 @@ using fNbt;
 using MiNET;
 using MiNET.BlockEntities;
 using MiNET.Items;
+using MiNET.Net;
 
 namespace CyberCore.Custom
 {
@@ -94,6 +95,15 @@ namespace CyberCore.Custom
             }
 
             return -1;
+        }
+
+        public void SendInv(Player p)
+        {
+            
+            McpeInventoryContent inventoryContent = Packet<McpeInventoryContent>.CreateObject(1L);
+            inventoryContent.inventoryId = (uint) WindowsId;
+            inventoryContent.input = Slots;
+            p.SendPacket((Packet) inventoryContent);
         }
 
         public void Clear()

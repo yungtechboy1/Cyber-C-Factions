@@ -281,7 +281,7 @@ namespace CyberCore
         }
 
         [Command(Name = "shop", Description = "Buy / Sell Items")]
-        public void Shop(CorePlayer p, int amt)
+        public void Shop(CorePlayer p)
         {
             var a = new ShopFactory(CCM);
             a.OpenShop(p,1);

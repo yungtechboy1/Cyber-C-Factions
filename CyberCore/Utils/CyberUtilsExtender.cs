@@ -58,6 +58,7 @@ namespace CyberCore.Utils
 
         public static NbtCompound putInt(this NbtCompound i, string key, int val)
         {
+            i.Remove(key);
             i.Add(new NbtInt(key, val));
             return i;
         }
@@ -69,6 +70,7 @@ namespace CyberCore.Utils
 
         public static NbtCompound putBoolean(this NbtCompound i, string key, bool val)
         {
+            i.Remove(key);
             i.Add(new NbtByte(key, (byte) (val ? 1 : 0)));
             return i;
         }
@@ -335,12 +337,13 @@ namespace CyberCore.Utils
             {
                 if (string.IsNullOrEmpty(name)) return i.clearCustomName();
 
-                if(i.ExtraData == null)i.ExtraData = new NbtCompound();
+                if(i.ExtraData == null)i.ExtraData = new NbtCompound("");
                 
                 var tag = i.ExtraData;
                 if (tag != null && tag.Contains("display") && tag.Get("display") is NbtCompound)
                 {
                     var a = tag.Get<NbtCompound>("display");
+                    a.Remove("Name");
                     a.Add(new NbtString("Name", name));
                 }
                 else

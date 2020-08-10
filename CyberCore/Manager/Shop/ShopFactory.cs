@@ -329,13 +329,13 @@ namespace CyberCore.Manager.Shop
 
     public void OpenShop(CorePlayer p, int pg) {
         
-        var n = new NbtCompound();
+        var n = new NbtCompound("");
         n.Add(new NbtString("CustomName", "SHOP!"));
         SpawnFakeBlockAndEntity(p, n);
         
         
         // ShopInv b = new ShopInv(p, CCM, p.KnownPosition.ToVector3(), pg);
-        var b = new NewShopInv();
+        var b = new NewShopInv(p);
         // CyberCoreMain.getInstance().getLogger().info(b.getContents().values().size() + " < SIZZEEE" + b.getSize());
         // CyberCoreMain.getInstance().getServer().getScheduler().scheduleDelayedTask(new OpenShop(p, b), 5);
 //        b.open()
@@ -343,18 +343,46 @@ namespace CyberCore.Manager.Shop
         // CyberCoreMain.Log.Info(b.getContents().Values.Count + " < SIZZEEE" + b.size);
         //TODO !IMPORTANT
         p.SetOpenInventory(b);
+        
+        PlayerLocation a = new PlayerLocation();
+        PlayerLocation aa = new PlayerLocation();
+        a.X = aa.X = p.KnownPosition.X;
+        a.Y = aa.Y = p.KnownPosition.Y - 2;
+        a.Z = aa.Z = p.KnownPosition.Z;
+        aa.Z += 1;
+        
+        McpeBlockEvent message = Packet<McpeBlockEvent>.CreateObject(1L);
+        message.coordinates = (BlockCoordinates) a;
+        message.case1 = 1;
+        message.case2 = 2;
+        p.SendPacket(message);
+        // this.Level.RelayBroadcast<McpeBlockEvent>(message);
+    
+    // inventory.InventoryChange += new Action<Player, MiNET.Inventory, byte, Item>(this.OnInventoryChange);
+    // inventory.AddObserver(this);
+    McpeContainerOpen mcpeContainerOpen = Packet<McpeContainerOpen>.CreateObject(1L);
+    mcpeContainerOpen.windowId = b.WindowsId;
+    mcpeContainerOpen.type = b.Type;
+    mcpeContainerOpen.coordinates = (BlockCoordinates) a;
+    mcpeContainerOpen.runtimeEntityId = -1L;
+    p.SendPacket((Packet) mcpeContainerOpen);
+    Console.WriteLine("SLOTSSSSSS LEEENNNNNGGGGGG "+b.Slots.Count);
+    McpeInventoryContent inventoryContent = Packet<McpeInventoryContent>.CreateObject(1L);
+    inventoryContent.inventoryId = (uint) b.WindowsId;
+    inventoryContent.input = b.Slots;
+    p.SendPacket((Packet) inventoryContent);
         // p.Shop = b;
     }
 
     public void SpawnFakeBlockAndEntity(Player to, NbtCompound data) {
 
-        SpawnBlock(to, new Chest());
+        SpawnBlock(to);
         SpawnBlockEntity(to, data);
 
     }
 
 
-        public void SpawnBlock(Player to, Block b)
+        public void SpawnBlock(Player to)
         {
             PlayerLocation a = new PlayerLocation();
             PlayerLocation aa = new PlayerLocation();
@@ -365,11 +393,13 @@ namespace CyberCore.Manager.Shop
             BlockCoordinates l1 = new BlockCoordinates(a);
             BlockCoordinates l2 = new BlockCoordinates(aa);
             var message = McpeUpdateBlock.CreateObject();
-            message.blockRuntimeId = (uint) new Chest().GetRuntimeId();
+            var bb = new Chest();
+            bb.FacingDirection = 4;
+            message.blockRuntimeId = (uint) bb.GetRuntimeId();
             message.coordinates = l1;
             message.blockPriority = (int) (McpeUpdateBlock.Flags.AllPriority);
             var message2 = McpeUpdateBlock.CreateObject();
-            message2.blockRuntimeId = (uint) new Chest().GetRuntimeId();
+            message2.blockRuntimeId = (uint) bb.GetRuntimeId();
             message2.coordinates = l2;
             message2.blockPriority = (int) (McpeUpdateBlock.Flags.AllPriority);
             to.SendPacket(message);
@@ -384,6 +414,8 @@ namespace CyberCore.Manager.Shop
             a.Y = aa.Y = to.KnownPosition.Y - 2;
             a.Z = aa.Z = to.KnownPosition.Z;
             aa.Z += 1;
+            data.Add(new NbtInt("pairx",(int) aa.X));;
+            data.Add(new NbtInt("pairz",(int) aa.Z));;
             var nbt = new Nbt
             {
                 NbtFile = new NbtFile
@@ -399,10 +431,10 @@ namespace CyberCore.Manager.Shop
                 {
                     BigEndian = false,
                     UseVarInt = true,
-                    RootTag = new NbtCompound()
+                    RootTag = new NbtCompound("")
                     {
                         new NbtInt("pairx", (int) a.X),
-                        new NbtInt("pairxz", (int) a.Z),
+                        new NbtInt("pairz", (int) a.Z),
                     }
                 }
             };

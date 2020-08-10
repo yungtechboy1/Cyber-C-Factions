@@ -152,6 +152,28 @@ namespace CyberCore
         // }
         //
 
+        public override void HandleMcpeContainerClose(McpeContainerClose message)
+        {
+            Console.WriteLine("======================================================================================");
+            Console.WriteLine("======================================================================================");
+            Console.WriteLine("======================================================================================");
+            // if (_openInventory is MiNET.Inventory openInventory)
+            // {
+            //     this._openInventory = (IInventory) null;
+            //     openInventory.InventoryChange -= new Action<Player, MiNET.Inventory, byte, Item>(this.OnInventoryChange);
+            //     openInventory.RemoveObserver(this);
+            //     if (message != null && (int) message.windowId != (int) openInventory.WindowsId || (openInventory.Type != (byte) 0 || openInventory.IsOpen()))
+            //         return;
+            //     McpeBlockEvent message1 = Packet<McpeBlockEvent>.CreateObject(1L);
+            //     message1.coordinates = openInventory.Coordinates;
+            //     message1.case1 = 1;
+            //     message1.case2 = 0;
+            //     this.Level.RelayBroadcast<McpeBlockEvent>(message1);
+            // }
+            base.HandleMcpeContainerClose(message);
+            SendPlayerInventory();
+        }
+
         // public override void HandleMcpeContainerClose(McpeContainerClose message)
         // {
         //     base.HandleMcpeContainerClose(message);
