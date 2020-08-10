@@ -263,6 +263,33 @@ namespace CyberCore.WorldGen
                         }
                     }
                     
+                    if (n)
+                    {
+                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NE))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NE);
+                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NW))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NW);
+                    }
+                            
+                            
+                    if (s)
+                    {
+                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SW))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SW);
+                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SE)) biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SE);
+                    }
+                            
+                            
+                    if (w)
+                    {
+                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SW))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SW);
+                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NW))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NW);
+                    }
+                            
+                            
+                    if (e)
+                    {
+                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NE))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NE);
+                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SE))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SE);
+                    }
+                    
                     
 
                     //Calculate Size of Chunks needed to generated and Smoothed

@@ -267,6 +267,7 @@
           <e p="FastNoise.cs" t="Include" />
           <e p="NukkitGenerator.cs" t="Include" />
           <e p="Schematic.cs" t="Include" />
+          <e p="SmoothMap.cs" t="Include" />
           <e p="TestGenerator.cs" t="Include" />
           <e p="TestGenerator2.cs" t="Include" />
           <e p="WorldUtils.cs" t="Include" />
