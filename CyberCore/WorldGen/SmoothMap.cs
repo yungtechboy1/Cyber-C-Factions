@@ -105,11 +105,10 @@ namespace CyberCore.WorldGen
             {
                 foreach (var b in bcd)
                 {
+                    Console.WriteLine($"SEEEE DD{b} {b.GetX()} {b.GetZ()} || ZC:{ZeroCords} || CC:{getCenterCords()} || TC: {b.GetX() + getCenterCords().X} {b.GetZ() + getCenterCords().Z} ");
                     int[,] data = new int[16, 16];
                     int xo = 0;
                     int zo = 0;
-                    int cdx = (b.GetX() + getCenterCords().X)-ZeroCords.X;
-                    int cdz = (b.GetZ() + getCenterCords().Z)-ZeroCords.Z;
 
                     ChunkCoordinates tc = new  ChunkCoordinates((b.GetX() + getCenterCords().X),
                         (b.GetZ() + getCenterCords().Z));

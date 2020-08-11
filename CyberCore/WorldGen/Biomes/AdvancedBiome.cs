@@ -733,16 +733,16 @@ namespace CyberCore.WorldGen.Biomes
 
 
                     // HandleSmoothing(m,new ChunkCoordinates(c.X,c.Z),)
-                    if (c.X == 55 && c.Z == 57)
-                    {
+                    // if (c.X == 55 && c.Z == 57)
+                    // {   
                         if (true)
                         {
                             SmoothingMap sm = HandleSmothingAndGeneration(m, new ChunkCoordinates(c.X, c.Z),
                                 BorderChunkDirections,
                                 CyberExperimentalWorldProvider);
-                            SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN PRE SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
+                            // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN PRE SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                             sm.SquareSmooth(3);
-                            SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
+                            // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                             m = sm.SetChunks(CyberExperimentalWorldProvider,BCD);
                         }
                         // // else
@@ -836,7 +836,7 @@ namespace CyberCore.WorldGen.Biomes
                         //     }
                         // }
 
-                    }
+                    // }
 
                     m[7, 7] = 100;
                     // if (BCD.Contains(BorderChunkDirection.North)) m[7, 8] = 101;

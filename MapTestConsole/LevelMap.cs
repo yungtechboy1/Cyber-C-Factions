@@ -56,7 +56,7 @@ namespace MapTestConsole
                     if (true)
                     {
                         Console.WriteLine($"ABOUYT TO START GENERATION FOR {x + Offset} {z + Offset}");
-                        SingleChunkFiles(new ChunkCoordinates(x + Offset, Offset + z), C,name);
+                        SingleChunkFiles(new ChunkCoordinates(x + Offset, Offset + z), C, name);
                         // MapData[x, z] = a;
                     }
                 }
@@ -71,7 +71,8 @@ namespace MapTestConsole
                               $" FOR {MapData.GetLength(1) * MapData.GetLength(0)}");
         }
 
-        public void SingleChunkFiles(ChunkCoordinates c,CyberExperimentalWorldProvider CyberExperimentalWorldProvider, String name = null)
+        public void SingleChunkFiles(ChunkCoordinates c, CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
+            String name = null)
         {
             int[,] m;
             int[,] f2;
@@ -80,71 +81,72 @@ namespace MapTestConsole
             int[,] f5;
             int[,] f6;
             var b = BiomeManager.GetBiome(c);
-            
+
             List<int[,]> l = new List<int[,]>();
-            var f1 = b.GenerateChunkHeightMap(c,CyberExperimentalWorldProvider);
-                l.Add(f1);
+            var f1 = b.GenerateChunkHeightMap(c, CyberExperimentalWorldProvider);
+            l.Add(f1);
             if (b.BorderChunkDirections.Count > 0)
             {
                 ChunkCoordinates sischunkcords;
-                    AdvancedBiome sischunkbiome;
-                    if (b.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.South))
+                AdvancedBiome sischunkbiome;
+                if (b.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.South))
+                {
+                    //South Sis Chunk
+                    sischunkcords = new ChunkCoordinates(c.X, c.Z - 1);
+                    sischunkbiome = BiomeManager.GetBiome(sischunkcords);
+                    if (sischunkbiome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North))
                     {
-                        //South Sis Chunk
-                        sischunkcords = new ChunkCoordinates(c.X, c.Z - 1);
-                        sischunkbiome = BiomeManager.GetBiome(sischunkcords);
-                        if (sischunkbiome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North))
-                        {
-                            //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
-                            f2 = b.GenerateExtendedChunkHeightMap(AdvancedBiome.BorderChunkDirection.North, f1,
-                                sischunkbiome.GenerateChunkHeightMap(sischunkcords,CyberExperimentalWorldProvider),
-                                C);
-                            f3 = b.LerpXZ2X(f2);
-                            f4 = b.FinalCropTo16(f3, AdvancedBiome.BorderChunkDirection.North);
-                            //FINISH SISTER CHUNK4
-                            var mm = b.FinalCropTo16(f3, AdvancedBiome.BorderChunkDirection.South);
-                            f5 = (int[,]) mm.Clone();
-                            var nc = new ChunkColumn();
-                            nc.X = sischunkcords.X;
-                            nc.Z = sischunkcords.Z;
-                            sischunkbiome.GenerateChunkFromSmoothOrder(C, nc,
-                                BiomeManager.getChunkRTH(sischunkcords), mm);
-                            C._chunkCache[sischunkcords] = nc;
-                            l.Add(f2);
-                            l.Add(f3);
-                            l.Add(f4);
-                            l.Add(f4);
-                        }
+                        //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
+                        f2 = b.GenerateExtendedChunkHeightMap(AdvancedBiome.BorderChunkDirection.North, f1,
+                            sischunkbiome.GenerateChunkHeightMap(sischunkcords, CyberExperimentalWorldProvider),
+                            C);
+                        f3 = b.LerpXZ2X(f2);
+                        f4 = b.FinalCropTo16(f3, AdvancedBiome.BorderChunkDirection.North);
+                        //FINISH SISTER CHUNK4
+                        var mm = b.FinalCropTo16(f3, AdvancedBiome.BorderChunkDirection.South);
+                        f5 = (int[,]) mm.Clone();
+                        var nc = new ChunkColumn();
+                        nc.X = sischunkcords.X;
+                        nc.Z = sischunkcords.Z;
+                        sischunkbiome.GenerateChunkFromSmoothOrder(C, nc,
+                            BiomeManager.getChunkRTH(sischunkcords), mm);
+                        C._chunkCache[sischunkcords] = nc;
+                        l.Add(f2);
+                        l.Add(f3);
+                        l.Add(f4);
+                        l.Add(f4);
                     }
-                    else if (b.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North))
+                }
+                else if (b.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North))
+                {
+                    //North Sis Chunk
+                    sischunkcords = new ChunkCoordinates(c.X, c.Z + 1);
+                    sischunkbiome = BiomeManager.GetBiome(sischunkcords);
+                    if (sischunkbiome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.South))
                     {
-                        //North Sis Chunk
-                        sischunkcords = new ChunkCoordinates(c.X, c.Z + 1);
-                        sischunkbiome = BiomeManager.GetBiome(sischunkcords);
-                        if (sischunkbiome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.South))
-                        {
-                            //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
-                            f2 = b.GenerateExtendedChunkHeightMap(AdvancedBiome.BorderChunkDirection.South, f1,
-                                sischunkbiome.GenerateChunkHeightMap(sischunkcords,CyberExperimentalWorldProvider), 
-                                C);
-                            f3 = b.LerpXZ2X(f2);
-                            f4 = b.FinalCropTo16(f3, AdvancedBiome.BorderChunkDirection.South);
-                            //FINISH SISTER CHUNK
-                            var mm = b.FinalCropTo16(f3, AdvancedBiome.BorderChunkDirection.North);
-                            f5 = mm;
-                            var nc = new ChunkColumn();
-                            nc.X = sischunkcords.X;
-                            nc.Z = sischunkcords.Z;
-                            sischunkbiome.GenerateChunkFromSmoothOrder(C, nc,
-                                BiomeManager.getChunkRTH(sischunkcords), mm);
-                            C._chunkCache[sischunkcords] = nc;
-                            l.Add(f2);
-                            l.Add(f3);
-                            l.Add(f4);
-                            l.Add(f4);
-                        }
+                        //Generate A 16 X 16*2 Chunk map and Populate Sister Chunk
+                        f2 = b.GenerateExtendedChunkHeightMap(AdvancedBiome.BorderChunkDirection.South, f1,
+                            sischunkbiome.GenerateChunkHeightMap(sischunkcords, CyberExperimentalWorldProvider),
+                            C);
+                        f3 = b.LerpXZ2X(f2);
+                        f4 = b.FinalCropTo16(f3, AdvancedBiome.BorderChunkDirection.South);
+                        //FINISH SISTER CHUNK
+                        var mm = b.FinalCropTo16(f3, AdvancedBiome.BorderChunkDirection.North);
+                        f5 = mm;
+                        var nc = new ChunkColumn();
+                        nc.X = sischunkcords.X;
+                        nc.Z = sischunkcords.Z;
+                        sischunkbiome.GenerateChunkFromSmoothOrder(C, nc,
+                            BiomeManager.getChunkRTH(sischunkcords), mm);
+                        C._chunkCache[sischunkcords] = nc;
+                        l.Add(f2);
+                        l.Add(f3);
+                        l.Add(f4);
+                        l.Add(f4);
                     }
+                }
             }
+
             // var f2 = b.GenerateExtendedChunkHeightMap(f1, c, C);
             // var f22 = b.CropToSmoothChunks(f2, c, C); 
             // var f3 = b.SmoothMapV2(f22);
@@ -172,7 +174,8 @@ namespace MapTestConsole
             // l.Add(f66);
             // l.Add(f77);
             Console.WriteLine("ABOUT TO SAVE " + c);
-            SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F1.csv", IntArrayToString(JoinIntMaps(l))+"\n,"+b.BorderChunkDirections.Count);
+            SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F1.csv",
+                IntArrayToString(JoinIntMaps(l)) + "\n," + b.BorderChunkDirections.Count);
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F2.csv", IntArrayToString(f2));
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F3.csv", IntArrayToString(f3));
             // SaveViaCSV($"/MapTesting/{name}chunk{c.X} {c.Z}-F4.csv", IntArrayToString(f4));
@@ -230,6 +233,16 @@ namespace MapTestConsole
             s.Stop();
             Console.WriteLine("TOTAL CHUNK GENERATION TOOK " + s.Elapsed +
                               $" FOR {MapData.GetLength(1) * MapData.GetLength(0)}");
+
+            for (int z = 0; z < MapData.GetLength(1); z++)
+            {
+                ss.Restart();
+                for (int x = 0; x < MapData.GetLength(0); x++)
+                {
+                    var a = C.OpenPreGenerateChunkColumn(new ChunkCoordinates(x + Offset, Offset + z),true,true);
+                    MapData[x, z] = a;
+                }
+            }
         }
 
         public int[,] HeightDataToCSV()
