@@ -152,6 +152,19 @@ namespace CyberCore.WorldGen
         }
 
 
+        public bool CanSmooth(int x, int z)
+        {
+            int v = Map[x, z];
+            for (int zz = -1; zz <= 1; zz++)
+            for (int xx = -1; xx <= 1; xx++)
+            {
+                int vv = Map[x + xx, z + zz];
+                if (vv == 0) return false;
+            }
+
+            return true;
+        }
+        
         public void StripSmooth(int w = 2, bool cel = true)
         {
             for (int z = 0; z < Map.GetLength(1); z++)
@@ -159,7 +172,7 @@ namespace CyberCore.WorldGen
             {
                 //  if ( x == 0 || z==0|| (Map[x, z] == 0 || Map[x+1, z] == 0 || Map[x-1, z] == 0 || Map[x, z+1] == 0 || Map[x, z-1] == 0 ||
                 //    Map[x+1, z+1] == 0 || Map[x+1, z-1] == 0 || Map[x-1, z+1] == 0 || Map[x-1, z-1] == 0))
-                if (Map[x, z] == 0) continue;
+                if (Map[x, z] == 0 || !CanSmooth(x,z)) continue;
                 bool zb = false;
                 int ah = 0;
                 int ac = 0;

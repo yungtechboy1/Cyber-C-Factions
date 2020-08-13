@@ -752,7 +752,7 @@ namespace CyberCore.WorldGen.Biomes
                             // sm.StripSmooth(3);
                             // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH EXPAND2 {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                             m = sm.SetChunks(CyberExperimentalWorldProvider, BCD);
-                            m[7, 7] = 100;
+                            // m[7, 7] = 100;
                         }
                     }
                     // // else
