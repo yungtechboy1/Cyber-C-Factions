@@ -233,7 +233,16 @@ namespace CyberCore.WorldGen
         public int[,] SetChunks(CyberExperimentalWorldProvider cyberExperimentalWorldProvider,
             List<AdvancedBiome.BorderChunkDirection> bcd)
         {
-            foreach (var b in bcd)
+            List<AdvancedBiome.BorderChunkDirection> bb = new List<AdvancedBiome.BorderChunkDirection>();
+                bb.Add(AdvancedBiome.BorderChunkDirection.North);
+                bb.Add(AdvancedBiome.BorderChunkDirection.East);
+                bb.Add(AdvancedBiome.BorderChunkDirection.West);
+                bb.Add(AdvancedBiome.BorderChunkDirection.South);
+                bb.Add(AdvancedBiome.BorderChunkDirection.NE);
+                bb.Add(AdvancedBiome.BorderChunkDirection.NW);
+                bb.Add(AdvancedBiome.BorderChunkDirection.SW);
+                bb.Add(AdvancedBiome.BorderChunkDirection.SE);
+            foreach (var b in bb)
             {
                 Console.WriteLine(
                     $"SEEEE DD{b} {b.GetX()} {b.GetZ()} || ZC:{ZeroCords} || CC:{getCenterCords()} || TC: {b.GetX() + getCenterCords().X} {b.GetZ() + getCenterCords().Z} ");

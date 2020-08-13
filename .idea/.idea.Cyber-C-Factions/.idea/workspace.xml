@@ -25,7 +25,6 @@
       <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/SmoothMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/SmoothMap.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +32,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="147984" />
+    <option name="totalTimeSeconds" value="148757" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -54,6 +53,10 @@
             <RecentBranchesForRepo>
               <option name="branches">
                 <list>
+                  <RecentBranch>
+                    <option name="branchName" value="CU-ayqm18_3X3-Smoothing-all-the-time_Carlton-Jones" />
+                    <option name="lastUsedInstant" value="1597286832" />
+                  </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="CJ" />
                     <option name="lastUsedInstant" value="1585624039" />
@@ -575,7 +578,7 @@
       <workItem from="1597115262660" duration="5198000" />
       <workItem from="1597194610356" duration="2461000" />
       <workItem from="1597198431018" duration="2275000" />
-      <workItem from="1597277976020" duration="6797000" />
+      <workItem from="1597277976020" duration="7619000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />
@@ -619,30 +622,30 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1094" y="463" width="458" height="510" key="#com.intellij.tools.ToolEditorDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1590264141379" />
-    <state width="1220" height="264" key="GridCell.Tab.0.bottom" timestamp="1597285638722">
+    <state width="1220" height="264" key="GridCell.Tab.0.bottom" timestamp="1597287388397">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1220" height="264" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1597285638722" />
-    <state width="1220" height="264" key="GridCell.Tab.0.center" timestamp="1597285638721">
+    <state width="1220" height="264" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1597287388397" />
+    <state width="1220" height="264" key="GridCell.Tab.0.center" timestamp="1597287388396">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1220" height="264" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1597285638721" />
-    <state width="1220" height="264" key="GridCell.Tab.0.left" timestamp="1597285638721">
+    <state width="1220" height="264" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1597287388396" />
+    <state width="1220" height="264" key="GridCell.Tab.0.left" timestamp="1597287388396">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1220" height="264" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1597285638721" />
-    <state width="1220" height="264" key="GridCell.Tab.0.right" timestamp="1597285638722">
+    <state width="1220" height="264" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1597287388396" />
+    <state width="1220" height="264" key="GridCell.Tab.0.right" timestamp="1597287388396">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1220" height="264" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1597285638722" />
+    <state width="1220" height="264" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1597287388396" />
     <state width="900" height="371" key="GridCell.Tab.1.bottom" timestamp="1595306935573">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

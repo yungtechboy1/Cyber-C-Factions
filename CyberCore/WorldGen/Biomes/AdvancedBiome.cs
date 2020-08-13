@@ -734,8 +734,10 @@ namespace CyberCore.WorldGen.Biomes
 
 
                     // HandleSmoothing(m,new ChunkCoordinates(c.X,c.Z),)
-                    if ( /*c.X == 55 &&*/ c.Z == 57)
-                    {
+                    // if ( /*c.X == 55 &&*/ c.Z == 57)
+                    // {
+                        if (true)
+                        {
                         if (true)
                         {
                             SmoothingMap sm = HandleGeneration(m, new ChunkCoordinates(c.X, c.Z),
@@ -952,7 +954,8 @@ namespace CyberCore.WorldGen.Biomes
             List<BorderChunkDirection> bcd, ChunkCoordinates cordz, SmoothingMap sm,
             CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
         {
-            if (bcd.Contains(b))
+            if (true)
+            // if (bcd.Contains(b))
             {
                 if (b == BorderChunkDirection.SE)
                 {
