@@ -738,12 +738,17 @@ namespace CyberCore.WorldGen.Biomes
                     {
                         if (true)
                         {
-                            SmoothingMap sm = HandleSmothingAndGeneration(m, new ChunkCoordinates(c.X, c.Z),
+                            SmoothingMap sm = HandleGeneration(m, new ChunkCoordinates(c.X, c.Z),
                                 BorderChunkDirections,
                                 CyberExperimentalWorldProvider);
                             SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN PRE SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
-                            sm.SquareSmooth(3);
+                            // sm.AddBorderValues(CyberExperimentalWorldProvider);
+                            SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST BORDER EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
+                            // sm.SquareSmooth(3);
+                            sm.StripSmooth(4);
                             SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
+                            // sm.StripSmooth(3);
+                            // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH EXPAND2 {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                             m = sm.SetChunks(CyberExperimentalWorldProvider, BCD);
                             m[7, 7] = 100;
                         }
@@ -881,11 +886,13 @@ namespace CyberCore.WorldGen.Biomes
         }
 
         public List<BorderChunkDirection> BCD = null;
+        // private CyberExperimentalWorldProvider ccc;
 
-        private SmoothingMap HandleSmothingAndGeneration(int[,] ints, ChunkCoordinates c,
+        private SmoothingMap HandleGeneration(int[,] ints, ChunkCoordinates c,
             List<BorderChunkDirection> borderChunkDirections,
             CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
         {
+            // ccc = cyberExperimentalWorldProvider;
             ChunkCoordinates sischunkcords;
             AdvancedBiome sischunkbiome;
             SmoothingMap sm = new SmoothingMap(c, ints);
