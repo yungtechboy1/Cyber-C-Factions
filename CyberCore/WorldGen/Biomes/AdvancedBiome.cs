@@ -743,12 +743,12 @@ namespace CyberCore.WorldGen.Biomes
                             SmoothingMap sm = HandleGeneration(m, new ChunkCoordinates(c.X, c.Z),
                                 BorderChunkDirections,
                                 CyberExperimentalWorldProvider);
-                            SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN PRE SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
+                            // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN PRE SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                             // sm.AddBorderValues(CyberExperimentalWorldProvider);
-                            SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST BORDER EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
+                            // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST BORDER EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                             // sm.SquareSmooth(3);
                             sm.StripSmooth(4);
-                            SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
+                            // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                             // sm.StripSmooth(3);
                             // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH EXPAND2 {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                             m = sm.SetChunks(CyberExperimentalWorldProvider, BCD);
