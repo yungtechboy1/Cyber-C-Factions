@@ -15,7 +15,7 @@ namespace CyberCore.WorldGen.Biomes
 {
     public abstract class AdvancedBiome : ICloneable
     {
-        protected int Waterlevel = 75;
+        protected int Waterlevel = 90;
         private static readonly ILog Log = LogManager.GetLogger(typeof(AdvancedBiome));
 
         private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());
@@ -61,7 +61,36 @@ namespace CyberCore.WorldGen.Biomes
             HeightNoise.SetFractalOctaves(2);
             HeightNoise.SetFractalLacunarity(.35f);
             HeightNoise.SetFractalGain(1);
-            this.Name = name;
+            Name = name;
+        }
+        
+        public void TryOreGeneraton(ChunkColumn cc,int x, int z,int yheight)
+        {
+            Random r = new Random();
+            int v = r.Next(100);
+            if (v >= 25)
+            {
+                r = new Random(2);
+                v = r.Next(50);
+                if (v <= 30) //30%
+                    cc.SetBlock(x, yheight, z, new IronOre());
+                else if (v <= 45) //15%
+                    cc.SetBlock(x, yheight, z, new GoldOre());
+                else if (v <= 60) //15%
+                    cc.SetBlock(x, yheight, z, new LapisOre());
+                else if (v <= 75) //15%
+                    cc.SetBlock(x, yheight, z, new RedstoneOre());
+                else if (v <= 80) //5%
+                    cc.SetBlock(x, yheight, z, new DiamondOre());
+                else if (v <= 25) //2%
+                    cc.SetBlock(x, yheight, z, new EmeraldBlock());
+                else
+                    cc.SetBlock(x, yheight, z, new PolishedBlackstoneDoubleSlab());
+            }
+            else
+            {
+                cc.SetBlock(x,yheight,z,new Stone());
+            }
         }
 
         public int BorderType { get; set; } = 0;
@@ -675,7 +704,7 @@ namespace CyberCore.WorldGen.Biomes
             if (BorderChunkDirections.Count > 0)
             {
                 Console.WriteLine(
-                    $"ABOUT TO GENERATEUSEABLEHEIGHTMAP {c.X} {c.Z} =>> HAS BCD::{BorderChunkDirections.Count}");
+                    $"ABOUT TO GENERATEUSEABLEHEIGHTMAP {c.X} {c.Z} =>> HAS BCD::{BorderChunkDirections.Count} >> {Name}");
                 foreach (var bb in BorderChunkDirections)
                 {
                     Console.WriteLine("????????????????????????" + bb);
@@ -1906,7 +1935,7 @@ namespace CyberCore.WorldGen.Biomes
         }
 
 
-        public static float GetNoise(int x, int z, float scale, int max)
+        public static float GetNoise(int x, int z, float scale, int mmax)
         {
             var heightnoise = new FastNoise(123123 + 2);
             heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
@@ -1915,7 +1944,7 @@ namespace CyberCore.WorldGen.Biomes
             heightnoise.SetFractalOctaves(1);
             heightnoise.SetFractalLacunarity(2);
             heightnoise.SetFractalGain(.5f);
-            return (heightnoise.GetNoise(x, z) + 1) * (max / 2f);
+            return (heightnoise.GetNoise(x, z) + 1) * (mmax / 2f);
             // return (float) ((OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f));
         }
 

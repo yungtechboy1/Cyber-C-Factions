@@ -1,41 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Numerics;
-using System.Runtime.CompilerServices;
-using AStarNavigator;
-using CyberCore.Manager.AuctionHouse;
 using CyberCore.Manager.Crate;
 using CyberCore.Manager.Crate.Form;
-using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
 using CyberCore.Manager.Shop;
 using CyberCore.Utils;
 using fNbt;
-using log4net.Core;
 using MiNET;
 using MiNET.BlockEntities;
 using MiNET.Blocks;
 using MiNET.Net;
-using MiNET.Plugins;
 using MiNET.Plugins.Attributes;
 using MiNET.Utils;
 using MiNET.Worlds;
-using OpenAPI.Events.Player;
-using OpenAPI.Utils;
 using Level = MiNET.Worlds.Level;
 using Target = MiNET.Plugins.Target;
+// ReSharper disable InconsistentNaming
 
 namespace CyberCore
 {
     public class CyberCommands
     {
-        public static
-            Dictionary<String, BlockCoordinates> pos1 = new Dictionary<string, BlockCoordinates>();
-
-        Dictionary<String, BlockCoordinates> pos2 = new Dictionary<string, BlockCoordinates>();
-        public CyberCoreMain CCM;
+       
+        public readonly CyberCoreMain CCM;
 
         public CyberCommands(CyberCoreMain cyberCoreMain)
         {
@@ -58,7 +47,7 @@ namespace CyberCore
 
 
         [Command(Name = "ft add", Description = "Add floating text")]
-        public void ftadd(CorePlayer p, string text = null)
+        public void FtAdd(CorePlayer p, string text = null)
         {
             FloatingTextFactory.AddFloatingText(new CyberGenericFloatingTextContainer(CCM.FTM, (PlayerLocation) p.KnownPosition.Clone(),p.Level, text), true);
             p.SendMessage(ChatColors.Green + "Floating Text Added!");
@@ -425,14 +414,14 @@ namespace CyberCore
 
             //inventory.InventoryChange += new Action<Player, MiNET.Inventory, byte, Item>(player.OnInventoryChange);
             inventory.AddObserver(player);
-            McpeContainerOpen mcpeContainerOpen = McpeContainerOpen.CreateObject(1L);
+            McpeContainerOpen mcpeContainerOpen = McpeContainerOpen.CreateObject();
             mcpeContainerOpen.windowId = inventory.WindowsId;
             mcpeContainerOpen.type = inventory.Type;
             mcpeContainerOpen.coordinates = coords;
             mcpeContainerOpen.runtimeEntityId = 1L;
             player.SendPacket(mcpeContainerOpen);
-            McpeInventoryContent inventoryContent = McpeInventoryContent.CreateObject(1L);
-            inventoryContent.inventoryId = (uint) inventory.WindowsId;
+            McpeInventoryContent inventoryContent = McpeInventoryContent.CreateObject();
+            inventoryContent.inventoryId = inventory.WindowsId;
             inventoryContent.input = inventory.Slots;
             player.SendPacket(inventoryContent);
         }

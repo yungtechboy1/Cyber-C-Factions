@@ -38,11 +38,6 @@ namespace CyberCore.Custom
             var iitem = item;
 
             int yy = 6;
-            // if (fullfill)
-            // {
-            //     yy++;
-            //     // a += 9;
-            // }
             for (int x = 0; x < 9; x++){//X
             for (int y = 0; y < yy; y++)//Y
             {
@@ -69,9 +64,6 @@ namespace CyberCore.Custom
 
             }
             }
-            // for (int i = 0; i < a; i++)
-            // {
-            // }
         }
 
         public virtual void MakeSelection(int slot, CorePlayer p)

@@ -8,8 +8,6 @@ namespace CyberCore.WorldGen.Biomes
 {
     public class BeachBiome : AdvancedBiome
     {
-        // public int waterlevel;
-        public int SandHeight;
 
 
         public BeachBiome() : base("Beach", new BiomeQualifications(0, 2, 1, 1.75f, 0.25f, 0.5f
@@ -17,7 +15,6 @@ namespace CyberCore.WorldGen.Biomes
         {
             BiomeQualifications.Baseheight = 83; //30
             Waterlevel = 75;
-            SandHeight = Waterlevel;
         }
 
         public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,

@@ -42,9 +42,12 @@ namespace CyberCore.WorldGen
                 if (r == 3) cc.SetBlock(x, yheight, z, new Stone());
             }
             else if (setair)
-                cc.SetBlock(x, yheight, z, new Air());
+                cc.SetBlock(x, yheight, z, new Grass());
         }
 
+
+        
+        
         /// <summary>
         /// </summary>
         /// <param name="openExperimentalWorldProvider"></param>
