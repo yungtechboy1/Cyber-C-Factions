@@ -14,11 +14,11 @@ namespace CyberCore.WorldGen
     {
         public MainBiome() : base("MAIN", new BiomeQualifications(0, 2, 0, 2, 0, 2, 20))
         {
-            startheight = 90;
-            BiomeQualifications.baseheight = 83; //30
+            Startheight = 90;
+            BiomeQualifications.Baseheight = 83; //30
         }
 
-        public override int GetSH(int x, int z, int cx, int cz)
+        public override int GetSh(int x, int z, int cx, int cz)
         {
             return (int) GetNoise(cx * 16 + x, cz * 16 + z, 0.004f,
                 10);

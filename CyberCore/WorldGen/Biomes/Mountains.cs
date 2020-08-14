@@ -10,14 +10,14 @@ namespace CyberCore.WorldGen.Biomes
     {
         public Mountains() : base("Mountains", new BiomeQualifications(.25f, 1, .75f, 1.75f, 1.25f, 2, 40))
         {
-            BiomeQualifications.baseheight += 10;
+            BiomeQualifications.Baseheight += 10;
         }
 
-        public override int GetSH(int x, int z, int cx, int cz)
+        public override int GetSh(int x, int z, int cx, int cz)
         {
-            return BiomeQualifications.baseheight +
+            return BiomeQualifications.Baseheight +
                    (int) GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.015f,
-                       BiomeQualifications.heightvariation);
+                       BiomeQualifications.Heightvariation);
         }
 
         public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc, bool setair)

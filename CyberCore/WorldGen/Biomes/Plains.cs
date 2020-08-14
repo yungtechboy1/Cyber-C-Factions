@@ -11,11 +11,11 @@ namespace CyberCore.WorldGen.Populator
         {
         }
 
-        public override int GetSH(int x, int z, int cx, int cz)
+        public override int GetSh(int x, int z, int cx, int cz)
         {
-            return (int) (BiomeQualifications.baseheight +
+            return (int) (BiomeQualifications.Baseheight +
                           (int) (GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.035f,
-                              BiomeQualifications.heightvariation)));
+                              BiomeQualifications.Heightvariation)));
         }
 
         public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,

@@ -163,11 +163,11 @@ namespace CyberCore.WorldGen.Biomes
             return chunk;
         }
 
-        public override int GetSH(int x, int z, int cx, int cz)
+        public override int GetSh(int x, int z, int cx, int cz)
         {
-            return BiomeQualifications.baseheight + 12 +
+            return BiomeQualifications.Baseheight + 12 +
                    (int) GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.035f,
-                       BiomeQualifications.heightvariation / 5);
+                       BiomeQualifications.Heightvariation / 5);
         }
 
         // public override void PopulateChunk(CyberExperimentalWorldProvider o,

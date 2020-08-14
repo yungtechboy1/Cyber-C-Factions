@@ -20,19 +20,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeQualifications.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/bin/Debug/netcoreapp3.1/Testing.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/bin/Debug/netcoreapp3.1/Testing.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/bin/Debug/netcoreapp3.1/Testing.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/bin/Debug/netcoreapp3.1/Testing.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/bin/Debug/netcoreapp3.1/Testing.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/bin/Debug/netcoreapp3.1/Testing.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/bin/Debug/netcoreapp3.1/Testing.runtimeconfig.dev.json" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/bin/Debug/netcoreapp3.1/Testing.runtimeconfig.dev.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/obj/Debug/netcoreapp3.1/Testing.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/obj/Debug/netcoreapp3.1/Testing.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/obj/Debug/netcoreapp3.1/Testing.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/obj/Debug/netcoreapp3.1/Testing.csprojAssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/obj/Debug/netcoreapp3.1/Testing.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/obj/Debug/netcoreapp3.1/Testing.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/obj/Debug/netcoreapp3.1/Testing.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/obj/Debug/netcoreapp3.1/Testing.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/obj/Debug/netcoreapp3.1/Testing.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/obj/Debug/netcoreapp3.1/Testing.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BeachBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BeachBiome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Desert.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Desert.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestBiome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestMountain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestMountain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/HighPlains.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/HighPlains.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/MainBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/MainBiome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Mountains.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Mountains.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Plains.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Plains.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/RainForestBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/RainForestBiome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowForest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowForest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowTundra.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowTundra.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowyIcyChunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowyIcyChunk.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalRainForest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalRainForest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalSeasonalForest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalSeasonalForest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/NukkitGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/NukkitGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/SmoothMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/SmoothMap.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +49,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="150965" />
+    <option name="totalTimeSeconds" value="151736" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -61,6 +70,10 @@
             <RecentBranchesForRepo>
               <option name="branches">
                 <list>
+                  <RecentBranch>
+                    <option name="branchName" value="WorldSmoothinAttempt2" />
+                    <option name="lastUsedInstant" value="1597373855" />
+                  </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="CU-ayqm18_3X3-Smoothing-all-the-time_Carlton-Jones" />
                     <option name="lastUsedInstant" value="1597286832" />
@@ -103,7 +116,7 @@
     <setting file="file://$PROJECT_DIR$/CFactions/Utils/CommandSender.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/Commands/Admin.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/Windows/FactionPermSettingsWindow.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E07FFA0B-6E50-4B0E-B2B3-C8EBAE4DE79D/da/2db3d494/Chest.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E07FFA0B-6E50-4B0E-B2B3-C8EBAE4DE79D/da/2db3d494/Chest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CFactions/Commands/MissionCmd.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ED586835-1D44-43DA-8994-3392681570C4/e9/28e4db80/NbtCompound.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" root0="FORCE_HIGHLIGHTING" />
@@ -292,11 +305,12 @@
     <setting file="file://$PROJECT_DIR$/CyberCore/Custom/CyberInventory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Shop/NewShopInv.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E07FFA0B-6E50-4B0E-B2B3-C8EBAE4DE79D/e0/1d10c1d6/InventoryManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2ED30C42-D264-4E76-9878-1F8626241A6F/8C/Int32.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeQualifications.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/TestingPlugin/CorePlayer.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerHotBarInt.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerAbstract.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" />
@@ -346,6 +360,7 @@
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" />
         <option value="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/SmoothMap.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeQualifications.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" />
       </list>
     </option>
@@ -384,7 +399,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C#" />
+    <property name="settings.editor.selected.configurable" value="CodeInspectionSettingsId" />
   </component>
   <component name="RunManager" selected=".NET Executable.TestServer">
     <configuration name="Testing" type="DotNetProject" factoryName=".NET Project">
@@ -587,7 +602,7 @@
       <workItem from="1597194610356" duration="2461000" />
       <workItem from="1597198431018" duration="2275000" />
       <workItem from="1597277976020" duration="9971000" />
-      <workItem from="1597331093713" duration="2795000" />
+      <workItem from="1597331093713" duration="3450000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />
@@ -725,11 +740,11 @@
     </state>
     <state x="803" y="200" key="RiderGenerateDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1595553094504" />
     <state x="1071" y="200" key="RiderGenerateDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1590730833422" />
-    <state x="29" y="171" key="SettingsEditor" timestamp="1595554255643">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="38" y="171" key="SettingsEditor" timestamp="1597374496445">
+      <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="29" y="171" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1595554255643" />
-    <state x="38" y="171" key="SettingsEditor/0.0.2560.1040@0.0.2560.1040" timestamp="1591778435715" />
+    <state x="38" y="171" key="SettingsEditor/0.0.2560.1040@0.0.2560.1040" timestamp="1597374496445" />
     <state width="498" height="517" key="SwitcherDM" timestamp="1595128072927">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

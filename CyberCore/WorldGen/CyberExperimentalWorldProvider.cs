@@ -268,7 +268,7 @@ namespace CyberCore.WorldGen
                 return c.GetHeight(tx, tz);
             }
 
-            return tb.GetSH(tx, tz, cx, cz);
+            return tb.GetSh(tx, tz, cx, cz);
         }
 
         public static void AddBlocksToBeAddedDuringChunkGeneration(ChunkCoordinates chunkCoordinates,

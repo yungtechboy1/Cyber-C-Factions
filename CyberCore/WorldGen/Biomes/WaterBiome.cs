@@ -12,7 +12,7 @@ namespace CyberCore.WorldGen
         public WaterBiome() : base("Water", new BiomeQualifications(0, 2, 1, 1.75f, 0.25f, 0f
             , 50))
         {
-            BiomeQualifications.baseheight = 30;
+            BiomeQualifications.Baseheight = 30;
         }
 
 
@@ -40,17 +40,17 @@ namespace CyberCore.WorldGen
             }
             else if (yheight == maxheight)
                 cc.SetBlock(x, yheight, z, new Sand());
-            else if (yheight <= waterlevel)
+            else if (yheight <= Waterlevel)
                 cc.SetBlock(x, yheight, z, new Water());
             else if (setair)
                 cc.SetBlock(x, yheight, z, new Air());
         }
 
-        public override int GetSH(int x, int z, int cx, int cz)
+        public override int GetSh(int x, int z, int cx, int cz)
         {
-            return (int) (BiomeQualifications.baseheight +
+            return (int) (BiomeQualifications.Baseheight +
                           (int) (GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.035f,
-                              BiomeQualifications.heightvariation)));
+                              BiomeQualifications.Heightvariation)));
         }
     }
 }
