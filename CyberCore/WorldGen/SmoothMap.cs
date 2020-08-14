@@ -243,8 +243,7 @@ namespace CyberCore.WorldGen
             }
         }
 
-        public int[,] SetChunks(CyberExperimentalWorldProvider cyberExperimentalWorldProvider,
-            List<AdvancedBiome.BorderChunkDirection> bcd)
+        public int[,] SetChunks(CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
         {
             List<AdvancedBiome.BorderChunkDirection> bb = new List<AdvancedBiome.BorderChunkDirection>();
                 bb.Add(AdvancedBiome.BorderChunkDirection.North);

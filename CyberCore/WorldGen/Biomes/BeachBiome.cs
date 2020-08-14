@@ -15,9 +15,9 @@ namespace CyberCore.WorldGen.Biomes
         public BeachBiome() : base("Beach", new BiomeQualifications(0, 2, 1, 1.75f, 0.25f, 0.5f
             , 10))
         {
-            BiomeQualifications.baseheight = 83; //30
-            waterlevel = 75;
-            SandHeight = waterlevel;
+            BiomeQualifications.Baseheight = 83; //30
+            Waterlevel = 75;
+            SandHeight = Waterlevel;
         }
 
         public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
@@ -53,11 +53,11 @@ namespace CyberCore.WorldGen.Biomes
         }
 
         //TODO ADD CLAY
-        public override int GetSH(int x, int z, int cx, int cz)
+        public override int GetSh(int x, int z, int cx, int cz)
         {
-            return BiomeQualifications.baseheight +
+            return BiomeQualifications.Baseheight +
                    (int) GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.035f,
-                       BiomeQualifications.heightvariation);
+                       BiomeQualifications.Heightvariation);
         }
     }
 }

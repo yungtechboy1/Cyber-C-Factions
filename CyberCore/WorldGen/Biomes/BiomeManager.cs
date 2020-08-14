@@ -40,9 +40,9 @@ namespace CyberCore.WorldGen
         {
             biome.BorderChunk = false;
             Biomes.Add(biome);
-            biome.LocalID = N;
+            biome.LocalId = N;
             BiomeDict[N] = biome;
-            Console.WriteLine($"BIOME ADD AT {N} WITH NAME {biome.name}");
+            Console.WriteLine($"BIOME ADD AT {N} WITH NAME {biome.Name}");
             N++;
         }
 
@@ -178,7 +178,7 @@ namespace CyberCore.WorldGen
 
         public static void DoAdvancedStuff(AdvancedBiome biome, ChunkCoordinates chunk)
         {
-                    Console.WriteLine($"BIOMEMANAGER 1: OK SO BIOME FOUND THAT MATCHES RTH NAMED {biome.name} {biome.LocalID} @ {chunk.X} {chunk.Z}");
+                    Console.WriteLine($"BIOMEMANAGER 1: OK SO BIOME FOUND THAT MATCHES RTH NAMED {biome.Name} {biome.LocalId} @ {chunk.X} {chunk.Z}");
                     bool BC = false;
                     int bcc = 0;
 
@@ -204,7 +204,7 @@ namespace CyberCore.WorldGen
                             Z = chunk.Z + zz
                         };
                         var tb = BiomeManager.GetBiome2(getChunkRTH(cc));
-                        if (tb.LocalID != biome.LocalID)
+                        if (tb.LocalId != biome.LocalId)
                         {
                             bcc++;
                             // Console.WriteLine(
@@ -425,7 +425,7 @@ namespace CyberCore.WorldGen
                 Z = chunk.Z
             });
             foreach (AdvancedBiome bb in Biomes)
-                if (bb.check(rth))
+                if (bb.Check(rth))
                 {
                     if (bb.BorderChunkDirections.Count > 0)
                     {
@@ -435,7 +435,7 @@ namespace CyberCore.WorldGen
                     AdvancedBiome biome = (AdvancedBiome) bb.CClone();
                     // Console.WriteLine($"AFTER CLONE {biome.BorderChunkDirections.Count} VS OLD {bb.BorderChunkDirections.Count}");
                     DoAdvancedStuff(biome,chunk);
-                    Console.WriteLine($"BIOMEMANAGER9: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.name}");
+                    Console.WriteLine($"BIOMEMANAGER9: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.Name}");
                     BiomeCache[chunk] = biome;
                     return biome;
                 }
@@ -455,7 +455,7 @@ namespace CyberCore.WorldGen
         public static AdvancedBiome GetBiome2(float[] rth)
         {
             foreach (var ab in Biomes)
-                if (ab.check(rth))
+                if (ab.Check(rth))
                 {
                     var aa = ab.CClone();
                     return (AdvancedBiome) aa;
@@ -475,7 +475,7 @@ namespace CyberCore.WorldGen
             });
 
             foreach (var ab in Biomes)
-                if (ab.check(rth))
+                if (ab.Check(rth))
                 {
                     var aa = ab.CClone();
                     return (AdvancedBiome) aa;
@@ -492,7 +492,7 @@ namespace CyberCore.WorldGen
             for (int x = -size; x < size; x++)
             {
                 if (x == 0 && z == 0) continue;
-                if (GetBiome(chunkColumn + new ChunkCoordinates(x, z)).LocalID != localId)
+                if (GetBiome(chunkColumn + new ChunkCoordinates(x, z)).LocalId != localId)
                 {
                     return true;
                 }

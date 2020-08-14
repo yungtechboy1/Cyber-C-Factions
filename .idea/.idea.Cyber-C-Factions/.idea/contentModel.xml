@@ -245,6 +245,7 @@
             <e p="BeachBiome.cs" t="Include" />
             <e p="BiomeList.cs" t="Include" />
             <e p="BiomeManager.cs" t="Include" />
+            <e p="BiomeQualifications.cs" t="Include" />
             <e p="BiomeSelector.cs" t="Include" />
             <e p="Desert.cs" t="Include" />
             <e p="ForestBiome.cs" t="Include" />
