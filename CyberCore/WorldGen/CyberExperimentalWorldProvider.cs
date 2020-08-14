@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using CyberCore.Utils;
 using CyberCore.WorldGen.Biomes;
@@ -459,6 +460,8 @@ namespace CyberCore.WorldGen
 
         static object readwrite = new object();
 
+        public static ConcurrentDictionary<String,bool> RW = new ConcurrentDictionary<string,bool>();
+        
         public static void SaveChunk(ChunkColumn chunk, string basePath)
         {
             // WARNING: This method does not consider growing size of the chunks. Needs refactoring to find
@@ -481,8 +484,13 @@ namespace CyberCore.WorldGen
                 string.Format(@"region{2}r.{0}.{1}.mca", rx, rz, Path.DirectorySeparatorChar));
 
             Log.Debug($"Save chunk X={chunk.X}, Z={chunk.Z} to {filePath}");
-            lock (readwrite)
+            // lock (readwrite) CAUSE OF ALL MY ISSUES
+            while (RW.ContainsKey(filePath))
             {
+                Thread.Sleep(100);
+            }
+            RW[filePath] =true;
+            
                 if (!File.Exists(filePath))
                 {
                     // Make sure directory exist
@@ -572,7 +580,9 @@ namespace CyberCore.WorldGen
                     Log.Warn(
                         $"Took {time.ElapsedMilliseconds}ms to save. And {testTime.ElapsedMilliseconds}ms to generate bytes from NBT");
                 }
-            }
+
+                bool a = false;
+                RW.TryRemove(filePath, out a);
         }
 
 
@@ -883,9 +893,19 @@ namespace CyberCore.WorldGen
                 var filePath = Path.Combine(basePath,
                     string.Format(@"region{2}r.{0}.{1}.mca", rx, rz, Path.DirectorySeparatorChar));
 
-                lock (readwrite)
+                while (RW.ContainsKey(filePath))
                 {
-                    if (!File.Exists(filePath)) return null;
+                    Thread.Sleep(10);
+                }
+                RW[filePath] =true;
+
+                if (!File.Exists(filePath))
+                {
+                    
+                    bool aaaaaaa = false;
+                    RW.TryRemove(filePath,out aaaaaaa);
+                    return null;
+                }
 
                     using (var regionFile = File.OpenRead(filePath))
                     {
@@ -917,6 +937,9 @@ namespace CyberCore.WorldGen
 
                         if (offset == 0 || length == 0)
                         {
+                            
+                            bool aaaaaa = false;
+                            RW.TryRemove(filePath,out aaaaaa);
                             return null;
                         }
 
@@ -1098,9 +1121,11 @@ namespace CyberCore.WorldGen
                         chunk.IsDirty = false;
                         chunk.NeedSave = false;
 
+                        bool aaaaa = false;
+                        RW.TryRemove(filePath,out aaaaa);
                         return chunk;
                     }
-                }
+
             }
             catch (Exception e)
             {

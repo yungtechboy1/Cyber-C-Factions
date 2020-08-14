@@ -256,8 +256,8 @@ namespace CyberCore.WorldGen
                 bb.Add(AdvancedBiome.BorderChunkDirection.SE);
             foreach (var b in bb)
             {
-                Console.WriteLine(
-                    $"SEEEE DD{b} {b.GetX()} {b.GetZ()} || ZC:{ZeroCords} || CC:{getCenterCords()} || TC: {b.GetX() + getCenterCords().X} {b.GetZ() + getCenterCords().Z} ");
+                // Console.WriteLine(
+                    // $"SEEEE DD{b} {b.GetX()} {b.GetZ()} || ZC:{ZeroCords} || CC:{getCenterCords()} || TC: {b.GetX() + getCenterCords().X} {b.GetZ() + getCenterCords().Z} ");
                 int[,] data = new int[16, 16];
                 int xo = 0;
                 int zo = 0;

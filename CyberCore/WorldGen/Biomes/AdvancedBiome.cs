@@ -703,18 +703,10 @@ namespace CyberCore.WorldGen.Biomes
 
             if (BorderChunkDirections.Count > 0)
             {
-                Console.WriteLine(
-                    $"ABOUT TO GENERATEUSEABLEHEIGHTMAP {c.X} {c.Z} =>> HAS BCD::{BorderChunkDirections.Count} >> {Name}");
-                foreach (var bb in BorderChunkDirections)
-                {
-                    Console.WriteLine("????????????????????????" + bb);
-                }
+  
 
                 if (true)
                 {
-                    ChunkCoordinates sischunkcords;
-                    AdvancedBiome sischunkbiome;
-
 
                     SmoothingMap sm = HandleGeneration(m, new ChunkCoordinates(c.X, c.Z),
                         CyberExperimentalWorldProvider);

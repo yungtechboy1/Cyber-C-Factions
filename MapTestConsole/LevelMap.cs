@@ -292,6 +292,34 @@ namespace MapTestConsole
             return f;
         }
 
+        
+        public static string IntArrayToString(float[,] d)
+        {
+            var ss = new Stopwatch();
+            var sss = new Stopwatch();
+            ss.Restart();
+            sss.Restart();
+            string s = "";
+            //            for (int z = d.GetLength(1)-1; z >= 0; z--)
+            for (int z = 0; z < d.GetLength(1); z++)
+            {
+                sss.Restart();
+                for (int x = 0; x < d.GetLength(0); x++)
+                {
+                    // s += d[x, z] + ",";
+                    s += String.Format("{0:0.00}", d[x, z]) + ",";
+                }
+
+                sss.Stop();
+                Console.WriteLine($"TOOK {sss.Elapsed} TO CONVER COL {z}/{d.GetLength(1)}");
+
+                s += "\n";
+            }
+
+            ss.Stop();
+            Console.WriteLine("TIME THAT IT TOOK TO CONVERT TO STRING " + ss.Elapsed);
+            return s;
+        }
         public static string IntArrayToString(int[,] d)
         {
             var ss = new Stopwatch();

@@ -14,7 +14,7 @@ namespace CyberCore.WorldGen
     {
         public static List<AdvancedBiome> Biomes = new List<AdvancedBiome>();
 
-        private static int N;
+        private static int N = 0;
         private static readonly Dictionary<int, AdvancedBiome> BiomeDict = new Dictionary<int, AdvancedBiome>();
 
         public BiomeManager()
@@ -31,7 +31,6 @@ namespace CyberCore.WorldGen
             AddBiome(new BeachBiome());
             AddBiome(new SnowForest());
             AddBiome(new SnowTundra());
-            AddBiome(new SnowyIcyChunk());
             AddBiome(new TropicalRainForest());
             AddBiome(new TropicalSeasonalForest());
         }
@@ -89,9 +88,9 @@ namespace CyberCore.WorldGen
             tempnoise.SetFractalLacunarity(.25f);
             tempnoise.SetFractalGain(1);
 
-            float rain = rainnoise.GetNoise(chunk.X, chunk.Z) + 1;
-            float temp = tempnoise.GetNoise(chunk.X, chunk.Z) + 1;
-            float height = GetChunkHeightNoise(chunk.X, chunk.Z, 0.015f, 2);
+            float rain = rainnoise.GetNoise(chunk.X, chunk.Z) + .75f;
+            float temp = tempnoise.GetNoise(chunk.X, chunk.Z) + .75f;
+            float height = GetChunkHeightNoise(chunk.X, chunk.Z, 0.008f, 2);
             ;
             return new[] {rain, temp, height};
         }
@@ -114,10 +113,11 @@ namespace CyberCore.WorldGen
             heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
             heightnoise.SetFrequency(scale);
             heightnoise.SetFractalType(FastNoise.FractalType.FBM);
-            heightnoise.SetFractalOctaves(1);
+            heightnoise.SetFractalOctaves(2);
             heightnoise.SetFractalLacunarity(2);
             heightnoise.SetFractalGain(.5f);
-            return (heightnoise.GetNoise(x, z) + 1) * (max / 2f);
+            
+            return (heightnoise.GetNoise(x, z) + .75f) * (max / 2f);
             return (float) (OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f);
         }
 
@@ -335,11 +335,12 @@ namespace CyberCore.WorldGen
                 }
 
             // CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
-            Console.WriteLine(
-                $"BIOMEMANAGER10: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
+            // Console.WriteLine(
+            //     $"BIOMEMANAGER10: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
             // return new MainBiome();
             // return new WaterBiome();
             var bbb = new WaterBiome().CClone();
+            bbb.LocalId = 7;
             DoAdvancedStuff(bbb,chunk);
             BiomeCache[chunk] = bbb;
             return bbb;
@@ -357,7 +358,9 @@ namespace CyberCore.WorldGen
 
             // return new MainBiome();
             // return new WaterBiome();
-            return new HighPlains().CClone();
+            var aaa = new HighPlains().CClone();
+            aaa.LocalId = 6;
+            return aaa;
         }
 
         public static AdvancedBiome GetBiome2(ChunkCoordinates c)
@@ -377,7 +380,9 @@ namespace CyberCore.WorldGen
 
             // return new MainBiome();
             // return new WaterBiome();
-            return new HighPlains().CClone();
+            var aaa = new HighPlains().CClone();
+            aaa.LocalId = 6;
+            return aaa;
         }
 
         public static bool IsOnBorder(ChunkCoordinates chunkColumn, int localId, int size = 1)

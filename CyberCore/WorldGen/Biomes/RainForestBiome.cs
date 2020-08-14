@@ -14,7 +14,7 @@ namespace CyberCore.WorldGen.Biomes
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(RainForestBiome));
 
-        public RainForestBiome() : base("ForestBiome", new BiomeQualifications(1.25f, 2f, 1f, 2f, 0.5f, 1.25f
+        public RainForestBiome() : base("RainForestBiome", new BiomeQualifications(1.25f, 2f, 1f, 2f, 0.5f, 1.25f
             , 30))
         {
         }
