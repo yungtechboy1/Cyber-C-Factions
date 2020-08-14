@@ -31,11 +31,8 @@ namespace CyberCore.WorldGen.Populator
             }
             else if (yheight < maxheight)
             {
-                int r = (RNDM).Next(0, 3);
-                if (r == 0) cc.SetBlock(x, yheight, z, new Stone());
-                if (r == 1) cc.SetBlock(x, yheight, z, new Dirt());
-                if (r == 2) cc.SetBlock(x, yheight, z, new Dirt());
-                if (r == 3) cc.SetBlock(x, yheight, z, new Stone());
+                // int r = (RNDM).Next(0, 3);
+              /*  if (r == 0)*/ cc.SetBlock(x, yheight, z, new Grass());
             }
             else if (setair)
                 cc.SetBlock(x, yheight, z, new Air());

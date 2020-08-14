@@ -14,7 +14,7 @@ namespace CyberCore.WorldGen
     {
         public static List<AdvancedBiome> Biomes = new List<AdvancedBiome>();
 
-        private static int N;
+        private static int N = 0;
         private static readonly Dictionary<int, AdvancedBiome> BiomeDict = new Dictionary<int, AdvancedBiome>();
 
         public BiomeManager()
@@ -31,7 +31,6 @@ namespace CyberCore.WorldGen
             AddBiome(new BeachBiome());
             AddBiome(new SnowForest());
             AddBiome(new SnowTundra());
-            AddBiome(new SnowyIcyChunk());
             AddBiome(new TropicalRainForest());
             AddBiome(new TropicalSeasonalForest());
         }
@@ -42,7 +41,7 @@ namespace CyberCore.WorldGen
             Biomes.Add(biome);
             biome.LocalId = N;
             BiomeDict[N] = biome;
-            Console.WriteLine($"BIOME ADD AT {N} WITH NAME {biome.Name}");
+            Console.WriteLine($"BIOME ADD AT {N} WITH NAME {biome.Name} {biome.BiomeQualifications}");
             N++;
         }
 
@@ -89,9 +88,9 @@ namespace CyberCore.WorldGen
             tempnoise.SetFractalLacunarity(.25f);
             tempnoise.SetFractalGain(1);
 
-            float rain = rainnoise.GetNoise(chunk.X, chunk.Z) + 1;
-            float temp = tempnoise.GetNoise(chunk.X, chunk.Z) + 1;
-            float height = GetChunkHeightNoise(chunk.X, chunk.Z, 0.015f, 2);
+            float rain = rainnoise.GetNoise(chunk.X, chunk.Z) + .75f;
+            float temp = tempnoise.GetNoise(chunk.X, chunk.Z) + .75f;
+            float height = GetChunkHeightNoise(chunk.X, chunk.Z, 0.008f, 2);
             ;
             return new[] {rain, temp, height};
         }
@@ -114,10 +113,11 @@ namespace CyberCore.WorldGen
             heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
             heightnoise.SetFrequency(scale);
             heightnoise.SetFractalType(FastNoise.FractalType.FBM);
-            heightnoise.SetFractalOctaves(1);
+            heightnoise.SetFractalOctaves(2);
             heightnoise.SetFractalLacunarity(2);
             heightnoise.SetFractalGain(.5f);
-            return (heightnoise.GetNoise(x, z) + 1) * (max / 2f);
+            
+            return (heightnoise.GetNoise(x, z) + .75f) * (max / 2f);
             return (float) (OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f);
         }
 
@@ -178,7 +178,7 @@ namespace CyberCore.WorldGen
 
         public static void DoAdvancedStuff(AdvancedBiome biome, ChunkCoordinates chunk)
         {
-                    Console.WriteLine($"BIOMEMANAGER 1: OK SO BIOME FOUND THAT MATCHES RTH NAMED {biome.Name} {biome.LocalId} @ {chunk.X} {chunk.Z}");
+                    // Console.WriteLine($"BIOMEMANAGER 1: OK SO BIOME FOUND THAT MATCHES RTH NAMED {biome.Name} {biome.LocalId} @ {chunk.X} {chunk.Z}");
                     bool BC = false;
                     int bcc = 0;
 
@@ -192,8 +192,6 @@ namespace CyberCore.WorldGen
                     bool sw = false;
                     bool se = false;
 
-                    List<ChunkCoordinates> smoothing = new List<ChunkCoordinates>();
-                    List<ChunkCoordinates> fsmoothing = new List<ChunkCoordinates>();
                     for (int zz = -1; zz <= 1; zz++)
                     for (int xx = -1; xx <= 1; xx++)
                     {
@@ -291,18 +289,6 @@ namespace CyberCore.WorldGen
                     }
                     
                     
-
-                    //Calculate Size of Chunks needed to generated and Smoothed
-                    // int sz = 0;
-                    // if (n) sz++;
-                    // if (e) sz++;
-                    // if (s) sz++;
-                    // if (w) sz++;
-                    // if (nw) sz++;
-                    // if (sw) sz++;
-                    // if (se) sz++;
-                    // if (ne) sz++;
-
                     int top = 0;
                     int left = 0;
                     int right = 0;
@@ -316,101 +302,9 @@ namespace CyberCore.WorldGen
                     int xs = 16 + top + bottom;
                     int zs = 16 + left + right;
 
-                    // int[,] map = new int[xs, zs];
-
-                    Console.WriteLine("BIOMEMANAGER2: THE BCC COUNT WAS >> " + bcc);
-                    Console.WriteLine($"BIOMEMANAGER3: SIDES TOGGELD ${chunk.X}|{chunk.Z} N:{n} E:{e} S:{s} W:{w} NE:{ne} NW:{nw} SE:{se} SW:{sw}");
-                    // if (bcc <= 3)
-                    // {
                         biome.BorderChunk = true;
-                    // }
 
-                    // Console.WriteLine("BIOMEMANAGER4: THE COUNT OF biome.BorderChunkDirections =>" +
-                    //                   biome.BorderChunkDirections.Count);
-
-                    //Double Check Smoothing Directions
-                    // if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NW) &&
-                    //     biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North) &&
-                    //     biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.West))
-                    // {
-                    //     biome.BorderChunkDirections.Clear();
-                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NW);
-                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.North);
-                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.West);
-                    // }
-                    // else if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NE) &&
-                    //          biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North) &&
-                    //          biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.East))
-                    // {
-                    //     biome.BorderChunkDirections.Clear();
-                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NE);
-                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.North);
-                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.East);
-                    // }
-                    // else if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SE) &&
-                    //          biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.South) &&
-                    //          biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.East))
-                    // {
-                    //     biome.BorderChunkDirections.Clear();
-                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SE);
-                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.South);
-                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.East);
-                    // }
-                    // else if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SW) &&
-                    //          biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.South) &&
-                    //          biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.West))
-                    // {
-                    //     biome.BorderChunkDirections.Clear();
-                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SW);
-                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.South);
-                    //     biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.West);
-                    // }
-                    // else
-                    // {
-                    //     Console.WriteLine("BIOMEMANAGER5: AYYYYYY THIS IS A NORTH EAST WST STH TYPE BOREDR SMOOTH");
-                    //  
-                    //     if (biome.BorderChunkDirections.Count == 1 && (
-                    //             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NE) ||
-                    //             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SW) ||
-                    //             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NW) ||
-                    //             biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SE))
-                    //     )
-                    //     {
-                    //         //Only Single Chunk was selected for Smoothing!
-                    //     }
-                    //     // bb.BorderChunkDirections.Clear();
-                    // }
-
-                    // Console.WriteLine("BIOMEMANAGER6: THE COUNT OF biome.BorderChunkDirections =>" +
-                    //                   biome.BorderChunkDirections.Count);
-                    // foreach (var b in biome.BorderChunkDirections)
-                    // {
-                    //     Console.WriteLine($"BIOMEMANAGER7: ======================>{b}");
-                    // }
-                    //
-                    // //IF N and W are true
-                    // if (biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.North) && biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.West))
-                    // {
-                    //                         
-                    // }
-                    //
-
-                    //
-                    // if (smoothing.Count > 0)
-                    // {
-                    //     foreach (var sc in smoothing)
-                    //     {
-                    //         var tc = c.GenerateChunkColumn(sc, true);
-                    //         if(tc == null)fsmoothing.Add(sc);
-                    //     }
-                    //
-                    //     foreach (var fc in fsmoothing)
-                    //     {
-                    //         biome.GenerateandSmooth.Add(fc);
-                    //     }
-                    // }
-                    //
-                    // CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.name}");
+                    
                     
         }
         
@@ -435,17 +329,18 @@ namespace CyberCore.WorldGen
                     AdvancedBiome biome = (AdvancedBiome) bb.CClone();
                     // Console.WriteLine($"AFTER CLONE {biome.BorderChunkDirections.Count} VS OLD {bb.BorderChunkDirections.Count}");
                     DoAdvancedStuff(biome,chunk);
-                    Console.WriteLine($"BIOMEMANAGER9: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.Name}");
+                    // Console.WriteLine($"BIOMEMANAGER9: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.Name}");
                     BiomeCache[chunk] = biome;
                     return biome;
                 }
 
             // CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
-            Console.WriteLine(
-                $"BIOMEMANAGER10: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
+            // Console.WriteLine(
+            //     $"BIOMEMANAGER10: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
             // return new MainBiome();
             // return new WaterBiome();
-            var bbb = new HighPlains().CClone();
+            var bbb = new WaterBiome().CClone();
+            bbb.LocalId = 7;
             DoAdvancedStuff(bbb,chunk);
             BiomeCache[chunk] = bbb;
             return bbb;
@@ -463,7 +358,9 @@ namespace CyberCore.WorldGen
 
             // return new MainBiome();
             // return new WaterBiome();
-            return new HighPlains().CClone();
+            var aaa = new HighPlains().CClone();
+            aaa.LocalId = 6;
+            return aaa;
         }
 
         public static AdvancedBiome GetBiome2(ChunkCoordinates c)
@@ -483,7 +380,9 @@ namespace CyberCore.WorldGen
 
             // return new MainBiome();
             // return new WaterBiome();
-            return new HighPlains().CClone();
+            var aaa = new HighPlains().CClone();
+            aaa.LocalId = 6;
+            return aaa;
         }
 
         public static bool IsOnBorder(ChunkCoordinates chunkColumn, int localId, int size = 1)

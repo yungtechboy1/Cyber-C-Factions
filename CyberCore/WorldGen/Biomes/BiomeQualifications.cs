@@ -2,7 +2,7 @@
 {
     public class BiomeQualifications
     {
-        public int Baseheight = 80;
+        public int Baseheight = 90;
 
         public int Heightvariation;
         public float Startheight; //0-2
@@ -13,7 +13,7 @@
         public float Stoptemp;
 
         // public int baseheight = 20;
-        public bool waterbiome;
+        public bool Waterbiome;
 
 
         public BiomeQualifications(float startrain, float stoprain, float starttemp, float stoptemp, float startheight,
@@ -25,7 +25,7 @@
             Stoptemp = stoptemp;
             Startheight = startheight;
             Stopheight = stopheight;
-            this.waterbiome = waterbiome;
+            Waterbiome = waterbiome;
             Heightvariation = heightvariation;
         }
 
@@ -43,6 +43,12 @@
         {
             return Startrain <= rain && Stoprain >= rain && Starttemp <= temp && Stoptemp >= temp &&
                    Startheight <= height && Stopheight >= height;
+        }
+
+        public override string ToString()
+        {
+            // return $"SH: {Startheight} | SPH {Stopheight}| ST {Starttemp}|STP {Stoptemp}|SR {Startrain}|SRP {Stoprain}";
+            return $"{Startheight},{Stopheight},{Starttemp},{Stoptemp},{Startrain},{Stoprain},,";
         }
     }
 }

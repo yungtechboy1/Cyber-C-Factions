@@ -31,11 +31,12 @@ namespace CyberCore.WorldGen.Biomes
             }
             else if (yheight < maxheight)
             {
-                int r = (RNDM).Next(0, 3);
-                if (r == 0) cc.SetBlock(x, yheight, z, new Stone());
-                if (r == 1) cc.SetBlock(x, yheight, z, new Dirt());
-                if (r == 2) cc.SetBlock(x, yheight, z, new Dirt());
-                if (r == 3) cc.SetBlock(x, yheight, z, new Stone());
+                cc.SetBlock(x, yheight, z, new Grass());
+            // int r = (RNDM).Next(0, 3);
+            //     if (r == 0) cc.SetBlock(x, yheight, z, new Stone());
+            //     if (r == 1) cc.SetBlock(x, yheight, z, new Grass());
+            //     if (r == 2) cc.SetBlock(x, yheight, z, new Grass());
+            //     if (r == 3) cc.SetBlock(x, yheight, z, new Stone());
             }
             else if (setair)
                 cc.SetBlock(x, yheight, z, new Air());

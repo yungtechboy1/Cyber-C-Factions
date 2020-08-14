@@ -17,7 +17,6 @@
         <e p="CorePlayerItemData.cs" t="Include" />
         <e p="CoreSettings.cs" t="Include" />
         <e p="Custom" t="Include">
-          <e p="CustomCyberGenerator.cs" t="Include" />
           <e p="CustomEnums" t="Include">
             <e p="ChatFormats.cs" t="Include" />
             <e p="CustomDamageCause.cs" t="Include" />

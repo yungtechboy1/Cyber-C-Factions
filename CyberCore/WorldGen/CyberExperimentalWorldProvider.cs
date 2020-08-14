@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using CyberCore.Utils;
 using CyberCore.WorldGen.Biomes;
@@ -260,7 +261,7 @@ namespace CyberCore.WorldGen
             if (tz < 0) tz += 16;
             // Console.WriteLine($" GETTING BLOCK HEIGHT CHUNKCORDZ: {cx} {cz} || {tx} {tz} || FROM {x} {z}");
             AdvancedBiome tb = BiomeManager.GetBiome(new ChunkCoordinates(cx, cz));
-            var c = GenerateChunkColumn(new ChunkCoordinates(cx, cz),true);
+            var c = GenerateChunkColumn(new ChunkCoordinates(cx, cz), true);
             if (c != null)
             {
                 // Console.WriteLine($"{tx} ||| {tz}");
@@ -459,6 +460,8 @@ namespace CyberCore.WorldGen
 
         static object readwrite = new object();
 
+        public static ConcurrentDictionary<String,bool> RW = new ConcurrentDictionary<string,bool>();
+        
         public static void SaveChunk(ChunkColumn chunk, string basePath)
         {
             // WARNING: This method does not consider growing size of the chunks. Needs refactoring to find
@@ -481,8 +484,13 @@ namespace CyberCore.WorldGen
                 string.Format(@"region{2}r.{0}.{1}.mca", rx, rz, Path.DirectorySeparatorChar));
 
             Log.Debug($"Save chunk X={chunk.X}, Z={chunk.Z} to {filePath}");
-            lock (readwrite)
+            // lock (readwrite) CAUSE OF ALL MY ISSUES
+            while (RW.ContainsKey(filePath))
             {
+                Thread.Sleep(100);
+            }
+            RW[filePath] =true;
+            
                 if (!File.Exists(filePath))
                 {
                     // Make sure directory exist
@@ -572,7 +580,9 @@ namespace CyberCore.WorldGen
                     Log.Warn(
                         $"Took {time.ElapsedMilliseconds}ms to save. And {testTime.ElapsedMilliseconds}ms to generate bytes from NBT");
                 }
-            }
+
+                bool a = false;
+                RW.TryRemove(filePath, out a);
         }
 
 
@@ -747,6 +757,9 @@ namespace CyberCore.WorldGen
                 sectionsTag.Add(sectionTag);
                 sectionTag.Add(new NbtByte("Y", (byte) i));
 
+
+                // Stopwatch ss = new Stopwatch();
+                // ss.Restart();
                 var blocks = new byte[4096];
                 var add = new byte[2048];
                 var data = new byte[2048];
@@ -755,52 +768,47 @@ namespace CyberCore.WorldGen
                 var runtimeid = new byte[2048];
                 var runtimeid2 = new byte[2048];
 
+
+                for (var x = 0; x < 16; x++)
+                for (var z = 0; z < 16; z++)
+                for (var y = 0; y < 16; y++)
                 {
-                    for (var x = 0; x < 16; x++)
-                    for (var z = 0; z < 16; z++)
-                    for (var y = 0; y < 16; y++)
+                    byte addd = 0;
+                    var anvilIndex = y * 16 * 16 + z * 16 + x;
+                    var b = subChunk.GetBlockObject(x, y, z);
+                    int bid = b.Id;
+                    byte bmeta = b.Metadata;
+                    if (bid > 255)
                     {
-                        byte addd = 0;
-                        var anvilIndex = y * 16 * 16 + z * 16 + x;
-                        var b = subChunk.GetBlockObject(x, y, z);
-                        var blockId = b.Id;
-                        int bid = b.Id;
-                        byte bmeta = (byte) b.Metadata;
-                        if (bid > 255)
-                        {
-                            addd = (byte) (bid >> 8);
-                            bid -= 256;
-                        }
-
-                        if (blockId < 0)
-                        {
-                            Console.WriteLine(
-                                "WHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO ATTTTTTTTTTTTTTTTTTTTTT " + blockId);
-                            blockId = 0;
-                        }
-                        // if(blockId == 211 || blockId == 17)Console.WriteLine($"THE BLOCK ID OF THIS IS {blockId}");
-                        // if(blockId == 211 || blockId == 17)Console.WriteLine($"THE BLOCK ID OF THIS IS {subChunk.GetBlockObject(x,y,z).GetRuntimeId()} || {subChunk.GetBlockObject(x,y,z).Name}");
-                        // if(blockId == 211 || blockId == 17)Console.WriteLine($"THE BLOCK ID OF THIS IS {blockId} {subChunk.GetBlockObject(x,y,z).Id} {subChunk.GetBlockObject(x,y,z).Metadata}");
-
-
-                        // if (blockId == 211 || blockId == 17)
-                        //     Console.WriteLine(
-                        //         $"THE BLOCK ID OF THIS IS {blockId} {subChunk.GetBlockObject(x, y, z).Id} {subChunk.GetBlockObject(x, y, z).Metadata}");
-                        // if (blockId == 211 || blockId == 17)
-                        //     Console.WriteLine(
-                        //         $" >> {blockId} {b.Id} {b.Metadata} {b.GetState().Data} || {bid} {bmeta} {addd} |||| {b.Id}");
-                        // if(blockId == 211 || blockId == 17)Console.WriteLine($" >> |||||||| {(bid >> 8)}");
-
-                        blocks[anvilIndex] = (byte) bid;
-                        var brid = b.GetRuntimeId();
-                        SetNibble4(runtimeid, anvilIndex, (byte) (brid & 255));
-                        SetNibble4(runtimeid2, anvilIndex, (byte) (brid >> 8));
-                        SetNibble4(data, anvilIndex, bmeta);
-                        SetNibble4(add, anvilIndex, addd);
-                        SetNibble4(blockLight, anvilIndex, subChunk.GetBlocklight(x, y, z));
-                        SetNibble4(skyLight, anvilIndex, subChunk.GetSkylight(x, y, z));
+                        addd = (byte) (bid >> 8);
+                        bid -= 256;
                     }
+
+                    // if(blockId == 211 || blockId == 17)Console.WriteLine($"THE BLOCK ID OF THIS IS {blockId}");
+                    // if(blockId == 211 || blockId == 17)Console.WriteLine($"THE BLOCK ID OF THIS IS {subChunk.GetBlockObject(x,y,z).GetRuntimeId()} || {subChunk.GetBlockObject(x,y,z).Name}");
+                    // if(blockId == 211 || blockId == 17)Console.WriteLine($"THE BLOCK ID OF THIS IS {blockId} {subChunk.GetBlockObject(x,y,z).Id} {subChunk.GetBlockObject(x,y,z).Metadata}");
+
+
+                    // if (blockId == 211 || blockId == 17)
+                    //     Console.WriteLine(
+                    //         $"THE BLOCK ID OF THIS IS {blockId} {subChunk.GetBlockObject(x, y, z).Id} {subChunk.GetBlockObject(x, y, z).Metadata}");
+                    // if (blockId == 211 || blockId == 17)
+                    //     Console.WriteLine(
+                    //         $" >> {blockId} {b.Id} {b.Metadata} {b.GetState().Data} || {bid} {bmeta} {addd} |||| {b.Id}");
+                    // if(blockId == 211 || blockId == 17)Console.WriteLine($" >> |||||||| {(bid >> 8)}");
+
+                    blocks[anvilIndex] = (byte) bid;
+                    var brid = b.GetRuntimeId();
+                    SetNibble4(runtimeid, anvilIndex, (byte) (brid & 255));
+                    SetNibble4(runtimeid2, anvilIndex, (byte) (brid >> 8));
+                    SetNibble4(data, anvilIndex, bmeta);
+                    SetNibble4(add, anvilIndex, addd);
+                    SetNibble4(blockLight, anvilIndex, subChunk.GetBlocklight(x, y, z));
+                    SetNibble4(skyLight, anvilIndex, subChunk.GetSkylight(x, y, z));
                 }
+
+                // Console.WriteLine($" THOOK32 ::: {ss.Elapsed}");
+                // ss.Restart();
                 sectionTag.Add(new NbtByteArray("Blocks", blocks));
                 sectionTag.Add(new NbtByteArray("Data", data));
                 sectionTag.Add(new NbtByteArray("Add", add));
@@ -808,6 +816,8 @@ namespace CyberCore.WorldGen
                 sectionTag.Add(new NbtByteArray("SkyLight", skyLight));
                 sectionTag.Add(new NbtByteArray("RuntimeID", runtimeid));
                 sectionTag.Add(new NbtByteArray("RuntimeID2", runtimeid2));
+                // Console.WriteLine($" THOOK32 ::: {ss.Elapsed}");
+                // ss.Stop();
             }
 
             var heights = new int[256];
@@ -883,9 +893,19 @@ namespace CyberCore.WorldGen
                 var filePath = Path.Combine(basePath,
                     string.Format(@"region{2}r.{0}.{1}.mca", rx, rz, Path.DirectorySeparatorChar));
 
-                lock (readwrite)
+                while (RW.ContainsKey(filePath))
                 {
-                    if (!File.Exists(filePath)) return null;
+                    Thread.Sleep(10);
+                }
+                RW[filePath] =true;
+
+                if (!File.Exists(filePath))
+                {
+                    
+                    bool aaaaaaa = false;
+                    RW.TryRemove(filePath,out aaaaaaa);
+                    return null;
+                }
 
                     using (var regionFile = File.OpenRead(filePath))
                     {
@@ -917,6 +937,9 @@ namespace CyberCore.WorldGen
 
                         if (offset == 0 || length == 0)
                         {
+                            
+                            bool aaaaaa = false;
+                            RW.TryRemove(filePath,out aaaaaa);
                             return null;
                         }
 
@@ -1040,8 +1063,6 @@ namespace CyberCore.WorldGen
                                                     item.Remove("id");
                                                     item.Add(new NbtShort("id", itemId));
                                                 }
-                                                
-
                                             }
                                         }
                                     }
@@ -1100,9 +1121,11 @@ namespace CyberCore.WorldGen
                         chunk.IsDirty = false;
                         chunk.NeedSave = false;
 
+                        bool aaaaa = false;
+                        RW.TryRemove(filePath,out aaaaa);
                         return chunk;
                     }
-                }
+
             }
             catch (Exception e)
             {
