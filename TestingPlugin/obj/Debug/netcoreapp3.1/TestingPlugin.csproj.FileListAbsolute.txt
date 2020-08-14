@@ -1,0 +1,9 @@
+C:\Git\Cyber-C-Factions\TestingPlugin\bin\Debug\netcoreapp3.1\TestingPlugin.deps.json
+C:\Git\Cyber-C-Factions\TestingPlugin\bin\Debug\netcoreapp3.1\TestingPlugin.dll
+C:\Git\Cyber-C-Factions\TestingPlugin\bin\Debug\netcoreapp3.1\TestingPlugin.pdb
+C:\Git\Cyber-C-Factions\TestingPlugin\obj\Debug\netcoreapp3.1\TestingPlugin.csprojAssemblyReference.cache
+C:\Git\Cyber-C-Factions\TestingPlugin\obj\Debug\netcoreapp3.1\TestingPlugin.AssemblyInfoInputs.cache
+C:\Git\Cyber-C-Factions\TestingPlugin\obj\Debug\netcoreapp3.1\TestingPlugin.AssemblyInfo.cs
+C:\Git\Cyber-C-Factions\TestingPlugin\obj\Debug\netcoreapp3.1\TestingPlugin.csproj.CoreCompileInputs.cache
+C:\Git\Cyber-C-Factions\TestingPlugin\obj\Debug\netcoreapp3.1\TestingPlugin.dll
+C:\Git\Cyber-C-Factions\TestingPlugin\obj\Debug\netcoreapp3.1\TestingPlugin.pdb

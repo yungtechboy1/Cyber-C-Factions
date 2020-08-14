@@ -81,6 +81,11 @@ namespace CyberCore.WorldGen
         private static float[] biomeWeights = new float[25];
 
 
+        public void Initialize(IWorldProvider worldProvider)
+        {
+            // throw new NotImplementedException();
+        }
+
         public ChunkColumn GenerateChunkColumn(ChunkCoordinates chunkCoordinates)
         {
             StackTrace stackTrace = new StackTrace();
@@ -142,12 +147,12 @@ namespace CyberCore.WorldGen
                                 baseZ + (zSeg * 4) + zSmooth);
 
                             AdvancedBiome bb1 = AdvancedBiome.GetBiome(biome1.Id);
-                            float baseHeight = bb1.startheight;
-                            float heightVariation = bb1.BiomeQualifications.heightvariation;
+                            float baseHeight = bb1.Startheight;
+                            float heightVariation = bb1.BiomeQualifications.Heightvariation;
 
                             float scaledWeight = biomeWeights[xSmooth + 2 + (zSmooth + 2) * 5] / (baseHeight + 2.0F);
 
-                            if (baseHeight > bb.startheight)
+                            if (baseHeight > bb.Startheight)
                             {
                                 scaledWeight /= 2.0F;
                             }

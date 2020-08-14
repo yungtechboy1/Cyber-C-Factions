@@ -391,6 +391,29 @@ namespace CyberCore.Manager.AuctionHouse
             AuctionHouse b = new AuctionHouse(p, CCM, p.KnownPosition.ToVector3(), pg);
             CyberCoreMain.Log.Info(b.getContents().Values.Count + " < SIZZEEE" + b.size);
             //TODO !IMPORTANT
+            p.SetOpenInventory(b.I);
+            
+            // if (b.I.Type == (byte) 0 && !b.I.IsOpen())
+            // {
+            //     McpeBlockEvent message = Packet<McpeBlockEvent>.CreateObject(1L);
+            //     message.coordinates = inventoryCoord;
+            //     message.case1 = 1;
+            //     message.case2 = 2;
+            //     this.Level.RelayBroadcast<McpeBlockEvent>(message);
+            // }
+            // b.I.AddObserver(this);
+            McpeContainerOpen mcpeContainerOpen = Packet<McpeContainerOpen>.CreateObject(1L);
+            mcpeContainerOpen.windowId = b.I.WindowsId;
+            mcpeContainerOpen.type = b.I.Type;
+            mcpeContainerOpen.coordinates = b.I.Coordinates;
+            mcpeContainerOpen.runtimeEntityId = -1L;
+            p.SendPacket((Packet) mcpeContainerOpen);
+            McpeInventoryContent inventoryContent = Packet<McpeInventoryContent>.CreateObject(1L);
+            inventoryContent.inventoryId = (uint) b.I.WindowsId;
+            inventoryContent.input = b.I.Slots;
+            p.SendPacket((Packet) inventoryContent);
+            
+            
             // CyberCoreMain.getInstance().getServer().getScheduler().scheduleDelayedTask(new OpenAH(p, b), 5);
 //        b.open()
         }

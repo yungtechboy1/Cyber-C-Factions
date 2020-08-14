@@ -16,13 +16,37 @@ namespace CyberCore.Utils
 
         public SqlManager(CyberCoreMain ccm, String key = "")
         {
-            if(key.Length != 0)key +="-";
+                CCM = ccm;
+            try
+            {
+                if (key.Length != 0) key += "-";
+                Console.WriteLine("Loading DB for " + key);
+                Host = CCM.MasterConfig.GetProperty(key + "Host", null);
+                Username = CCM.MasterConfig.GetProperty(key + "Username", null);
+                Password = CCM.MasterConfig.GetProperty(key + "Password", null);
+                Database = CCM.MasterConfig.GetProperty(key + "db-Server", null);
+                Port = 3306; //CCM.MasterConfig.GetProperty("Port", 3360);
+                init();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+
+        public SqlManager(CyberCoreMain ccm, String host,String username,String password,String db, int port = 3360)
+        {
+            Host = host;
+            Username = username;
+            Password = password;
+            Database = db;
+            Port = port;
             CCM = ccm;
-            Host = CCM.MasterConfig.GetProperty(key+"Host", null);
-            Username = CCM.MasterConfig.GetProperty(key+"Username", null);
-            Password = CCM.MasterConfig.GetProperty(key+"Password", null);
-            Database = CCM.MasterConfig.GetProperty(key+"db-Server", null);
-            Port = CCM.MasterConfig.GetProperty("Port", 3360);
+            init();
+        }
+
+        public void init()
+        {
             ConnectionString = $"SERVER={Host};port={Port};DATABASE={Database};user id={Username};PASSWORD={Password};";
             try
             {
@@ -38,7 +62,7 @@ namespace CyberCore.Utils
                 }
                 catch (Exception e)
                 {
-                    Log.Error("Error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaa:"+Host, e);
+                    Log.Error("Error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaa:"+Host+"|"+Database+"|"+Username+"|"+Password, e);
                 }
             }
             catch (Exception e)
@@ -46,7 +70,7 @@ namespace CyberCore.Utils
                 Log.Error(e);
             }
         }
-
+        
         public string Host { get; set; }
         public int Port { get; set; }
         public string Username { get; set; }
@@ -56,7 +80,7 @@ namespace CyberCore.Utils
 
         public CyberCoreMain CCM { get; }
 
-        private MySqlConnection MSC { get; }
+        private MySqlConnection MSC { get; set; }
 
         public MySqlConnection GetMySqlConnection()
         {

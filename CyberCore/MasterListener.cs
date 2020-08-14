@@ -96,6 +96,7 @@ namespace CyberCore
 //            sd.addLine("TEST LINE 0",0);
 //            sd.addLine("TEST LINE 1",1);
 //            sd.addLine("YOUR NAME"+p.getDisplayName(),2);
+//            sd.addLine("YOUR NAME"+p.getDisplayName(),2);
 //            ScoreboardAPI.setScoreboard(p,s);
             loadinv(p);
         }
@@ -190,9 +191,9 @@ namespace CyberCore
                             //Valid Key & Take it
                             var pi = e.Player.Inventory;
                             var i = pi.GetItemInHand();
+                            pi.SetInventorySlot(pi.InHandSlot,null);
                             i.Count--;
-                            if (i.Count == 0) i = new ItemAir();
-                            pi.setItemInHand(i);
+                            if (i.Count != 0) pi.SetInventorySlot(pi.InHandSlot,i);
                             CyberCoreMain.GetInstance().CrateMain.showCrate(b.Coordinates, e.Player);
                             CyberCoreMain.GetInstance().CrateMain.rollCrate(b.Coordinates, e.Player);
                         }

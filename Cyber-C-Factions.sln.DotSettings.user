@@ -1,2 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=2dc0018b_002D0e24_002D4e99_002Dabd3_002D9403a20411d1_0023CFactions/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=D40C8A46_002D39B0_002D4593_002DA18A_002D467EC4C5D926_002Ff_003ACyberCommands_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Shadow\.nuget\packages\openminet.openapi\1.0.73\lib\netcoreapp3.1\OpenAPI.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
+	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=2dc0018b_002D0e24_002D4e99_002Dabd3_002D9403a20411d1_0023CFactions/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=75d1fce9_002D8f71_002D4ece_002Da931_002De6958b57195e_0023TestingPlugin/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Biome/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Biomes/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Cyber/@EntryIndexedValue">True</s:Boolean>
+	</wpf:ResourceDictionary>

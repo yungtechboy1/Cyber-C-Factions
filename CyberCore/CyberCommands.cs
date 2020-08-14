@@ -1,43 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Numerics;
-using System.Runtime.CompilerServices;
-using AStarNavigator;
 using CyberCore.Manager.Crate;
 using CyberCore.Manager.Crate.Form;
-using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
+using CyberCore.Manager.Shop;
 using CyberCore.Utils;
 using fNbt;
-using log4net.Core;
 using MiNET;
 using MiNET.BlockEntities;
 using MiNET.Blocks;
 using MiNET.Net;
-using MiNET.Plugins;
 using MiNET.Plugins.Attributes;
 using MiNET.Utils;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
-using OpenAPI.Events.Player;
-using OpenAPI.Utils;
+using MiNET.Worlds;
 using Level = MiNET.Worlds.Level;
+using Target = MiNET.Plugins.Target;
+// ReSharper disable InconsistentNaming
 
 namespace CyberCore
 {
     public class CyberCommands
     {
-        public static
-            Dictionary<String, BlockCoordinates> pos1 = new Dictionary<string, BlockCoordinates>();
-
-        Dictionary<String, BlockCoordinates> pos2 = new Dictionary<string, BlockCoordinates>();
-        public CyberCoreMain CCM;
+       
+        public readonly CyberCoreMain CCM;
 
         public CyberCommands(CyberCoreMain cyberCoreMain)
         {
             CCM = cyberCoreMain;
+        }
+
+        [Command(Name = "ah", Description = "Auction House")]
+        public void AH(CorePlayer p)
+        {
+            
         }
 
         [Command(Name = "rank", Description = "Rank Options")]
@@ -50,10 +47,16 @@ namespace CyberCore
 
 
         [Command(Name = "ft add", Description = "Add floating text")]
-        public void ftadd(CorePlayer p, string text = null)
+        public void FtAdd(CorePlayer p, string text = null)
         {
-            FloatingTextFactory.AddFloatingText(new CyberFloatingTextContainer(CCM.FTM, p, text), true);
+            FloatingTextFactory.AddFloatingText(new CyberGenericFloatingTextContainer(CCM.FTM, (PlayerLocation) p.KnownPosition.Clone(),p.Level, text), true);
             p.SendMessage(ChatColors.Green + "Floating Text Added!");
+        }
+
+        [Command(Name = "lvl", Description = "Get Level info")]
+        public void lvl(CorePlayer p)
+        {
+            p.SendMessage($"LVEL ID: {p.Level.LevelId} TYTPE{p.Level.WorldProvider.GetType()}");
         }
 
         [Command(Name = "ft reload", Description = "Reload floating text")]
@@ -272,6 +275,24 @@ namespace CyberCore
                 $"{ChatColors.Green}[BANK] Your Cash Balance is {ChatColors.Aqua}${p.getPlayerSettingsData().getCash()}");
         }
 
+        [Command(Name = "shop", Description = "Buy / Sell Items")]
+        public void Shop(CorePlayer p, int amt)
+        {
+            var a = new ShopFactory(CCM);
+            a.OpenShop(p,1);
+        }
+        [Command(Name = "gamemode", Description = "Set Gamemode")]
+        public void gm(CorePlayer p, int mode)
+        {
+            if (mode == 0)
+            {
+                p.SetGamemode(GameMode.Survival);
+            }else if (mode == 1)
+            {
+                p.SetGamemode(GameMode.Creative);
+            }
+        }
+
         [Command(Name = "withdraw", Aliases = new[] {"bank withdraw"}, Description = "Withdraw money from the bank")]
         public void withdraw(CorePlayer p, int amt)
         {
@@ -393,14 +414,14 @@ namespace CyberCore
 
             //inventory.InventoryChange += new Action<Player, MiNET.Inventory, byte, Item>(player.OnInventoryChange);
             inventory.AddObserver(player);
-            McpeContainerOpen mcpeContainerOpen = McpeContainerOpen.CreateObject(1L);
+            McpeContainerOpen mcpeContainerOpen = McpeContainerOpen.CreateObject();
             mcpeContainerOpen.windowId = inventory.WindowsId;
             mcpeContainerOpen.type = inventory.Type;
             mcpeContainerOpen.coordinates = coords;
             mcpeContainerOpen.runtimeEntityId = 1L;
             player.SendPacket(mcpeContainerOpen);
-            McpeInventoryContent inventoryContent = McpeInventoryContent.CreateObject(1L);
-            inventoryContent.inventoryId = (uint) inventory.WindowsId;
+            McpeInventoryContent inventoryContent = McpeInventoryContent.CreateObject();
+            inventoryContent.inventoryId = inventory.WindowsId;
             inventoryContent.input = inventory.Slots;
             player.SendPacket(inventoryContent);
         }

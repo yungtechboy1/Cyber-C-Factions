@@ -17,22 +17,23 @@
         <e p="CorePlayerItemData.cs" t="Include" />
         <e p="CoreSettings.cs" t="Include" />
         <e p="Custom" t="Include">
-          <e p="CustomCyberGenerator.cs" t="Include" />
           <e p="CustomEnums" t="Include">
             <e p="ChatFormats.cs" t="Include" />
             <e p="CustomDamageCause.cs" t="Include" />
             <e p="PowerEnum.cs" t="Include" />
           </e>
+          <e p="CyberGUIInventory.cs" t="Include" />
+          <e p="CyberInventory.cs" t="Include" />
           <e p="Events" t="Include">
             <e p="CustomEntityDamageEvent.cs" t="Include" />
             <e p="PlayerTakeDamageEvent.cs" t="Include" />
           </e>
           <e p="Items" t="Include">
-            <e p="ItemEmerald.cs" t="Include" />
-            <e p="ItemSlimeBall.cs" t="Include" />
             <e p="NetherStar.cs" t="Include" />
+            <e p="PoisionousPotato.cs" t="Include" />
           </e>
         </e>
+        <e p="CustomItmStkInvMgr.cs" t="Include" />
         <e p="CyberCommands.cs" t="Include" />
         <e p="CyberCore.csproj" t="IncludeRecursive" />
         <e p="CyberCoreMain.cs" t="Include" />
@@ -161,11 +162,13 @@
           </e>
           <e p="FloatingText" t="Include">
             <e p="CustomFloatingTextParticle.cs" t="Include" />
-            <e p="CyberFloatingTextContainer.cs" t="Include" />
             <e p="CyberFloatingTextContainerData.cs" t="Include" />
             <e p="FloatingTextEntity.cs" t="Include" />
             <e p="FloatingTextFactory.cs" t="Include" />
             <e p="FloatingTextType.cs" t="Include" />
+            <e p="GenericCyberFloatingTextContainer.cs" t="Include" />
+            <e p="GenericCyberFloatingTextContainerData.cs" t="Include" />
+            <e p="GenericFloatingTextEntity.cs" t="Include" />
             <e p="PopupFT.cs" t="Include" />
             <e p="PopupFTData.cs" t="Include" />
           </e>
@@ -183,7 +186,11 @@
             <e p="RankList2.cs" t="Include" />
           </e>
           <e p="Shop" t="Include">
+            <e p="NewShopInv.cs" t="Include" />
+            <e p="ShopCategory.cs" t="Include" />
+            <e p="ShopFactory.cs" t="Include" />
             <e p="ShopInv.cs" t="Include" />
+            <e p="ShopMysqlData.cs" t="Include" />
             <e p="Spawner" t="Include">
               <e p="SpawnerShop.cs" t="Include" />
             </e>
@@ -204,6 +211,7 @@
         <e p="PlayerSettingsData.cs" t="Include" />
         <e p="ServerRankChecker.cs" t="Include" />
         <e p="Utils" t="Include">
+          <e p="AHStaticItems.cs" t="Include" />
           <e p="CacheChecker.cs" t="Include" />
           <e p="CenterText.cs" t="Include" />
           <e p="Cooldowns" t="Include">
@@ -220,6 +228,7 @@
             <e p="JsonDataManager.cs" t="Include" />
             <e p="PlayerDetailedInfo.cs" t="Include" />
             <e p="ServerSqlite.cs" t="Include" />
+            <e p="ShopStaticItems.cs" t="Include" />
             <e p="UserSQL.cs" t="Include" />
           </e>
           <e p="DefaultFontInfo.cs" t="Include" />
@@ -228,7 +237,6 @@
           <e p="InternalPlayerSettings.cs" t="Include" />
           <e p="MessageFormater.cs" t="Include" />
           <e p="SqlManager.cs" t="Include" />
-          <e p="StaticItems.cs" t="Include" />
         </e>
         <e p="WorldGen" t="Include">
           <e p="Biomes" t="Include">
@@ -236,6 +244,7 @@
             <e p="BeachBiome.cs" t="Include" />
             <e p="BiomeList.cs" t="Include" />
             <e p="BiomeManager.cs" t="Include" />
+            <e p="BiomeQualifications.cs" t="Include" />
             <e p="BiomeSelector.cs" t="Include" />
             <e p="Desert.cs" t="Include" />
             <e p="ForestBiome.cs" t="Include" />
@@ -250,6 +259,7 @@
               <e p="Populator.cs" t="Include" />
               <e p="PopulatorData.cs" t="Include" />
             </e>
+            <e p="RainForestBiome.cs" t="Include" />
             <e p="SnowForest.cs" t="Include" />
             <e p="SnowTundra.cs" t="Include" />
             <e p="SnowyIcyChunk.cs" t="Include" />
@@ -262,10 +272,26 @@
           <e p="FastNoise.cs" t="Include" />
           <e p="NukkitGenerator.cs" t="Include" />
           <e p="Schematic.cs" t="Include" />
+          <e p="SmoothMap.cs" t="Include" />
           <e p="TestGenerator.cs" t="Include" />
           <e p="TestGenerator2.cs" t="Include" />
           <e p="WorldUtils.cs" t="Include" />
         </e>
+      </e>
+      <e p="MapTestConsole" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="LevelMap.cs" t="Include" />
+        <e p="LevelMapChunk.cs" t="Include" />
+        <e p="Main.cs" t="Include" />
+        <e p="MapTestConsole.csproj" t="IncludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="MapTestConsole.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
       </e>
       <e p="packages" t="ExcludeRecursive" />
       <e p="Testing" t="IncludeRecursive">
@@ -279,6 +305,9 @@
         </e>
         <e p="Program.cs" t="Include" />
         <e p="Testing.csproj" t="IncludeRecursive" />
+      </e>
+      <e p="TestingPlugin" t="IncludeRecursive">
+        <e p="TestingPlugin.csproj" t="IncludeRecursive" />
       </e>
     </e>
   </component>

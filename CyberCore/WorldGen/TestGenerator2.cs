@@ -50,6 +50,11 @@ namespace CyberCore.WorldGen
             // BlockLayers = SuperflatGenerator.ParseSeed(Seed);
         }
 
+        public void Initialize(IWorldProvider worldProvider)
+        {
+            // throw new NotImplementedException();
+        }
+
         public ChunkColumn GenerateChunkColumn(ChunkCoordinates chunkCoordinates)
         {
             

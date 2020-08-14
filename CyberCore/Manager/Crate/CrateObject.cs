@@ -17,7 +17,7 @@ namespace CyberCore.Manager.Crate
         public CrateData CD;
         private bool isinit = false;
         private bool ftloaded = false;
-        private CyberFloatingTextContainer ft = null;
+        private CyberGenericFloatingTextContainer ft = null;
 
 
         public CrateObject(PlayerLocation p,Level l, CrateData cd)
@@ -51,7 +51,7 @@ namespace CyberCore.Manager.Crate
         {
             isinit = true;
             ftloaded = true;
-            ft = new CyberFloatingTextContainer(CyberCoreMain.GetInstance().FTM, Location+new Vector3(.5f,.5f,.5f), Lvl,getDisplayText());
+            ft = new CyberGenericFloatingTextContainer(CyberCoreMain.GetInstance().FTM, Location+new Vector3(.5f,.5f,.5f), Lvl,getDisplayText());
             FloatingTextFactory.AddFloatingText(ft);
 //        FloatingTextParticle
         }
@@ -71,7 +71,7 @@ namespace CyberCore.Manager.Crate
             return ftloaded;
         }
 
-        public CyberFloatingTextContainer getFt()
+        public CyberGenericFloatingTextContainer getFt()
         {
             return ft;
         }

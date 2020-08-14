@@ -487,7 +487,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public Item getHotbarItem_Success()
         {
-            Item i = new ItemEmerald();
+            Item i = new ItemApple();
             i.setCustomName(getDispalyName() + " Power");
             i.setLore(new List<String>(){ChatColors.Green + "Ready for Use!",
                 ChatColors.Gray + "Cooldown: " + getCooldownTimeSecs() + " Secs"}.ToArray());

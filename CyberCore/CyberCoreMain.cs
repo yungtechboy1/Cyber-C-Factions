@@ -12,15 +12,18 @@ using CyberCore.Manager.Crate;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
+using CyberCore.Manager.Shop;
 using CyberCore.Manager.Warp;
 using CyberCore.Utils;
 using CyberCore.Utils.Data;
 using CyberCore.WorldGen;
 using log4net;
+using log4net.Util.TypeConverters;
 using MiNET;
 using MiNET.Blocks;
 using MiNET.Net;
 using MiNET.Plugins;
+using MiNET.Plugins.Attributes;
 using MiNET.Sounds;
 using MiNET.Utils;
 using MiNET.Worlds;
@@ -33,7 +36,7 @@ using OpenAPI.World;
 namespace CyberCore
 {
     [OpenPluginInfo(Name = "CyberCore", Description = "CyberTech++ Core Plugin", Author = "YungTechBoy1",
-        Version = "1.0.0.0-PA", Website = "CyberTechpp.com")]
+        Version = "1.0.0.1-PA", Website = "CyberTechpp.com")]
     public class CyberCoreMain : OpenPlugin
     {
         // public Dictionary<String, Object> PlayerIdentification = new Dictionary<string, object>();
@@ -81,6 +84,20 @@ namespace CyberCore
         public static CyberCoreMain GetInstance()
         {
             return instance;
+        }
+        
+        
+        [PacketHandler, Receive]
+        public Packet TEST(McpeInventoryTransaction p, Player pp)
+        {
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine("============"+pp.getName());
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            return p;
         }
 
         public CyberCoreMain()
@@ -221,7 +238,7 @@ namespace CyberCore
             // };
             
             Log.Info("DA LENGTH OF TITTTTTTTTTT IS :"+AnvilWorldProvider.Convert.Count);
-            var level = new OpenLevel(api, api.LevelManager, Dimension.Overworld.ToString(),
+            var level = new OpenLevel(api, api.LevelManager, Dimension.Overworld.ToString()+"CT",
                 new CyberExperimentalWorldProvider(123123,Config.GetProperty("PCWorldFolder", "CyberWorld")),  api.LevelManager.EntityManager, GameMode.Creative,
                 Difficulty.Peaceful);
             // generator.Level = level;
@@ -229,6 +246,8 @@ namespace CyberCore
 
             api.LevelManager.LoadLevel(level);
             api.LevelManager.SetDefaultLevel(level);
+            Console.WriteLine(">>>>>>>>>>>>||||>>>>"+api.LevelManager.Levels.Count);
+            Console.WriteLine(">>>>>>>>>>>>||||>>>>"+api.LevelManager.GetDefaultLevel().LevelId);
             
             
             CrateMain = new CrateMain(this);
@@ -254,27 +273,27 @@ namespace CyberCore
 
             //Fix BlockFactory
 
-            Console.WriteLine("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA =>>");
-            var w = new Wood();
-            w.WoodType = "birch";
-            int id = BlockFactory.BlockPalette[w.GetRuntimeId()].Id;
-            Console.WriteLine($"{w.GetRuntimeId()} |||||| {id}");
-            string directoryName = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            string path = Path.Combine(directoryName, "Blocks");
-            path = Path.Combine(path, "blockstates.json");
-            using (StreamReader file = File.OpenText(path))
-            {
-                string json = file.ReadToEnd();
-                BlockFactory.BlockPalette = BlockPalette.FromJson(json);
-                BlockFactory.BlockStates = new HashSet<BlockStateContainer>(BlockFactory.BlockPalette);
-            }
+            // Console.WriteLine("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA =>>");
+            // var w = new Wood();
+            // w.WoodType = "birch";
+            // int id = BlockFactory.BlockPalette[w.GetRuntimeId()].Id;
+            // Console.WriteLine($"{w.GetRuntimeId()} |||||| {id}");
+            // string directoryName = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            // string path = Path.Combine(directoryName, "Blocks");
+            // path = Path.Combine(path, "blockstates.json");
+            // using (StreamReader file = File.OpenText(path))
+            // {
+            //     string json = file.ReadToEnd();
+            //     BlockFactory.BlockPalette = BlockPalette.FromJson(json);
+            //     BlockFactory.BlockStates = new HashSet<BlockStateContainer>(BlockFactory.BlockPalette);
+            // }
+            //
+            // w = new Wood();
+            // w.WoodType = "birch";
+            // id = BlockFactory.BlockPalette[w.GetRuntimeId()].Id;
+            // Console.WriteLine($"{w.GetRuntimeId()} || {id}");
             
-            w = new Wood();
-            w.WoodType = "birch";
-            id = BlockFactory.BlockPalette[w.GetRuntimeId()].Id;
-            Console.WriteLine($"{w.GetRuntimeId()} || {id}");
-            
-            
+            ShopFactory = new ShopFactory(this);
 
             // api.CommandManager.RegisterPermissionChecker(new FactionPermissionChecker(FactionManager));
             //
@@ -283,7 +302,21 @@ namespace CyberCore
         }
 
         public AuctionFactory AF { get; set; }
+        public ShopFactory ShopFactory { get; set; }
 
+        [PacketHandler, Receive]
+        public Packet HandleIncoming(McpeMovePlayer packet,Player p)
+        {
+            Console.WriteLine("_--------------"+p.GetType());
+            return packet; // Process
+        }
+        [PacketHandler, Receive]
+        public Packet HandleIncoming2(McpeMovePlayer packet)
+        {
+            Console.WriteLine("_--------------22222222222");
+            return packet; // Process
+        }
+        
         private void OnTicking(object sender, PlayerEventArgs e)
         {
             var player = e.Player;

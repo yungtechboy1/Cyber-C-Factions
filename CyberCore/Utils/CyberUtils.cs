@@ -5,8 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using CyberCore.Manager.Forms;
+using CyberCore.Manager.Shop;
 using JetBrains.Annotations;
 using MiNET;
+using MiNET.Blocks;
+using MiNET.Items;
 using MiNET.Plugins;
 using MiNET.Utils;
 using OpenAPI.Player;
@@ -29,6 +32,24 @@ namespace CyberCore.Utils
             }
             return ret;
         }
+
+        public static Block GetBlockFromIdMeta(int id, int meta)
+        {
+            try
+            {
+                uint rid = BlockFactory.GetRuntimeId(id, (byte) meta);
+                if (rid == -1) return new Border();
+                var s = BlockFactory.BlockPalette[(int) rid].States;
+                var b = BlockFactory.GetBlockById(id);
+                b.SetState(s);
+                b.Metadata = (byte) meta;
+                return b;
+            }
+            catch (Exception e)
+            {
+                return new Border();
+            }
+        }
         public  static long LongRandom(long min, long max)
         {
             var rand = new Random();
@@ -46,6 +67,14 @@ namespace CyberCore.Utils
                 ret.Add(entry);
             }
             return ret;
+        } 
+        public static ShopCategory? ShopCategoryFromString( String s)
+        {
+            foreach (var e in Enum.GetValues(typeof(ShopCategory)).Cast<ShopCategory>())
+            {
+                if (e.ToString().equalsIgnoreCase(s)) return e;
+            }
+            return null;
         }
         
         public static MainForm? getMainFromFromInt(int n)

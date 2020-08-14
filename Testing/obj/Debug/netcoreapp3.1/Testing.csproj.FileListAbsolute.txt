@@ -11,3 +11,16 @@ F:\Projects\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.AssemblyInf
 F:\Projects\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.dll
 F:\Projects\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.pdb
 F:\Projects\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.genruntimeconfig.cache
+C:\Git\Cyber-C-Factions\Testing\bin\Debug\netcoreapp3.1\Testing.exe
+C:\Git\Cyber-C-Factions\Testing\bin\Debug\netcoreapp3.1\Testing.deps.json
+C:\Git\Cyber-C-Factions\Testing\bin\Debug\netcoreapp3.1\Testing.runtimeconfig.json
+C:\Git\Cyber-C-Factions\Testing\bin\Debug\netcoreapp3.1\Testing.runtimeconfig.dev.json
+C:\Git\Cyber-C-Factions\Testing\bin\Debug\netcoreapp3.1\Testing.dll
+C:\Git\Cyber-C-Factions\Testing\bin\Debug\netcoreapp3.1\Testing.pdb
+C:\Git\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.csprojAssemblyReference.cache
+C:\Git\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.AssemblyInfoInputs.cache
+C:\Git\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.AssemblyInfo.cs
+C:\Git\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.csproj.CoreCompileInputs.cache
+C:\Git\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.dll
+C:\Git\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.pdb
+C:\Git\Cyber-C-Factions\Testing\obj\Debug\netcoreapp3.1\Testing.genruntimeconfig.cache

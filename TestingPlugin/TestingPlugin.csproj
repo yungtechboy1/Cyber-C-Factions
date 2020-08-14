@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+<!--        <PackageReference Include="MySqlConnector" Version="0.64.0"/>-->
+                      <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.82" />
+<!--        <Reference Include="OpenMiNET.OpenAPI">-->
+        <!--            <HintPath>C:\MINETSVR\OpenAPI.dll</HintPath>-->
+        <!--        </Reference>-->
+        <!--        <Reference Include="MiNET">-->
+        <!--            <HintPath>C:\MINETSVR\MiNET.dll</HintPath>-->
+        <!--        </Reference>-->
+                      <PackageReference Include="MiNET" Version="1.0.2118" />
+        <!--        <PackageReference Include="System.Management" Version="4.0.0" />-->
+    </ItemGroup>
+
+</Project>
