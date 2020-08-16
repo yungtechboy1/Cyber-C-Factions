@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using CyberCore.WorldGen;
 using CyberCore.WorldGen.Biomes;
 using MiNET.Blocks;
@@ -15,8 +17,9 @@ namespace CyberCore.WorldGen.Biomes.Biomes
 
         public override int GetSh(int x, int z, int cx, int cz)
         {
+            var r = new Random();
             return BiomeQualifications.Baseheight +
-                   (int) GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.035f,
+                   (int) GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.035f / 4,
                        BiomeQualifications.Heightvariation);
         }
 
@@ -31,12 +34,36 @@ namespace CyberCore.WorldGen.Biomes.Biomes
                 cc.SetBlock(x, yheight, z, new Stone());
             else if (yheight < maxheight * .75f - 1)
                 cc.SetBlock(x, yheight, z, new Sandstone());
-            else if (yheight < maxheight)
-                cc.SetBlock(x, yheight, z, new Sand());
-            else if (yheight == maxheight)
+            else if (yheight <= maxheight)
                 cc.SetBlock(x, yheight, z, new Sand());
             else if (setair)
                 cc.SetBlock(x, yheight, z, new Air());
+        }
+
+        public override async Task<ChunkColumn> GenerateSurfaceItems(
+            CyberExperimentalWorldProvider CyberExperimentalWorldProvider, ChunkColumn chunk,
+            float[] rth)
+        {
+            Random r = new Random();
+            for (int z = 0; z < 16; z++)
+            for (int x = 0; x < 16; x++)
+            {
+                int h = chunk.GetHeight(x, z) + 1;
+                if (r.Next(220) == 180)
+                {
+                    int hh = (int) Math.Ceiling(r.Next(9) / 3f);
+                    for (int i = 0; i < hh; i++)
+                    {
+                        chunk.SetBlock(x, h + i, z, new Cactus());
+                    }
+                }
+                else if (r.Next(200) == 195)
+                {
+                    chunk.SetBlock(x, h, z, new Deadbush());
+                }
+            }
+
+            return chunk;
         }
     }
 }

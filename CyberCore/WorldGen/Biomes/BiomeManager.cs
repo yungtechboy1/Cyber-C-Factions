@@ -199,6 +199,7 @@ namespace CyberCore.WorldGen
                     break;
                 }
             }
+            // Console.WriteLine($"DONE WITH ADVANCED STUFFr");
         }
 
         public static Dictionary<ChunkCoordinates, AdvancedBiome> BiomeCache =
@@ -225,13 +226,13 @@ namespace CyberCore.WorldGen
 
             // CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
             // Console.WriteLine(
-            //     $"BIOMEMANAGER10: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
+            // $"BIOMEMANAGER10: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
             // return new MainBiome();
             // return new WaterBiome();
             // var bbb = new WaterBiome().CClone();
             var bbb = new Desert().CClone();
             bbb.LocalId = 7;
-            DoAdvancedStuff(bbb, chunk);
+            if(doadvancedstuff)DoAdvancedStuff(bbb, chunk);
             BiomeCache[chunk] = bbb;
             return bbb;
         }
