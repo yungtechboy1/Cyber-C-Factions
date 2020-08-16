@@ -10,6 +10,7 @@ namespace CyberCore.WorldGen.Biomes
     {
         public SnowForest() : base("SnowForest", new BiomeQualifications(.5f, 1.25f, 0, 0.5f, .75f, 1.25f, 30))
         {
+            LocalId = 12;
         }
 
         public override int GetSh(int x, int z, int cx, int cz)

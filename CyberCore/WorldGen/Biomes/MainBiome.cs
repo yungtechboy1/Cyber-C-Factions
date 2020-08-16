@@ -14,6 +14,7 @@ namespace CyberCore.WorldGen
     {
         public MainBiome() : base("MAIN", new BiomeQualifications(0, 2, 0, 2, 0, 2, 20))
         {
+            LocalId = 0;
             Startheight = 90;
             BiomeQualifications.Baseheight = 83; //30
         }

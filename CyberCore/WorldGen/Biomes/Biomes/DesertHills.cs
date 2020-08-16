@@ -9,6 +9,7 @@ namespace CyberCore.WorldGen.Biomes.Biomes
     {
         public DesertHills() : base("DesertHills", new BiomeQualifications(0, .75f, 1.5f, 2, 1f, 2f , 40))
         {
+            LocalId = 5;
         }
 
         public override int GetSh(int x, int z, int cx, int cz)

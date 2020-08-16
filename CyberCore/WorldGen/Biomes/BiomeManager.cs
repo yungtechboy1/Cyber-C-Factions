@@ -21,30 +21,29 @@ namespace CyberCore.WorldGen
         public BiomeManager()
         {
             // AddBiome(new MainBiome());
-            // AddBiome(new RainForestBiome());
-            // AddBiome(new ForestBiome());
-            // AddBiome(new SnowyIcyChunk());
+            AddBiome(new RainForestBiome());
+            AddBiome(new ForestBiome());
+            AddBiome(new SnowyIcyChunk());
             AddBiome(new Desert());
             AddBiome(new DesertHills());
             AddBiome(new DesertLake());
-            // AddBiome(new Mountains());
-            // AddBiome(new Plains());
-            // AddBiome(new HighPlains());
-            // AddBiome(new WaterBiome());
+            AddBiome(new Mountains());//7
+            AddBiome(new Plains());
+            AddBiome(new HighPlains());
+            AddBiome(new WaterBiome());
             // AddBiome(new BeachBiome());
-            // AddBiome(new SnowForest());
-            // AddBiome(new SnowTundra());
-            // AddBiome(new TropicalRainForest());
-            // AddBiome(new TropicalSeasonalForest());
+            AddBiome(new SnowForest());
+            AddBiome(new SnowTundra());
+            AddBiome(new TropicalRainForest());
+            AddBiome(new TropicalSeasonalForest());
         }
 
         public static void AddBiome(AdvancedBiome biome)
         {
             biome.BorderChunk = false;
             Biomes.Add(biome);
-            biome.LocalId = N;
-            BiomeDict[N] = biome;
-            Console.WriteLine($"BIOME ADD AT {N} WITH NAME {biome.Name} {biome.BiomeQualifications}");
+            BiomeDict[biome.LocalId] = biome;
+            Console.WriteLine($"BIOME ADD AT {N} | {biome.LocalId} WITH NAME {biome.Name} {biome.BiomeQualifications}");
             N++;
         }
 
@@ -179,10 +178,9 @@ namespace CyberCore.WorldGen
             return GetBiome(new ChunkCoordinates(chunk.X, chunk.Z));
         }
 
-        public static void DoAdvancedStuff(AdvancedBiome biome, ChunkCoordinates chunk)
+        public static void DoAdvancedStuff(ref AdvancedBiome biome, ChunkCoordinates chunk)
         {
             // Console.WriteLine($"BIOMEMANAGER 1: OK SO BIOME FOUND THAT MATCHES RTH NAMED {biome.Name} {biome.LocalId} @ {chunk.X} {chunk.Z}");
-       
             for (int zz = -1; zz <= 1; zz++)
             for (int xx = -1; xx <= 1; xx++)
             {
@@ -199,6 +197,7 @@ namespace CyberCore.WorldGen
                     break;
                 }
             }
+            biome = biome.DoubleCheckCords(chunk);
             // Console.WriteLine($"DONE WITH ADVANCED STUFFr");
         }
 
@@ -218,22 +217,21 @@ namespace CyberCore.WorldGen
                 {
                    AdvancedBiome biome = (AdvancedBiome) bb.CClone();
                     // Console.WriteLine($"AFTER CLONE {biome.BorderChunkDirections.Count} VS OLD {bb.BorderChunkDirections.Count}");
-                    if(doadvancedstuff)DoAdvancedStuff(biome, chunk);
+                    if(doadvancedstuff)DoAdvancedStuff(ref biome, chunk);
                     // Console.WriteLine($"BIOMEMANAGER9: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.Name}");
-                    BiomeCache[chunk] = biome;
+                    if(doadvancedstuff)BiomeCache[chunk] = biome;
                     return biome;
                 }
 
             // CyberCoreMain.Log.Info($"GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
-            // Console.WriteLine(
-            // $"BIOMEMANAGER10: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
+            // Console.WriteLine($"BIOMEMANAGER10: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
             // return new MainBiome();
             // return new WaterBiome();
-            // var bbb = new WaterBiome().CClone();
-            var bbb = new DesertLake().CClone();
-            bbb.LocalId = 7;
-            if(doadvancedstuff)DoAdvancedStuff(bbb, chunk);
-            BiomeCache[chunk] = bbb;
+            var bbb = new WaterBiome().CClone();
+            // var bbb = new DesertLake().CClone();
+            // bbb.LocalId = 7;
+            if(doadvancedstuff)DoAdvancedStuff(ref bbb, chunk);
+            if(doadvancedstuff)BiomeCache[chunk] = bbb;
             return bbb;
         }
 

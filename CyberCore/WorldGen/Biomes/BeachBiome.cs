@@ -15,6 +15,7 @@ namespace CyberCore.WorldGen.Biomes
         {
             BiomeQualifications.Baseheight = 83; //30
             Waterlevel = 75;
+            LocalId = 11;
         }
 
         public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,

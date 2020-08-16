@@ -9,6 +9,7 @@ namespace CyberCore.WorldGen.Biomes
     {
         public HighPlains() : base("HighPlains", new BiomeQualifications(0.5f, 1.5f, 0.5f, 1.75f, 0.75f, 1.5f, 30))
         {
+            LocalId = 9;
         }
 
         public override int GetSh(int x, int z, int cx, int cz)

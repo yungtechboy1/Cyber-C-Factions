@@ -10,6 +10,7 @@ namespace CyberCore.WorldGen.Biomes.Biomes
         public DesertLake() : base("DesertLake", new BiomeQualifications(.75f, .1f, 1.5f, 2, .5f, 1.25f, 15))
         {
             BiomeQualifications.Baseheight = 87;
+            LocalId = 6;
         }
 
         public override int GetSh(int x, int z, int cx, int cz)

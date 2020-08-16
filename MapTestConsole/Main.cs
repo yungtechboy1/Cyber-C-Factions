@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using CyberCore.WorldGen;
 using MiNET.Utils;
 
@@ -15,12 +17,15 @@ namespace MapTestConsole
             // // LM.GenerateTestChunkMaps();
             // LM.generateViaChunkColumn();
             // LevelMap.SaveViaCSV("/MapTesting/dat2.csv",LevelMap.IntArrayToString(LM.HeightDataToCSV()));
+            var s = new Stopwatch();
+            s.Restart();
             var a = GenerateBiomeMap(250);
             LevelMap.SaveViaCSV("/MapTesting/BIOME.csv",LevelMap.IntArrayToString(a));
-            var aa = GenerateBiomeHeightMap(250);
-            LevelMap.SaveViaCSV("/MapTesting/BIOMERRR.csv",LevelMap.IntArrayToString(aa[0]));
-            LevelMap.SaveViaCSV("/MapTesting/BIOMETTT.csv",LevelMap.IntArrayToString(aa[1]));
-            LevelMap.SaveViaCSV("/MapTesting/BIOMEHHH.csv",LevelMap.IntArrayToString(aa[2]));
+            Console.WriteLine($"THIS TOOK {s.Elapsed}");
+            // var aa = GenerateBiomeHeightMap(250);
+            // LevelMap.SaveViaCSV("/MapTesting/BIOMERRR.csv",LevelMap.IntArrayToString(aa[0]));
+            // LevelMap.SaveViaCSV("/MapTesting/BIOMETTT.csv",LevelMap.IntArrayToString(aa[1]));
+            // LevelMap.SaveViaCSV("/MapTesting/BIOMEHHH.csv",LevelMap.IntArrayToString(aa[2]));
         }
 
         public int[,] GenerateBiomeMap(int size)

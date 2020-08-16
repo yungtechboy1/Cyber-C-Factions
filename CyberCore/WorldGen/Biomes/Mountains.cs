@@ -12,6 +12,8 @@ namespace CyberCore.WorldGen.Biomes
         public Mountains() : base("Mountains", new BiomeQualifications(.25f, 1, .75f, 1.75f, 1.25f, 2, 40))
         {
             BiomeQualifications.Baseheight += 10;
+            
+            LocalId = 7;
         }
 
         public override int GetSh(int x, int z, int cx, int cz)

@@ -882,5 +882,10 @@ namespace CyberCore.WorldGen.Biomes
 
             return f1;
         }
+
+        public virtual AdvancedBiome DoubleCheckCords(ChunkCoordinates chunk)
+        {
+            return this;
+        }
     }
 }

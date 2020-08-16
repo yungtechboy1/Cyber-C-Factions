@@ -17,6 +17,7 @@ namespace CyberCore.WorldGen.Biomes
         public RainForestBiome() : base("RainForestBiome", new BiomeQualifications(1.25f, 2f, 1f, 2f, 0.5f, 1.25f
             , 30))
         {
+            LocalId = 1;
         }
 
 

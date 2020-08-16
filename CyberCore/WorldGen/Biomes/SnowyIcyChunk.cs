@@ -11,6 +11,7 @@ namespace CyberCore.WorldGen.Biomes
     {
         public SnowyIcyChunk() : base("SnowyIcyChunk", new BiomeQualifications(0, 2, 0, .5f, 0, .5f, 30))
         {
+            LocalId = 3;
         }
 
         public override int GetSh(int x, int z, int cx, int cz)
