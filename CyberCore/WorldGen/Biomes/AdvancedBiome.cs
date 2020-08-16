@@ -729,6 +729,19 @@ namespace CyberCore.WorldGen.Biomes
             // return (float) ((OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f));
         }
 
+        public static float GetNoiseCubic(int x, int z, float scale, int mmax)
+        {
+            var heightnoise = new FastNoise(123123 + 2);
+            heightnoise.SetNoiseType(FastNoise.NoiseType.CubicFractal);
+            heightnoise.SetFrequency(scale);
+            heightnoise.SetFractalType(FastNoise.FractalType.FBM);
+            heightnoise.SetFractalOctaves(1);
+            heightnoise.SetFractalLacunarity(2);
+            heightnoise.SetFractalGain(.5f);
+            return (heightnoise.GetNoise(x, z) + .75f) * (mmax / 2f);
+            // return (float) ((OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f));
+        }
+
         /// <summary>
         /// 
         /// </summary>

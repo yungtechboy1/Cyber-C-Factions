@@ -51,7 +51,7 @@ namespace CyberCore.WorldGen.Biomes.Biomes
                 int h = chunk.GetHeight(x, z) + 1;
                 if (r.Next(220) == 180)
                 {
-                    int hh = (int) Math.Ceiling(r.Next(9) / 3f);
+                    int hh = (int) Math.Ceiling(r.Next(9) / 3f)+1;
                     for (int i = 0; i < hh; i++)
                     {
                         chunk.SetBlock(x, h + i, z, new Cactus());
