@@ -230,7 +230,7 @@ namespace CyberCore.WorldGen
             // return new MainBiome();
             // return new WaterBiome();
             // var bbb = new WaterBiome().CClone();
-            var bbb = new DesertHills().CClone();
+            var bbb = new DesertLake().CClone();
             bbb.LocalId = 7;
             if(doadvancedstuff)DoAdvancedStuff(bbb, chunk);
             BiomeCache[chunk] = bbb;
