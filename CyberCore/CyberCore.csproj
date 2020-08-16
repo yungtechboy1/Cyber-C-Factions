@@ -40,11 +40,6 @@
         <!--        <PackageReference Include="System.Management" Version="4.0.0" />-->
     </ItemGroup>
 
-    <ItemGroup>
-<!--            <PackageReference Include="MiNET" Version="1.0.2188" />-->
-<!--        <ProjectReference Include="C:\Git\MiNET\src\MiNET\MiNET\MiNET.csproj" />-->
-    </ItemGroup>
-
     <!--    <Target Name="AfterBuild">-->
     <!--        <Copy SourceFiles="$(ProjectDir)\CyberCore.dll" DestinationFolder="D:\MINET\Server\Plugins" SkipUnchangedFiles="false" />-->
     <!--&lt;!&ndash;        <Copy SourceFiles="$(ProjectDir)..\..\Lib\*.dll" DestinationFolder="$(OutDir)Release\bin" SkipUnchangedFiles="false" />&ndash;&gt;-->

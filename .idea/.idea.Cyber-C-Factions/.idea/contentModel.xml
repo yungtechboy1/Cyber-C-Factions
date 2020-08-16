@@ -245,8 +245,12 @@
             <e p="BiomeList.cs" t="Include" />
             <e p="BiomeManager.cs" t="Include" />
             <e p="BiomeQualifications.cs" t="Include" />
+            <e p="Biomes" t="Include">
+              <e p="Desert.cs" t="Include" />
+              <e p="DesertHills.cs" t="Include" />
+              <e p="DesertLake.cs" t="Include" />
+            </e>
             <e p="BiomeSelector.cs" t="Include" />
-            <e p="Desert.cs" t="Include" />
             <e p="ForestBiome.cs" t="Include" />
             <e p="ForestMountain.cs" t="Include" />
             <e p="HighPlains.cs" t="Include" />
@@ -270,7 +274,6 @@
           <e p="CyberExperimentalWorldProvider.cs" t="Include" />
           <e p="CyberWorldProvider.cs" t="Include" />
           <e p="FastNoise.cs" t="Include" />
-          <e p="NukkitGenerator.cs" t="Include" />
           <e p="Schematic.cs" t="Include" />
           <e p="SmoothMap.cs" t="Include" />
           <e p="TestGenerator.cs" t="Include" />

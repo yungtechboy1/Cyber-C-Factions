@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CyberCore.WorldGen.Biomes;
+using CyberCore.WorldGen.Biomes.Biomes;
 using CyberCore.WorldGen.Populator;
 using log4net.Util.TypeConverters;
 using MiNET.Utils;
@@ -20,19 +21,21 @@ namespace CyberCore.WorldGen
         public BiomeManager()
         {
             // AddBiome(new MainBiome());
-            AddBiome(new RainForestBiome());
-            AddBiome(new ForestBiome());
-            AddBiome(new SnowyIcyChunk());
+            // AddBiome(new RainForestBiome());
+            // AddBiome(new ForestBiome());
+            // AddBiome(new SnowyIcyChunk());
             AddBiome(new Desert());
-            AddBiome(new Mountains());
-            AddBiome(new Plains());
-            AddBiome(new HighPlains());
-            AddBiome(new WaterBiome());
-            AddBiome(new BeachBiome());
-            AddBiome(new SnowForest());
-            AddBiome(new SnowTundra());
-            AddBiome(new TropicalRainForest());
-            AddBiome(new TropicalSeasonalForest());
+            AddBiome(new DesertHills());
+            AddBiome(new DesertLake());
+            // AddBiome(new Mountains());
+            // AddBiome(new Plains());
+            // AddBiome(new HighPlains());
+            // AddBiome(new WaterBiome());
+            // AddBiome(new BeachBiome());
+            // AddBiome(new SnowForest());
+            // AddBiome(new SnowTundra());
+            // AddBiome(new TropicalRainForest());
+            // AddBiome(new TropicalSeasonalForest());
         }
 
         public static void AddBiome(AdvancedBiome biome)
@@ -116,7 +119,7 @@ namespace CyberCore.WorldGen
             heightnoise.SetFractalOctaves(2);
             heightnoise.SetFractalLacunarity(2);
             heightnoise.SetFractalGain(.5f);
-            
+
             return (heightnoise.GetNoise(x, z) + .75f) * (max / 2f);
             return (float) (OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f);
         }
@@ -178,139 +181,30 @@ namespace CyberCore.WorldGen
 
         public static void DoAdvancedStuff(AdvancedBiome biome, ChunkCoordinates chunk)
         {
-                    // Console.WriteLine($"BIOMEMANAGER 1: OK SO BIOME FOUND THAT MATCHES RTH NAMED {biome.Name} {biome.LocalId} @ {chunk.X} {chunk.Z}");
-                    bool BC = false;
-                    int bcc = 0;
-
-
-                    bool n = false;
-                    bool e = false;
-                    bool s = false;
-                    bool w = false;
-                    bool nw = false;
-                    bool ne = false;
-                    bool sw = false;
-                    bool se = false;
-
-                    for (int zz = -1; zz <= 1; zz++)
-                    for (int xx = -1; xx <= 1; xx++)
-                    {
-                        if (xx == 0 && zz == 0) continue;
-                        var cc = new ChunkCoordinates()
-                        {
-                            X = chunk.X + xx,
-                            Z = chunk.Z + zz
-                        };
-                        var tb = BiomeManager.GetBiome2(getChunkRTH(cc));
-                        if (tb.LocalId != biome.LocalId)
-                        {
-                            bcc++;
-                            // Console.WriteLine(
-                            //     $"A BORDER CHUNK WAS FOUND! AT {cc.X} {cc.Z} AND {tb.name} {tb.LocalID} != {biome.LocalID} |||| {xx} {zz}");
-                            // int dx = cc.X ;
-                            // int dz = cc.Z;
-                            if (zz == 1 && xx == 0)
-                            {
-                                n = true;
-                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.North);
-                            }
-                            else if (zz == -1 && xx == 0)
-                            {
-                                s = true;
-                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.South);
-                            }
-
-                            if (xx == 1 && zz == 0)
-                            {
-                                e = true;
-                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.East);
-                            }
-                            else if (xx == -1 && zz == 0)
-                            {
-                                w = true;
-                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.West);
-                            }
-
-                            if (xx == 1 && zz == 1)
-                            {
-                                ne = true;
-                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NE);
-                            }
-
-                            if (xx == 1 && zz == -1)
-                            {
-                                se = true;
-                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SE);
-                            }
-
-                            if (xx == -1 && zz == 1)
-                            {
-                                nw = true;
-                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NW);
-                            }
-
-                            if (xx == -1 && zz == -1)
-                            {
-                                sw = true;
-                                biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SW);
-                            }
-
-                            // Console.WriteLine("BIOMEMANAGER1.05: THE COUNT OF biome.BorderChunkDirections =>" +
-                            //                   biome.BorderChunkDirections.Count);
-                            // break;
-                        }
-                    }
-                    
-                    if (n)
-                    {
-                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NE))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NE);
-                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NW))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NW);
-                    }
-                            
-                            
-                    if (s)
-                    {
-                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SW))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SW);
-                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SE)) biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SE);
-                    }
-                            
-                            
-                    if (w)
-                    {
-                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SW))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SW);
-                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NW))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NW);
-                    }
-                            
-                            
-                    if (e)
-                    {
-                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.NE))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.NE);
-                        if(!biome.BorderChunkDirections.Contains(AdvancedBiome.BorderChunkDirection.SE))biome.BorderChunkDirections.Add(AdvancedBiome.BorderChunkDirection.SE);
-                    }
-                    
-                    
-                    int top = 0;
-                    int left = 0;
-                    int right = 0;
-                    int bottom = 0;
-
-                    if (n) top += 16;
-                    if (w) left += 16;
-                    if (e) right += 16;
-                    if (s) bottom += 16;
-
-                    int xs = 16 + top + bottom;
-                    int zs = 16 + left + right;
-
-                        biome.BorderChunk = true;
-
-                    
-                    
+            // Console.WriteLine($"BIOMEMANAGER 1: OK SO BIOME FOUND THAT MATCHES RTH NAMED {biome.Name} {biome.LocalId} @ {chunk.X} {chunk.Z}");
+       
+            for (int zz = -1; zz <= 1; zz++)
+            for (int xx = -1; xx <= 1; xx++)
+            {
+                if (xx == 0 && zz == 0) continue;
+                var cc = new ChunkCoordinates()
+                {
+                    X = chunk.X + xx,
+                    Z = chunk.Z + zz
+                };
+                var tb = GetBiome(cc,false);
+                if (tb.LocalId != biome.LocalId)
+                {
+                    biome.BorderChunk = true;
+                    break;
+                }
+            }
         }
-        
-        public static Dictionary<ChunkCoordinates,AdvancedBiome> BiomeCache = new Dictionary<ChunkCoordinates, AdvancedBiome>();
-        
-        public static AdvancedBiome GetBiome(ChunkCoordinates chunk)
+
+        public static Dictionary<ChunkCoordinates, AdvancedBiome> BiomeCache =
+            new Dictionary<ChunkCoordinates, AdvancedBiome>();
+
+        public static AdvancedBiome GetBiome(ChunkCoordinates chunk, bool doadvancedstuff = true)
         {
             if (BiomeCache.ContainsKey(chunk)) return BiomeCache[chunk];
             var rth = getChunkRTH(new ChunkCoordinates()
@@ -321,14 +215,9 @@ namespace CyberCore.WorldGen
             foreach (AdvancedBiome bb in Biomes)
                 if (bb.Check(rth))
                 {
-                    if (bb.BorderChunkDirections.Count > 0)
-                    {
-                        Console.WriteLine("HUGE ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+bb.BorderChunkDirections.Count);
-                        // bb.BorderChunkDirections.Clear();
-                    }
-                    AdvancedBiome biome = (AdvancedBiome) bb.CClone();
+                   AdvancedBiome biome = (AdvancedBiome) bb.CClone();
                     // Console.WriteLine($"AFTER CLONE {biome.BorderChunkDirections.Count} VS OLD {bb.BorderChunkDirections.Count}");
-                    DoAdvancedStuff(biome,chunk);
+                    if(doadvancedstuff)DoAdvancedStuff(biome, chunk);
                     // Console.WriteLine($"BIOMEMANAGER9: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.Name}");
                     BiomeCache[chunk] = biome;
                     return biome;
@@ -339,65 +228,13 @@ namespace CyberCore.WorldGen
             //     $"BIOMEMANAGER10: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
             // return new MainBiome();
             // return new WaterBiome();
-            var bbb = new WaterBiome().CClone();
+            // var bbb = new WaterBiome().CClone();
+            var bbb = new Desert().CClone();
             bbb.LocalId = 7;
-            DoAdvancedStuff(bbb,chunk);
+            DoAdvancedStuff(bbb, chunk);
             BiomeCache[chunk] = bbb;
             return bbb;
-
         }
 
-        public static AdvancedBiome GetBiome2(float[] rth)
-        {
-            foreach (var ab in Biomes)
-                if (ab.Check(rth))
-                {
-                    var aa = ab.CClone();
-                    return (AdvancedBiome) aa;
-                }
-
-            // return new MainBiome();
-            // return new WaterBiome();
-            var aaa = new HighPlains().CClone();
-            aaa.LocalId = 6;
-            return aaa;
-        }
-
-        public static AdvancedBiome GetBiome2(ChunkCoordinates c)
-        {
-            var rth = getChunkRTH(new ChunkCoordinates()
-            {
-                X = c.X,
-                Z = c.Z
-            });
-
-            foreach (var ab in Biomes)
-                if (ab.Check(rth))
-                {
-                    var aa = ab.CClone();
-                    return (AdvancedBiome) aa;
-                }
-
-            // return new MainBiome();
-            // return new WaterBiome();
-            var aaa = new HighPlains().CClone();
-            aaa.LocalId = 6;
-            return aaa;
-        }
-
-        public static bool IsOnBorder(ChunkCoordinates chunkColumn, int localId, int size = 1)
-        {
-            for (int z = -size; z < size; z++)
-            for (int x = -size; x < size; x++)
-            {
-                if (x == 0 && z == 0) continue;
-                if (GetBiome(chunkColumn + new ChunkCoordinates(x, z)).LocalId != localId)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
     }
 }

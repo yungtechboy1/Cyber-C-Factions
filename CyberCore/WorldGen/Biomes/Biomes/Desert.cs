@@ -4,12 +4,12 @@ using CyberCore.WorldGen.Biomes;
 using MiNET.Blocks;
 using MiNET.Worlds;
 
-namespace CyberCore.WorldGen.Biomes
+namespace CyberCore.WorldGen.Biomes.Biomes
 {
     public class Desert : AdvancedBiome
     {
-        public Desert() : base("Desert", new BiomeQualifications(0, 2, 1.75f, 2, 0.5f, 1
-            , 30))
+        public Desert() : base("Desert", new BiomeQualifications(0, .75f, 1.5f, 2, 0.5f, 1.25f
+            , 15))
         {
         }
 
@@ -27,14 +27,16 @@ namespace CyberCore.WorldGen.Biomes
             {
                 cc.SetBlock(x, yheight, z, new Bedrock());
             }
-            else if (yheight < maxheight - 1)
-            {
+            else if (yheight < maxheight * 0.5f - 1)
                 cc.SetBlock(x, yheight, z, new Stone());
-            }
+            else if (yheight < maxheight * .75f - 1)
+                cc.SetBlock(x, yheight, z, new Sandstone());
             else if (yheight < maxheight)
-                cc.SetBlock(x, yheight, z, new RedSandstoneStairs());
+                cc.SetBlock(x, yheight, z, new Sand());
+            else if (yheight == maxheight)
+                cc.SetBlock(x, yheight, z, new Sand());
             else if (setair)
-                cc.SetBlock(x, yheight, z, new RedSandstoneStairs());
+                cc.SetBlock(x, yheight, z, new Air());
         }
     }
 }

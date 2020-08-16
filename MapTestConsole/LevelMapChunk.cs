@@ -26,8 +26,8 @@ namespace MapTestConsole
             Chunk.X = x;
             Chunk.Z = z;
             float[] rth = cyberExperimentalWorldProvider.getChunkRTH(x,z);
-            Biome = BiomeManager.GetBiome2(rth);
-            Chunk = Biome.prePopulate(cyberExperimentalWorldProvider,Chunk,rth).Result;
+            // Biome = BiomeManager.GetBiome2(rth);
+            // Chunk = Biome.prePopulate(cyberExperimentalWorldProvider,Chunk,rth).Result;
             
         }
     }
