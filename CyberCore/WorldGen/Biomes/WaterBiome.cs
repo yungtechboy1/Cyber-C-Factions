@@ -39,14 +39,33 @@ namespace CyberCore.WorldGen
                     return b;
                 }
             }
+
+            BorderChunk = false;
       
 
             return this;
         }
 
+        public override int[,] GenerateChunkHeightMap(ChunkCoordinates c, CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
+        {
+            var r = new int[16, 16];
+
+            for (int z = 0; z < 16; z++)
+            for (int x = 0; x < 16; x++)
+            {
+                // Console.WriteLine($"{c.X} *16 + {x} = {c.X * 16 + x} || {c.Z}*16 + {z} = {c.Z * 16 + z}");
+                // r[x, z] = cyberExperimentalWorldProvider.getBlockHeight(c.X * 16 + x, c.Z * 16 + z);
+                r[x, z] = Waterlevel;
+            }
+            
+
+            return r;
+        }
+
         public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
             bool setair)
         {
+            maxheight =  CyberExperimentalWorldProvider.getInstance().getBlockHeight(cc.X * 16 + x, cc.Z * 16 + z);
             int sand = maxheight - 6;
             if (yheight < sand)
             {

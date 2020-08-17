@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using CyberCore.Manager.ClassFactory;
 using CyberCore.WorldGen;
 using CyberCore.WorldGen.Biomes;
@@ -326,25 +327,25 @@ namespace MapTestConsole
             var sss = new Stopwatch();
             ss.Restart();
             sss.Restart();
-            string s = "";
+            StringBuilder s = new StringBuilder();
             //            for (int z = d.GetLength(1)-1; z >= 0; z--)
             for (int z = 0; z < d.GetLength(1); z++)
             {
                 sss.Restart();
                 for (int x = 0; x < d.GetLength(0); x++)
                 {
-                    s += d[x, z] + ",";
+                    s.Append(d[x, z] + ",");
                 }
 
                 sss.Stop();
                 // Console.WriteLine($"TOOK {sss.Elapsed} TO CONVER COL {z}/{d.GetLength(1)}");
 
-                s += "\n";
+                s.Append("\n");
             }
 
             ss.Stop();
             // Console.WriteLine("TIME THAT IT TOOK TO CONVERT TO STRING " + ss.Elapsed);
-            return s;
+            return s.ToString();
         }
 
         public static void SaveViaCSV(string datCsv, string text)

@@ -15,7 +15,7 @@ namespace CyberCore.WorldGen.Biomes
 {
     public abstract class AdvancedBiome : ICloneable
     {
-        protected int Waterlevel = 90;
+        protected int Waterlevel = 85;
         private static readonly ILog Log = LogManager.GetLogger(typeof(AdvancedBiome));
 
         private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());
@@ -308,6 +308,12 @@ namespace CyberCore.WorldGen.Biomes
 
             var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk);
             PopulateChunk(CyberExperimentalWorldProvider, chunk, rth, a);
+            
+            if (BorderChunk)
+            {
+                chunk.SetBlock(7,150,7,new EmeraldBlock());
+            }
+
             PostPopulate(CyberExperimentalWorldProvider, chunk, rth, a);
 
             t.Stop();
@@ -468,7 +474,7 @@ namespace CyberCore.WorldGen.Biomes
         {
             var sischunkcords = new ChunkCoordinates(cordz.X + b.GetX(), cordz.Z + b.GetZ());
             var sischunkbiome = BiomeManager.GetBiome(sischunkcords);
-
+            if (sischunkbiome.LocalId == 10) return;
             sm.AddChunk(cordz + new ChunkCoordinates(b.GetX(), b.GetZ()),
                 sischunkbiome.GenerateChunkHeightMap(sischunkcords, cyberExperimentalWorldProvider));
         }
@@ -550,6 +556,7 @@ namespace CyberCore.WorldGen.Biomes
             ChunkColumn nc, float[] rth, int[,] mm)
         {
             PopulateChunk(cyberExperimentalWorldProvider, nc, rth, mm);
+            nc.SetBlock(7,140,7,new RedstoneBlock());
             PostPopulate(cyberExperimentalWorldProvider, nc, rth, mm);
         }
 

@@ -269,6 +269,7 @@ namespace CyberCore.WorldGen
 
                 var sischunkcords = tc;
                 var sischunkbiome = BiomeManager.GetBiome(sischunkcords);
+                // if (sischunkbiome.LocalId == 10) continue;//Water Biome
                 var nc = new ChunkColumn();
                 nc.X = sischunkcords.X;
                 nc.Z = sischunkcords.Z;
