@@ -15,14 +15,23 @@ namespace MapTestConsole
         public Main()
         {
             new BiomeManager();
+            var cc = new ChunkCoordinates(8,-6);
+            var b = BiomeManager.GetBiome(cc);
+            var i = b.GenerateChunkHeightMap(cc, c);
+            LevelMap.SaveViaCSV("/MapTesting/StripSmoothTestOOOOO.csv",LevelMap.IntArrayToString(i));
+            SmoothingMap sm = new SmoothingMap(cc,i);
+            LevelMap.SaveViaCSV("/MapTesting/StripSmoothTestMASSB4.csv",LevelMap.IntArrayToString(sm.Map));
+            sm.StripSmooth(4);
+            LevelMap.SaveViaCSV("/MapTesting/StripSmoothTestMASSAFTER.csv",LevelMap.IntArrayToString(sm.Map));
             // LM = new LevelMap(c,11,50);
             // // LM.GenerateTestChunkMaps();
             // LM.generateViaChunkColumn();
+            LevelMap.SaveViaCSV("/MapTesting/StripSmoothTest.csv",LevelMap.IntArrayToString(sm.GetChunk(sm.getCenterCords())));
             // LevelMap.SaveViaCSV("/MapTesting/dat2.csv",LevelMap.IntArrayToString(LM.HeightDataToCSV()));
             var s = new Stopwatch();
             s.Restart();
-            var a = GenerateBiomeMap(250);
-            LevelMap.SaveViaCSV("/MapTesting/BIOME.csv", LevelMap.IntArrayToString(a));
+            // var a = GenerateBiomeMap(250);
+            // LevelMap.SaveViaCSV("/MapTesting/BIOME.csv", LevelMap.IntArrayToString(a));
             Console.WriteLine($"THIS TOOK {s.Elapsed}");
             // var aa = GenerateBiomeHeightMap(250);
             // LevelMap.SaveViaCSV("/MapTesting/BIOMERRR.csv",LevelMap.IntArrayToString(aa[0]));

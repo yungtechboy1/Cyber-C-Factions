@@ -55,7 +55,7 @@ namespace CyberCore.WorldGen
             {
                 // Console.WriteLine($"{c.X} *16 + {x} = {c.X * 16 + x} || {c.Z}*16 + {z} = {c.Z * 16 + z}");
                 // r[x, z] = cyberExperimentalWorldProvider.getBlockHeight(c.X * 16 + x, c.Z * 16 + z);
-                r[x, z] = Waterlevel;
+                r[x, z] = Waterlevel+1;
             }
             
 

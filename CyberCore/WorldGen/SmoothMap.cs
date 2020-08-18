@@ -80,8 +80,8 @@ namespace CyberCore.WorldGen
 
         public void AddBorderValues(CyberExperimentalWorldProvider ccc)
         {
-            int cx = ZeroCords.X * 16+1;
-            int cz = ZeroCords.Z * 16+1;
+            int cx = ZeroCords.X * 16 + 1;
+            int cz = ZeroCords.Z * 16 + 1;
             for (int z = 1; z < Map.GetLength(1) - 1; z++)
             for (int x = 1; x < Map.GetLength(0) - 1; x++)
             {
@@ -158,13 +158,15 @@ namespace CyberCore.WorldGen
             for (int zz = -1; zz <= 1; zz++)
             for (int xx = -1; xx <= 1; xx++)
             {
+                // Console.WriteLine("||| " + xx + "||" + zz);
                 int vv = Map[x + xx, z + zz];
                 if (vv == 0) return false;
+                // Console.WriteLine(vv + " ||| " + xx + " || " + zz+$" {x+xx+1} {z+zz+1} ||||| {x} {z}");
             }
 
             return true;
         }
-        
+
         public void StripSmooth(int w = 2, bool cel = true)
         {
             for (int z = 0; z < Map.GetLength(1); z++)
@@ -172,7 +174,12 @@ namespace CyberCore.WorldGen
             {
                 //  if ( x == 0 || z==0|| (Map[x, z] == 0 || Map[x+1, z] == 0 || Map[x-1, z] == 0 || Map[x, z+1] == 0 || Map[x, z-1] == 0 ||
                 //    Map[x+1, z+1] == 0 || Map[x+1, z-1] == 0 || Map[x-1, z+1] == 0 || Map[x-1, z-1] == 0))
-                if (Map[x, z] == 0 || !CanSmooth(x,z)) continue;
+                if (Map[x, z] == 0) continue;
+                if (!CanSmooth(x, z))
+                {
+                    continue;
+                }
+
                 bool zb = false;
                 int ah = 0;
                 int ac = 0;
@@ -191,6 +198,7 @@ namespace CyberCore.WorldGen
                     ac++;
                     ah += Map[tx, tz];
                 }
+
                 float alpha = .35f;
                 if (cel)
                 {
@@ -203,21 +211,25 @@ namespace CyberCore.WorldGen
                 else
                     Map[x, z] = ah / ac;
             }
-            
-            
+
+
             for (int z = 0; z < Map.GetLength(1); z++)
             for (int x = 0; x < Map.GetLength(0); x++)
             {
                 //  if ( x == 0 || z==0|| (Map[x, z] == 0 || Map[x+1, z] == 0 || Map[x-1, z] == 0 || Map[x, z+1] == 0 || Map[x, z-1] == 0 ||
                 //    Map[x+1, z+1] == 0 || Map[x+1, z-1] == 0 || Map[x-1, z+1] == 0 || Map[x-1, z-1] == 0))
                 if (Map[x, z] == 0) continue;
+                if (!CanSmooth(x, z))
+                {
+                    continue;
+                }
                 bool zb = false;
                 int ah = 0;
                 int ac = 0;
                 for (int zz = w * -1; zz <= w; zz++)
                 {
-                    int tx = x ;
-                    int tz = z+ zz;
+                    int tx = x;
+                    int tz = z + zz;
                     // if (0 > z + i || f22.GetLength(1) <= z + i) continue; 
                     if (0 > tx || 0 > tz || Map.GetLength(0) <= tx || Map.GetLength(1) <= tz || Map[tx, tz] == 0)
                     {
@@ -229,6 +241,7 @@ namespace CyberCore.WorldGen
                     ac++;
                     ah += Map[tx, tz];
                 }
+
                 float alpha = .35f;
                 if (cel)
                 {
@@ -243,21 +256,21 @@ namespace CyberCore.WorldGen
             }
         }
 
-        public int[,] SetChunks(CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
+        public int[,] SetChunks(CyberExperimentalWorldProvider cyberExperimentalWorldProvider, bool xtra = true)
         {
             List<AdvancedBiome.BorderChunkDirection> bb = new List<AdvancedBiome.BorderChunkDirection>();
-                bb.Add(AdvancedBiome.BorderChunkDirection.North);
-                bb.Add(AdvancedBiome.BorderChunkDirection.East);
-                bb.Add(AdvancedBiome.BorderChunkDirection.West);
-                bb.Add(AdvancedBiome.BorderChunkDirection.South);
-                bb.Add(AdvancedBiome.BorderChunkDirection.NE);
-                bb.Add(AdvancedBiome.BorderChunkDirection.NW);
-                bb.Add(AdvancedBiome.BorderChunkDirection.SW);
-                bb.Add(AdvancedBiome.BorderChunkDirection.SE);
+            bb.Add(AdvancedBiome.BorderChunkDirection.North);
+            bb.Add(AdvancedBiome.BorderChunkDirection.East);
+            bb.Add(AdvancedBiome.BorderChunkDirection.West);
+            bb.Add(AdvancedBiome.BorderChunkDirection.South);
+            bb.Add(AdvancedBiome.BorderChunkDirection.NE);
+            bb.Add(AdvancedBiome.BorderChunkDirection.NW);
+            bb.Add(AdvancedBiome.BorderChunkDirection.SW);
+            bb.Add(AdvancedBiome.BorderChunkDirection.SE);
             foreach (var b in bb)
             {
                 // Console.WriteLine(
-                    // $"SEEEE DD{b} {b.GetX()} {b.GetZ()} || ZC:{ZeroCords} || CC:{getCenterCords()} || TC: {b.GetX() + getCenterCords().X} {b.GetZ() + getCenterCords().Z} ");
+                // $"SEEEE DD{b} {b.GetX()} {b.GetZ()} || ZC:{ZeroCords} || CC:{getCenterCords()} || TC: {b.GetX() + getCenterCords().X} {b.GetZ() + getCenterCords().Z} ");
                 int[,] data = new int[16, 16];
                 int xo = 0;
                 int zo = 0;
@@ -274,7 +287,7 @@ namespace CyberCore.WorldGen
                 nc.X = sischunkcords.X;
                 nc.Z = sischunkcords.Z;
                 sischunkbiome.GenerateChunkFromSmoothOrder(cyberExperimentalWorldProvider, nc,
-                    BiomeManager.getChunkRTH(sischunkcords), data);
+                    BiomeManager.getChunkRTH(sischunkcords), data,xtra);
                 cyberExperimentalWorldProvider._chunkCache[sischunkcords] = nc;
                 // return data;
             }

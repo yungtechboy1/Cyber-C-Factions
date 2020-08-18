@@ -553,8 +553,20 @@ namespace CyberCore.WorldGen.Biomes
         }
 
         public void GenerateChunkFromSmoothOrder(CyberExperimentalWorldProvider cyberExperimentalWorldProvider,
-            ChunkColumn nc, float[] rth, int[,] mm)
+            ChunkColumn nc, float[] rth, int[,] mm, bool xtra = true)
         {
+
+            // if (xtra)
+            // {
+            //     SmoothingMap sm = HandleGeneration(mm, new ChunkCoordinates(nc.X, nc.Z),
+            //         cyberExperimentalWorldProvider);
+            //     // sm = new SmoothingMap(new ChunkCoordinates(nc.X, nc.Z), mm);
+            //     sm.StripSmooth(4);
+            //     sm.SetChunks(cyberExperimentalWorldProvider,false);
+            //     mm = sm.GetChunk(sm.getCenterCords());
+            //     ;
+            // }
+
             PopulateChunk(cyberExperimentalWorldProvider, nc, rth, mm);
             nc.SetBlock(7,140,7,new RedstoneBlock());
             PostPopulate(cyberExperimentalWorldProvider, nc, rth, mm);
