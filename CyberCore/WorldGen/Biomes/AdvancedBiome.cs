@@ -406,7 +406,8 @@ namespace CyberCore.WorldGen.Biomes
                 // sm.AddBorderValues(CyberExperimentalWorldProvider);
                 // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST BORDER EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                 // sm.SquareSmooth(3);
-                sm.StripSmooth(4);
+                // sm.StripSmooth(1);//4
+                sm.SmoothMapV4();
                 // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                 // sm.StripSmooth(3);
                 // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH EXPAND2 {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
@@ -438,7 +439,7 @@ namespace CyberCore.WorldGen.Biomes
             return r;
         }
 
-        private SmoothingMap HandleGeneration(int[,] ints, ChunkCoordinates c,
+        public SmoothingMap HandleGeneration(int[,] ints, ChunkCoordinates c,
             CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
         {
             SmoothingMap sm = new SmoothingMap(c, ints);
@@ -474,7 +475,7 @@ namespace CyberCore.WorldGen.Biomes
         {
             var sischunkcords = new ChunkCoordinates(cordz.X + b.GetX(), cordz.Z + b.GetZ());
             var sischunkbiome = BiomeManager.GetBiome(sischunkcords);
-            if (sischunkbiome.LocalId == 10) return;
+            // if (sischunkbiome.LocalId == 10) return;
             sm.AddChunk(cordz + new ChunkCoordinates(b.GetX(), b.GetZ()),
                 sischunkbiome.GenerateChunkHeightMap(sischunkcords, cyberExperimentalWorldProvider));
         }
@@ -561,7 +562,8 @@ namespace CyberCore.WorldGen.Biomes
             //     SmoothingMap sm = HandleGeneration(mm, new ChunkCoordinates(nc.X, nc.Z),
             //         cyberExperimentalWorldProvider);
             //     // sm = new SmoothingMap(new ChunkCoordinates(nc.X, nc.Z), mm);
-            //     sm.StripSmooth(4);
+            //     // sm.StripSmooth(4);
+            //     sm.SmoothMapV4();
             //     sm.SetChunks(cyberExperimentalWorldProvider,false);
             //     mm = sm.GetChunk(sm.getCenterCords());
             //     ;

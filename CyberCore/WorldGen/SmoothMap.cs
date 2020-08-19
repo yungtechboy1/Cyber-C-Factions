@@ -167,6 +167,99 @@ namespace CyberCore.WorldGen
             return true;
         }
 
+
+
+        public void SmoothMapV4()
+        {
+            for (int z = 0; z < Map.GetLength(1); z++)
+            {
+                SmoothStripx(z);
+            }
+
+            for (int x = 1; x < Map.GetLength(0); x++)
+            {
+                SmoothStripz(x);
+            }
+        }
+        
+        private void SmoothStripx(int z)
+        {
+            for (int i = 1; i < Map.GetLength(0)-1 ; i++)
+            {
+                // if (i == 0 || i ==  Map.GetLength(0) - 1) continue;
+                int lv = Map[i - 1,z];
+                int nv = Map[i + 1,z];
+                int v = Map[i,z];
+                if(lv == 0 || nv == 0 || v == 0) continue;
+                //DOWN OR UP
+                int du = nv - lv;
+                //UP
+                if (du > 0)
+                {
+                    v = lv + 1;
+                }
+                else if (du < 0)
+                {
+                    v = lv - 1;
+                }
+                else v = lv;
+
+                Map[i,z] = v;
+            }
+        }
+        private void SmoothStripz(int x)
+        {
+            for (int i = 1; i < Map.GetLength(1)-1 ; i++)
+            {
+                // if (i == 0 || i ==  Map.GetLength(1) - 1) continue;
+                int lv = Map[x,i - 1];
+                int nv = Map[x,i + 1];
+                int v = Map[x,i];
+                if(lv == 0 || nv == 0 || v == 0) continue;
+                //DOWN OR UP
+                int du = nv - lv;
+                //UP
+                if (du > 0)
+                {
+                    v = lv + 1;
+                }
+                else if (du < 0)
+                {
+                    v = lv - 1;
+                }
+                else v = lv;
+
+                Map[x,i] = v;
+            }
+        }
+
+        private int[] Fillstripx(int z)
+        {
+            List<int> strip = new List<int>();
+            for (int a = 0; a < Map.GetLength(0); a++)
+            {
+                strip.Add(Map[a, z]);
+            }
+
+            return strip.ToArray();
+        }
+        private int[] Fillstripz(int x)
+        {
+            List<int> strip = new List<int>();
+            for (int a = 0; a < Map.GetLength(1); a++)
+            {
+                strip.Add(Map[x, a]);
+            }
+
+            return strip.ToArray();
+        }
+
+        
+        
+        
+
+
+
         public void StripSmooth(int w = 2, bool cel = true)
         {
             for (int z = 0; z < Map.GetLength(1); z++)

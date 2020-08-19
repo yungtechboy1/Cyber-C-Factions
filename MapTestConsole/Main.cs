@@ -19,9 +19,11 @@ namespace MapTestConsole
             var b = BiomeManager.GetBiome(cc);
             var i = b.GenerateChunkHeightMap(cc, c);
             LevelMap.SaveViaCSV("/MapTesting/StripSmoothTestOOOOO.csv",LevelMap.IntArrayToString(i));
-            SmoothingMap sm = new SmoothingMap(cc,i);
+            // SmoothingMap sm = new SmoothingMap(cc,i);
+           var sm = b.HandleGeneration(i, cc, c);
             LevelMap.SaveViaCSV("/MapTesting/StripSmoothTestMASSB4.csv",LevelMap.IntArrayToString(sm.Map));
-            sm.StripSmooth(4);
+            // sm.StripSmooth(1);//4
+            sm.SmoothMapV4();
             LevelMap.SaveViaCSV("/MapTesting/StripSmoothTestMASSAFTER.csv",LevelMap.IntArrayToString(sm.Map));
             // LM = new LevelMap(c,11,50);
             // // LM.GenerateTestChunkMaps();
@@ -38,7 +40,7 @@ namespace MapTestConsole
             // LevelMap.SaveViaCSV("/MapTesting/BIOMETTT.csv",LevelMap.IntArrayToString(aa[1]));
             // LevelMap.SaveViaCSV("/MapTesting/BIOMEHHH.csv",LevelMap.IntArrayToString(aa[2]));
         }
-
+   
         public int[,] GenerateBiomeMap(int size)
         {
             int[,] m = new int[size * 2+1, size * 2+1];

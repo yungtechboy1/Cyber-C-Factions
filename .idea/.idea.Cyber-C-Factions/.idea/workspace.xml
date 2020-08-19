@@ -22,7 +22,6 @@
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="CU-b2ju2f">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/SmoothMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/SmoothMap.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/Main.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/Main.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" afterDir="false" />
@@ -39,7 +38,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="16493" />
+    <option name="totalTimeSeconds" value="19199" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -370,8 +369,8 @@
         <option value="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" />
-        <option value="$PROJECT_DIR$/MapTestConsole/Main.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/SmoothMap.cs" />
+        <option value="$PROJECT_DIR$/MapTestConsole/Main.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" />
       </list>
     </option>
@@ -615,7 +614,8 @@
       <workItem from="1597277976020" duration="9971000" />
       <workItem from="1597331093713" duration="18871000" />
       <workItem from="1597542828182" duration="1096000" />
-      <workItem from="1597586893124" duration="26278000" />
+      <workItem from="1597586893124" duration="26559000" />
+      <workItem from="1597793187055" duration="3040000" />
     </task>
     <task id="LOCAL-00002" summary="CU-b2ju2f">
       <created>1597547215454</created>
@@ -707,30 +707,30 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="466" y="421" key="GitRewordDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597636017115" />
-    <state width="1220" height="264" key="GridCell.Tab.0.bottom" timestamp="1597718236325">
+    <state width="1220" height="261" key="GridCell.Tab.0.bottom" timestamp="1597795902584">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1220" height="264" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1597718236325" />
-    <state width="1220" height="264" key="GridCell.Tab.0.center" timestamp="1597718236324">
+    <state width="1220" height="261" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1597795902584" />
+    <state width="1220" height="261" key="GridCell.Tab.0.center" timestamp="1597795902583">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1220" height="264" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1597718236324" />
-    <state width="1220" height="264" key="GridCell.Tab.0.left" timestamp="1597718236324">
+    <state width="1220" height="261" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1597795902583" />
+    <state width="1220" height="261" key="GridCell.Tab.0.left" timestamp="1597795902583">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1220" height="264" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1597718236324" />
-    <state width="1220" height="264" key="GridCell.Tab.0.right" timestamp="1597718236324">
+    <state width="1220" height="261" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1597795902583" />
+    <state width="1220" height="261" key="GridCell.Tab.0.right" timestamp="1597795902583">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1220" height="264" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1597718236324" />
+    <state width="1220" height="261" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1597795902583" />
     <state width="900" height="371" key="GridCell.Tab.1.bottom" timestamp="1595306935573">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -849,12 +849,12 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1280" y="0" width="1280" height="1040" key="dock-window-4/0.0.2560.1040@0.0.2560.1040" timestamp="1591778721946" />
-    <state x="405" y="222" width="936" height="752" key="find.popup" timestamp="1597711731505">
+    <state x="405" y="222" width="936" height="752" key="find.popup" timestamp="1597794610724">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="693" y="141" width="587" height="534" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1594093093748" />
     <state x="1039" y="216" width="881" height="817" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596945440994" />
-    <state x="405" y="222" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1597711731505" />
+    <state x="405" y="222" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1597794610724" />
     <state x="1461" y="244" width="672" height="677" key="run.anything.popup" timestamp="1597717869113">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -864,12 +864,12 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="420" y="324" key="save.file.as.template.dialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597507512558" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1597600660597">
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1597794053084">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="430" y="148" width="672" height="416" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1594091032350" />
     <state x="645" y="226" width="1008" height="637" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1597032171204" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1597600660597" />
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1597794053084" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
