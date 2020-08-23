@@ -75,7 +75,7 @@ namespace CyberCore.WorldGen
             if (rain > 1)
             {
                 // ccc++;
-                var runamt = (int) (rain * 10f);
+                var runamt = (int) Math.Ceiling(rain * 10f);
                 // Console.WriteLine($"TRY AMOUNT IS {runamt}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
                 for (var ttry = 0; ttry < runamt; ttry++)
                     //1 In 4 Chance

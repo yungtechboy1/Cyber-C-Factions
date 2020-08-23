@@ -17,25 +17,26 @@ namespace CyberCore.WorldGen
 
         private static int N = 0;
         private static readonly Dictionary<int, AdvancedBiome> BiomeDict = new Dictionary<int, AdvancedBiome>();
-
+private static AdvancedBiome TEST = new ForestMountain(); 
         public BiomeManager()
         {
-            // AddBiome(new MainBiome());
-            AddBiome(new RainForestBiome());
-            AddBiome(new ForestBiome());
-            AddBiome(new SnowyIcyChunk());
-            AddBiome(new Desert());
-            AddBiome(new DesertHills());
-            AddBiome(new DesertLake());
-            AddBiome(new Mountains());//7
-            AddBiome(new Plains());
-            AddBiome(new HighPlains());
-            AddBiome(new WaterBiome());
-            // AddBiome(new BeachBiome());
-            AddBiome(new SnowForest());
-            AddBiome(new SnowTundra());
-            AddBiome(new TropicalRainForest());
-            AddBiome(new TropicalSeasonalForest());
+            AddBiome(TEST);
+            // // AddBiome(new MainBiome());
+            // AddBiome(new RainForestBiome());
+            // AddBiome(new ForestBiome());
+            // AddBiome(new SnowyIcyChunk());
+            // AddBiome(new Desert());
+            // AddBiome(new DesertHills());
+            // AddBiome(new DesertLake());
+            // AddBiome(new Mountains());//7
+            // AddBiome(new Plains());
+            // AddBiome(new HighPlains());
+            // AddBiome(new WaterBiome());
+            // // AddBiome(new BeachBiome());
+            // AddBiome(new SnowForest());
+            // AddBiome(new SnowTundra());
+            // AddBiome(new TropicalRainForest());
+            // AddBiome(new TropicalSeasonalForest());
         }
 
         public static void AddBiome(AdvancedBiome biome)
@@ -227,7 +228,8 @@ namespace CyberCore.WorldGen
             // Console.WriteLine($"BIOMEMANAGER10: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
             // return new MainBiome();
             // return new WaterBiome();
-            var bbb = new WaterBiome().CClone();
+            // var bbb = new WaterBiome().CClone();
+            var bbb =TEST.CClone();
             // var bbb = new DesertLake().CClone();
             // bbb.LocalId = 7;
             if(doadvancedstuff)DoAdvancedStuff(ref bbb, chunk);
