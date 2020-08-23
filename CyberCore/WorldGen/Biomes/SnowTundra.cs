@@ -10,6 +10,7 @@ namespace CyberCore.WorldGen.Biomes
     {
         public SnowTundra() : base("SnowTundra", new BiomeQualifications(0, 2, 0, .5f, .5f, 1, 30))
         {
+            LocalId = 13;
         }
 
         public override int GetSh(int x, int z, int cx, int cz)

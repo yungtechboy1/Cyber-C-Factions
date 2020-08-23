@@ -15,7 +15,7 @@ namespace CyberCore.WorldGen.Biomes
 {
     public abstract class AdvancedBiome : ICloneable
     {
-        protected int Waterlevel = 90;
+        protected int Waterlevel = 85;
         private static readonly ILog Log = LogManager.GetLogger(typeof(AdvancedBiome));
 
         private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());
@@ -308,6 +308,12 @@ namespace CyberCore.WorldGen.Biomes
 
             var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk);
             PopulateChunk(CyberExperimentalWorldProvider, chunk, rth, a);
+            
+            if (BorderChunk)
+            {
+                chunk.SetBlock(7,150,7,new EmeraldBlock());
+            }
+
             PostPopulate(CyberExperimentalWorldProvider, chunk, rth, a);
 
             t.Stop();
@@ -400,7 +406,8 @@ namespace CyberCore.WorldGen.Biomes
                 // sm.AddBorderValues(CyberExperimentalWorldProvider);
                 // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST BORDER EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                 // sm.SquareSmooth(3);
-                sm.StripSmooth(4);
+                // sm.StripSmooth(1);//4
+                sm.SmoothMapV4();
                 // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                 // sm.StripSmooth(3);
                 // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN POST SMOOTH EXPAND2 {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
@@ -432,7 +439,7 @@ namespace CyberCore.WorldGen.Biomes
             return r;
         }
 
-        private SmoothingMap HandleGeneration(int[,] ints, ChunkCoordinates c,
+        public SmoothingMap HandleGeneration(int[,] ints, ChunkCoordinates c,
             CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
         {
             SmoothingMap sm = new SmoothingMap(c, ints);
@@ -468,7 +475,7 @@ namespace CyberCore.WorldGen.Biomes
         {
             var sischunkcords = new ChunkCoordinates(cordz.X + b.GetX(), cordz.Z + b.GetZ());
             var sischunkbiome = BiomeManager.GetBiome(sischunkcords);
-
+            // if (sischunkbiome.LocalId == 10) return;
             sm.AddChunk(cordz + new ChunkCoordinates(b.GetX(), b.GetZ()),
                 sischunkbiome.GenerateChunkHeightMap(sischunkcords, cyberExperimentalWorldProvider));
         }
@@ -547,9 +554,23 @@ namespace CyberCore.WorldGen.Biomes
         }
 
         public void GenerateChunkFromSmoothOrder(CyberExperimentalWorldProvider cyberExperimentalWorldProvider,
-            ChunkColumn nc, float[] rth, int[,] mm)
+            ChunkColumn nc, float[] rth, int[,] mm, bool xtra = true)
         {
+
+            // if (xtra)
+            // {
+            //     SmoothingMap sm = HandleGeneration(mm, new ChunkCoordinates(nc.X, nc.Z),
+            //         cyberExperimentalWorldProvider);
+            //     // sm = new SmoothingMap(new ChunkCoordinates(nc.X, nc.Z), mm);
+            //     // sm.StripSmooth(4);
+            //     sm.SmoothMapV4();
+            //     sm.SetChunks(cyberExperimentalWorldProvider,false);
+            //     mm = sm.GetChunk(sm.getCenterCords());
+            //     ;
+            // }
+
             PopulateChunk(cyberExperimentalWorldProvider, nc, rth, mm);
+            nc.SetBlock(7,140,7,new RedstoneBlock());
             PostPopulate(cyberExperimentalWorldProvider, nc, rth, mm);
         }
 
@@ -729,6 +750,19 @@ namespace CyberCore.WorldGen.Biomes
             // return (float) ((OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f));
         }
 
+        public static float GetNoiseCubic(int x, int z, float scale, int mmax)
+        {
+            var heightnoise = new FastNoise(123123 + 2);
+            heightnoise.SetNoiseType(FastNoise.NoiseType.CubicFractal);
+            heightnoise.SetFrequency(scale);
+            heightnoise.SetFractalType(FastNoise.FractalType.FBM);
+            heightnoise.SetFractalOctaves(1);
+            heightnoise.SetFractalLacunarity(2);
+            heightnoise.SetFractalGain(.5f);
+            return (heightnoise.GetNoise(x, z) + .75f) * (mmax / 2f);
+            // return (float) ((OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f));
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -868,6 +902,11 @@ namespace CyberCore.WorldGen.Biomes
             }
 
             return f1;
+        }
+
+        public virtual AdvancedBiome DoubleCheckCords(ChunkCoordinates chunk)
+        {
+            return this;
         }
     }
 }

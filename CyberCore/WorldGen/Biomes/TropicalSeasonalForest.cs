@@ -13,6 +13,7 @@ namespace CyberCore.WorldGen.Biomes
             0.5f, 1.5f
             , 30))
         {
+            LocalId = 15;
         }
 
         public override int GetSh(int x, int z, int cx, int cz)

@@ -13,11 +13,11 @@ namespace CyberCore.WorldGen.Biomes.Biomes
         public Desert() : base("Desert", new BiomeQualifications(0, .75f, 1.5f, 2, 0.5f, 1.25f
             , 15))
         {
+            LocalId = 4;
         }
 
         public override int GetSh(int x, int z, int cx, int cz)
         {
-            var r = new Random();
             return BiomeQualifications.Baseheight +
                    (int) GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.035f / 4,
                        BiomeQualifications.Heightvariation);
@@ -27,11 +27,7 @@ namespace CyberCore.WorldGen.Biomes.Biomes
             bool setair)
         {
             if (yheight == 0)
-            {
                 cc.SetBlock(x, yheight, z, new Bedrock());
-            }
-            else if (yheight < maxheight * 0.5f - 1)
-                cc.SetBlock(x, yheight, z, new Stone());
             else if (yheight < maxheight * .75f - 1)
                 cc.SetBlock(x, yheight, z, new Sandstone());
             else if (yheight <= maxheight)
@@ -51,7 +47,7 @@ namespace CyberCore.WorldGen.Biomes.Biomes
                 int h = chunk.GetHeight(x, z) + 1;
                 if (r.Next(220) == 180)
                 {
-                    int hh = (int) Math.Ceiling(r.Next(9) / 3f);
+                    int hh = (int) Math.Ceiling(r.Next(9) / 3f) + 1;
                     for (int i = 0; i < hh; i++)
                     {
                         chunk.SetBlock(x, h + i, z, new Cactus());

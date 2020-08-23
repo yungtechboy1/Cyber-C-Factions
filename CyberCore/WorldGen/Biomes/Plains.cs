@@ -9,6 +9,7 @@ namespace CyberCore.WorldGen.Populator
     {
         public Plains() : base("Plains", new BiomeQualifications(0.5f, 1.5f, 0.5f, 1.75f, 0.5f, .75f, 5))
         {
+            LocalId = 8;
         }
 
         public override int GetSh(int x, int z, int cx, int cz)

@@ -1,6 +1,7 @@
 ﻿using System;
 using CyberCore.WorldGen;
 using CyberCore.WorldGen.Biomes;
+using log4net.Util.TypeConverters;
 using MiNET.Blocks;
 using MiNET.Utils;
 using MiNET.Worlds;
@@ -13,12 +14,58 @@ namespace CyberCore.WorldGen
             , 30))
         {
             BiomeQualifications.Baseheight = 30;
+            LocalId = 10;
         }
 
+        public override AdvancedBiome DoubleCheckCords(ChunkCoordinates chunk)
+        {
+            // BorderChunk = false;
+            for (int zz = -2; zz <= 2; zz++)
+            for (int xx = -2; xx <= 2; xx++)
+            {
+                if (xx == 0 && zz == 0) continue;
+                var cc = new ChunkCoordinates()
+                {
+                    X = chunk.X + xx,
+                    Z = chunk.Z + zz
+                };
+                var tb = BiomeManager.GetBiome(cc,false);
+                // Console.WriteLine($"SO WHILE CHECKING WATER {LocalId} I FOUND TB {tb.LocalId} AT {cc} VIA {chunk}");
+                if (tb.LocalId != LocalId && tb.LocalId != 11)
+                {
+                    // Console.WriteLine($"Yeahhh this got changed!");
+                    var b = new BeachBiome().CClone();
+                    BiomeManager.DoAdvancedStuff(ref b,chunk);
+                    return b;
+                }
+            }
+
+            BorderChunk = false;
+      
+
+            return this;
+        }
+
+        public override int[,] GenerateChunkHeightMap(ChunkCoordinates c, CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
+        {
+            var r = new int[16, 16];
+
+            for (int z = 0; z < 16; z++)
+            for (int x = 0; x < 16; x++)
+            {
+                // Console.WriteLine($"{c.X} *16 + {x} = {c.X * 16 + x} || {c.Z}*16 + {z} = {c.Z * 16 + z}");
+                // r[x, z] = cyberExperimentalWorldProvider.getBlockHeight(c.X * 16 + x, c.Z * 16 + z);
+                r[x, z] = Waterlevel+1;
+            }
+            
+
+            return r;
+        }
 
         public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
             bool setair)
         {
+            maxheight =  CyberExperimentalWorldProvider.getInstance().getBlockHeight(cc.X * 16 + x, cc.Z * 16 + z);
             int sand = maxheight - 6;
             if (yheight < sand)
             {

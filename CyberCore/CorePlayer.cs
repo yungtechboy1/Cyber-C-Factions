@@ -1,14 +1,12 @@
-﻿using System;
+﻿// using MySqlX.XDevAPI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Numerics;
-using System.Runtime.InteropServices.WindowsRuntime;
 using CyberCore.Custom.Events;
-using CyberCore.CustomEnums;
 using CyberCore.Manager.AuctionHouse;
 using CyberCore.Manager.ClassFactory;
-using CyberCore.Manager.ClassFactory.Powers;
 using CyberCore.Manager.Factions;
 using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.FloatingText;
@@ -19,21 +17,16 @@ using CyberCore.Manager.Shop.Spawner;
 using CyberCore.Utils;
 using CyberCore.Utils.Cooldowns;
 using MiNET;
-using MiNET.BlockEntities;
 using MiNET.Blocks;
 using MiNET.Effects;
 using MiNET.Entities;
 using MiNET.Entities.World;
 using MiNET.Items;
 using MiNET.Net;
-using MiNET.Sounds;
 using MiNET.UI;
 using MiNET.Utils;
 using MiNET.Worlds;
-// using MySqlX.XDevAPI;
 using OpenAPI;
-using OpenAPI.Events.Entity;
-using OpenAPI.Events.Player;
 using OpenAPI.Player;
 using static CyberCore.Manager.ClassFactory.BuffType;
 
@@ -41,17 +34,27 @@ namespace CyberCore
 {
     public class CorePlayer : OpenPlayer
     {
+        public enum CustomInvType
+        {
+            NA,
+            Shop,
+            AH,
+            SpawnerShop
+        }
+        //0 Player Inv
+        //10 Chest
+        //124 Cursor
+
+        public enum TransactionType
+        {
+            NA = -1,
+            PlayerInv = 0,
+            Chest = 10,
+            Cursor = 124
+        }
+
         private static bool CooldownLock;
         public static readonly float DEFAULT_SPEED = 0.1F;
-        private readonly string Cooldown_Class = "Class";
-        private readonly string Cooldown_DTP = "DelayTP";
-        private readonly string Cooldown_Faction = "Faction";
-        private readonly string Cooldown_EPD = "EPD";
-        private readonly string Cooldown_EPD_Valid = "EPDValid";
-        private readonly string Scoreboard_Class = "ScoreBoard";
-        public ExtraPlayerData EPD = null;
-        public AuctionHouse AH = null;
-        public int banned = 0;
 
         private readonly int BaseSwingSpeed = 7; //Was 10 but felt too slow for good PVP
 
@@ -62,17 +65,12 @@ namespace CyberCore
                 {BuffOrigin.Class, new Dictionary<BuffType, Buff>()}
             };
 
-        public bool BuffsChanced = false;
-
         private readonly Dictionary<string, CoolDown> CDL = new Dictionary<string, CoolDown>();
-
-        private BaseClass PlayerClass = null;
-        private int ClassCheck = -1;
-        public CombatData Combat;
-        private PlayerLocation CTLastPos;
-        public int CustomExtraHP;
-        public float CustomMovementSpeed = 0.1f;
-        public int deaths;
+        private readonly string Cooldown_Class = "Class";
+        private readonly string Cooldown_DTP = "DelayTP";
+        private readonly string Cooldown_EPD = "EPD";
+        private readonly string Cooldown_EPD_Valid = "EPDValid";
+        private readonly string Cooldown_Faction = "Faction";
 
         private readonly Dictionary<BuffOrigin, Dictionary<BuffType, DeBuff>> DeBufflist =
             new Dictionary<BuffOrigin, Dictionary<BuffType, DeBuff>>
@@ -80,7 +78,22 @@ namespace CyberCore
                 {BuffOrigin.Class, new Dictionary<BuffType, DeBuff>()}
             };
 
+        private readonly string Scoreboard_Class = "ScoreBoard";
+        public AuctionHouse AH = null;
+
+        public int attackTime = 0;
+        public int banned = 0;
+
+        public bool BuffsChanced = false;
+        private int ClassCheck = -1;
+        public CombatData Combat;
+        private PlayerLocation CTLastPos;
+        public int CustomExtraHP;
+        public float CustomMovementSpeed = 0.1f;
+        public int deaths;
+
         public bool DebuffsChanced = false;
+        public ExtraPlayerData EPD;
 
         //    public String faction_id = null;
         public Dictionary<string, object> extraData = new Dictionary<string, object>();
@@ -98,15 +111,13 @@ namespace CyberCore
         public List<Faction.HomeData> HD = new List<Faction.HomeData>();
 
         public CoreSettings InternalPlayerSettings = new CoreSettings();
-        // private bool isInTeleportingProcess = false;
-
-        // private bool isTeleporting;
-
-        private Form nw;
         private Item ItemBeingEnchanted;
         private bool ItemBeingEnchantedLock;
         public int kills;
         private Vector3 lastBreakVector31;
+
+        // public Scoreboard PlayerScoreBoard = ScoreboardAPI.createScoreboard();
+        protected Dictionary<BuffType, float> lastdata;
         public string LastMessageSentTo = null;
         public MainForm LastSentFormType = MainForm.NULL;
         public SubMenu LastSentSubMenu = SubMenu.NULL;
@@ -118,14 +129,25 @@ namespace CyberCore
         public int money = 0;
 
         public bool MuteMessage = false;
+        // private bool isInTeleportingProcess = false;
+
+        // private bool isTeleporting;
+
+        private Form nw;
+
+        private BaseClass PlayerClass;
+
+        private PlayerSettingsData PlayerSettingsData;
         private Rank2 rank = RankList2.getInstance().getRankFromID(RankEnum.Guest);
 
         private PlayerSettingsData SettingsData;
 
+        public NewShopInv ShopInv = null;
+
         // public ShopInv Shop = null;
         public SpawnerShop SpawnerShop = null;
 
-        private CoolDown SwingCooldown = new CoolDown();
+        private readonly CoolDown SwingCooldown = new CoolDown();
 
         // private CorePlayer TargetTeleporting;
         // private PlayerLocation TargetTeleportingLoc;
@@ -134,21 +156,25 @@ namespace CyberCore
 
         public int TPRTimeout;
 
-        // public Scoreboard PlayerScoreBoard = ScoreboardAPI.createScoreboard();
-        protected Dictionary<BuffType, float> lastdata = null;
+        private long tt;
         private long uct;
         private bool uw;
-        private long WFTP_TPTick = -1;
 
         public int WFTP_CancelDistance = 2;
         public bool WFTP_Effects;
-        private PlayerLocation WFTP_ToPlayerLocation;
         private PlayerLocation WFTP_StartPos;
+        private PlayerLocation WFTP_ToPlayerLocation;
+        private long WFTP_TPTick = -1;
 
         public CorePlayer(MiNetServer server, IPEndPoint endPoint, OpenApi api) : base(server, endPoint, api)
         {
             ItemStackInventoryManager = new CustomItmStkInvMgr(this);
         }
+
+
+        public bool ShowHTP { get; set; }
+
+        public CustomInvType CustomInvOpen { get; set; } = CustomInvType.NA;
         //
         // private void InvChange(Player player, Inventory inventory, byte slot, Item itemStack)
         // {
@@ -175,30 +201,13 @@ namespace CyberCore
         public void CyberOpenInventory(BlockCoordinates inventoryCoord)
         {
             OpenInventory(inventoryCoord);
-            Inventory inventory = Level.InventoryManager.GetInventory(inventoryCoord);
-            if (!inventory.Observers.Contains(this))
-            {
-                return;
-            }
+            var inventory = Level.InventoryManager.GetInventory(inventoryCoord);
+            if (!inventory.Observers.Contains(this)) return;
 
             var c = Level.GetChunk(inventoryCoord);
             c.IsDirty = true;
             c.NeedSave = true;
             SendMessage("THIS CHUNK WILL NOW BE SAVED!!!");
-        }
-
-
-        public bool ShowHTP { get; set; }
-        public CustomInvType CustomInvOpen { get; set; } = CustomInvType.NA;
-
-        public NewShopInv ShopInv = null;
-
-        public enum CustomInvType
-        {
-            NA,
-            Shop,
-            AH,
-            SpawnerShop
         }
 
         public Dictionary<BuffOrigin, Dictionary<BuffType, Buff>> getBufflist()
@@ -258,10 +267,10 @@ namespace CyberCore
             {
                 CustomInvOpen = CustomInvType.NA;
                 SendMessage("CUSTOM INV HAS BEEN CLOSED INTERNALLY");
-                McpeContainerClose mcpeContainerClose = Packet<McpeContainerClose>.CreateObject(1L);
+                var mcpeContainerClose = Packet<McpeContainerClose>.CreateObject();
                 mcpeContainerClose.windowId = 10;
-                this.SendPacket((Packet) mcpeContainerClose);
-                
+                SendPacket(mcpeContainerClose);
+
                 // McpeBlockEvent message1 = Packet<McpeBlockEvent>.CreateObject(1L);
                 // message1.coordinates = openInventory.Coordinates;
                 // message1.case1 = 1;
@@ -269,7 +278,9 @@ namespace CyberCore
                 // this.Level.RelayBroadcast<McpeBlockEvent>(message1);
             }
             else
+            {
                 base.HandleMcpeContainerClose(message);
+            }
         }
 
 
@@ -298,22 +309,14 @@ namespace CyberCore
                         HandleTransactionRecords2(transaction.TransactionRecords);
                         return;
                     }
-                    else break;
+                    else
+                    {
+                        break;
+                    }
             }
 
             // Console.WriteLine("THIS TRANSACTION WAS A "+message.transaction);
             base.HandleMcpeInventoryTransaction(message);
-        }
-        //0 Player Inv
-        //10 Chest
-        //124 Cursor
-
-        public enum TransactionType
-        {
-            NA = -1,
-            PlayerInv = 0,
-            Chest = 10,
-            Cursor = 124
         }
 
         protected override void HandleNormalTransaction(NormalTransaction transaction)
@@ -324,21 +327,21 @@ namespace CyberCore
 
         public void HandleTransactionRecords2(List<TransactionRecord> transactionRecords)
         {
-            Item obj1 = (Item) null;
-            Item obj2 = (Item) null;
-            TransactionType from = TransactionType.NA;
-            TransactionType to = TransactionType.NA;
+            var obj1 = (Item) null;
+            var obj2 = (Item) null;
+            var from = TransactionType.NA;
+            var to = TransactionType.NA;
 
-            ItemEntity itemEntity = (ItemEntity) null;
-            foreach (TransactionRecord transactionRecord1 in transactionRecords)
+            var itemEntity = (ItemEntity) null;
+            foreach (var transactionRecord1 in transactionRecords)
             {
-                Item oldItem = transactionRecord1.OldItem;
-                Item itemStack = transactionRecord1.NewItem;
-                int slot1 = transactionRecord1.Slot;
+                var oldItem = transactionRecord1.OldItem;
+                var itemStack = transactionRecord1.NewItem;
+                var slot1 = transactionRecord1.Slot;
                 switch (transactionRecord1)
                 {
                     case ContainerTransactionRecord transactionRecord:
-                        int inventoryId = transactionRecord.InventoryId;
+                        var inventoryId = transactionRecord.InventoryId;
                         Console.WriteLine(inventoryId + "<<<<<");
                         if (inventoryId == 10)
                         {
@@ -378,7 +381,7 @@ namespace CyberCore
             // inventoryContent3.inventoryId = 123;
             // inventoryContent3.input = a;
             // this.SendPacket((Packet) inventoryContent1);
-            McpeInventorySlot mis = Packet<McpeInventorySlot>.CreateObject(1l);
+            var mis = Packet<McpeInventorySlot>.CreateObject();
             mis.item = new ItemAir();
             mis.slot = 0;
             mis.inventoryId = 124;
@@ -478,7 +481,6 @@ namespace CyberCore
         public void initClassBuffs()
         {
             foreach (var b in getClassBuffList().Values)
-            {
                 switch (b.getBt())
                 {
                     case Movement:
@@ -491,42 +493,33 @@ namespace CyberCore
                         sendAttributes();
                         break;
                 }
-            }
         }
 
         public void initBuffs()
         {
             Console.WriteLine("Runing INITBUFFS BUFFFFFFFFFFFFFF");
-            Dictionary<BuffType, float> data = new Dictionary<BuffType, float>();
+            var data = new Dictionary<BuffType, float>();
             //BUFFS
-            List<Buff> ab = new List<Buff>(getClassBuffList().Values);
+            var ab = new List<Buff>(getClassBuffList().Values);
 //        ab.addAll(getTempBuff().values());
-            foreach (var b in getClassBuffList().Values)
-            {
-                data[b.getBt()] = b.getAmount();
-            }
+            foreach (var b in getClassBuffList().Values) data[b.getBt()] = b.getAmount();
 
             foreach (var b in getClassDeBuffList().Values)
-            {
                 if (data.ContainsKey(b.getBt()))
                 {
-                    float f = data[b.getBt()];
+                    var f = data[b.getBt()];
                     data[b.getBt()] = f / b.getAmount();
                 }
                 else
                 {
                     data[b.getBt()] = 1 / b.getAmount();
                 }
-            }
 
             //Temp Buffs  Everything!
             if (getTempBuff().Count > 0)
             {
                 Console.WriteLine("HAS TEMPPPPPPPPP BUFFFFFFFFFFFFFF");
-                foreach (var b in getTempBuff().Values)
-                {
-                    data[b.getBt()] = b.getAmount();
-                }
+                foreach (var b in getTempBuff().Values) data[b.getBt()] = b.getAmount();
             }
 
             if (!data.ContainsKey(Health)) CustomExtraHP = 0;
@@ -586,8 +579,8 @@ namespace CyberCore
             if (a == null || b == null || a.Count != b.Count) return false;
             foreach (var entry in a)
             {
-                BuffType k = entry.Key;
-                float v = entry.Value;
+                var k = entry.Key;
+                var v = entry.Value;
                 if (!b.ContainsKey(k) || !v.Equals(b[k])) return false;
             }
 
@@ -624,7 +617,7 @@ namespace CyberCore
             }
             else
             {
-                Dictionary<BuffType, Buff> bm = Bufflist[BuffOrigin.Class];
+                var bm = Bufflist[BuffOrigin.Class];
                 if (bm.ContainsKey(b.getBt()) && !force) return; //Cant write it something is here
                 bm[b.getBt()] = b;
                 Bufflist[BuffOrigin.Class] = bm;
@@ -647,7 +640,7 @@ namespace CyberCore
             }
             else
             {
-                Dictionary<BuffType, DeBuff> bm = DeBufflist[BuffOrigin.Class];
+                var bm = DeBufflist[BuffOrigin.Class];
                 if (bm.ContainsKey(b.getBt()) && !force) return; //Cant write it something is here
                 bm[b.getBt()] = b;
                 DeBufflist[BuffOrigin.Class] = bm;
@@ -890,7 +883,7 @@ namespace CyberCore
 
         public void clearNewWindow()
         {
-            this.nw = null;
+            nw = null;
         }
 
 
@@ -941,8 +934,8 @@ namespace CyberCore
 
         public int getAttackTime()
         {
-            Buff b = getClassBuffList()[SwingSpeed];
-            DeBuff db = getClassDeBuffList()[SwingSpeed];
+            var b = getClassBuffList()[SwingSpeed];
+            var db = getClassDeBuffList()[SwingSpeed];
             if (b == null) b = new Buff(NULL, 1);
             if (db == null) db = new DeBuff(NULL, 1);
             return (int) (getBaseSwingSpeed() * b.getAmount() / db.getAmount());
@@ -958,45 +951,46 @@ namespace CyberCore
             return true;
         }
 
-        public int attackTime = 0;
-
         public void BaseEntityAttack(ItemUseOnEntityTransaction transaction)
         {
-            Item itemInHand = this.Inventory.GetItemInHand();
+            var itemInHand = Inventory.GetItemInHand();
             // if ((int) itemInHand.Id != (int) transaction.Item.Id || (int) itemInHand.Metadata != (int) transaction.Item.Metadata)
             //     Log.Warn((object) string.Format("Attack item mismatch. Expected {0}, but client reported {1}", (object) itemInHand, (object) transaction.Item));
             Entity entity;
-            if (!this.Level.TryGetEntity<Entity>(transaction.EntityId, out entity))
+            if (!Level.TryGetEntity(transaction.EntityId, out entity))
                 return;
-            this.LastAttackTarget = entity;
+            LastAttackTarget = entity;
             if (entity is Player target)
             {
-                double itemDamage = this.DamageCalculator.CalculateItemDamage(this, itemInHand, target);
-                if (this.IsFalling)
-                    itemDamage += this.DamageCalculator.CalculateFallDamage(this, itemDamage, target);
-                double num = itemDamage + this.DamageCalculator.CalculateEffectDamage(this, itemDamage, target);
+                var itemDamage = DamageCalculator.CalculateItemDamage(this, itemInHand, target);
+                if (IsFalling)
+                    itemDamage += DamageCalculator.CalculateFallDamage(this, itemDamage, target);
+                var num = itemDamage + DamageCalculator.CalculateEffectDamage(this, itemDamage, target);
                 if (num < 0.0)
                     num = 0.0;
-                double damage = num + this.DamageCalculator.CalculateDamageIncreaseFromEnchantments(this, itemInHand, target);
-                int playerDamage = (int) this.DamageCalculator.CalculatePlayerDamage((Entity) this, target, itemInHand, damage, DamageCause.EntityAttack);
-                target.HealthManager.TakeHit((Entity) this, itemInHand, playerDamage, DamageCause.EntityAttack);
-                if ((double) playerDamage < damage)
+                var damage = num + DamageCalculator.CalculateDamageIncreaseFromEnchantments(this, itemInHand, target);
+                var playerDamage =
+                    (int) DamageCalculator.CalculatePlayerDamage(this, target, itemInHand, damage,
+                        DamageCause.EntityAttack);
+                target.HealthManager.TakeHit(this, itemInHand, playerDamage, DamageCause.EntityAttack);
+                if (playerDamage < damage)
                     target.Inventory.DamageArmor();
-                short enchantingLevel = itemInHand.GetEnchantingLevel(EnchantingType.FireAspect);
-                if (enchantingLevel > (short) 0)
-                    target.HealthManager.Ignite((int) enchantingLevel * 80);
+                var enchantingLevel = itemInHand.GetEnchantingLevel(EnchantingType.FireAspect);
+                if (enchantingLevel > 0)
+                    target.HealthManager.Ignite(enchantingLevel * 80);
             }
             else
             {
-                var d = this.CalculateDamage(entity);
-                entity.HealthManager.TakeHit((Entity) this, itemInHand, d, DamageCause.EntityAttack);
-                FloatingTextFactory.AddFloatingText(new PopupFT(CyberCoreMain.GetInstance().FTM,entity.KnownPosition,entity.Level,$"{ChatColors.Red}Damage Given {d}HP"));
+                var d = CalculateDamage(entity);
+                entity.HealthManager.TakeHit(this, itemInHand, d, DamageCause.EntityAttack);
+                FloatingTextFactory.AddFloatingText(new PopupFT(CyberCoreMain.GetInstance().FTM, entity.KnownPosition,
+                    entity.Level, $"{ChatColors.Red}Damage Given {d}HP"));
             }
 
-            this.Inventory.DamageItemInHand(ItemDamageReason.EntityAttack, entity, (Block) null);
-            this.HungerManager.IncreaseExhaustion(0.3f);
+            Inventory.DamageItemInHand(ItemDamageReason.EntityAttack, entity, null);
+            HungerManager.IncreaseExhaustion(0.3f);
         }
-        
+
         protected override void EntityAttack(ItemUseOnEntityTransaction transaction)
         {
             if (SwingCooldown.isValid())
@@ -1886,8 +1880,8 @@ namespace CyberCore
 
         public void RandomChanceOfFire(int max)
         {
-            Random nr = new Random(max);
-            int f = nr.Next(0, 100);
+            var nr = new Random(max);
+            var f = nr.Next(0, 100);
             if (f < max) setOnFire(nr.Next(1, 4) * 20);
         }
 
@@ -1974,7 +1968,7 @@ namespace CyberCore
         {
             if (!CDL.ContainsKey(key)) return null;
 //        CyberCoreMain.Log.info(" VALID"+key);
-            CoolDown cd = CDL[key];
+            var cd = CDL[key];
             if (cd == null) return null;
 //        CyberCoreMain.Log.info("CVALID"+!cd.isValidTick()+" | "+cd.Time+"|"+Server.GetInstance().getTick());
             if (checkvalid && !cd.isValid())
@@ -2019,7 +2013,7 @@ namespace CyberCore
 
         public void loadEPD()
         {
-            List<Dictionary<string, object>> a = CyberCoreMain.GetInstance().SQL
+            var a = CyberCoreMain.GetInstance().SQL
                 .executeSelect($"SELECT * FROM `EPD` WHERE player = '{Username}'");
             if (a.Count != 0)
             {
@@ -2038,13 +2032,11 @@ namespace CyberCore
             onUpdate(CyberUtils.getTick());
         }
 
-        private long tt = 0;
-
         public void onUpdate(long currentTick)
         {
             tt++;
             if (tt < 20 * 10) return;
-            if (tt > Int64.MaxValue - 1) tt = 0;
+            if (tt > long.MaxValue - 1) tt = 0;
 
             if (ShowHTP)
             {
@@ -2094,7 +2086,7 @@ namespace CyberCore
                         AddCoolDown(Cooldown_Faction, 60); //3 mins
                         if (Faction == null)
                         {
-                            Faction f = CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction(this);
+                            var f = CyberCoreMain.GetInstance().FM.FFactory.getPlayerFaction(this);
                             if (f == null)
                                 Faction = null;
                             else
@@ -2112,13 +2104,11 @@ namespace CyberCore
 //                    CyberCoreMain.Log.info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
                         AddCoolDown(Cooldown_DTP, 2);
                         if (isWaitingForTeleport())
-                        {
                             if (isReadyToTeleport())
                             {
                                 Teleport(WFTP_ToPlayerLocation.Safe(Level));
                                 clearWaitingForTP();
                             }
-                        }
                     }
                     //Class Check
 
@@ -2129,7 +2119,7 @@ namespace CyberCore
                     {
 //                    CyberCoreMain.Log.info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
                         AddCoolDown(Cooldown_Class, 5);
-                        BaseClass bc = getPlayerClass();
+                        var bc = getPlayerClass();
                         if (bc != null) bc.onUpdate(currentTick);
                         initAllClassBuffs();
                     }
@@ -2162,14 +2152,14 @@ namespace CyberCore
 
 
             //Check to see if Player as medic or Restoration
-            HungerManager pf = getFoodData();
+            var pf = getFoodData();
             if (TPR != null && TPRTimeout != 0 && TPRTimeout < currentTick)
             {
                 TPRTimeout = 0;
-                CorePlayer cp = CyberCoreMain.GetInstance().getPlayer(TPR);
+                var cp = CyberCoreMain.GetInstance().getPlayer(TPR);
                 if (cp != null)
                 {
-                    var p = new Popup()
+                    var p = new Popup
                     {
                         Duration = 40L,
                         MessageType = MessageType.Tip,
@@ -2276,17 +2266,16 @@ namespace CyberCore
 
         public bool CheckHomeKey(string key)
         {
-            foreach (Faction.HomeData h in HD)
-            {
-                if (h.getName().equalsIgnoreCase(key)) return true;
-            }
+            foreach (var h in HD)
+                if (h.getName().equalsIgnoreCase(key))
+                    return true;
 
             return false;
         }
 
-        public void sendPopup(String msg, long duration = 40l)
+        public void sendPopup(string msg, long duration = 40l)
         {
-            var p = new Popup()
+            var p = new Popup
             {
                 Duration = duration,
                 MessageType = MessageType.Tip,
@@ -2312,16 +2301,14 @@ namespace CyberCore
 
         public void TeleportToHome(string key, bool instant, int delay)
         {
-            foreach (Faction.HomeData h in HD)
-            {
+            foreach (var h in HD)
                 if (h.getName().equalsIgnoreCase(key))
                 {
-                    PlayerLocation v3 = h.getPosition();
+                    var v3 = h.getPosition();
                     if (instant) Teleport(v3);
                     else
                         StartTeleport(h.getPosition(), 7);
                 }
-            }
         }
 
         public override void HandleMcpeResourcePackClientResponse(McpeResourcePackClientResponse message)
@@ -2335,7 +2322,6 @@ namespace CyberCore
                 Console.WriteLine("HEEETTTTTT2222222");
                 OpenServer.FastThreadPool.QueueUserWorkItem(() => { Start(null); });
                 Console.WriteLine("HEEETTTTTT");
-                return;
             }
             else
             {
@@ -2353,7 +2339,7 @@ namespace CyberCore
             CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
             CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
             CyberCoreMain.Log.Info("============================================== SUMMM NULLL");
-            if (!this.IsConnected || this.Level != null) CyberCoreMain.Log.Info("YOPOOOOOO SUMMM NULLL");
+            if (!IsConnected || Level != null) CyberCoreMain.Log.Info("YOPOOOOOO SUMMM NULLL");
             CyberCoreMain.Log.Info("LVELEEEELLL" + CyberCoreMain.GetInstance().getAPI().LevelManager
                 .GetLevel(this, Dimension.Overworld.ToString()));
             base.Start(o);
@@ -2368,7 +2354,7 @@ namespace CyberCore
         {
             var k = 0;
             var kk = 0;
-            foreach (Faction.HomeData h in HD)
+            foreach (var h in HD)
             {
                 k++;
                 if (h.getName().equalsIgnoreCase(name))
@@ -2400,8 +2386,6 @@ namespace CyberCore
         {
             SettingsData = settingsData;
         }
-
-        private PlayerSettingsData PlayerSettingsData = null;
 
         public void setPlayerSettingsData(PlayerSettingsData playerSettingsData)
         {
@@ -2449,10 +2433,10 @@ namespace CyberCore
             var e1 = new Nausea();
             var e2 = new Slowness();
 
-            e1.Level = (2);
-            e2.Level = (2);
-            e1.Duration = (20 * 600);
-            e2.Duration = (20 * 600);
+            e1.Level = 2;
+            e2.Level = 2;
+            e1.Duration = 20 * 600;
+            e2.Duration = 20 * 600;
 
             SetEffect(e1);
             SetEffect(e2);
@@ -2597,10 +2581,7 @@ namespace CyberCore
 
         public bool isReadyToTeleport()
         {
-            if (!(WFTP_TPTick == -1) && WFTP_ToPlayerLocation != null)
-            {
-                return CyberUtils.getTick() >= WFTP_TPTick;
-            }
+            if (!(WFTP_TPTick == -1) && WFTP_ToPlayerLocation != null) return CyberUtils.getTick() >= WFTP_TPTick;
 
             return false;
         }
@@ -2638,18 +2619,18 @@ namespace CyberCore
                 return false;
             }
 
-            WFTP_TPTick = CyberUtils.getTick() + (secs * 20);
+            WFTP_TPTick = CyberUtils.getTick() + secs * 20;
             WFTP_StartPos = (PlayerLocation) KnownPosition.Clone();
             WFTP_ToPlayerLocation = new PlayerLocation(pos);
             WFTP_Effects = giveeffects;
             WFTP_CancelDistance = canceltpdistance;
             if (WFTP_Effects)
             {
-                SetEffect(new Nausea()
+                SetEffect(new Nausea
                 {
                     Duration = 20 * (secs + 3)
                 });
-                SetEffect(new Slowness()
+                SetEffect(new Slowness
                 {
                     Duration = 20 * (secs + 3)
                 });
@@ -2800,6 +2781,92 @@ namespace CyberCore
 //        this.dataPacket(infoPacket);
 //    }
 
+        // public override void SpawnLevel(Level toLevel, PlayerLocation spawnPoint, bool useLoadingScreen = false,
+        //     Func<Level> levelFunc = null,
+        //     Action postSpawnAction = null)
+        // {
+        //     var oldNoAi = NoAi;
+        //     SetNoAi(true);
+        //
+        //     if (useLoadingScreen) SendChangeDimension(Dimension.Nether);
+        //
+        //     if (toLevel == null && levelFunc != null) toLevel = levelFunc();
+        //
+        //     SetPosition(new PlayerLocation
+        //     {
+        //         X = KnownPosition.X,
+        //         Y = 4000,
+        //         Z = KnownPosition.Z,
+        //         Yaw = 91,
+        //         Pitch = 28,
+        //         HeadYaw = 91
+        //     });
+        //
+        //     Action transferFunc = delegate
+        //     {
+        //         if (useLoadingScreen) SendChangeDimension(Dimension.Overworld);
+        //
+        //         Level?.RemovePlayer(this);
+        //        SetLevel(toLevel); // Change level
+        //         SpawnPosition = spawnPoint ?? Level?.SpawnPoint;
+        //
+        //         HungerManager.ResetHunger();
+        //
+        //         HealthManager.ResetHealth();
+        //
+        //         BroadcastSetEntityData();
+        //
+        //         SendUpdateAttributes();
+        //
+        //         SendSetSpawnPosition();
+        //
+        //         SendAdventureSettings();
+        //
+        //         SendPlayerInventory();
+        //
+        //         CleanCache();
+        //
+        //         ForcedSendChunk(SpawnPosition);
+        //
+        //         // send teleport to spawn
+        //         SetPosition(SpawnPosition);
+        //
+        //         MiNetServer.FastThreadPool.QueueUserWorkItem(() =>
+        //         {
+        //             Level.AddPlayer(this, true);
+        //
+        //             SetNoAi(oldNoAi);
+        //
+        //             ForcedSendChunks(() =>
+        //             {
+        //                 Log.InfoFormat("Respawn player {0} on level {1}", Username, Level.LevelId);
+        //
+        //                 SendSetTime();
+        //
+        //                 postSpawnAction?.Invoke();
+        //             });
+        //         });
+        //     };
+        //
+        //
+        //     if (useLoadingScreen)
+        //     {
+        //         _dimensionFunc = transferFunc;
+        //         ForcedSendEmptyChunks();
+        //     }
+        //     else
+        //     {
+        //         transferFunc();
+        //     }
+        // }
+
+        public FactionRank getFactionRank()
+        {
+            var f = getFaction();
+            if (f == null) return FactionRank.None;
+            return f.getPlayerRank(this);
+        }
+
         public class CombatData
         {
             public readonly int CombatTime = 20 * 7; // 7 Secs
@@ -2819,13 +2886,6 @@ namespace CyberCore
             {
                 return getTick(CombatTime);
             }
-        }
-
-        public FactionRank getFactionRank()
-        {
-            var f = getFaction();
-            if (f == null) return FactionRank.None;
-            return f.getPlayerRank(this);
         }
     }
 }

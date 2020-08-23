@@ -19,6 +19,7 @@ namespace CyberCore.WorldGen
         public ForestBiome() : base("ForestBiome", new BiomeQualifications(.75f, 1.25f, 0.5f, 1.5f, 0.5f, 1.25f
             , 30))
         {
+            LocalId = 2;
         }
 
 
