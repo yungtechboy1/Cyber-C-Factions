@@ -17,7 +17,8 @@ namespace CyberCore.WorldGen
 
         private static int N = 0;
         private static readonly Dictionary<int, AdvancedBiome> BiomeDict = new Dictionary<int, AdvancedBiome>();
-private static AdvancedBiome TEST = new ForestMountain(); 
+        private static AdvancedBiome TEST = new Mountains();
+
         public BiomeManager()
         {
             AddBiome(TEST);
@@ -191,13 +192,14 @@ private static AdvancedBiome TEST = new ForestMountain();
                     X = chunk.X + xx,
                     Z = chunk.Z + zz
                 };
-                var tb = GetBiome(cc,false);
+                var tb = GetBiome(cc, false);
                 if (tb.LocalId != biome.LocalId)
                 {
                     biome.BorderChunk = true;
                     break;
                 }
             }
+
             biome = biome.DoubleCheckCords(chunk);
             // Console.WriteLine($"DONE WITH ADVANCED STUFFr");
         }
@@ -216,11 +218,11 @@ private static AdvancedBiome TEST = new ForestMountain();
             foreach (AdvancedBiome bb in Biomes)
                 if (bb.Check(rth))
                 {
-                   AdvancedBiome biome = (AdvancedBiome) bb.CClone();
+                    AdvancedBiome biome = (AdvancedBiome) bb.CClone();
                     // Console.WriteLine($"AFTER CLONE {biome.BorderChunkDirections.Count} VS OLD {bb.BorderChunkDirections.Count}");
-                    if(doadvancedstuff)DoAdvancedStuff(ref biome, chunk);
+                    if (doadvancedstuff) DoAdvancedStuff(ref biome, chunk);
                     // Console.WriteLine($"BIOMEMANAGER9: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.Name}");
-                    if(doadvancedstuff)BiomeCache[chunk] = biome;
+                    if (doadvancedstuff) BiomeCache[chunk] = biome;
                     return biome;
                 }
 
@@ -229,13 +231,12 @@ private static AdvancedBiome TEST = new ForestMountain();
             // return new MainBiome();
             // return new WaterBiome();
             // var bbb = new WaterBiome().CClone();
-            var bbb =TEST.CClone();
+            var bbb = TEST.CClone();
             // var bbb = new DesertLake().CClone();
             // bbb.LocalId = 7;
-            if(doadvancedstuff)DoAdvancedStuff(ref bbb, chunk);
-            if(doadvancedstuff)BiomeCache[chunk] = bbb;
+            if (doadvancedstuff) DoAdvancedStuff(ref bbb, chunk);
+            if (doadvancedstuff) BiomeCache[chunk] = bbb;
             return bbb;
         }
-
     }
 }

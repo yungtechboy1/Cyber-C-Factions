@@ -12,7 +12,7 @@ namespace CyberCore.WorldGen.Biomes
         public Mountains() : base("Mountains", new BiomeQualifications(.25f, 1, .75f, 1.75f, 1.25f, 2, 40))
         {
             BiomeQualifications.Baseheight += 10;
-            
+
             LocalId = 7;
         }
 
@@ -27,13 +27,11 @@ namespace CyberCore.WorldGen.Biomes
             bool setair)
         {
             if (yheight == 0)
-            {
                 cc.SetBlock(x, yheight, z, new Bedrock());
-            }
             else if (yheight < maxheight)
-            {
-                TryOreGeneraton(cc,x,z,yheight);
-            }
+                TryOreGeneraton(cc, x, z, yheight);
+            else if (yheight <= maxheight)
+                cc.SetBlock(x, yheight, z, new Grass());
             else if (setair)
                 cc.SetBlock(x, yheight, z, new Air());
         }
