@@ -28,9 +28,11 @@ namespace CyberCore.WorldGen.Biomes
         {
             if (yheight == 0)
                 cc.SetBlock(x, yheight, z, new Bedrock());
-            else if (yheight < maxheight)
+            else if (yheight < maxheight-new Random().Next(10))
                 TryOreGeneraton(cc, x, z, yheight);
-            else if (yheight <= maxheight)
+            else if (yheight < maxheight)
+                cc.SetBlock(x, yheight, z, new Stone());
+            else if (yheight == maxheight)
                 cc.SetBlock(x, yheight, z, new Grass());
             else if (setair)
                 cc.SetBlock(x, yheight, z, new Air());

@@ -7,6 +7,7 @@ using CyberCore.Utils;
 using log4net;
 using log4net.Util.TypeConverters;
 using MiNET.Blocks;
+using MiNET.Items;
 using MiNET.Utils;
 using MiNET.Worlds;
 using OpenAPI.World;
@@ -63,15 +64,15 @@ namespace CyberCore.WorldGen.Biomes
             HeightNoise.SetFractalGain(1);
             Name = name;
         }
-
+private Block _Stone = new Stone();
         public void TryOreGeneraton(ChunkColumn cc, int x, int z, int yheight, Block b = null)
         {
-            if (b == null) b = new Stone();
-            Random r = new Random();
+            if (b == null) b = (Block) _Stone.Clone();
+            Random r = RNDM;
             int v = r.Next(100 + yheight);
             if (v <= 15) //15
             {
-                r = new Random(2 + x + z + yheight * 2);
+                // r = new Random(2 + x + z + yheight * 2);
                 v = r.Next(500) / 10; //Max 50;
 //Iron 30% 50*.3=15
                 if (v < 15)

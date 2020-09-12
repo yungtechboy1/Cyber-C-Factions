@@ -245,7 +245,7 @@
           }
         }
       },
-      "MiNET/1.0.2157": {
+      "MiNET/1.0.2159": {
         "dependencies": {
           "LibNoise.NetStandart": "0.2.0",
           "MiNET.LevelDB": "1.0.36",
@@ -264,8 +264,8 @@
         },
         "runtime": {
           "lib/netcoreapp3.1/MiNET.dll": {
-            "assemblyVersion": "1.0.2157.0",
-            "fileVersion": "1.0.2157.0"
+            "assemblyVersion": "1.0.2159.0",
+            "fileVersion": "1.0.2159.0"
           }
         }
       },
@@ -350,7 +350,7 @@
       },
       "OpenMiNET.OpenAPI/1.0.83": {
         "dependencies": {
-          "MiNET": "1.0.2157",
+          "MiNET": "1.0.2159",
           "Mono.Cecil": "0.11.2",
           "OpenMiNET.OpenAPI.Locale": "1.0.83"
         },
@@ -363,7 +363,7 @@
       },
       "OpenMiNET.OpenAPI.Locale/1.0.83": {
         "dependencies": {
-          "MiNET": "1.0.2157"
+          "MiNET": "1.0.2159"
         },
         "runtime": {
           "lib/netcoreapp3.1/OpenAPI.Locale.dll": {
@@ -1197,7 +1197,7 @@
       },
       "CyberCore/1.0.0": {
         "dependencies": {
-          "MiNET": "1.0.2157",
+          "MiNET": "1.0.2159",
           "MySqlConnector": "0.64.0",
           "OpenMiNET.OpenAPI": "1.0.83"
         },
@@ -1297,12 +1297,12 @@
       "path": "microsoft.win32.systemevents/4.7.0",
       "hashPath": "microsoft.win32.systemevents.4.7.0.nupkg.sha512"
     },
-    "MiNET/1.0.2157": {
+    "MiNET/1.0.2159": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Jf61phr9B7vQlD8OKs5ngf4iBsO7KrGht9ufLA0JnNjRUZuRxhWeqr0/hDyK5w3+N6vYG+vVPjw5qX/cL2Y1hQ==",
-      "path": "minet/1.0.2157",
-      "hashPath": "minet.1.0.2157.nupkg.sha512"
+      "sha512": "sha512-nxeSBjTuu4L96b2Rdg7tNTDAcyonEA7TVOE2oLTnqumsRiiL5AfSi5Jg0Lpn/tnLBff/3lwMpCUp24mjS23GgA==",
+      "path": "minet/1.0.2159",
+      "hashPath": "minet.1.0.2159.nupkg.sha512"
     },
     "MiNET.astar/1.0.14": {
       "type": "package",

@@ -17,7 +17,7 @@ namespace CyberCore.WorldGen
 
         private static int N = 0;
         private static readonly Dictionary<int, AdvancedBiome> BiomeDict = new Dictionary<int, AdvancedBiome>();
-        private static AdvancedBiome TEST = new Mountains();
+        private static AdvancedBiome TEST = new Plains();
 
         public BiomeManager()
         {

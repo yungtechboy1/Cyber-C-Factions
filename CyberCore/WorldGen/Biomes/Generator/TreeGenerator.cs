@@ -13,8 +13,8 @@ namespace CyberCore.WorldGen.Biomes
         public int TreeRandom = 3;
         public int MaxTreeWidth = 5;
         public int MinTreeWidth = 3;
-        public int MaxTreeHeight = 6;
-        public int MinTreeHeight = 14;
+        public int MinTreeHeight = 6;
+        public int MaxTreeHeight = 14;
 
         private Block LeavesItem = new Leaves
         {
@@ -61,7 +61,7 @@ namespace CyberCore.WorldGen.Biomes
                         var v = h - w;
                         var vv = 0;
                         var ffy = fy + h;
-                        for (var hh = 1; hh < h; hh++)
+                        for (var hh = 0; hh < h; hh++)
                         {
                             c.SetBlock(rx, fy + hh, rz, (Block) WoodItem.Clone());
                             //Bottom Half Leaves
