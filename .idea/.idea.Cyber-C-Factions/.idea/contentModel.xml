@@ -254,8 +254,11 @@
             <e p="ForestBiome.cs" t="Include" />
             <e p="ForestMountain.cs" t="Include" />
             <e p="Generator" t="Include">
+              <e p="DoublePlantGenerator.cs" t="Include" />
+              <e p="FlowerGenerator.cs" t="Include" />
               <e p="GrassGenerator.cs" t="Include" />
               <e p="StructureGenerartor.cs" t="Include" />
+              <e p="TallGrassGenerator.cs" t="Include" />
               <e p="TreeGenerator.cs" t="Include" />
             </e>
             <e p="MainBiome.cs" t="Include" />

@@ -1,20 +1,43 @@
 ﻿using System;
+using System.Collections.Generic;
 using MiNET.Blocks;
-using MiNET.Utils;
+using MiNET.Items;
 using MiNET.Worlds;
 
 namespace CyberCore.WorldGen.Biomes
 {
-    public class GrassGenerator : StructureGenerartor
+    public class FlowerGenerator : StructureGenerartor
     {
         public Random RNDM = new Random();
-        public int GrassRandom = 3;
-        public int GrassGreaterThan = 0;
-        public float RainMultiplier = 1;
+        public int FlowerRandom = 3;
+        public int FlowerGreaterThan = 0;
 
-
-        public GrassGenerator(ChunkColumn c) : base(c)
+        public Dictionary<Block, int> FlowerChances = new Dictionary<Block, int>()
         {
+            {new RedFlower(), 10}
+        };
+
+
+        public FlowerGenerator(ChunkColumn c) : base(c)
+        {
+        }
+
+        public Block getFlowerFromChances()
+        {
+            foreach (KeyValuePair<Block, int> a in FlowerChances)
+            {
+                Block b = a.Key;
+                int v = a.Value;
+                int vv = RNDM.Next(0, v)+1;
+                if (vv == v)
+                    return b;
+                // else
+                // {
+                //     Console.WriteLine($" CHANCESSSSS {0}-{v} || {v} == {vv}");
+                // }
+            }
+
+            return null;
         }
 
         public override ChunkColumn run()
@@ -29,13 +52,11 @@ namespace CyberCore.WorldGen.Biomes
             var x = cx * 16 + rx;
             var z = cz * 16 + rz;
             var rain = BiomeManager.GetRainNoiseBlock(x, z) * 1.25f;
-            var runamt = (int) (Math.Ceiling(rain * 10f)*RainMultiplier);
+            var runamt = (int) Math.Ceiling(rain * 10f);
             for (var ttry = 0; ttry < runamt; ttry++)
             {
-                int vv = RNDM.Next(0, GrassRandom)+1;
                 //1 In TreeRandom Chance
-                // Console.WriteLine($"OK 0-{GrassRandom} <= {GrassGreaterThan} == {vv}");
-                if (vv <= GrassGreaterThan)
+                if (RNDM.Next(0, FlowerRandom)+1 <= FlowerGreaterThan)
                 {
                     //RESET VALUES
                     rx = RNDM.Next(0, 15);
@@ -56,9 +77,13 @@ namespace CyberCore.WorldGen.Biomes
                     // x = cx * 16 + rx;
                     // z = cz * 16 + rz;
 
-
+                    var b = getFlowerFromChances();
+                    if (b == null)
+                    {
+                        continue;
+                    }
                     //ACTUALLY RUN NOW 
-                    c.SetBlock(rx, fy, rz, new Tallgrass());
+                    c.SetBlock(rx, fy, rz, b);
                 }
             }
 

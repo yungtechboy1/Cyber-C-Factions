@@ -368,16 +368,16 @@ namespace CyberCore.WorldGen
             chunk = PreGenerateSurfaceItems(this, chunk, null).Result;
             StackTrace stackTrace = new StackTrace(); 
 // Get calling method name
-            Console.WriteLine(stackTrace.GetFrame(1).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(1).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(1).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(2).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(2).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(2).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(3).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(3).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(3).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(4).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(4).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(4).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(5).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(5).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(5).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(6).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(6).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(6).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(7).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(7).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(7).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(8).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(8).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(8).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(9).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(9).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(9).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(10).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(10).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(10).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(1).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(1).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(1).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(2).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(2).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(2).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(3).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(3).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(3).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(4).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(4).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(4).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(5).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(5).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(5).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(6).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(6).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(6).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(7).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(7).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(7).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(8).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(8).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(8).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(9).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(9).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(9).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(10).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(10).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(10).GetMethod().Name);
             Console.WriteLine("GENERATING CHUNK TOOK "+s.Elapsed);
             return chunk;
         }
@@ -595,7 +595,7 @@ namespace CyberCore.WorldGen
                 testTime.Stop(); // STOP
 
                 Log.Warn(
-                    $"Took {time.ElapsedMilliseconds}ms to save. And {testTime.ElapsedMilliseconds}ms to generate bytes from NBT");
+                    $"Took {time.Elapsed} {time.ElapsedMilliseconds}ms to save. And {testTime.Elapsed}ms to generate bytes from NBT");
             }
 
             bool a = false;
@@ -792,6 +792,7 @@ namespace CyberCore.WorldGen
                 {
                     byte addd = 0;
                     var anvilIndex = y * 16 * 16 + z * 16 + x;
+                    // var a = subChunk.GetBlockId()
                     var b = subChunk.GetBlockObject(x, y, z);
                     int bid = b.Id;
                     byte bmeta = b.Metadata;
@@ -815,9 +816,9 @@ namespace CyberCore.WorldGen
                     // if(blockId == 211 || blockId == 17)Console.WriteLine($" >> |||||||| {(bid >> 8)}");
 
                     blocks[anvilIndex] = (byte) bid;
-                    var brid = b.GetRuntimeId();
-                    SetNibble4(runtimeid, anvilIndex, (byte) (brid & 255));
-                    SetNibble4(runtimeid2, anvilIndex, (byte) (brid >> 8));
+                    // var brid = b.GetRuntimeId();
+                    // SetNibble4(runtimeid, anvilIndex, (byte) (brid & 255));
+                    // SetNibble4(runtimeid2, anvilIndex, (byte) (brid >> 8));
                     SetNibble4(data, anvilIndex, bmeta);
                     SetNibble4(add, anvilIndex, addd);
                     SetNibble4(blockLight, anvilIndex, subChunk.GetBlocklight(x, y, z));

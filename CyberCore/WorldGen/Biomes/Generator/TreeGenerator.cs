@@ -15,13 +15,14 @@ namespace CyberCore.WorldGen.Biomes
         public int MinTreeWidth = 3;
         public int MinTreeHeight = 6;
         public int MaxTreeHeight = 14;
+        
 
-        private Block LeavesItem = new Leaves
+        public Block LeavesItem = new Leaves
         {
             OldLeafType = "jungle"
         };
 
-        private Block WoodItem = new Wood()
+        public Block WoodItem = new Wood()
         {
             WoodType = "birch"
         };

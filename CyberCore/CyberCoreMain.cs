@@ -248,7 +248,8 @@ namespace CyberCore
             api.LevelManager.SetDefaultLevel(level);
             Console.WriteLine(">>>>>>>>>>>>||||>>>>"+api.LevelManager.Levels.Count);
             Console.WriteLine(">>>>>>>>>>>>||||>>>>"+api.LevelManager.GetDefaultLevel().LevelId);
-            
+
+            "asdadsada".IsNullOrEmpty();
             
             CrateMain = new CrateMain(this);
             
