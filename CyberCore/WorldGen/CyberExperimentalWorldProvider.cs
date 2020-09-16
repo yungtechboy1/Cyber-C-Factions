@@ -124,9 +124,11 @@ namespace CyberCore.WorldGen
 
         public void Run(object o)
         {
+            Console.WriteLine("RE-ADDER RAN==============22222222===========================");
+            Console.WriteLine($"RE-ADDER RAN==============22222222==========================={_isInitialized} |||| {Level != null}");
             if (Level != null && _isInitialized)
             {
-                // Log.Info("RE-ADDER RAN=========================================");
+                Log.Info("RE-ADDER RAN=========================================");
                 List<String> Completed = new List<string>();
                 foreach (var v in new Dictionary<String, List<Block>>(BlocksToBeAddedDuringChunkGeneration))
                 {
@@ -143,8 +145,10 @@ namespace CyberCore.WorldGen
                             if (ax < 0) ax += 16;
                             int az = (ccc.Z % 16);
                             if (az < 0) az += 16;
-                            if (c.GetBlockId(ax, ccc.Y, az) != new Wood().Id ||
-                                c.GetBlockId(ax, ccc.Y, az) != new Log().Id)
+                            var bb = c.GetBlockObject(ax, ccc.Y, az);
+                            var bid = bb.Id;
+                            if (bid != new Wood().Id &&
+                                bid != new Log().Id || bb.IsTransparent)
                                 c.SetBlock(ax, ccc.Y, az, block);
                             // Log.Info($"=================================SETTING BLOCK AT {c} || {ax} {az} || {block.Id}");
                         }

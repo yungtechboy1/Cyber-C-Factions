@@ -20,21 +20,26 @@
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="BRANCH:master" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:BiomesFix" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="Fixed RainForestBiome">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/GrassGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/GrassGenerator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/TreeGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/TreeGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Mountains.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Mountains.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Plains.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Plains.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowForest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowForest.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.pdb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +47,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="8954" />
+    <option name="totalTimeSeconds" value="17269" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -100,6 +105,7 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A95EA62E-BFBA-4C22-B87B-9424D6210E1A/58/72f415e4/SnowLayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionPermissionChecker.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Factions/FactionCommandChecker.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeQualifications.cs" root0="FORCE_HIGHLIGHTING" />
@@ -134,6 +140,7 @@
     <setting file="file://$PROJECT_DIR$/CyberCore/ServerRankChecker.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/Crate/CrateTickThread.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Manager/FloatingText/FloatingTextFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A95EA62E-BFBA-4C22-B87B-9424D6210E1A/46/1c50a926/Air.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2C6E6C6C-BD90-487E-847A-44A51766D95D/4/Console.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E07FFA0B-6E50-4B0E-B2B3-C8EBAE4DE79D/da/2db3d494/Chest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E07FFA0B-6E50-4B0E-B2B3-C8EBAE4DE79D/1f/47260349/Inventory.cs" root0="FORCE_HIGHLIGHTING" />
@@ -155,6 +162,7 @@
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/CyberUtils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/AHStaticItems.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/CacheChecker.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A95EA62E-BFBA-4C22-B87B-9424D6210E1A/91/983ad842/Block.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/CorePlayerData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/Data/PlayerDetailedInfo.cs" root0="FORCE_HIGHLIGHTING" />
@@ -363,7 +371,6 @@
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/DesertHills.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/DesertLake.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/HighPlains.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowForest.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowTundra.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalRainForest.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalSeasonalForest.cs" />
@@ -378,18 +385,19 @@
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestMountain.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestBiome.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Mountains.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Plains.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/TreeGenerator.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/SmoothMap.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/TallGrassGenerator.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/FlowerGenerator.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/DoublePlantGenerator.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/GrassGenerator.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/RainForestBiome.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/GrassGenerator.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/TreeGenerator.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowForest.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" />
       </list>
     </option>
   </component>
@@ -417,6 +425,7 @@
     <property name="Rider.SolutionExplorerActivator" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TWShift.3" value="true" />
+    <property name="ToolWindowEvent Log.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="C#" />
     <property name="dart.analysis.tool.window.visible" value="false" />
@@ -487,9 +496,6 @@
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="StructureViewFactory">
-    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
-  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -642,7 +648,8 @@
       <workItem from="1599613618800" duration="103000" />
       <workItem from="1599614879926" duration="66000" />
       <workItem from="1599792799865" duration="13429000" />
-      <workItem from="1600116912879" duration="6511000" />
+      <workItem from="1600116912879" duration="11965000" />
+      <workItem from="1600216645172" duration="5428000" />
     </task>
     <task id="LOCAL-00002" summary="CU-b2ju2f">
       <created>1597547215454</created>
@@ -672,7 +679,14 @@
       <option name="project" value="LOCAL" />
       <updated>1598236238720</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fixed RainForestBiome">
+      <created>1600123536369</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1600123536369</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <option name="createChangelist" value="false" />
     <option name="createBranch" value="false" />
     <servers>
@@ -708,7 +722,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="master" />
+                        <option value="BiomesFix" />
                       </list>
                     </value>
                   </entry>
@@ -759,30 +773,30 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="466" y="421" key="GitRewordDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597636017115" />
-    <state width="1234" height="404" key="GridCell.Tab.0.bottom" timestamp="1600123152093">
+    <state width="2517" height="222" key="GridCell.Tab.0.bottom" timestamp="1600221808507">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1234" height="404" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1600123152093" />
-    <state width="1234" height="404" key="GridCell.Tab.0.center" timestamp="1600123152093">
+    <state width="2517" height="222" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1600221808507" />
+    <state width="2517" height="222" key="GridCell.Tab.0.center" timestamp="1600221808507">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1234" height="404" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1600123152093" />
-    <state width="1234" height="404" key="GridCell.Tab.0.left" timestamp="1600123152093">
+    <state width="2517" height="222" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1600221808507" />
+    <state width="2517" height="222" key="GridCell.Tab.0.left" timestamp="1600221808507">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1234" height="404" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1600123152093" />
-    <state width="1234" height="404" key="GridCell.Tab.0.right" timestamp="1600123152093">
+    <state width="2517" height="222" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1600221808507" />
+    <state width="2517" height="222" key="GridCell.Tab.0.right" timestamp="1600221808507">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1234" height="404" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1600123152093" />
+    <state width="2517" height="222" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1600221808507" />
     <state width="900" height="371" key="GridCell.Tab.1.bottom" timestamp="1595306935573">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -866,6 +880,10 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="232" y="234" key="Vcs.Push.Dialog.v2/0.0.2560.1040@0.0.2560.1040" timestamp="1598236308128" />
+    <state x="1286" y="-20" width="1094" height="847" maximized="true" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1600127247359">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state x="1286" y="-20" width="1094" height="847" maximized="true" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1600127247359" />
     <state x="1154" y="269" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1594795357924">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -892,12 +910,12 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1280" y="0" width="1280" height="1040" key="dock-window-4/0.0.2560.1040@0.0.2560.1040" timestamp="1591778721946" />
-    <state x="1348" y="288" width="936" height="752" key="find.popup" timestamp="1600121622250">
+    <state x="1348" y="288" width="936" height="752" key="find.popup" timestamp="1600219901431">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="693" y="141" width="587" height="534" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1594093093748" />
     <state x="1039" y="216" width="881" height="817" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596945440994" />
-    <state x="1348" y="288" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1600121622250" />
+    <state x="1348" y="288" width="936" height="752" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1600219901431" />
     <state x="1461" y="244" width="672" height="677" key="run.anything.popup" timestamp="1600120471823">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -907,12 +925,12 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="420" y="324" key="save.file.as.template.dialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597507512558" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1600043226551">
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1600123704064">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="430" y="148" width="672" height="416" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1594091032350" />
     <state x="645" y="226" width="1008" height="637" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1597032171204" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1600043226551" />
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1600123704064" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

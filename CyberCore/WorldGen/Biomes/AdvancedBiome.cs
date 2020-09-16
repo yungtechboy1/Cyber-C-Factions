@@ -16,6 +16,11 @@ namespace CyberCore.WorldGen.Biomes
 {
     public abstract class AdvancedBiome : ICloneable
     {
+        public byte MCPEBiomeID
+        {
+            get;
+            protected set;
+        } = 255;
         protected int Waterlevel = 85;
         private static readonly ILog Log = LogManager.GetLogger(typeof(AdvancedBiome));
 
@@ -96,6 +101,7 @@ private Block _Stone = new Stone();
                 {
                     cc.SetBlock(x, yheight, z, b);
                 }
+                //TODO Add Chance Section for Unique Dirt Types... Try to use Noise map
             }
             else
             {
@@ -356,6 +362,7 @@ private Block _Stone = new Stone();
                     {
                         GenerateVerticalColumn(y, ints[x, z], x, z, c);
                     }
+                   if(MCPEBiomeID != 255) c.SetBiome(x,z,MCPEBiomeID);
 
                     c.SetHeight(x, z, (short) ints[x, z]);
                 }

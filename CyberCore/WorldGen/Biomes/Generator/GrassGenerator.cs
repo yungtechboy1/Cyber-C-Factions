@@ -41,13 +41,16 @@ namespace CyberCore.WorldGen.Biomes
                     rx = RNDM.Next(0, 15);
                     rz = RNDM.Next(0, 15);
                     int fy = Chunk.GetHeight(rx, rz);
-                    if (c.GetBlockObject(rx, fy, rz).Id != 0)
+                    if (!c.GetBlockObject(rx, fy, rz).IsTransparent)
                     {
                         fy++;
-                        if (c.GetBlockObject(rx, fy, rz).Id != 0)
+                        if (!c.GetBlockObject(rx, fy, rz).IsTransparent)
                         {
-                            Console.WriteLine("AHHH THIS WAS SUPPOSeD TO BE AIR BUT WAS NOT!!!!!!2");
-                            continue;
+                            fy++;
+                            if (!c.GetBlockObject(rx, fy, rz).IsTransparent)
+                            {
+                                Console.WriteLine("AHHH THIS WAS SUPPOSeD TO BE AIR BUT WAS NOT3!!!!!!2");
+                            }
                         }
 
                         continue;
