@@ -28,9 +28,22 @@
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="Fixed RainForestBiome">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/TreeGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/TreeGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BeachBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BeachBiome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/Desert.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/Desert.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/DesertHills.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/DesertHills.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/DesertLake.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/DesertLake.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestBiome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestMountain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestMountain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Mountains.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Mountains.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Plains.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Plains.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/RainForestBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/RainForestBiome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowForest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowForest.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowTundra.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowTundra.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowyIcyChunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowyIcyChunk.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalRainForest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalRainForest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalSeasonalForest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalSeasonalForest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
@@ -45,7 +58,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="21979" />
+    <option name="totalTimeSeconds" value="25285" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -74,6 +87,10 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
+                    <option name="branchName" value="CU-ccq21z_Try-Cloneing-Chunks-to-boost-performace_Carlton-Jones" />
+                    <option name="lastUsedInstant" value="1600227567" />
+                  </RecentBranch>
+                  <RecentBranch>
                     <option name="branchName" value="CU-b2ju4a_Snow-Tundra_Carlton-Jones" />
                     <option name="lastUsedInstant" value="1600222593" />
                   </RecentBranch>
@@ -88,10 +105,6 @@
                   <RecentBranch>
                     <option name="branchName" value="WorldSmoothinAttempt2" />
                     <option name="lastUsedInstant" value="1597373855" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="CU-ayqm18_3X3-Smoothing-all-the-time_Carlton-Jones" />
-                    <option name="lastUsedInstant" value="1597286832" />
                   </RecentBranch>
                 </list>
               </option>
@@ -365,38 +378,38 @@
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/DesertForest.cs" />
         <option value="$PROJECT_DIR$/MapTestConsole/LevelMapChunk.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/MainBiome.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowyIcyChunk.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/Desert.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/DesertHills.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/DesertLake.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/HighPlains.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalRainForest.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalSeasonalForest.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BeachBiome.cs" />
         <option value="$PROJECT_DIR$/MapTestConsole/LevelMap.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" />
         <option value="$PROJECT_DIR$/MapTestConsole/Main.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CorePlayer.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CyberCore.csproj" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/StructureGenerartor.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/StructureGenerartor.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestMountain.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestBiome.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Mountains.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Plains.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/SmoothMap.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/TallGrassGenerator.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/FlowerGenerator.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/DoublePlantGenerator.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/RainForestBiome.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/GrassGenerator.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowForest.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BiomeManager.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowTundra.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/TreeGenerator.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/CyberExperimentalWorldProvider.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/BeachBiome.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/Desert.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/DesertHills.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Biomes/DesertLake.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestBiome.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestMountain.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Mountains.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Plains.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/RainForestBiome.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowForest.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowTundra.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/SnowyIcyChunk.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalRainForest.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/TropicalSeasonalForest.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/WaterBiome.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/AdvancedBiome.cs" />
       </list>
     </option>
   </component>
@@ -648,7 +661,7 @@
       <workItem from="1599614879926" duration="66000" />
       <workItem from="1599792799865" duration="13429000" />
       <workItem from="1600116912879" duration="11965000" />
-      <workItem from="1600216645172" duration="10803000" />
+      <workItem from="1600216645172" duration="14107000" />
     </task>
     <task id="LOCAL-00002" summary="CU-b2ju2f">
       <created>1597547215454</created>
@@ -776,30 +789,30 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="466" y="421" key="GitRewordDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597636017115" />
-    <state width="617" height="221" key="GridCell.Tab.0.bottom" timestamp="1600227334083">
+    <state width="1234" height="433" key="GridCell.Tab.0.bottom" timestamp="1600230625323">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="617" height="221" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1600227334083" />
-    <state width="617" height="221" key="GridCell.Tab.0.center" timestamp="1600227334083">
+    <state width="1234" height="433" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1600230625323" />
+    <state width="1234" height="433" key="GridCell.Tab.0.center" timestamp="1600230625322">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="617" height="221" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1600227334083" />
-    <state width="617" height="221" key="GridCell.Tab.0.left" timestamp="1600227334083">
+    <state width="1234" height="433" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1600230625322" />
+    <state width="1234" height="433" key="GridCell.Tab.0.left" timestamp="1600230625322">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="617" height="221" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1600227334083" />
-    <state width="617" height="221" key="GridCell.Tab.0.right" timestamp="1600227334083">
+    <state width="1234" height="433" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1600230625322" />
+    <state width="1234" height="433" key="GridCell.Tab.0.right" timestamp="1600230625323">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="1237" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1594093054649" />
     <state width="900" height="260" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="617" height="221" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1600227334083" />
+    <state width="1234" height="433" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1600230625323" />
     <state width="900" height="371" key="GridCell.Tab.1.bottom" timestamp="1595306935573">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -928,12 +941,12 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="420" y="324" key="save.file.as.template.dialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597507512558" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1600224385825">
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1600227573112">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="430" y="148" width="672" height="416" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1594091032350" />
     <state x="645" y="226" width="1008" height="637" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1597032171204" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1600224385825" />
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1600227573112" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

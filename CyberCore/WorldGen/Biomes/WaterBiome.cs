@@ -63,7 +63,7 @@ namespace CyberCore.WorldGen
         }
 
         public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
-            bool setair)
+            bool setair, bool objectcopy)
         {
             maxheight =  CyberExperimentalWorldProvider.getInstance().getBlockHeight(cc.X * 16 + x, cc.Z * 16 + z);
             int sand = maxheight - 6;

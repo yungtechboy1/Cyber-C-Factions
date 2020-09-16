@@ -22,7 +22,7 @@ namespace CyberCore.WorldGen.Biomes
 
 
         public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
-            bool setair)
+            bool setair, bool objectcopy)
         {
             cc.SetBiome(x, z, 4);
             if (yheight == 0)

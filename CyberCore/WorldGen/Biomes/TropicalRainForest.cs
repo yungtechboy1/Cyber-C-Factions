@@ -22,7 +22,7 @@ namespace CyberCore.WorldGen.Biomes
                        BiomeQualifications.Heightvariation);
         }
 
-        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc, bool setair)
+        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc, bool setair, bool objectcopy)
         {
             if (yheight < maxheight-1)
             {

@@ -24,7 +24,7 @@ namespace CyberCore.WorldGen.Biomes
         }
 
         public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
-            bool setair)
+            bool setair, bool objectcopy)
         {
             if (yheight == 0)
                 cc.SetBlock(x, yheight, z, new Bedrock());
