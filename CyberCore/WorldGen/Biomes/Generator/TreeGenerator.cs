@@ -108,7 +108,8 @@ namespace CyberCore.WorldGen.Biomes
                                     c.SetBlock(rx + xx, ffy, rz + zz, (Block) LeavesItem.Clone());
                                     // if (xx == Math.Abs(teirlevel) && zz == Math.Abs(teirlevel))
                                     if (xx == teirlevel || xx == -teirlevel || zz == teirlevel|| zz == -teirlevel || topleavesheight ==1)
-                                        c.SetBlock(rx + xx, ffy+1, rz + zz, new SnowLayer());
+                                        if(BiomeManager.GetRainNoiseBlock((x+xx), (z+zz))/2 <= .42f)
+                                            c.SetBlock(rx + xx, ffy+1, rz + zz, new SnowLayer());
                                 }
                                 else
                                 {

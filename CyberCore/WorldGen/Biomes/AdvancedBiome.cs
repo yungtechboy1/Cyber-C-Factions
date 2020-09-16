@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Utils;
 using log4net;
@@ -16,11 +18,7 @@ namespace CyberCore.WorldGen.Biomes
 {
     public abstract class AdvancedBiome : ICloneable
     {
-        public byte MCPEBiomeID
-        {
-            get;
-            protected set;
-        } = 255;
+        public byte MCPEBiomeID { get; protected set; } = 255;
         protected int Waterlevel = 85;
         private static readonly ILog Log = LogManager.GetLogger(typeof(AdvancedBiome));
 
@@ -69,16 +67,18 @@ namespace CyberCore.WorldGen.Biomes
             HeightNoise.SetFractalGain(1);
             Name = name;
         }
-private Block _Stone = new Stone();
+
+        private Block _Stone = new Stone();
+        private Random RDM = new Random();
+
         public void TryOreGeneraton(ChunkColumn cc, int x, int z, int yheight, Block b = null)
         {
             if (b == null) b = (Block) _Stone.Clone();
-            Random r = RNDM;
-            int v = r.Next(100 + yheight);
+            int v = RDM.Next(100 + yheight);
             if (v <= 15) //15
             {
                 // r = new Random(2 + x + z + yheight * 2);
-                v = r.Next(500) / 10; //Max 50;
+                v = RDM.Next(500) / 10; //Max 50;
 //Iron 30% 50*.3=15
                 if (v < 15)
                     cc.SetBlock(x, yheight, z, new IronOre());
@@ -101,11 +101,40 @@ private Block _Stone = new Stone();
                 {
                     cc.SetBlock(x, yheight, z, b);
                 }
+
                 //TODO Add Chance Section for Unique Dirt Types... Try to use Noise map
             }
             else
             {
                 cc.SetBlock(x, yheight, z, b);
+            }
+        }
+
+        public void TryOreFillIn(ChunkColumn cc, int x, int z, int yheight)
+        {
+            int v = RDM.Next(100 + yheight);
+            if (v <= 15) //15
+            {
+                // r = new Random(2 + x + z + yheight * 2);
+                v = RDM.Next(500) / 10; //Max 50;
+//Iron 30% 50*.3=15
+                if (v < 15)
+                    cc.SetBlock(x, yheight, z, new IronOre());
+//Gold 15% = 7.5 = 7
+                else if (v < 22)
+                    cc.SetBlock(x, yheight, z, new GoldOre());
+//Lapis 15% = 7.5 = 7
+                else if (v < 29)
+                    cc.SetBlock(x, yheight, z, new LapisOre());
+//Redstone 15% = 7.5 = 7
+                else if (v < 36)
+                    cc.SetBlock(x, yheight, z, new RedstoneOre());
+//Diamond 5% = 2.5 = 3 
+                else if (v < 39)
+                    cc.SetBlock(x, yheight, z, new DiamondOre());
+//Emerald 2% = 1
+                else if (v < 40)
+                    cc.SetBlock(x, yheight, z, new EmeraldOre());
             }
         }
 
@@ -349,10 +378,17 @@ private Block _Stone = new Stone();
         /// <param name="c"></param>
         /// <param name="rth"></param>
         /// <param name="ints"></param>
-        protected /*Task*/ void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
+        protected /*Task*/ ChunkColumn PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn c,
             float[] rth, int[,] ints)
         {
+            int h = -1;
+            if (ObjectCopy)
+            {
+                int bqh = BiomeQualifications.Baseheight;
+                h = bqh;
+            }
+
             for (int x = 0; x < 16; x++)
             {
                 for (int z = 0; z < 16; z++)
@@ -360,13 +396,19 @@ private Block _Stone = new Stone();
                     c.SetBlock(x, 0, z, new Bedrock());
                     for (int y = 1; y < 255; y++)
                     {
-                        GenerateVerticalColumn(y, ints[x, z], x, z, c);
+                        if (h != -1 && h <= y)
+                            GenerateVerticalColumn(y, ints[x, z], x, z, c, false, ObjectCopy);
+                        else
+                            PREGenerateVerticalColumn(y, ints[x, z], x, z, c, false, ObjectCopy);
                     }
-                   if(MCPEBiomeID != 255) c.SetBiome(x,z,MCPEBiomeID);
+
+                    if (MCPEBiomeID != 255) c.SetBiome(x, z, MCPEBiomeID);
 
                     c.SetHeight(x, z, (short) ints[x, z]);
                 }
             }
+
+            return c;
         }
 
         public static string IntArrayToString(int[,] d)
@@ -780,25 +822,23 @@ private Block _Stone = new Stone();
         /// <param name="z"></param>
         /// <param name="cc"></param>
         public virtual void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
-            bool setair = false)
+            bool setair = false, bool objectcopy = false)
         {
-            // var subChunk = cc.GetSubChunk(yheight);
-            // var v = subChunk.GetBlockId(rxx, yheight & 0xf, rzz);
-            // Console.WriteLine(subChunk);
-            // Console.WriteLine(v);
-            // Console.WriteLine("++++++++++++++++++++++++++++++++");
-
-// if(yheight < Sand){}
-
             if (yheight < maxheight)
             {
                 cc.SetBlock(x, yheight, z, new Stone());
             }
-            // else if (cc.GetBlockId(rx, y, rz) == 0) break;
             else
             {
                 cc.SetBlock(x, yheight, z, new Air());
             }
+        }
+
+        public virtual void PREGenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
+            bool setair = false, bool objectcopy = false)
+        {
+            if (maxheight > 20 + yheight)
+                TryOreFillIn(cc, x, z, yheight);
         }
 
         /// <summary>
@@ -1032,6 +1072,51 @@ private Block _Stone = new Stone();
         public virtual AdvancedBiome DoubleCheckCords(ChunkCoordinates chunk)
         {
             return this;
+        }
+
+        public static ConcurrentDictionary<int, ChunkColumn> _CC = new ConcurrentDictionary<int, ChunkColumn>();
+
+        public bool ObjectCopy = false;
+
+        public ChunkColumn GenerateChunkColumnObject(CyberExperimentalWorldProvider cccccc,
+            ChunkCoordinates chunkCoordinates)
+        {
+            int bqh = BiomeQualifications.Baseheight;
+            Console.WriteLine("$$$$$$$$$$$$$$7$$$$$$$$$$");
+            if (_CC.ContainsKey(bqh) &&  _CC[bqh] != null)
+            {
+                Console.WriteLine("$$$$$$$$$$$$$$$$$$$777777777$wwwwwwwwwwwwwwwww$$$$");
+                ChunkColumn c = (ChunkColumn) _CC[bqh].Clone();
+                ObjectCopy = true;
+                return c;
+            }
+
+            Console.WriteLine("$$$$$$$$$@@@@@@@77777777777777777@@@$$$$$$$$$$$$$$$");
+            ChunkColumn cc = new ChunkColumn();
+            cc.X = chunkCoordinates.X;
+            cc.Z = chunkCoordinates.Z;
+            Console.WriteLine($"$$$$$$$$$$$$$$$$$$$#@77777777@@@@@@@!@######$$$$${cc==null}|");
+            cc = PopulateChunk(cccccc, cc, BiomeManager.getChunkRTH(chunkCoordinates),
+                GenerateConstantHeightMap(16, 16, bqh));
+            Console.WriteLine($"$$$$$$$$$$$$$$$$$$$#@7777773333333377@@@@@@@!@######$$$$${cc==null}|");
+            
+            
+            ChunkColumn ccc = (ChunkColumn) cc.Clone();
+            Console.WriteLine($"333333333333333333333333333333333333333777777777777733333333{cc==null}|||||{(ccc==null)}|");
+                _CC[bqh] = ccc;
+            return cc;
+        }
+
+        public int[,] GenerateConstantHeightMap(int x, int z, int h)
+        {
+            int[,] m = new int[x, z];
+            for (int xx = 0; xx < x; xx++)
+            for (int zz = 0; zz < z; zz++)
+            {
+                m[xx, zz] = h;
+            }
+
+            return m;
         }
     }
 }
