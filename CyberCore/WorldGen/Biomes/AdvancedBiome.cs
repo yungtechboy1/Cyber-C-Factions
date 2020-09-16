@@ -2,33 +2,18 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
-using CyberCore.Manager.Factions.Windows;
-using CyberCore.Manager.FloatingText;
 using CyberCore.Utils;
 using log4net;
-using log4net.Util.TypeConverters;
 using MiNET.Blocks;
-using MiNET.Items;
 using MiNET.Utils;
 using MiNET.Worlds;
-using OpenAPI.World;
 
 namespace CyberCore.WorldGen.Biomes
 {
     public abstract class AdvancedBiome : ICloneable
     {
-        public byte MCPEBiomeID { get; protected set; } = 255;
-        protected int Waterlevel = 85;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(AdvancedBiome));
-
-        private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());
-        public BiomeQualifications BiomeQualifications;
-
-        /// <summary>
-        /// </summary>
-        public AdvancedBiome BorderBiome;
-
         /// <summary>
         /// </summary>
         public enum BorderChunkDirection
@@ -42,114 +27,6 @@ namespace CyberCore.WorldGen.Biomes
             SW,
             NE,
             SE
-        }
-
-        public List<BorderChunkDirection> BorderChunkDirections = new List<BorderChunkDirection>();
-
-        public bool BorderChunk = false;
-        // public List<ChunkCoordinates> GenerateandSmooth = new List<ChunkCoordinates>();
-
-        public FastNoise HeightNoise = new FastNoise(121212);
-
-        public int LocalId = -1;
-        public string Name;
-        public Random RNDM = new Random();
-        public int Startheight = 80;
-
-        public AdvancedBiome(string name, BiomeQualifications bq)
-        {
-            BiomeQualifications = bq;
-            HeightNoise.SetGradientPerturbAmp(3);
-            HeightNoise.SetFrequency(.24f);
-            HeightNoise.SetNoiseType(FastNoise.NoiseType.CubicFractal);
-            HeightNoise.SetFractalOctaves(2);
-            HeightNoise.SetFractalLacunarity(.35f);
-            HeightNoise.SetFractalGain(1);
-            Name = name;
-        }
-
-        private Block _Stone = new Stone();
-        private Random RDM = new Random();
-
-        public void TryOreGeneraton(ChunkColumn cc, int x, int z, int yheight, Block b = null)
-        {
-            if (b == null) b = (Block) _Stone.Clone();
-            int v = RDM.Next(100 + yheight);
-            if (v <= 15) //15
-            {
-                // r = new Random(2 + x + z + yheight * 2);
-                v = RDM.Next(500) / 10; //Max 50;
-//Iron 30% 50*.3=15
-                if (v < 15)
-                    cc.SetBlock(x, yheight, z, new IronOre());
-//Gold 15% = 7.5 = 7
-                else if (v < 22)
-                    cc.SetBlock(x, yheight, z, new GoldOre());
-//Lapis 15% = 7.5 = 7
-                else if (v < 29)
-                    cc.SetBlock(x, yheight, z, new LapisOre());
-//Redstone 15% = 7.5 = 7
-                else if (v < 36)
-                    cc.SetBlock(x, yheight, z, new RedstoneOre());
-//Diamond 5% = 2.5 = 3 
-                else if (v < 39)
-                    cc.SetBlock(x, yheight, z, new DiamondOre());
-//Emerald 2% = 1
-                else if (v < 40)
-                    cc.SetBlock(x, yheight, z, new EmeraldOre());
-                else
-                {
-                    cc.SetBlock(x, yheight, z, b);
-                }
-
-                //TODO Add Chance Section for Unique Dirt Types... Try to use Noise map
-            }
-            else
-            {
-                cc.SetBlock(x, yheight, z, b);
-            }
-        }
-
-        public void TryOreFillIn(ChunkColumn cc, int x, int z, int yheight)
-        {
-            int v = RDM.Next(100 + yheight);
-            if (v <= 15) //15
-            {
-                // r = new Random(2 + x + z + yheight * 2);
-                v = RDM.Next(500) / 10; //Max 50;
-//Iron 30% 50*.3=15
-                if (v < 15)
-                    cc.SetBlock(x, yheight, z, new IronOre());
-//Gold 15% = 7.5 = 7
-                else if (v < 22)
-                    cc.SetBlock(x, yheight, z, new GoldOre());
-//Lapis 15% = 7.5 = 7
-                else if (v < 29)
-                    cc.SetBlock(x, yheight, z, new LapisOre());
-//Redstone 15% = 7.5 = 7
-                else if (v < 36)
-                    cc.SetBlock(x, yheight, z, new RedstoneOre());
-//Diamond 5% = 2.5 = 3 
-                else if (v < 39)
-                    cc.SetBlock(x, yheight, z, new DiamondOre());
-//Emerald 2% = 1
-                else if (v < 40)
-                    cc.SetBlock(x, yheight, z, new EmeraldOre());
-            }
-        }
-
-        public int BorderType { get; set; } = 0;
-
-        public abstract int GetSh(int x, int z, int cx, int cz);
-
-        public bool Check(float[] rth)
-        {
-            return BiomeQualifications.check(rth);
-        }
-
-        public virtual int[,] GenerateChunkHeightMap(ChunkColumn c, CyberExperimentalWorldProvider cc)
-        {
-            return GenerateChunkHeightMap(new ChunkCoordinates(c.X, c.Z), cc);
         }
 
         public enum ChunkCorner
@@ -173,8 +50,147 @@ namespace CyberCore.WorldGen.Biomes
             East,
 
             // SouthWest,
-            South,
+            South
             // SouthEast
+        }
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(AdvancedBiome));
+
+        private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());
+
+        public static ConcurrentDictionary<int, ChunkColumn> _CC = new ConcurrentDictionary<int, ChunkColumn>();
+
+        private readonly Block _Stone = new Stone();
+        public BiomeQualifications BiomeQualifications;
+
+        /// <summary>
+        /// </summary>
+        public AdvancedBiome BorderBiome;
+
+        public bool BorderChunk;
+
+        public List<BorderChunkDirection> BorderChunkDirections = new List<BorderChunkDirection>();
+        // public List<ChunkCoordinates> GenerateandSmooth = new List<ChunkCoordinates>();
+
+        public FastNoise HeightNoise = new FastNoise(121212);
+
+        public int LocalId = -1;
+        public string Name;
+
+        /// <summary>
+        /// </summary>
+        public List<int> NotAllowedBlocks = new List<int>
+        {
+            new Stone().Id, new Stonebrick().Id, new Sand().Id, new Grass().Id, new Dirt().Id, new Grass().Id,
+            new Tallgrass().Id, new DoublePlant().Id, new RedFlower().Id, new ChorusFlower().Id, new YellowFlower().Id
+        };
+
+        public bool ObjectCopy = false;
+        private readonly Random RDM = new Random();
+        public Random RNDM = new Random();
+        public int Startheight = 80;
+        protected int Waterlevel = 85;
+
+        public AdvancedBiome(string name, BiomeQualifications bq)
+        {
+            BiomeQualifications = bq;
+            HeightNoise.SetGradientPerturbAmp(3);
+            HeightNoise.SetFrequency(.24f);
+            HeightNoise.SetNoiseType(FastNoise.NoiseType.CubicFractal);
+            HeightNoise.SetFractalOctaves(2);
+            HeightNoise.SetFractalLacunarity(.35f);
+            HeightNoise.SetFractalGain(1);
+            Name = name;
+        }
+
+        public byte MCPEBiomeID { get; protected set; } = 255;
+
+        public int BorderType { get; set; } = 0;
+
+        /// <summary>
+        ///     DO NOT USE
+        /// </summary>
+        /// <returns></returns>
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
+
+        public void TryOreGeneraton(ChunkColumn cc, int x, int z, int yheight, Block b = null)
+        {
+            if (b == null) b = (Block) _Stone.Clone();
+            var v = RDM.Next(100 + yheight);
+            if (v <= 15) //15
+            {
+                // r = new Random(2 + x + z + yheight * 2);
+                v = RDM.Next(500) / 10; //Max 50;
+//Iron 30% 50*.3=15
+                if (v < 15)
+                    cc.SetBlock(x, yheight, z, new IronOre());
+//Gold 15% = 7.5 = 7
+                else if (v < 22)
+                    cc.SetBlock(x, yheight, z, new GoldOre());
+//Lapis 15% = 7.5 = 7
+                else if (v < 29)
+                    cc.SetBlock(x, yheight, z, new LapisOre());
+//Redstone 15% = 7.5 = 7
+                else if (v < 36)
+                    cc.SetBlock(x, yheight, z, new RedstoneOre());
+//Diamond 5% = 2.5 = 3 
+                else if (v < 39)
+                    cc.SetBlock(x, yheight, z, new DiamondOre());
+//Emerald 2% = 1
+                else if (v < 40)
+                    cc.SetBlock(x, yheight, z, new EmeraldOre());
+                else
+                    cc.SetBlock(x, yheight, z, b);
+
+                //TODO Add Chance Section for Unique Dirt Types... Try to use Noise map
+            }
+            else
+            {
+                cc.SetBlock(x, yheight, z, b);
+            }
+        }
+
+        public void TryOreFillIn(ChunkColumn cc, int x, int z, int yheight)
+        {
+            var v = RDM.Next(3 * 115 + yheight);
+            if (v <= 15) //15
+            {
+                // r = new Random(2 + x + z + yheight * 2);
+                v = RDM.Next(500) / 10; //Max 50;
+//Iron 30% 50*.3=15
+                if (v < 15)
+                    cc.SetBlock(x, yheight, z, new IronOre());
+//Gold 15% = 7.5 = 7
+                else if (v < 22)
+                    cc.SetBlock(x, yheight, z, new GoldOre());
+//Lapis 15% = 7.5 = 7
+                else if (v < 29)
+                    cc.SetBlock(x, yheight, z, new LapisOre());
+//Redstone 15% = 7.5 = 7
+                else if (v < 36)
+                    cc.SetBlock(x, yheight, z, new RedstoneOre());
+//Diamond 5% = 2.5 = 3 
+                else if (v < 39)
+                    cc.SetBlock(x, yheight, z, new DiamondOre());
+//Emerald 2% = 1
+                else if (v < 40)
+                    cc.SetBlock(x, yheight, z, new EmeraldOre());
+            }
+        }
+
+        public abstract int GetSh(int x, int z, int cx, int cz);
+
+        public bool Check(float[] rth)
+        {
+            return BiomeQualifications.check(rth);
+        }
+
+        public virtual int[,] GenerateChunkHeightMap(ChunkColumn c, CyberExperimentalWorldProvider cc)
+        {
+            return GenerateChunkHeightMap(new ChunkCoordinates(c.X, c.Z), cc);
         }
 
 
@@ -182,7 +198,7 @@ namespace CyberCore.WorldGen.Biomes
             CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
         {
             // Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-            int r = -1;
+            var r = -1;
             var cc = cyberExperimentalWorldProvider.GenerateChunkColumn(c, true);
             if (cc != null)
             {
@@ -226,7 +242,7 @@ namespace CyberCore.WorldGen.Biomes
         }
 
         /// <summary>
-        /// Relative to THIS CHUNK GET A int[] of Side of Chunk
+        ///     Relative to THIS CHUNK GET A int[] of Side of Chunk
         /// </summary>
         /// <param name="side"></param>
         /// <param name="c"></param>
@@ -235,7 +251,7 @@ namespace CyberCore.WorldGen.Biomes
         public virtual int[] SideGenerateChunkHeightMap(ChunkSide side, ChunkCoordinates c,
             CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
         {
-            int[] r = new int[16];
+            var r = new int[16];
             var cc = cyberExperimentalWorldProvider.GenerateChunkColumn(c, true);
             if (cc != null)
             {
@@ -243,32 +259,20 @@ namespace CyberCore.WorldGen.Biomes
                 switch (side)
                 {
                     case ChunkSide.North:
-                        for (int x = 0; x < 16; x++)
-                        {
-                            r[x] = cc.GetHeight(x, 15);
-                        }
+                        for (var x = 0; x < 16; x++) r[x] = cc.GetHeight(x, 15);
 
                         break;
                     case ChunkSide.East:
-                        for (int x = 0; x < 16; x++)
-                        {
-                            r[x] = cc.GetHeight(15, x);
-                        }
+                        for (var x = 0; x < 16; x++) r[x] = cc.GetHeight(15, x);
 
                         break;
                     case ChunkSide.South:
-                        for (int x = 0; x < 16; x++)
-                        {
-                            r[x] = cc.GetHeight(x, 0);
-                        }
+                        for (var x = 0; x < 16; x++) r[x] = cc.GetHeight(x, 0);
 
                         break;
                     case ChunkSide.West:
 
-                        for (int x = 0; x < 16; x++)
-                        {
-                            r[x] = cc.GetHeight(0, x);
-                        }
+                        for (var x = 0; x < 16; x++) r[x] = cc.GetHeight(0, x);
 
                         break;
                 }
@@ -280,31 +284,19 @@ namespace CyberCore.WorldGen.Biomes
             switch (side)
             {
                 case ChunkSide.North:
-                    for (int x = 0; x < 16; x++)
-                    {
-                        r[x] = GetSh(x, 15, c.X, c.Z);
-                    }
+                    for (var x = 0; x < 16; x++) r[x] = GetSh(x, 15, c.X, c.Z);
 
                     break;
                 case ChunkSide.East:
-                    for (int z = 0; z < 16; z++)
-                    {
-                        r[z] = GetSh(15, z, c.X, c.Z);
-                    }
+                    for (var z = 0; z < 16; z++) r[z] = GetSh(15, z, c.X, c.Z);
 
                     break;
                 case ChunkSide.South:
-                    for (int x = 0; x < 16; x++)
-                    {
-                        r[x] = GetSh(x, 0, c.X, c.Z);
-                    }
+                    for (var x = 0; x < 16; x++) r[x] = GetSh(x, 0, c.X, c.Z);
 
                     break;
                 case ChunkSide.West:
-                    for (int z = 0; z < 16; z++)
-                    {
-                        r[z] = GetSh(0, z, c.X, c.Z);
-                    }
+                    for (var z = 0; z < 16; z++) r[z] = GetSh(0, z, c.X, c.Z);
 
                     break;
             }
@@ -318,12 +310,10 @@ namespace CyberCore.WorldGen.Biomes
             // var cc = cyberExperimentalWorldProvider.GenerateChunkColumn(c, true);
             var r = new int[16, 16];
 
-            for (int z = 0; z < 16; z++)
-            for (int x = 0; x < 16; x++)
-            {
+            for (var z = 0; z < 16; z++)
+            for (var x = 0; x < 16; x++)
                 // Console.WriteLine($"{c.X} *16 + {x} = {c.X * 16 + x} || {c.Z}*16 + {z} = {c.Z * 16 + z}");
                 r[x, z] = cyberExperimentalWorldProvider.getBlockHeight(c.X * 16 + x, c.Z * 16 + z);
-            }
 
 
             return r;
@@ -353,20 +343,14 @@ namespace CyberCore.WorldGen.Biomes
             var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk);
             PopulateChunk(CyberExperimentalWorldProvider, chunk, rth, a);
 
-            if (BorderChunk)
-            {
-                chunk.SetBlock(7, 150, 7, new EmeraldBlock());
-            }
+            if (BorderChunk) chunk.SetBlock(7, 150, 7, new EmeraldBlock());
 
             PostPopulate(CyberExperimentalWorldProvider, chunk, rth, a);
 
             t.Stop();
 
 
-            if (t.ElapsedMilliseconds > 100)
-            {
-                Log.Debug($"Chunk Population of X:{chunk.X} Z:{chunk.Z} took {t.Elapsed}");
-            }
+            if (t.ElapsedMilliseconds > 100) Log.Debug($"Chunk Population of X:{chunk.X} Z:{chunk.Z} took {t.Elapsed}");
 
             return chunk;
         }
@@ -380,32 +364,29 @@ namespace CyberCore.WorldGen.Biomes
         /// <param name="ints"></param>
         protected /*Task*/ ChunkColumn PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn c,
-            float[] rth, int[,] ints)
+            float[] rth, int[,] ints, bool force = false)
         {
-            int h = -1;
+            var bqh = -1;
             if (ObjectCopy)
-            {
-                int bqh = BiomeQualifications.Baseheight;
-                h = bqh;
-            }
+                bqh = BiomeQualifications.Baseheight;
 
-            for (int x = 0; x < 16; x++)
+            for (var x = 0; x < 16; x++)
+            for (var z = 0; z < 16; z++)
             {
-                for (int z = 0; z < 16; z++)
-                {
-                    c.SetBlock(x, 0, z, new Bedrock());
-                    for (int y = 1; y < 255; y++)
-                    {
-                        if (h != -1 && h <= y)
-                            GenerateVerticalColumn(y, ints[x, z], x, z, c, false, ObjectCopy);
+                c.SetBlock(x, 0, z, new Bedrock());
+                for (var y = 1; y < 255; y++)
+                    if (bqh != -1 && bqh <= y)
+                        if (force)
+                            ForceGenerateVerticalColumn(y, ints[x, z], x, z, c, false, ObjectCopy);
                         else
-                            PREGenerateVerticalColumn(y, ints[x, z], x, z, c, false, ObjectCopy);
-                    }
+                            GenerateVerticalColumn(y, ints[x, z], x, z, c, false, ObjectCopy);
+                    else
+                        // if(force)GenerateVerticalColumn(y, ints[x, z], x, z, c, false, ObjectCopy);
+                        PREGenerateVerticalColumn(y, ints[x, z], x, z, c, false, ObjectCopy);
 
-                    if (MCPEBiomeID != 255) c.SetBiome(x, z, MCPEBiomeID);
+                if (MCPEBiomeID != 255) c.SetBiome(x, z, MCPEBiomeID);
 
-                    c.SetHeight(x, z, (short) ints[x, z]);
-                }
+                c.SetHeight(x, z, (short) ints[x, z]);
             }
 
             return c;
@@ -417,15 +398,12 @@ namespace CyberCore.WorldGen.Biomes
             var sss = new Stopwatch();
             ss.Restart();
             sss.Restart();
-            string s = "";
+            var s = "";
             //            for (int z = d.GetLength(1)-1; z >= 0; z--)
-            for (int z = 0; z < d.GetLength(1); z++)
+            for (var z = 0; z < d.GetLength(1); z++)
             {
                 sss.Restart();
-                for (int x = 0; x < d.GetLength(0); x++)
-                {
-                    s += d[x, z] + ",";
-                }
+                for (var x = 0; x < d.GetLength(0); x++) s += d[x, z] + ",";
 
                 sss.Stop();
                 // Console.WriteLine($"TOOK {sss.Elapsed} TO CONVER COL {z}/{d.GetLength(1)}");
@@ -442,7 +420,7 @@ namespace CyberCore.WorldGen.Biomes
         {
             var s = new Stopwatch();
             s.Restart();
-            System.IO.File.WriteAllText(@datCsv, text);
+            File.WriteAllText(datCsv, text);
             s.Stop();
             Console.WriteLine("FILE WRITE TIME WAS " + s.Elapsed);
         }
@@ -458,7 +436,7 @@ namespace CyberCore.WorldGen.Biomes
 
             if (BorderChunk)
             {
-                SmoothingMap sm = HandleGeneration(m, new ChunkCoordinates(c.X, c.Z),
+                var sm = HandleGeneration(m, new ChunkCoordinates(c.X, c.Z),
                     CyberExperimentalWorldProvider);
                 // SaveViaCSV($"/MapTesting/MAPCHUNK NNNNN PRE SMOOTH EXPAND {c.X} {c.Z}.csv",IntArrayToString(sm.Map));
                 // sm.AddBorderValues(CyberExperimentalWorldProvider);
@@ -474,25 +452,19 @@ namespace CyberCore.WorldGen.Biomes
             }
 
 
-            for (int x = 0; x < 16; x++)
-            {
-                for (int z = 0; z < 16; z++)
-                {
-                    c.SetHeight(x, z, (short) m[x, z]);
-                }
-            }
+            for (var x = 0; x < 16; x++)
+            for (var z = 0; z < 16; z++)
+                c.SetHeight(x, z, (short) m[x, z]);
 
             return m;
         }
 
         private int[,] ChunkToIntMap(ChunkColumn tc)
         {
-            int[,] r = new int[16, 16];
-            for (int z = 0; z < 16; z++)
-            for (int x = 0; x < 16; x++)
-            {
+            var r = new int[16, 16];
+            for (var z = 0; z < 16; z++)
+            for (var x = 0; x < 16; x++)
                 r[x, z] = tc.GetHeight(x, z);
-            }
 
             return r;
         }
@@ -580,7 +552,6 @@ namespace CyberCore.WorldGen.Biomes
                             for (var teirn = 1; teirn <= teir; teirn++)
                             for (var xx = -teirn; xx <= teirn; xx++)
                             for (var zz = -teirn; zz <= teirn; zz++)
-                            {
                                 // if(xx == 0 && zz == 0)continue;
 
                                 if (rx + xx >= 0 && rx + xx < 16 && rz + zz >= 0 && rz + zz < 16)
@@ -597,7 +568,6 @@ namespace CyberCore.WorldGen.Biomes
                                                 OldLeafType = "jungle",
                                                 Coordinates = new BlockCoordinates(x + xx, ffy, z + zz)
                                             });
-                            }
 
                             ffy++;
                         }
@@ -615,7 +585,7 @@ namespace CyberCore.WorldGen.Biomes
         public SmoothingMap HandleGeneration(int[,] ints, ChunkCoordinates c,
             CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
         {
-            SmoothingMap sm = new SmoothingMap(c, ints);
+            var sm = new SmoothingMap(c, ints);
             //Console.WriteLine($"YAAAAAA: >>>>");
             foreach (var VARIABLE in BorderChunkDirections)
             {
@@ -623,7 +593,7 @@ namespace CyberCore.WorldGen.Biomes
             }
 
 
-            BorderChunkDirection d = BorderChunkDirection.North;
+            var d = BorderChunkDirection.North;
             CheckAndAddChunkDirection(d, c, sm, cyberExperimentalWorldProvider);
             d = BorderChunkDirection.East;
             CheckAndAddChunkDirection(d, c, sm, cyberExperimentalWorldProvider);
@@ -655,13 +625,11 @@ namespace CyberCore.WorldGen.Biomes
 
         private int[,] ShrinkFromExpand(int[,] mmm, int xtra = 1)
         {
-            int[,] m = new int[mmm.GetLength(0) - 2 * xtra, mmm.GetLength(1) - 2 * xtra];
-            for (int z = 0; z < mmm.GetLength(1) - 1; z++)
-            for (int x = 0; x < mmm.GetLength(0) - 1; x++)
-            {
+            var m = new int[mmm.GetLength(0) - 2 * xtra, mmm.GetLength(1) - 2 * xtra];
+            for (var z = 0; z < mmm.GetLength(1) - 1; z++)
+            for (var x = 0; x < mmm.GetLength(0) - 1; x++)
                 if (x <= xtra - 1 || z >= xtra - 1)
                 {
-                    continue;
                 }
                 else
                 {
@@ -669,57 +637,58 @@ namespace CyberCore.WorldGen.Biomes
                         $"M {x - xtra} {z - xtra} |{xtra}||| mmm {x} {z} || {m.GetLength(0)} {m.GetLength(1)} || {mmm.GetLength(0)} {mmm.GetLength(1)}");
                     m[x - xtra, z - xtra] = mmm[x, z];
                 }
-            }
 
             return m;
         }
 
 
         /// <summary>
-        /// 2x Square Smoothing donse not work as goon :(
+        ///     2x Square Smoothing donse not work as goon :(
         /// </summary>
         /// <param name="ints"></param>
         /// <returns></returns>
         private int[,] SquareSmooth(int[,] ints, int w = 2, bool cel = true)
         {
-            for (int z = 0; z < ints.GetLength(1); z++)
-            for (int x = 0; x < ints.GetLength(0); x++)
+            for (var z = 0; z < ints.GetLength(1); z++)
+            for (var x = 0; x < ints.GetLength(0); x++)
             {
-                int ah = 0;
-                int ac = 0;
-                for (int zz = w * -1; zz <= w; zz++)
-                for (int xx = w * -1; xx <= w; xx++)
+                var ah = 0;
+                var ac = 0;
+                for (var zz = w * -1; zz <= w; zz++)
+                for (var xx = w * -1; xx <= w; xx++)
                 {
-                    int tx = x + xx;
-                    int tz = z + zz;
+                    var tx = x + xx;
+                    var tz = z + zz;
                     // if (0 > z + i || f22.GetLength(1) <= z + i) continue; 
                     if (0 > tx || 0 > tz || ints.GetLength(0) <= tx || ints.GetLength(1) <= tz) continue;
                     ac++;
                     ah += ints[tx, tz];
                 }
 
-                float alpha = .35f;
+                var alpha = .35f;
                 if (cel)
                 {
-                    int vv = (int) Math.Ceiling(ah / (double) ac);
+                    var vv = (int) Math.Ceiling(ah / (double) ac);
                     // int vvv = Interpolate(vv, ints[x, z], alpha);
-                    int vvv = vv; //Interpolate(vv, ints[x, z], alpha);
+                    var vvv = vv; //Interpolate(vv, ints[x, z], alpha);
                     // Console.WriteLine($"INTERPOLATION VALUE FROM {vv} TO {vvv} WITH #{ints[x, z]} AND A {alpha}");
                     ints[x, z] = vvv;
                 }
                 else
+                {
                     ints[x, z] = ah / ac;
+                }
             }
 
             return ints;
         }
 
-        float Interpolate(float x0, float x1, float alpha)
+        private float Interpolate(float x0, float x1, float alpha)
         {
             return x0 * (1 - alpha) + alpha * x1;
         }
 
-        int Interpolate(int x0, int x1, float alpha)
+        private int Interpolate(int x0, int x1, float alpha)
         {
             return (int) (x0 * (1 - alpha) + alpha * x1);
         }
@@ -769,44 +738,32 @@ namespace CyberCore.WorldGen.Biomes
         public int[,] GenerateExtendedChunkHeightMap(BorderChunkDirection direction, int[,] ints,
             int[,] sischunkbiome, CyberExperimentalWorldProvider c)
         {
-            bool ns = false;
+            var ns = false;
             int[,] r;
             if (direction == BorderChunkDirection.North || direction == BorderChunkDirection.South)
             {
-                r = new int[16, (16 * 2)];
+                r = new int[16, 16 * 2];
                 ns = true;
-                for (int z = 0; z < r.GetLength(1); z++)
-                for (int x = 0; x < r.GetLength(0); x++)
-                {
+                for (var z = 0; z < r.GetLength(1); z++)
+                for (var x = 0; x < r.GetLength(0); x++)
                     if (z < 16)
-                    {
                         r[x, z] = direction == BorderChunkDirection.South ? ints[x, z] : sischunkbiome[x, z];
-                    }
                     else
-                    {
                         r[x, z] = direction == BorderChunkDirection.South ? sischunkbiome[x, z - 16] : ints[x, z - 16];
-                    }
 
-                    // Console.WriteLine($"ZZAAZZ {x} {z} || " + r[x, z]);
-                }
+                // Console.WriteLine($"ZZAAZZ {x} {z} || " + r[x, z]);
             }
             else
             {
-                r = new int[(16 * 2), 16];
-                for (int z = 0; z < r.GetLength(1); z++)
-                for (int x = 0; x < r.GetLength(0); x++)
-                {
+                r = new int[16 * 2, 16];
+                for (var z = 0; z < r.GetLength(1); z++)
+                for (var x = 0; x < r.GetLength(0); x++)
                     if (x < 16)
-                    {
                         r[x, z] = direction == BorderChunkDirection.West ? ints[x, z] : sischunkbiome[x, z];
-                    }
                     else
-                    {
                         r[x, z] = direction == BorderChunkDirection.West ? sischunkbiome[x - 16, z] : ints[x - 16, z];
-                    }
 
-                    // Console.WriteLine($"AAAAAAZZ" + r[x, z]);
-                }
+                // Console.WriteLine($"AAAAAAZZ" + r[x, z]);
             }
 
             return r;
@@ -814,7 +771,6 @@ namespace CyberCore.WorldGen.Biomes
 
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="yheight"></param>
         /// <param name="maxheight"></param>
@@ -825,13 +781,18 @@ namespace CyberCore.WorldGen.Biomes
             bool setair = false, bool objectcopy = false)
         {
             if (yheight < maxheight)
-            {
                 cc.SetBlock(x, yheight, z, new Stone());
-            }
             else
-            {
                 cc.SetBlock(x, yheight, z, new Air());
-            }
+        }
+
+        public virtual void ForceGenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
+            bool setair = false, bool objectcopy = false)
+        {
+            if (yheight < maxheight)
+                cc.SetBlock(x, yheight, z, new Stone());
+            else
+                cc.SetBlock(x, yheight, z, new Air());
         }
 
         public virtual void PREGenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
@@ -841,35 +802,22 @@ namespace CyberCore.WorldGen.Biomes
                 TryOreFillIn(cc, x, z, yheight);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<int> NotAllowedBlocks = new List<int>()
-        {
-            new Stone().Id, new Stonebrick().Id, new Sand().Id, new Grass().Id, new Dirt().Id, new Grass().Id,
-            new Tallgrass().Id, new DoublePlant().Id, new RedFlower().Id, new ChorusFlower().Id, new YellowFlower().Id
-        };
-
 
         private int[] SmoothStrip(int[] fillstripz)
         {
-            for (int i = 0; i < fillstripz.Length - 1; i++)
+            for (var i = 0; i < fillstripz.Length - 1; i++)
             {
                 if (i == 0 || i == fillstripz.Length - 1) continue;
-                int lv = fillstripz[i - 1];
-                int nv = fillstripz[i + 1];
-                int v = fillstripz[i];
+                var lv = fillstripz[i - 1];
+                var nv = fillstripz[i + 1];
+                var v = fillstripz[i];
                 //DOWN OR UP
-                int du = nv - lv;
+                var du = nv - lv;
                 //UP
                 if (du > 0)
-                {
                     v = lv + 1;
-                }
                 else if (du < 0)
-                {
                     v = lv - 1;
-                }
                 else v = lv;
 
                 fillstripz[i] = v;
@@ -880,22 +828,16 @@ namespace CyberCore.WorldGen.Biomes
 
         private int[] Fillstripx(int i, int getLength, int z, int[,] map)
         {
-            List<int> strip = new List<int>();
-            for (int a = i; a < getLength; a++)
-            {
-                strip.Add(map[a, z]);
-            }
+            var strip = new List<int>();
+            for (var a = i; a < getLength; a++) strip.Add(map[a, z]);
 
             return strip.ToArray();
         }
 
         private int[] Fillstripz(int i, int getLength, int x, int[,] map)
         {
-            List<int> strip = new List<int>();
-            for (int a = i; a < getLength; a++)
-            {
-                strip.Add(map[x, a]);
-            }
+            var strip = new List<int>();
+            for (var a = i; a < getLength; a++) strip.Add(map[x, a]);
 
             return strip.ToArray();
         }
@@ -928,7 +870,6 @@ namespace CyberCore.WorldGen.Biomes
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="CyberExperimentalWorldProvider"></param>
         /// <param name="chunk"></param>
@@ -941,18 +882,9 @@ namespace CyberCore.WorldGen.Biomes
             return chunk;
         }
 
-        /// <summary>
-        /// DO NOT USE
-        /// </summary>
-        /// <returns></returns>
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
-
         public AdvancedBiome CClone()
         {
-            AdvancedBiome a = (AdvancedBiome) MemberwiseClone();
+            var a = (AdvancedBiome) MemberwiseClone();
             a.BorderChunkDirections = new List<BorderChunkDirection>();
             a.BorderChunk = false;
             return a;
@@ -961,39 +893,33 @@ namespace CyberCore.WorldGen.Biomes
 
         public int[,] LerpX(int[,] f22, bool ew = false)
         {
-            int[,] r = new int[f22.GetLength(0), f22.GetLength(1)];
+            var r = new int[f22.GetLength(0), f22.GetLength(1)];
             Console.WriteLine($"LERPX {r.GetLength(0)} {r.GetLength(1)}");
-            for (int z = 0; z < f22.GetLength(1); z++)
-            {
+            for (var z = 0; z < f22.GetLength(1); z++)
                 // Console.WriteLine($"starting LERP X ON Z:{z} STARTING X: {startx} AND {stopx}");
-                for (int x = 0; x < f22.GetLength(0); x++)
+            for (var x = 0; x < f22.GetLength(0); x++)
+                if (z == 0 && z == f22.GetLength(1) - 1)
                 {
-                    if (z == 0 && z == f22.GetLength(1) - 1)
+                    r[x, z] = f22[x, z];
+                }
+                else
+                {
+                    if ((x == 0 || x == f22.GetLength(0) - 1) && ew && false)
                     {
                         r[x, z] = f22[x, z];
                     }
-                    else
-                    {
-                        if ((x == 0 || x == f22.GetLength(0) - 1) && ew && false)
-                        {
-                            r[x, z] = f22[x, z];
-                        }
-                        else
-                        {
-                            int ah = 0;
-                            int ac = 0;
-                            for (int i = -3; i < 3; i++)
-                            {
-                                if (0 > x + i || f22.GetLength(0) <= x + i) continue;
-                                ah += f22[x + i, z];
-                                ac++;
-                            }
 
-                            r[x, z] = ah / ac;
-                        }
+                    var ah = 0;
+                    var ac = 0;
+                    for (var i = -3; i < 3; i++)
+                    {
+                        if (0 > x + i || f22.GetLength(0) <= x + i) continue;
+                        ah += f22[x + i, z];
+                        ac++;
                     }
+
+                    r[x, z] = ah / ac;
                 }
-            }
 
             return r;
         }
@@ -1001,17 +927,16 @@ namespace CyberCore.WorldGen.Biomes
 
         public int[,] LerpZ(int[,] f22, bool ns = false)
         {
-            int[,] r = new int[f22.GetLength(0), f22.GetLength(1)];
+            var r = new int[f22.GetLength(0), f22.GetLength(1)];
 
             Console.WriteLine($"LERPZ {r.GetLength(0)} {r.GetLength(1)}");
-            for (int x = 0; x < f22.GetLength(0); x++)
+            for (var x = 0; x < f22.GetLength(0); x++)
             {
-                int startz = f22[x, 0];
-                int stopz = f22[x, f22.GetLength(1) - 1];
+                var startz = f22[x, 0];
+                var stopz = f22[x, f22.GetLength(1) - 1];
                 // Console.WriteLine($"starting LERP Z ON X:{x} STARTING X: {startz} AND {stopz}");
 
-                for (int z = 0; z < f22.GetLength(1); z++)
-                {
+                for (var z = 0; z < f22.GetLength(1); z++)
                     if (x == 0 || x == f22.GetLength(0) - 1)
                     {
                         r[x, z] = f22[x, z];
@@ -1022,22 +947,19 @@ namespace CyberCore.WorldGen.Biomes
                         {
                             r[x, z] = f22[x, z];
                         }
-                        else
-                        {
-                            int ah = 0;
-                            int ac = 0;
-                            for (int i = -3; i < 3; i++)
-                            {
-                                if (0 > z + i || f22.GetLength(1) <= z + i) continue;
-                                ah += f22[x, z + i];
-                                ac++;
-                            }
 
-                            r[x, z] = ah / ac;
-                            // r[x, z] = ((int) Lerp(startz, stopz, (float) z / (f22.GetLength(1) - 1))+f22[x,z])/2;
+                        var ah = 0;
+                        var ac = 0;
+                        for (var i = -3; i < 3; i++)
+                        {
+                            if (0 > z + i || f22.GetLength(1) <= z + i) continue;
+                            ah += f22[x, z + i];
+                            ac++;
                         }
+
+                        r[x, z] = ah / ac;
+                        // r[x, z] = ((int) Lerp(startz, stopz, (float) z / (f22.GetLength(1) - 1))+f22[x,z])/2;
                     }
-                }
             }
 
             return r;
@@ -1045,26 +967,19 @@ namespace CyberCore.WorldGen.Biomes
 
         public int[,] FinalCropTo16(int[,] f2, BorderChunkDirection direction)
         {
-            int[,] f1 = new int[16, 16];
-            int xo = 0;
-            int zo = 0;
+            var f1 = new int[16, 16];
+            var xo = 0;
+            var zo = 0;
 
             if (direction == BorderChunkDirection.South)
-            {
                 zo = 16;
-            }
-            else if (direction == BorderChunkDirection.West)
-            {
-                xo = 16;
-            }
+            else if (direction == BorderChunkDirection.West) xo = 16;
 
-            for (int z = 0; z < 16; z++)
-            for (int x = 0; x < 16; x++)
-            {
+            for (var z = 0; z < 16; z++)
+            for (var x = 0; x < 16; x++)
                 // Console.WriteLine($"CURRENT OFFSET {xo} {zo} || {direction}");
                 // Console.WriteLine($"X:{x} Z:{z} ||| {xo + x} {zo + z} |A| {f2[xo + x, zo + z]} || {direction}");
                 f1[x, z] = f2[xo + x, z + zo];
-            }
 
             return f1;
         }
@@ -1074,47 +989,46 @@ namespace CyberCore.WorldGen.Biomes
             return this;
         }
 
-        public static ConcurrentDictionary<int, ChunkColumn> _CC = new ConcurrentDictionary<int, ChunkColumn>();
-
-        public bool ObjectCopy = false;
-
         public ChunkColumn GenerateChunkColumnObject(CyberExperimentalWorldProvider cccccc,
             ChunkCoordinates chunkCoordinates)
         {
-            int bqh = BiomeQualifications.Baseheight;
-            Console.WriteLine("$$$$$$$$$$$$$$7$$$$$$$$$$");
-            if (_CC.ContainsKey(bqh) &&  _CC[bqh] != null)
-            {
-                Console.WriteLine("$$$$$$$$$$$$$$$$$$$777777777$wwwwwwwwwwwwwwwww$$$$");
-                ChunkColumn c = (ChunkColumn) _CC[bqh].Clone();
-                ObjectCopy = true;
-                return c;
-            }
+            var bqh = BiomeQualifications.Baseheight;
+            // Console.WriteLine("$$$$$$$$$$$$$$7$$$$$$$$$$");
+            // if (_CC.ContainsKey(bqh) &&  _CC[bqh] != null)
+            // {
+            //     // Console.WriteLine("$$$$$$$$$$$$$$$$$$$777777777$wwwwwwwwwwwwwwwww$$$$");
+            //     ChunkColumn c = (ChunkColumn) _CC[bqh].Clone();
+            //     ObjectCopy = true;
+            //     return c;
+            // }
 
-            Console.WriteLine("$$$$$$$$$@@@@@@@77777777777777777@@@$$$$$$$$$$$$$$$");
-            ChunkColumn cc = new ChunkColumn();
+            // Console.WriteLine("$$$$$$$$$@@@@@@@77777777777777777@@@$$$$$$$$$$$$$$$");
+            var cc = new ChunkColumn();
             cc.X = chunkCoordinates.X;
             cc.Z = chunkCoordinates.Z;
-            Console.WriteLine($"$$$$$$$$$$$$$$$$$$$#@77777777@@@@@@@!@######$$$$${cc==null}|");
+            // Console.WriteLine($"$$$$$$$$$$$$$$$$$$$#@77777777@@@@@@@!@######$$$$${cc==null}|");
             cc = PopulateChunk(cccccc, cc, BiomeManager.getChunkRTH(chunkCoordinates),
                 GenerateConstantHeightMap(16, 16, bqh));
-            Console.WriteLine($"$$$$$$$$$$$$$$$$$$$#@7777773333333377@@@@@@@!@######$$$$${cc==null}|");
-            
-            
-            ChunkColumn ccc = (ChunkColumn) cc.Clone();
-            Console.WriteLine($"333333333333333333333333333333333333333777777777777733333333{cc==null}|||||{(ccc==null)}|");
-                _CC[bqh] = ccc;
+            // Console.WriteLine($"$$$$$$$$$$$$$$$$$$$#@7777773333333377@@@@@@@!@######$$$$${cc==null}|");//fALSE
+
+            //
+            // ChunkColumn Da = new ChunkColumn();
+            // ChunkColumn DaDa = new ChunkColumn();
+
+            // Da.GetSubChunk(0).();
+
+            // ChunkColumn ccc = (ChunkColumn) cc?.Clone();
+            // Console.WriteLine($"333333333333333333333333333333333333333777777777777733333333{cc==null}|||||{(ccc==null)}|");
+            // _CC[bqh] = cc;
             return cc;
         }
 
         public int[,] GenerateConstantHeightMap(int x, int z, int h)
         {
-            int[,] m = new int[x, z];
-            for (int xx = 0; xx < x; xx++)
-            for (int zz = 0; zz < z; zz++)
-            {
+            var m = new int[x, z];
+            for (var xx = 0; xx < x; xx++)
+            for (var zz = 0; zz < z; zz++)
                 m[xx, zz] = h;
-            }
 
             return m;
         }

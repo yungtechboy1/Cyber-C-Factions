@@ -373,7 +373,7 @@ namespace CyberCore.WorldGen
             //     Console.WriteLine($"{chunkCoordinates} WAS NOT SMOOTH BUT WAS BORDER CHUNK");
             // }
             chunk = PreGenerateSurfaceItems(this, chunk, null).Result;
-            StackTrace stackTrace = new StackTrace(); 
+            // StackTrace stackTrace = new StackTrace(); 
 // Get calling method name
             // Console.WriteLine(stackTrace.GetFrame(1).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(1).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(1).GetMethod().Name);
             // Console.WriteLine(stackTrace.GetFrame(2).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(2).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(2).GetMethod().Name);
