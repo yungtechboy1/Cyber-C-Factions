@@ -9,7 +9,7 @@ namespace CyberCore.WorldGen.Biomes
 {
     public class SnowyIcyChunk : AdvancedBiome
     {
-        public SnowyIcyChunk() : base("SnowyIcyChunk", new BiomeQualifications(0, 2, 0, .5f, 0, .5f, 30))
+        public SnowyIcyChunk() : base("SnowyIcyChunk", new BiomeQualifications(0, 2, 0, .5f, 0, .5f, 4))
         {
             LocalId = 3;
         }
@@ -17,7 +17,7 @@ namespace CyberCore.WorldGen.Biomes
         public override int GetSh(int x, int z, int cx, int cz)
         {
             return BiomeQualifications.Baseheight +
-                   (int) GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.035f,
+                   (int) GetNoise(cx * 16 + x, cz * 16 + z, /*rth[2] / */.013f,
                        BiomeQualifications.Heightvariation);
         }
 
@@ -25,10 +25,10 @@ namespace CyberCore.WorldGen.Biomes
         {
             if (yheight < maxheight-1)
             {
-                cc.SetBlock(x, yheight, z, new Stone());
+                cc.SetBlock(x, yheight, z, new Water());
             }
             else if(yheight < maxheight)
-                cc.SetBlock(x, yheight, z, new PackedIce());
+                cc.SetBlock(x, yheight, z, new Ice());
             else if (setair)
             {
                 cc.SetBlock(x,yheight,z,new Air());
