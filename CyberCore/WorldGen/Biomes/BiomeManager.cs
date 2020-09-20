@@ -21,23 +21,23 @@ namespace CyberCore.WorldGen
 
         public BiomeManager()
         {
-            AddBiome(TEST);
+            // AddBiome(TEST);
             // // AddBiome(new MainBiome());
-            // AddBiome(new RainForestBiome());
-            // AddBiome(new ForestBiome());
-            // AddBiome(new SnowyIcyChunk());
-            // AddBiome(new Desert());
-            // AddBiome(new DesertHills());
-            // AddBiome(new DesertLake());
-            // AddBiome(new Mountains());//7
-            // AddBiome(new Plains());
+            AddBiome(new RainForestBiome());
+            AddBiome(new ForestBiome());
+            AddBiome(new SnowyIcyChunk());
+            AddBiome(new Desert());
+            AddBiome(new DesertHills());
+            AddBiome(new DesertLake());
+            AddBiome(new Mountains());//7
+            AddBiome(new Plains());
             // AddBiome(new HighPlains());
-            // AddBiome(new WaterBiome());
+            AddBiome(new WaterBiome());
             // // AddBiome(new BeachBiome());
-            // AddBiome(new SnowForest());
-            // AddBiome(new SnowTundra());
-            // AddBiome(new TropicalRainForest());
-            // AddBiome(new TropicalSeasonalForest());
+            AddBiome(new SnowForest());
+            AddBiome(new SnowTundra());
+            AddBiome(new TropicalRainForest());
+            AddBiome(new TropicalSeasonalForest());
         }
 
         public static void AddBiome(AdvancedBiome biome)
