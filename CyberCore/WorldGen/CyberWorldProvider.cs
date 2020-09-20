@@ -21,6 +21,90 @@ using OpenAPI.World;
 
 namespace CyberCore.WorldGen
 {
+     public class CyberWorldProvider : IWorldGenerator
+     {
+          public void Initialize(IWorldProvider worldProvider)
+          {
+               new BiomeManager();
+          }
+          public float[] getChunkRTH(ChunkColumn chunk)
+          {
+               return getChunkRTH(chunk.X, chunk.Z);
+          }
+          
+          public float[] getChunkRTH(int x, int z)
+          {
+               //CALCULATE RAIN
+               var rainnoise = new FastNoise(123123);
+               rainnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+               rainnoise.SetFrequency(.007f); //.015
+               rainnoise.SetFractalType(FastNoise.FractalType.FBM);
+               rainnoise.SetFractalOctaves(1);
+               rainnoise.SetFractalLacunarity(.25f);
+               rainnoise.SetFractalGain(1);
+               //CALCULATE TEMP
+               var tempnoise = new FastNoise(123123 + 1);
+               tempnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+               tempnoise.SetFrequency(.004f); //.015f
+               tempnoise.SetFractalType(FastNoise.FractalType.FBM);
+               tempnoise.SetFractalOctaves(1);
+               tempnoise.SetFractalLacunarity(.25f);
+               tempnoise.SetFractalGain(1);
+               //CALCULATE HEIGHT
+               // var heightnoise = new FastNoise(123123 + 2);
+               // heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+               // heightnoise.SetFrequency(.015f);
+               // heightnoise.SetFractalType(FastNoise.FractalType.FBM);
+               // heightnoise.SetFractalOctaves(1);
+               // heightnoise.SetFractalLacunarity(.25f);
+               // heightnoise.SetFractalGain(1);
+
+
+               var rain = rainnoise.GetNoise(x, z) + 1;
+               var temp = tempnoise.GetNoise(x, z) + 1;
+               var height = GetNoise(x, z, 0.015f, 2);
+               return new[] {rain, temp, height};
+          }
+          private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());
+          public static float GetNoise(int x, int z, float scale, int max)
+          {
+               return (float) ((OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f));
+               // var heightnoise = new FastNoise(123123 + 2);
+               // heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+               // heightnoise.SetFrequency(scale);
+               // heightnoise.SetFractalType(FastNoise.FractalType.FBM);
+               // heightnoise.SetFractalOctaves(1);
+               // heightnoise.SetFractalLacunarity(2);
+               // heightnoise.SetFractalGain(.5f);
+               // return (heightnoise.GetNoise(x, z)+1 )*(max/2f);
+               // return (float)(OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f);
+          }
+
+          public ChunkColumn GenerateChunkColumn(ChunkCoordinates chunkCoordinates)
+          {var chunk = new ChunkColumn();
+               chunk.X = chunkCoordinates.X;
+               chunk.Z = chunkCoordinates.Z;
+               var rth = getChunkRTH(chunk);
+             chunk=  GenerateGround(chunk,rth);
+             chunk=  GenerateSurfaceItems();
+             return chunk;
+          }
+
+          private ChunkColumn GenerateGround(ChunkColumn chunk, float[] rth)
+          {
+               throw new NotImplementedException();
+          }
+
+          public virtual ChunkColumn GenerateGround()
+          {
+               
+          }
+
+          public virtual ChunkColumn GenerateSurfaceItems()
+          {
+               
+          }
+     }
 }
 //     public class CyberExperimentalWorldProvider : IWorldGenerator
 //     {
