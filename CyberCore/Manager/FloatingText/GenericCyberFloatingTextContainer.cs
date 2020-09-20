@@ -11,8 +11,6 @@ using MiNET.Utils;
 using MiNET.Worlds;
 using OpenAPI.Events.Level;
 using OpenAPI.Player;
-using Org.BouncyCastle.Asn1.X509;
-using Org.BouncyCastle.Security;
 
 namespace CyberCore.Manager.FloatingText
 {

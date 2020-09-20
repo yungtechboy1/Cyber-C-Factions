@@ -349,7 +349,7 @@ namespace CyberCore.WorldGen
             }
         }
 
-        public int[,] SetChunks(CyberExperimentalWorldProvider cyberExperimentalWorldProvider, bool xtra = true)
+        public int[,] SetChunks(CyberWorldProvider cyberExperimentalWorldProvider, bool xtra = true)
         {
             List<AdvancedBiome.BorderChunkDirection> bb = new List<AdvancedBiome.BorderChunkDirection>();
             bb.Add(AdvancedBiome.BorderChunkDirection.North);
@@ -381,7 +381,7 @@ namespace CyberCore.WorldGen
                 nc.Z = sischunkcords.Z;
                 sischunkbiome.GenerateChunkFromSmoothOrder(cyberExperimentalWorldProvider, nc,
                     BiomeManager.getChunkRTH(sischunkcords), data,xtra);
-                cyberExperimentalWorldProvider._chunkCache[sischunkcords] = nc;
+                // cyberExperimentalWorldProvider.WP._chunkCache[sischunkcords] = nc;
                 // return data;
             }
 

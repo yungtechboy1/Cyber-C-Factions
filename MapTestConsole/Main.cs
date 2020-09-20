@@ -20,7 +20,8 @@ namespace MapTestConsole
             var i = b.GenerateChunkHeightMap(cc, c);
             LevelMap.SaveViaCSV("/MapTesting/StripSmoothTestOOOOO.csv",LevelMap.IntArrayToString(i));
             // SmoothingMap sm = new SmoothingMap(cc,i);
-           var sm = b.HandleGeneration(i, cc, c);
+           // var sm = b.HandleGeneration(i, cc, c);
+           var sm = new SmoothingMap(cc);
             LevelMap.SaveViaCSV("/MapTesting/StripSmoothTestMASSB4.csv",LevelMap.IntArrayToString(sm.Map));
             // sm.StripSmooth(1);//4
             sm.SmoothMapV4();

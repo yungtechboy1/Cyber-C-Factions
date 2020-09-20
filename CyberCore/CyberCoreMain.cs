@@ -238,9 +238,17 @@ namespace CyberCore
             // };
             
             Log.Info("DA LENGTH OF TITTTTTTTTTT IS :"+AnvilWorldProvider.Convert.Count);
+            // var level = new OpenLevel(api, api.LevelManager, Dimension.Overworld.ToString()+"CT",
+            //     new CyberExperimentalWorldProvider(123123,Config.GetProperty("PCWorldFolder", "CyberWorld")),  api.LevelManager.EntityManager, GameMode.Creative,
+            //     Difficulty.Peaceful);
+            
             var level = new OpenLevel(api, api.LevelManager, Dimension.Overworld.ToString()+"CT",
-                new CyberExperimentalWorldProvider(123123,Config.GetProperty("PCWorldFolder", "CyberWorld")),  api.LevelManager.EntityManager, GameMode.Creative,
+                new LevelDbProvider()
+                {
+                    MissingChunkProvider = new CyberWorldProvider()
+                },  api.LevelManager.EntityManager, GameMode.Creative,
                 Difficulty.Peaceful);
+            
             // generator.Level = level;
             // ((CyberExperimentalWorldProvider) ((AnvilWorldProvider)((WrappedCachedWorldProvider) level.WorldProvider).CachingWorldProvider).MissingChunkProvider).Level = level;
 

@@ -122,6 +122,10 @@ private Random RDM = new Random();
         {
             return GenerateChunkHeightMap(new ChunkCoordinates(c.X, c.Z), cc);
         }
+        public virtual int[,] GenerateChunkHeightMap(ChunkColumn c, CyberWorldProvider cc)
+        {
+            return GenerateChunkHeightMap(new ChunkCoordinates(c.X, c.Z), cc);
+        }
 
         public enum ChunkCorner
         {
@@ -299,6 +303,23 @@ private Random RDM = new Random();
 
             return r;
         }
+        
+        public virtual int[,] GenerateChunkHeightMap(ChunkCoordinates c,
+            CyberWorldProvider cyberExperimentalWorldProvider)
+        {
+            // var cc = cyberExperimentalWorldProvider.GenerateChunkColumn(c, true);
+            var r = new int[16, 16];
+
+            for (int z = 0; z < 16; z++)
+            for (int x = 0; x < 16; x++)
+            {
+                // Console.WriteLine($"{c.X} *16 + {x} = {c.X * 16 + x} || {c.Z}*16 + {z} = {c.Z * 16 + z}");
+                r[x, z] = cyberExperimentalWorldProvider.getBlockHeight(c.X * 16 + x, c.Z * 16 + z);
+            }
+
+
+            return r;
+        }
 
         // public async Task<ChunkColumn> preSmooth(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
         //     ChunkColumn chunk,
@@ -314,7 +335,7 @@ private Random RDM = new Random();
         // }
 
 
-        public async Task<ChunkColumn> prePopulate(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
+        public async Task<ChunkColumn> prePopulate(CyberWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn chunk,
             float[] rth)
         {
@@ -341,6 +362,9 @@ private Random RDM = new Random();
 
             return chunk;
         }
+        
+       
+
 
         /// <summary>
         ///     Populate Chunk from Biome
@@ -349,7 +373,7 @@ private Random RDM = new Random();
         /// <param name="c"></param>
         /// <param name="rth"></param>
         /// <param name="ints"></param>
-        protected /*Task*/ void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
+        protected /*Task*/ void PopulateChunk(CyberWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn c,
             float[] rth, int[,] ints)
         {
@@ -405,11 +429,11 @@ private Random RDM = new Random();
             Console.WriteLine("FILE WRITE TIME WAS " + s.Elapsed);
         }
 
-        public virtual void PostPopulate(CyberExperimentalWorldProvider cyber, ChunkColumn c, float[] rth, int[,] ints)
+        public virtual void PostPopulate(CyberWorldProvider cyber, ChunkColumn c, float[] rth, int[,] ints)
         {
         }
 
-        public virtual int[,] GenerateUseabelHeightMap(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
+        public virtual int[,] GenerateUseabelHeightMap(CyberWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn c)
         {
             var m = GenerateChunkHeightMap(c, CyberExperimentalWorldProvider);
@@ -571,7 +595,7 @@ private Random RDM = new Random();
 
 
         public SmoothingMap HandleGeneration(int[,] ints, ChunkCoordinates c,
-            CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
+            CyberWorldProvider cyberExperimentalWorldProvider)
         {
             SmoothingMap sm = new SmoothingMap(c, ints);
             //Console.WriteLine($"YAAAAAA: >>>>");
@@ -602,7 +626,7 @@ private Random RDM = new Random();
         }
 
         private void CheckAndAddChunkDirection(BorderChunkDirection b, ChunkCoordinates cordz, SmoothingMap sm,
-            CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
+            CyberWorldProvider cyberExperimentalWorldProvider)
         {
             var sischunkcords = new ChunkCoordinates(cordz.X + b.GetX(), cordz.Z + b.GetZ());
             var sischunkbiome = BiomeManager.GetBiome(sischunkcords);
@@ -682,7 +706,7 @@ private Random RDM = new Random();
             return (int) (x0 * (1 - alpha) + alpha * x1);
         }
 
-        public void GenerateChunkFromSmoothOrder(CyberExperimentalWorldProvider cyberExperimentalWorldProvider,
+        public void GenerateChunkFromSmoothOrder(CyberWorldProvider cyberExperimentalWorldProvider,
             ChunkColumn nc, float[] rth, int[,] mm, bool xtra = true)
         {
             // if (xtra)
@@ -894,8 +918,7 @@ private Random RDM = new Random();
         /// <param name="chunk"></param>
         /// <param name="rth"></param>
         /// <returns></returns>
-        public virtual async Task<ChunkColumn> GenerateSurfaceItems(
-            CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
+        public virtual ChunkColumn GenerateSurfaceItems(CyberWorldProvider CyberExperimentalWorldProvider,
             ChunkColumn chunk, float[] rth)
         {
             return chunk;

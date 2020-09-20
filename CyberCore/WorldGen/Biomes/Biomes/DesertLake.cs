@@ -38,8 +38,8 @@ namespace CyberCore.WorldGen.Biomes.Biomes
         }
         
         
-        public override async Task<ChunkColumn> GenerateSurfaceItems(
-            CyberExperimentalWorldProvider CyberExperimentalWorldProvider, ChunkColumn chunk,
+        public override ChunkColumn GenerateSurfaceItems(CyberWorldProvider CyberExperimentalWorldProvider,
+            ChunkColumn chunk,
             float[] rth)
         {
             Random r = new Random();

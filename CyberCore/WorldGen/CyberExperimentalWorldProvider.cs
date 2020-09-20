@@ -370,18 +370,19 @@ namespace CyberCore.WorldGen
             //     Console.WriteLine($"{chunkCoordinates} WAS NOT SMOOTH BUT WAS BORDER CHUNK");
             // }
             chunk = PreGenerateSurfaceItems(this, chunk, null).Result;
-            StackTrace stackTrace = new StackTrace(); 
-// Get calling method name
-            Console.WriteLine(stackTrace.GetFrame(1).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(1).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(1).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(2).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(2).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(2).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(3).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(3).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(3).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(4).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(4).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(4).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(5).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(5).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(5).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(6).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(6).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(6).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(7).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(7).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(7).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(8).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(8).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(8).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(9).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(9).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(9).GetMethod().Name);
-            Console.WriteLine(stackTrace.GetFrame(10).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(10).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(10).GetMethod().Name);
+//DEBUG
+            //             StackTrace stackTrace = new StackTrace(); 
+// // Get calling method name
+//             Console.WriteLine(stackTrace.GetFrame(1).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(1).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(1).GetMethod().Name);
+//             Console.WriteLine(stackTrace.GetFrame(2).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(2).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(2).GetMethod().Name);
+//             Console.WriteLine(stackTrace.GetFrame(3).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(3).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(3).GetMethod().Name);
+//             Console.WriteLine(stackTrace.GetFrame(4).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(4).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(4).GetMethod().Name);
+//             Console.WriteLine(stackTrace.GetFrame(5).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(5).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(5).GetMethod().Name);
+//             Console.WriteLine(stackTrace.GetFrame(6).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(6).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(6).GetMethod().Name);
+//             Console.WriteLine(stackTrace.GetFrame(7).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(7).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(7).GetMethod().Name);
+//             Console.WriteLine(stackTrace.GetFrame(8).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(8).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(8).GetMethod().Name);
+//             Console.WriteLine(stackTrace.GetFrame(9).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(9).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(9).GetMethod().Name);
+//             Console.WriteLine(stackTrace.GetFrame(10).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(10).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(10).GetMethod().Name);
             Console.WriteLine("GENERATING CHUNK TOOK "+s.Elapsed);
             return chunk;
         }
@@ -1315,8 +1316,8 @@ namespace CyberCore.WorldGen
             float[] rth, AdvancedBiome b)
         {
             // var b = new MainBiome();
-            var a = await b.prePopulate(cewp, chunk, rth);
-            return a;
+            // var a = await b.prePopulate(cewp, chunk, rth);
+            return null;
             // b.PopulateChunk(chunk, rain, temp);
 
 // Console.WriteLine($"GENERATORED YO BITCH >> {chunk.X} {chunk.Z}");
@@ -1329,7 +1330,7 @@ namespace CyberCore.WorldGen
         {
             var s = new Stopwatch();
             s.Start();
-            var a = await GenerateSurfaceItems(cewp, chunk, rth);
+            var a =  GenerateSurfaceItems(cewp, chunk, rth);
             s.Stop();
             if (s.ElapsedMilliseconds > 100) Log.Info($"CHUNK ADDING SURFACE ITEMS TOOK {s.Elapsed}");
             return a;
@@ -1338,13 +1339,13 @@ namespace CyberCore.WorldGen
 // Console.WriteLine($"GENERATORED YO BITCH >> {chunk.X} {chunk.Z}");
         }
 
-        public async Task<ChunkColumn> GenerateSurfaceItems(CyberExperimentalWorldProvider cewp,
+        public ChunkColumn GenerateSurfaceItems(CyberExperimentalWorldProvider cewp,
             ChunkColumn chunk,
             float[] rth)
         {
             var b = BiomeManager.GetBiome(chunk);
             // var b = new MainBiome();
-            var a = await b.GenerateSurfaceItems(cewp, chunk, rth);
+            ChunkColumn a = null;// b.GenerateSurfaceItems(cewp, chunk, rth);
             return a;
             // b.PopulateChunk(chunk, rain, temp);
 

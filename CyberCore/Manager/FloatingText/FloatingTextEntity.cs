@@ -10,7 +10,6 @@ using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Worlds;
 using OpenAPI.Player;
-using Org.BouncyCastle.Security;
 
 namespace CyberCore.Manager.FloatingText
 {

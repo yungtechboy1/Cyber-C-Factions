@@ -41,7 +41,8 @@ namespace CyberCore.WorldGen.Populator
                 cc.SetBlock(x, yheight, z, new Air());
         }
 
-        public override async Task<ChunkColumn> GenerateSurfaceItems(CyberExperimentalWorldProvider CyberExperimentalWorldProvider, ChunkColumn chunk,
+        public override ChunkColumn GenerateSurfaceItems(CyberWorldProvider CyberExperimentalWorldProvider,
+            ChunkColumn chunk,
             float[] rth)
         {
             var c = new TreeGenerator(chunk)

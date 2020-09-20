@@ -36,17 +36,13 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
-            "MiNET": {
+            "MiNET.LevelDB": {
               "target": "Package",
-              "version": "[1.0.2159, )"
+              "version": "[1.0.36, )"
             },
             "MySqlConnector": {
               "target": "Package",
               "version": "[0.64.0, )"
-            },
-            "OpenMiNET.OpenAPI": {
-              "target": "Package",
-              "version": "[1.0.83, )"
             }
           },
           "imports": [

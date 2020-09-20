@@ -44,15 +44,16 @@ namespace CyberCore.WorldGen.Biomes
             else if (setair)
                 cc.SetBlock(x, yheight, z, new Air());
         }
-        
-         /// <summary>
+
+        /// <summary>
         /// </summary>
-        /// <param name="openExperimentalWorldProvider"></param>
+        /// <param name="o"></param>
         /// <param name="chunk"></param>
         /// <param name="rth"></param>
+        /// <param name="openExperimentalWorldProvider"></param>
         /// <returns></returns>
-        public override async Task<ChunkColumn> GenerateSurfaceItems(
-            CyberExperimentalWorldProvider o, ChunkColumn chunk, float[] rth)
+        public override ChunkColumn GenerateSurfaceItems(CyberWorldProvider o, ChunkColumn chunk,
+            float[] rth)
         {
             var tg = new TreeGenerator(chunk)
             {

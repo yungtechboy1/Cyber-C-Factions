@@ -22,8 +22,8 @@ namespace CyberCore.WorldGen.Biomes
                        BiomeQualifications.Heightvariation);
         }
 
-        public override async Task<ChunkColumn> GenerateSurfaceItems(
-            CyberExperimentalWorldProvider o, ChunkColumn chunk, float[] rth)
+        public override ChunkColumn GenerateSurfaceItems(CyberWorldProvider o, ChunkColumn chunk,
+            float[] rth)
         {
             var cc = new TreeGenerator(chunk)
             {

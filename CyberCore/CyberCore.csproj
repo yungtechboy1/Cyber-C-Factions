@@ -17,16 +17,62 @@
         </ItemGroup>-->
     <ItemGroup>
         <PackageReference Include="MySqlConnector" Version="0.64.0" />
+        <PackageReference Include="MiNET.LevelDB" Version="1.0.36.0" />
         <!--        <PackageReference Include="BouncyCastle.Crypto" Version="1.8.6.0" />-->
-                <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.83" />
+<!--                <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.83" />-->
 <!--        <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.5.0" />-->
-<!--        <Reference Include="OpenAPI">-->
-<!--            <HintPath>D:\MINET\Server\OpenAPI.dll</HintPath>-->
-<!--        </Reference>-->
-<!--        <Reference Include="MiNET">-->
-<!--            <HintPath>D:\MINET\Server\MiNET.dll</HintPath>-->
-<!--        </Reference>-->
-        <PackageReference Include="MiNET" Version="1.0.2159" />
+        <Reference Include="OpenAPI">
+            <HintPath>D:\MINET\Server\OpenAPI.dll</HintPath>
+        </Reference>
+        <Reference Include="MiNET">
+            <HintPath>D:\MINET\Server\MiNET.dll</HintPath>
+        </Reference>
+        <Reference Include="fNbt">
+            <HintPath>D:\MINET\Server\fNbt.dll</HintPath>
+        </Reference>
+        <Reference Include="log4net">
+            <HintPath>D:\MINET\Server\log4net.dll</HintPath>
+        </Reference>
+        <Reference Include="jose-jwt">
+            <HintPath>D:\MINET\Server\jose-jwt.dll</HintPath>
+        </Reference>
+        <Reference Include="LibNoise">
+            <HintPath>D:\MINET\Server\LibNoise.dll</HintPath>
+        </Reference>
+        <Reference Include="LibNoise.NetStandart">
+            <HintPath>D:\MINET\Server\LibNoise.NetStandart.dll</HintPath>
+        </Reference>
+        <Reference Include="SharpAvi">
+            <HintPath>D:\MINET\Server\SharpAvi.dll</HintPath>
+        </Reference>
+        <Reference Include="Newtonsoft.Json">
+            <HintPath>D:\MINET\Server\Newtonsoft.Json.dll</HintPath>
+        </Reference>
+        <Reference Include="SharpAvi">
+            <HintPath>D:\MINET\Server\SharpAvi.dll</HintPath>
+        </Reference>
+        <Reference Include="MiNET.astar">
+            <HintPath>D:\MINET\Server\MiNET.astar.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.IO.RecyclableMemoryStream">
+            <HintPath>D:\MINET\Server\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.TestPlatform.ObjectModel">
+            <HintPath>D:\MINET\Server\Microsoft.TestPlatform.ObjectModel.dll</HintPath>
+        </Reference>
+        <Reference Include="Portable.BouncyCastle">
+            <HintPath>D:\MINET\Server\BouncyCastle.Crypto.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Drawing.Common">
+            <HintPath>D:\MINET\Server\System.Drawing.Common.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Net.Sockets">
+            <HintPath>D:\MINET\Server\System.Net.Sockets.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Security.Cryptography.ProtectedData">
+            <HintPath>D:\MINET\Server\System.Security.Cryptography.ProtectedData.dll</HintPath>
+        </Reference>
+<!--        <PackageReference Include="MiNET" Version="1.0.2159" />-->
         <!--        <PackageReference Include="System.Management" Version="4.0.0" />-->
     </ItemGroup>
 

@@ -1,110 +1,167 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using CyberCore.Utils;
 using CyberCore.WorldGen.Biomes;
-using fNbt;
 using log4net;
-using MiNET;
-using MiNET.BlockEntities;
-using MiNET.Blocks;
-using MiNET.Items;
-using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Worlds;
-using OpenAPI.World;
 
 namespace CyberCore.WorldGen
 {
-     public class CyberWorldProvider : IWorldGenerator
-     {
-          public void Initialize(IWorldProvider worldProvider)
-          {
-               new BiomeManager();
-          }
-          public float[] getChunkRTH(ChunkColumn chunk)
-          {
-               return getChunkRTH(chunk.X, chunk.Z);
-          }
-          
-          public float[] getChunkRTH(int x, int z)
-          {
-               //CALCULATE RAIN
-               var rainnoise = new FastNoise(123123);
-               rainnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
-               rainnoise.SetFrequency(.007f); //.015
-               rainnoise.SetFractalType(FastNoise.FractalType.FBM);
-               rainnoise.SetFractalOctaves(1);
-               rainnoise.SetFractalLacunarity(.25f);
-               rainnoise.SetFractalGain(1);
-               //CALCULATE TEMP
-               var tempnoise = new FastNoise(123123 + 1);
-               tempnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
-               tempnoise.SetFrequency(.004f); //.015f
-               tempnoise.SetFractalType(FastNoise.FractalType.FBM);
-               tempnoise.SetFractalOctaves(1);
-               tempnoise.SetFractalLacunarity(.25f);
-               tempnoise.SetFractalGain(1);
-               //CALCULATE HEIGHT
-               // var heightnoise = new FastNoise(123123 + 2);
-               // heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
-               // heightnoise.SetFrequency(.015f);
-               // heightnoise.SetFractalType(FastNoise.FractalType.FBM);
-               // heightnoise.SetFractalOctaves(1);
-               // heightnoise.SetFractalLacunarity(.25f);
-               // heightnoise.SetFractalGain(1);
+    public class CyberWorldProvider : IWorldGenerator
+    {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(CyberWorldProvider));
+        private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());
+        public LevelDbProvider WP;
+
+        public void Initialize(IWorldProvider worldProvider)
+        {
+            WP = (LevelDbProvider) worldProvider;
+            new BiomeManager();
+        }
+
+        public ChunkColumn GenerateChunkColumn(ChunkCoordinates chunkCoordinates)
+        {var t = new Stopwatch();
+            t.Restart();
+            var chunk = new ChunkColumn();
+            chunk.X = chunkCoordinates.X;
+            chunk.Z = chunkCoordinates.Z;
+            var rth = getChunkRTH(chunk);
+            chunk = GenerateGround(chunk, rth);
+            chunk = GenerateSurfaceItems(chunk,rth);
+            Console.WriteLine($"CHUNK GEN TOOK {t.Elapsed} {t.ElapsedMilliseconds}");
+            return chunk;
+        }
+
+        public float[] getChunkRTH(ChunkColumn chunk)
+        {
+            return getChunkRTH(chunk.X, chunk.Z);
+        }
+
+        public float[] getChunkRTH(int x, int z)
+        {
+            //CALCULATE RAIN
+            var rainnoise = new FastNoise(123123);
+            rainnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+            rainnoise.SetFrequency(.007f); //.015
+            rainnoise.SetFractalType(FastNoise.FractalType.FBM);
+            rainnoise.SetFractalOctaves(1);
+            rainnoise.SetFractalLacunarity(.25f);
+            rainnoise.SetFractalGain(1);
+            //CALCULATE TEMP
+            var tempnoise = new FastNoise(123123 + 1);
+            tempnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+            tempnoise.SetFrequency(.004f); //.015f
+            tempnoise.SetFractalType(FastNoise.FractalType.FBM);
+            tempnoise.SetFractalOctaves(1);
+            tempnoise.SetFractalLacunarity(.25f);
+            tempnoise.SetFractalGain(1);
+            //CALCULATE HEIGHT
+            // var heightnoise = new FastNoise(123123 + 2);
+            // heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+            // heightnoise.SetFrequency(.015f);
+            // heightnoise.SetFractalType(FastNoise.FractalType.FBM);
+            // heightnoise.SetFractalOctaves(1);
+            // heightnoise.SetFractalLacunarity(.25f);
+            // heightnoise.SetFractalGain(1);
 
 
-               var rain = rainnoise.GetNoise(x, z) + 1;
-               var temp = tempnoise.GetNoise(x, z) + 1;
-               var height = GetNoise(x, z, 0.015f, 2);
-               return new[] {rain, temp, height};
-          }
-          private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());
-          public static float GetNoise(int x, int z, float scale, int max)
-          {
-               return (float) ((OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f));
-               // var heightnoise = new FastNoise(123123 + 2);
-               // heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
-               // heightnoise.SetFrequency(scale);
-               // heightnoise.SetFractalType(FastNoise.FractalType.FBM);
-               // heightnoise.SetFractalOctaves(1);
-               // heightnoise.SetFractalLacunarity(2);
-               // heightnoise.SetFractalGain(.5f);
-               // return (heightnoise.GetNoise(x, z)+1 )*(max/2f);
-               // return (float)(OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f);
-          }
+            var rain = rainnoise.GetNoise(x, z) + 1;
+            var temp = tempnoise.GetNoise(x, z) + 1;
+            var height = GetNoise(x, z, 0.015f, 2);
+            return new[] {rain, temp, height};
+        }
 
-          public ChunkColumn GenerateChunkColumn(ChunkCoordinates chunkCoordinates)
-          {var chunk = new ChunkColumn();
-               chunk.X = chunkCoordinates.X;
-               chunk.Z = chunkCoordinates.Z;
-               var rth = getChunkRTH(chunk);
-             chunk=  GenerateGround(chunk,rth);
-             chunk=  GenerateSurfaceItems();
-             return chunk;
-          }
+        public static float GetNoise(int x, int z, float scale, int max)
+        {
+            return (float) ((OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f));
+            // var heightnoise = new FastNoise(123123 + 2);
+            // heightnoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+            // heightnoise.SetFrequency(scale);
+            // heightnoise.SetFractalType(FastNoise.FractalType.FBM);
+            // heightnoise.SetFractalOctaves(1);
+            // heightnoise.SetFractalLacunarity(2);
+            // heightnoise.SetFractalGain(.5f);
+            // return (heightnoise.GetNoise(x, z)+1 )*(max/2f);
+            // return (float)(OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f);
+        }
 
-          private ChunkColumn GenerateGround(ChunkColumn chunk, float[] rth)
-          {
-               throw new NotImplementedException();
-          }
+        private ChunkColumn GenerateGround(ChunkColumn chunk, float[] rth)
+        {
+            var b = BiomeManager.GetBiome(chunk);
+            chunk = b.prePopulate(this, chunk, rth).Result;
+            return chunk;
+        }
 
-          public virtual ChunkColumn GenerateGround()
-          {
-               
-          }
+        public int getBlockHeight(int x, int z)
+        {
+            var cx = x >> 4;
+            var cz = z >> 4;
+            var tx = x % 16;
+            var tz = z % 16;
+            if (tx < 0) tx += 16;
+            if (tz < 0) tz += 16;
+            // Console.WriteLine($" GETTING BLOCK HEIGHT CHUNKCORDZ: {cx} {cz} || {tx} {tz} || FROM {x} {z}");
+            var tb = BiomeManager.GetBiome(new ChunkCoordinates(cx, cz));
+            var c = WP.GenerateChunkColumn(new ChunkCoordinates(cx, cz), true);
+            if (c != null)
+                // Console.WriteLine($"{tx} ||| {tz}");
+                // Console.WriteLine($"DA CHUNK AT {cx} {cz} WAS ALREADY GENERATED AND AT {x} {z} >> {tx} {tz} >> HAS {c.GetHeight(tx, tz)}^^^ ");
+                return c.GetHeight(tx, tz);
 
-          public virtual ChunkColumn GenerateSurfaceItems()
-          {
-               
-          }
-     }
+            return tb.GetSh(tx, tz, cx, cz);
+        }
+
+        public SmoothingMap HandleGeneration(int[,] ints, ChunkCoordinates c,
+            CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
+        {
+            var sm = new SmoothingMap(c, ints);
+            //Console.WriteLine($"YAAAAAA: >>>>");
+
+
+            var d = AdvancedBiome.BorderChunkDirection.North;
+            CheckAndAddChunkDirection(d, c, sm, cyberExperimentalWorldProvider);
+            d = AdvancedBiome.BorderChunkDirection.East;
+            CheckAndAddChunkDirection(d, c, sm, cyberExperimentalWorldProvider);
+            d = AdvancedBiome.BorderChunkDirection.South;
+            CheckAndAddChunkDirection(d, c, sm, cyberExperimentalWorldProvider);
+            d = AdvancedBiome.BorderChunkDirection.West;
+            CheckAndAddChunkDirection(d, c, sm, cyberExperimentalWorldProvider);
+            d = AdvancedBiome.BorderChunkDirection.NE;
+            CheckAndAddChunkDirection(d, c, sm, cyberExperimentalWorldProvider);
+            d = AdvancedBiome.BorderChunkDirection.SE;
+            CheckAndAddChunkDirection(d, c, sm, cyberExperimentalWorldProvider);
+            d = AdvancedBiome.BorderChunkDirection.SW;
+            CheckAndAddChunkDirection(d, c, sm, cyberExperimentalWorldProvider);
+            d = AdvancedBiome.BorderChunkDirection.NW;
+            CheckAndAddChunkDirection(d, c, sm, cyberExperimentalWorldProvider);
+
+            return sm;
+        }
+
+        private void CheckAndAddChunkDirection(AdvancedBiome.BorderChunkDirection b, ChunkCoordinates cordz,
+            SmoothingMap sm,
+            CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
+        {
+            var sischunkcords = new ChunkCoordinates(cordz.X + b.GetX(), cordz.Z + b.GetZ());
+            var sischunkbiome = BiomeManager.GetBiome(sischunkcords);
+            // if (sischunkbiome.LocalId == 10) return;
+            sm.AddChunk(cordz + new ChunkCoordinates(b.GetX(), b.GetZ()),
+                sischunkbiome.GenerateChunkHeightMap(sischunkcords, cyberExperimentalWorldProvider));
+        }
+
+        public virtual ChunkColumn GenerateSurfaceItems(ChunkColumn chunk, float[] rth)
+        {
+            var s = new Stopwatch();
+            s.Start();
+            var b = BiomeManager.GetBiome(chunk);
+            var a = b.GenerateSurfaceItems(this, chunk, rth);
+            s.Stop();
+            if (s.ElapsedMilliseconds > 100) Log.Info($"CHUNK ADDING SURFACE ITEMS TOOK {s.Elapsed}");
+            return a;
+            
+        }
+    }
 }
 //     public class CyberExperimentalWorldProvider : IWorldGenerator
 //     {
@@ -1242,7 +1299,7 @@ namespace CyberCore.WorldGen
 // // Console.WriteLine($"GENERATORED YO BITCH >> {chunk.X} {chunk.Z}");
 //         }
 //
-//         public async Task<ChunkColumn> GenerateSurfaceItems(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
+//         public ChunkColumn GenerateSurfaceItems(CyberExperimentalWorldProvider CyberExperimentalWorldProvider,
 //             ChunkColumn chunk,
 //             float[] rth)
 //         {

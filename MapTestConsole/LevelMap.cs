@@ -109,8 +109,8 @@ namespace MapTestConsole
                         var nc = new ChunkColumn();
                         nc.X = sischunkcords.X;
                         nc.Z = sischunkcords.Z;
-                        sischunkbiome.GenerateChunkFromSmoothOrder(C, nc,
-                            BiomeManager.getChunkRTH(sischunkcords), mm);
+                        // sischunkbiome.GenerateChunkFromSmoothOrder(C, nc,
+                        //     BiomeManager.getChunkRTH(sischunkcords), mm);
                         C._chunkCache[sischunkcords] = nc;
                         l.Add(f2);
                         l.Add(f3);
@@ -137,8 +137,8 @@ namespace MapTestConsole
                         var nc = new ChunkColumn();
                         nc.X = sischunkcords.X;
                         nc.Z = sischunkcords.Z;
-                        sischunkbiome.GenerateChunkFromSmoothOrder(C, nc,
-                            BiomeManager.getChunkRTH(sischunkcords), mm);
+                        // sischunkbiome.GenerateChunkFromSmoothOrder(C, nc,
+                        //     BiomeManager.getChunkRTH(sischunkcords), mm);
                         C._chunkCache[sischunkcords] = nc;
                         l.Add(f2);
                         l.Add(f3);

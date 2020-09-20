@@ -9,7 +9,6 @@ using CyberCore.Utils.Data;
 using MiNET;
 using MiNET.Utils;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Crypto.Digests;
 
 namespace CyberCore.Utils
 {
