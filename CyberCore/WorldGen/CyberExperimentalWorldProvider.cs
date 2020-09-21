@@ -124,9 +124,11 @@ namespace CyberCore.WorldGen
 
         public void Run(object o)
         {
+            Console.WriteLine("RE-ADDER RAN==============22222222===========================");
+            Console.WriteLine($"RE-ADDER RAN==============22222222==========================={_isInitialized} |||| {Level != null}");
             if (Level != null && _isInitialized)
             {
-                // Log.Info("RE-ADDER RAN=========================================");
+                Log.Info("RE-ADDER RAN=========================================");
                 List<String> Completed = new List<string>();
                 foreach (var v in new Dictionary<String, List<Block>>(BlocksToBeAddedDuringChunkGeneration))
                 {
@@ -143,8 +145,10 @@ namespace CyberCore.WorldGen
                             if (ax < 0) ax += 16;
                             int az = (ccc.Z % 16);
                             if (az < 0) az += 16;
-                            if (c.GetBlockId(ax, ccc.Y, az) != new Wood().Id ||
-                                c.GetBlockId(ax, ccc.Y, az) != new Log().Id)
+                            var bb = c.GetBlockObject(ax, ccc.Y, az);
+                            var bid = bb.Id;
+                            if (bid != new Wood().Id &&
+                                bid != new Log().Id || bb.IsTransparent)
                                 c.SetBlock(ax, ccc.Y, az, block);
                             // Log.Info($"=================================SETTING BLOCK AT {c} || {ax} {az} || {block.Id}");
                         }
@@ -332,6 +336,8 @@ namespace CyberCore.WorldGen
         public async Task<ChunkColumn> OpenGenerateChunkColumn(ChunkCoordinates chunkCoordinates, bool smooth = true,
             bool cacheOnly = false)
         {
+            var s = new Stopwatch();
+            s.Restart();
             ChunkColumn cachedChunk;
             if (_chunkCache.TryGetValue(chunkCoordinates, out cachedChunk)) return cachedChunk;
 
@@ -364,6 +370,21 @@ namespace CyberCore.WorldGen
             //     Console.WriteLine($"{chunkCoordinates} WAS NOT SMOOTH BUT WAS BORDER CHUNK");
             // }
             chunk = PreGenerateSurfaceItems(this, chunk, null).Result;
+            // StackTrace stackTrace = new StackTrace(); 
+// Get calling method name
+            // Console.WriteLine(stackTrace.GetFrame(1).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(1).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(1).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(2).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(2).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(2).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(3).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(3).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(3).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(4).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(4).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(4).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(5).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(5).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(5).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(6).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(6).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(6).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(7).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(7).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(7).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(8).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(8).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(8).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(9).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(9).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(9).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(10).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(10).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(10).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(11).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(11).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(11).GetMethod().Name);
+            // Console.WriteLine(stackTrace.GetFrame(12).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(12).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(12).GetMethod().Name);
+            Console.WriteLine("GENERATING CHUNK TOOK "+s.Elapsed);
             return chunk;
         }
 
@@ -580,7 +601,7 @@ namespace CyberCore.WorldGen
                 testTime.Stop(); // STOP
 
                 Log.Warn(
-                    $"Took {time.ElapsedMilliseconds}ms to save. And {testTime.ElapsedMilliseconds}ms to generate bytes from NBT");
+                    $"Took {time.Elapsed} {time.ElapsedMilliseconds}ms to save. And {testTime.Elapsed}ms to generate bytes from NBT");
             }
 
             bool a = false;
@@ -777,6 +798,7 @@ namespace CyberCore.WorldGen
                 {
                     byte addd = 0;
                     var anvilIndex = y * 16 * 16 + z * 16 + x;
+                    // var a = subChunk.GetBlockId()
                     var b = subChunk.GetBlockObject(x, y, z);
                     int bid = b.Id;
                     byte bmeta = b.Metadata;
@@ -800,9 +822,9 @@ namespace CyberCore.WorldGen
                     // if(blockId == 211 || blockId == 17)Console.WriteLine($" >> |||||||| {(bid >> 8)}");
 
                     blocks[anvilIndex] = (byte) bid;
-                    var brid = b.GetRuntimeId();
-                    SetNibble4(runtimeid, anvilIndex, (byte) (brid & 255));
-                    SetNibble4(runtimeid2, anvilIndex, (byte) (brid >> 8));
+                    // var brid = b.GetRuntimeId();
+                    // SetNibble4(runtimeid, anvilIndex, (byte) (brid & 255));
+                    // SetNibble4(runtimeid2, anvilIndex, (byte) (brid >> 8));
                     SetNibble4(data, anvilIndex, bmeta);
                     SetNibble4(add, anvilIndex, addd);
                     SetNibble4(blockLight, anvilIndex, subChunk.GetBlocklight(x, y, z));

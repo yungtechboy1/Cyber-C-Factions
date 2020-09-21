@@ -7,6 +7,7 @@ using CyberCore.Utils;
 using log4net;
 using log4net.Util.TypeConverters;
 using MiNET.Blocks;
+using MiNET.Items;
 using MiNET.Utils;
 using MiNET.Worlds;
 using OpenAPI.World;
@@ -15,6 +16,11 @@ namespace CyberCore.WorldGen.Biomes
 {
     public abstract class AdvancedBiome : ICloneable
     {
+        public byte MCPEBiomeID
+        {
+            get;
+            protected set;
+        } = 255;
         protected int Waterlevel = 85;
         private static readonly ILog Log = LogManager.GetLogger(typeof(AdvancedBiome));
 
@@ -63,30 +69,39 @@ namespace CyberCore.WorldGen.Biomes
             HeightNoise.SetFractalGain(1);
             Name = name;
         }
-
+private Block _Stone = new Stone();
+private Random RDM = new Random();
         public void TryOreGeneraton(ChunkColumn cc, int x, int z, int yheight, Block b = null)
         {
-            if (b == null) b = new Stone();
-            Random r = new Random();
-            int v = r.Next(100);
-            if (v >= 25)
+            if (b == null) b = (Block) _Stone.Clone();
+            int v = RDM.Next(100 + yheight);
+            if (v <= 15) //15
             {
-                r = new Random(2);
-                v = r.Next(50);
-                if (v <= 30) //30%
+                // r = new Random(2 + x + z + yheight * 2);
+                v = RDM.Next(500) / 10; //Max 50;
+//Iron 30% 50*.3=15
+                if (v < 15)
                     cc.SetBlock(x, yheight, z, new IronOre());
-                else if (v <= 45) //15%
+//Gold 15% = 7.5 = 7
+                else if (v < 22)
                     cc.SetBlock(x, yheight, z, new GoldOre());
-                else if (v <= 60) //15%
+//Lapis 15% = 7.5 = 7
+                else if (v < 29)
                     cc.SetBlock(x, yheight, z, new LapisOre());
-                else if (v <= 75) //15%
+//Redstone 15% = 7.5 = 7
+                else if (v < 36)
                     cc.SetBlock(x, yheight, z, new RedstoneOre());
-                else if (v <= 80) //5%
+//Diamond 5% = 2.5 = 3 
+                else if (v < 39)
                     cc.SetBlock(x, yheight, z, new DiamondOre());
-                else if (v <= 25) //2%
-                    cc.SetBlock(x, yheight, z, new EmeraldBlock());
+//Emerald 2% = 1
+                else if (v < 40)
+                    cc.SetBlock(x, yheight, z, new EmeraldOre());
                 else
-                    cc.SetBlock(x, yheight, z, new PolishedBlackstoneDoubleSlab());
+                {
+                    cc.SetBlock(x, yheight, z, b);
+                }
+                //TODO Add Chance Section for Unique Dirt Types... Try to use Noise map
             }
             else
             {
@@ -308,10 +323,10 @@ namespace CyberCore.WorldGen.Biomes
 
             var a = GenerateUseabelHeightMap(CyberExperimentalWorldProvider, chunk);
             PopulateChunk(CyberExperimentalWorldProvider, chunk, rth, a);
-            
+
             if (BorderChunk)
             {
-                chunk.SetBlock(7,150,7,new EmeraldBlock());
+                chunk.SetBlock(7, 150, 7, new EmeraldBlock());
             }
 
             PostPopulate(CyberExperimentalWorldProvider, chunk, rth, a);
@@ -347,6 +362,7 @@ namespace CyberCore.WorldGen.Biomes
                     {
                         GenerateVerticalColumn(y, ints[x, z], x, z, c);
                     }
+                   if(MCPEBiomeID != 255) c.SetBiome(x,z,MCPEBiomeID);
 
                     c.SetHeight(x, z, (short) ints[x, z]);
                 }
@@ -439,6 +455,121 @@ namespace CyberCore.WorldGen.Biomes
             return r;
         }
 
+        public async Task<ChunkColumn> GenerateTree(ChunkColumn chunk, float minrain = .5f, int treerandom = 3)
+        {
+            // Console.WriteLine($"TRYINGGGG FORRR TEEEEEEEEEEEEEEEEEEEEEEEEEEEE {cx} {cz}|| {x} {z}");
+            var c = chunk;
+            var ffy = 0;
+
+            var cx = chunk.X;
+            var cz = chunk.Z;
+            var rx = new Random().Next(0, 15);
+            var rz = new Random().Next(0, 15);
+            var x = cx * 16 + rx;
+            var z = cz * 16 + rz;
+            int fy = chunk.GetHeight(rx, rz);
+            var max = 20;
+            var rain = BiomeManager.GetRainNoiseBlock(x, z) * 1.25f;
+            if (rain > minrain)
+            {
+                // ccc++;
+                var runamt = (int) Math.Ceiling(rain * 10f);
+                // Console.WriteLine($"TRY AMOUNT IS {runamt}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+                for (var ttry = 0; ttry < runamt; ttry++)
+                    //1 In 16 Chance
+                    if (new Random().Next(0, treerandom) == 0)
+                    {
+                        //RESET VALUES
+                        rx = new Random().Next(0, 15);
+                        rz = new Random().Next(0, 15);
+                        x = cx * 16 + rx;
+                        z = cz * 16 + rz;
+                        fy = chunk.GetHeight(rx, rz);
+                        //ACTUALLY RUN NOW 
+                        var w = RNDM.Next(3, 5);
+                        var h = RNDM.Next(6, 14);
+                        var v = h - w;
+                        var vv = 0;
+                        ffy = fy + h;
+                        for (var hh = 1; hh < h; hh++)
+                        {
+                            c.SetBlock(rx, fy + hh, rz, new Wood
+                            {
+                                WoodType = "birch"
+                            });
+                            //Bottom Half Leaves
+                            if (hh > v)
+                            {
+                                vv++;
+                                var ww = vv;
+                                //Vertically Covers The Leaves
+                                for (var teir = 1; teir <= ww; teir++)
+                                    //
+                                for (var teirn = 1; teirn <= teir; teirn++)
+                                for (var xx = -teirn; xx <= teirn; xx++)
+                                for (var zz = -teirn; zz <= teirn; zz++)
+                                {
+                                    if (xx == 0 && zz == 0) continue;
+
+                                    if (rx + xx >= 0 && rx + xx < 16 && rz + zz >= 0 && rz + zz < 16)
+                                        // Log.Error($"PUTTIN LEAVES AT {rx+xx} , {fy+ hh} , {rz+zz} || REAL {x+xx} , {fy+ hh} , {z+zz} || {cx} {cz}");
+                                        c.SetBlock(rx + xx, fy + hh, rz + zz, new Leaves
+                                        {
+                                            OldLeafType = "jungle"
+                                        });
+                                    else
+                                        // Log.Error($"PUTTIN LATEEEEEEEEEEEEE LEAVES AT {x+xx} , {fy+ hh} , {z+zz} || {cx} {cz} || {(x+xx >> 4)} {z+zz >> 4} || X&Z {xx} {zz} || {(x+xx)%16}  {(z+zz)%16} ");
+
+                                        CyberExperimentalWorldProvider
+                                            .AddBlockToBeAddedDuringChunkGeneration(
+                                                new ChunkCoordinates((x + xx) >> 4, (z + zz) >> 4), new Leaves
+                                                {
+                                                    OldLeafType = "jungle",
+                                                    Coordinates = new BlockCoordinates(x + xx, fy + hh, z + zz)
+                                                });
+                                }
+                            }
+                        }
+
+                        // Top Leaves
+                        for (var vvv = vv; vvv > 0; vvv--)
+                        {
+                            for (var teir = vvv; teir > 0; teir--)
+                            for (var teirn = 1; teirn <= teir; teirn++)
+                            for (var xx = -teirn; xx <= teirn; xx++)
+                            for (var zz = -teirn; zz <= teirn; zz++)
+                            {
+                                // if(xx == 0 && zz == 0)continue;
+
+                                if (rx + xx >= 0 && rx + xx < 16 && rz + zz >= 0 && rz + zz < 16)
+                                    c.SetBlock(rx + xx, ffy, rz + zz, new Leaves
+                                    {
+                                        OldLeafType = "jungle"
+                                    });
+
+                                else
+                                    CyberExperimentalWorldProvider
+                                        .AddBlockToBeAddedDuringChunkGeneration(
+                                            new ChunkCoordinates((x + xx) >> 4, (z + zz) >> 4), new Leaves
+                                            {
+                                                OldLeafType = "jungle",
+                                                Coordinates = new BlockCoordinates(x + xx, ffy, z + zz)
+                                            });
+                            }
+
+                            ffy++;
+                        }
+
+                        for (var teir = 0; teir <= v; teir++)
+                        {
+                        }
+                    }
+            }
+
+            return chunk;
+        }
+
+
         public SmoothingMap HandleGeneration(int[,] ints, ChunkCoordinates c,
             CyberExperimentalWorldProvider cyberExperimentalWorldProvider)
         {
@@ -501,8 +632,6 @@ namespace CyberCore.WorldGen.Biomes
             return m;
         }
 
-    
-       
 
         /// <summary>
         /// 2x Square Smoothing donse not work as goon :(
@@ -556,7 +685,6 @@ namespace CyberCore.WorldGen.Biomes
         public void GenerateChunkFromSmoothOrder(CyberExperimentalWorldProvider cyberExperimentalWorldProvider,
             ChunkColumn nc, float[] rth, int[,] mm, bool xtra = true)
         {
-
             // if (xtra)
             // {
             //     SmoothingMap sm = HandleGeneration(mm, new ChunkCoordinates(nc.X, nc.Z),
@@ -570,7 +698,7 @@ namespace CyberCore.WorldGen.Biomes
             // }
 
             PopulateChunk(cyberExperimentalWorldProvider, nc, rth, mm);
-            nc.SetBlock(7,140,7,new RedstoneBlock());
+            nc.SetBlock(7, 140, 7, new RedstoneBlock());
             PostPopulate(cyberExperimentalWorldProvider, nc, rth, mm);
         }
 
@@ -683,9 +811,6 @@ namespace CyberCore.WorldGen.Biomes
         };
 
 
-
-        
-
         private int[] SmoothStrip(int[] fillstripz)
         {
             for (int i = 0; i < fillstripz.Length - 1; i++)
@@ -736,7 +861,6 @@ namespace CyberCore.WorldGen.Biomes
         }
 
 
-
         public static float GetNoise(int x, int z, float scale, int mmax)
         {
             var heightnoise = new FastNoise(123123 + 2);
@@ -776,7 +900,8 @@ namespace CyberCore.WorldGen.Biomes
         {
             return chunk;
         }
-         /// <summary>
+
+        /// <summary>
         /// DO NOT USE
         /// </summary>
         /// <returns></returns>
@@ -793,7 +918,7 @@ namespace CyberCore.WorldGen.Biomes
             return a;
         }
 
- 
+
         public int[,] LerpX(int[,] f22, bool ew = false)
         {
             int[,] r = new int[f22.GetLength(0), f22.GetLength(1)];

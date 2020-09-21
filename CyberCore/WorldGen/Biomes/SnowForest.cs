@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CyberCore.WorldGen;
 using CyberCore.WorldGen.Biomes;
 using MiNET.Blocks;
@@ -11,6 +12,7 @@ namespace CyberCore.WorldGen.Biomes
         public SnowForest() : base("SnowForest", new BiomeQualifications(.5f, 1.25f, 0, 0.5f, .75f, 1.25f, 30))
         {
             LocalId = 12;
+            MCPEBiomeID=30;
         }
 
         public override int GetSh(int x, int z, int cx, int cz)
@@ -20,38 +22,99 @@ namespace CyberCore.WorldGen.Biomes
                        BiomeQualifications.Heightvariation);
         }
 
-        //     public override void PopulateChunk(CyberExperimentalWorldProvider CyberExperimentalWorldProvider, ChunkColumn c,
-        //         float[] rth, int[,] ints)
-        //     {
-        //         for (var x = 0; x < 16; x++)
-        //         for (var z = 0; z < 16; z++)
-        //         {
-        //             var sh = GetSH(x, z, c.X, c.Z);
-        //         for (var y = 0; y < 255; y++)
-        //         {
-        //             if (y == 0)
-        //             {
-        //                 c.SetBlock(x, y, z, new Bedrock());
-        //                 continue;
-        //             }
-        //
-        //             
-        //             c.SetHeight(x, z, (short) y);
-        //             break;
-        //         }
-        //     }
-        // }
-
-        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc, bool setair)
+        public override async Task<ChunkColumn> GenerateSurfaceItems(
+            CyberExperimentalWorldProvider o, ChunkColumn chunk, float[] rth)
         {
-            if (yheight < maxheight-1)
+            var cc = new TreeGenerator(chunk)
             {
-                cc.SetBlock(x, yheight, z, new Stone());
-            }
-            else if(yheight < maxheight)
-                cc.SetBlock(x, yheight, z, new Wool() {Color = "yellow"});
-            else if(setair)
-                cc.SetBlock(x,yheight,z,new Air());
+                TreeRandom = 10,
+                MaxTreeHeight = 20,
+
+                // MaxTreeWidth = 8
+            };
+            ((Leaves) cc.LeavesItem).OldLeafType = "jungle";
+            ((Wood) cc.WoodItem).WoodType = "jungle";
+            var c = cc.run();
+            c = new GrassGenerator(c)
+            {
+                GrassRandom = 11,
+                GrassGreaterThan = 8,
+                RainMultiplier = 1.3f
+                // TreeRandom = 60
+            }.run();
+            // c = new TallGrassGenerator(c)
+            // {
+            //     GrassRandom = 10,
+            //     GrassGreaterThan = 6
+            // }.run();
+            var f = new FlowerGenerator(c)
+            {
+                FlowerRandom = 100,
+                FlowerGreaterThan = 60
+            };
+            f.FlowerChances.Add(new RedFlower()
+            {
+                FlowerType = "tulip_pink"
+            }, 10);
+            f.FlowerChances.Add(new RedFlower()
+            {
+                FlowerType = "houstonia"
+            }, 10);
+            f.FlowerChances.Add(new RedFlower()
+            {
+                FlowerType = "lily_of_the_valley"
+            }, 10);
+            f.FlowerChances.Add(new RedFlower()
+            {
+                FlowerType = "allium"
+            }, 10);
+            f.FlowerChances.Add(new RedFlower()
+            {
+                FlowerType = "poppy"
+            }, 10);
+            f.FlowerChances.Add(new RedFlower()
+            {
+                FlowerType = "cornflower"
+            }, 10);
+            f.FlowerChances.Add(new RedFlower()
+            {
+                FlowerType = "tulip_orange"
+            }, 10);
+            f.FlowerChances.Add(new RedFlower()
+            {
+                FlowerType = "oxeye"
+            }, 10);
+            f.FlowerChances.Add(new RedFlower()
+            {
+                FlowerType = "orchid"
+            }, 10);
+
+            c = f.run();
+            c = new DoublePlantGenerator(c)
+            {
+                FlowerRandom = 100,
+                FlowerGreaterThan = 40
+            }.run();
+            return c;
+        }
+        
+        public override void GenerateVerticalColumn(int yheight, int maxheight, int x, int z, ChunkColumn cc,
+            bool setair)
+        {
+            if (yheight <= 1)
+                cc.SetBlock(x, yheight, z, new Bedrock());
+            if (yheight < maxheight-1)
+            
+                TryOreGeneraton(cc, x, z, yheight);
+            
+            if (yheight == maxheight-1)
+            
+                cc.SetBlock(x, yheight, z, new Grass());
+            if (yheight == maxheight)
+            
+                cc.SetBlock(x, yheight, z, new SnowLayer());
+            else if (setair)
+                cc.SetBlock(x, yheight, z, new Air());
         }
     }
 }

@@ -17,10 +17,12 @@ namespace CyberCore.WorldGen
 
         private static int N = 0;
         private static readonly Dictionary<int, AdvancedBiome> BiomeDict = new Dictionary<int, AdvancedBiome>();
+        private static AdvancedBiome TEST = new SnowyIcyChunk();
 
         public BiomeManager()
         {
-            // AddBiome(new MainBiome());
+            // AddBiome(TEST);
+            // // AddBiome(new MainBiome());
             AddBiome(new RainForestBiome());
             AddBiome(new ForestBiome());
             AddBiome(new SnowyIcyChunk());
@@ -29,9 +31,9 @@ namespace CyberCore.WorldGen
             AddBiome(new DesertLake());
             AddBiome(new Mountains());//7
             AddBiome(new Plains());
-            AddBiome(new HighPlains());
+            // AddBiome(new HighPlains());
             AddBiome(new WaterBiome());
-            // AddBiome(new BeachBiome());
+            // // AddBiome(new BeachBiome());
             AddBiome(new SnowForest());
             AddBiome(new SnowTundra());
             AddBiome(new TropicalRainForest());
@@ -190,13 +192,14 @@ namespace CyberCore.WorldGen
                     X = chunk.X + xx,
                     Z = chunk.Z + zz
                 };
-                var tb = GetBiome(cc,false);
+                var tb = GetBiome(cc, false);
                 if (tb.LocalId != biome.LocalId)
                 {
                     biome.BorderChunk = true;
                     break;
                 }
             }
+
             biome = biome.DoubleCheckCords(chunk);
             // Console.WriteLine($"DONE WITH ADVANCED STUFFr");
         }
@@ -215,11 +218,11 @@ namespace CyberCore.WorldGen
             foreach (AdvancedBiome bb in Biomes)
                 if (bb.Check(rth))
                 {
-                   AdvancedBiome biome = (AdvancedBiome) bb.CClone();
+                    AdvancedBiome biome = (AdvancedBiome) bb.CClone();
                     // Console.WriteLine($"AFTER CLONE {biome.BorderChunkDirections.Count} VS OLD {bb.BorderChunkDirections.Count}");
-                    if(doadvancedstuff)DoAdvancedStuff(ref biome, chunk);
+                    if (doadvancedstuff) DoAdvancedStuff(ref biome, chunk);
                     // Console.WriteLine($"BIOMEMANAGER9: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned {biome.Name}");
-                    if(doadvancedstuff)BiomeCache[chunk] = biome;
+                    if (doadvancedstuff) BiomeCache[chunk] = biome;
                     return biome;
                 }
 
@@ -227,13 +230,13 @@ namespace CyberCore.WorldGen
             // Console.WriteLine($"BIOMEMANAGER10: GETTING BIOME BY RTH {rth} {rth[0]} {rth[1]} {rth[2]} returned WATTTTTTTTTTTTTTTTTTTTTTTTTT");
             // return new MainBiome();
             // return new WaterBiome();
-            var bbb = new WaterBiome().CClone();
+            // var bbb = new WaterBiome().CClone();
+            var bbb = TEST.CClone();
             // var bbb = new DesertLake().CClone();
             // bbb.LocalId = 7;
-            if(doadvancedstuff)DoAdvancedStuff(ref bbb, chunk);
-            if(doadvancedstuff)BiomeCache[chunk] = bbb;
+            if (doadvancedstuff) DoAdvancedStuff(ref bbb, chunk);
+            if (doadvancedstuff) BiomeCache[chunk] = bbb;
             return bbb;
         }
-
     }
 }

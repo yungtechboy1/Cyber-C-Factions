@@ -193,18 +193,16 @@ namespace CyberCore.WorldGen
                 if(lv == 0 || nv == 0 || v == 0) continue;
                 //DOWN OR UP
                 int du = nv - lv;
-                int dd = (int) Math.Ceiling(du / 3f);
                 //UP
-                // if (du > 0)
-                // {
-                //     v = lv + 1;
-                // }
-                // else if (du < 0)
-                // {
-                //     v = lv - 1;
-                // }
-                // else v = lv;
-                v = lv+dd;
+                if (du > 0)
+                {
+                    v = lv + 1;
+                }
+                else if (du < 0)
+                {
+                    v = lv - 1;
+                }
+                else v = lv;
 
                 Map[i,z] = v;
             }
@@ -220,18 +218,16 @@ namespace CyberCore.WorldGen
                 if(lv == 0 || nv == 0 || v == 0) continue;
                 //DOWN OR UP
                 int du = nv - lv;
-                int dd = (int) Math.Ceiling(du / 3f);
-                // //UP
-                // if (du > 0)
-                // {
-                //     v = lv + 1;
-                // }
-                // else if (du < 0)
-                // {
-                //     v = lv - 1;
-                // }
-                // else v = lv;
-                v = lv+dd;
+                //UP
+                if (du > 0)
+                {
+                    v = lv + 1;
+                }
+                else if (du < 0)
+                {
+                    v = lv - 1;
+                }
+                else v = lv;
 
                 Map[x,i] = v;
             }

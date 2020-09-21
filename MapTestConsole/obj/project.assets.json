@@ -269,7 +269,7 @@
           }
         }
       },
-      "MiNET/1.0.2157": {
+      "MiNET/1.0.2159": {
         "type": "package",
         "dependencies": {
           "LibNoise.NetStandart": "0.2.0",
@@ -1885,7 +1885,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
-          "MiNET": "1.0.2157",
+          "MiNET": "1.0.2159",
           "MySqlConnector": "0.64.0",
           "OpenMiNET.OpenAPI": "1.0.83"
         },
@@ -2197,15 +2197,15 @@
         "version.txt"
       ]
     },
-    "MiNET/1.0.2157": {
-      "sha512": "Jf61phr9B7vQlD8OKs5ngf4iBsO7KrGht9ufLA0JnNjRUZuRxhWeqr0/hDyK5w3+N6vYG+vVPjw5qX/cL2Y1hQ==",
+    "MiNET/1.0.2159": {
+      "sha512": "nxeSBjTuu4L96b2Rdg7tNTDAcyonEA7TVOE2oLTnqumsRiiL5AfSi5Jg0Lpn/tnLBff/3lwMpCUp24mjS23GgA==",
       "type": "package",
-      "path": "minet/1.0.2157",
+      "path": "minet/1.0.2159",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netcoreapp3.1/MiNET.dll",
-        "minet.1.0.2157.nupkg.sha512",
+        "minet.1.0.2159.nupkg.sha512",
         "minet.nuspec"
       ]
     },
@@ -6133,8 +6133,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\carlt\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\carlt\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -6145,18 +6144,13 @@
       "packagesPath": "C:\\Users\\carlt\\.nuget\\packages\\",
       "outputPath": "F:\\Projects\\Cyber-C-Factions\\MapTestConsole\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\carlt\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\carlt\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -6191,7 +6185,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
       }
     }
   },
