@@ -381,7 +381,8 @@ namespace CyberCore.WorldGen
                 nc.Z = sischunkcords.Z;
                 sischunkbiome.GenerateChunkFromSmoothOrder(cyberExperimentalWorldProvider, nc,
                     BiomeManager.getChunkRTH(sischunkcords), data,xtra);
-                // cyberExperimentalWorldProvider.WP._chunkCache[sischunkcords] = nc;
+                //TODO
+                cyberExperimentalWorldProvider.WP._chunkCache[sischunkcords] = nc;
                 // return data;
             }
 
