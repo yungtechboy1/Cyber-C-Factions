@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CyberCore.Manager.Forms;
+using CyberCore.Utils;
 using MiNET;
 using MiNET.UI;
 using MiNET.Utils;
@@ -13,7 +14,7 @@ namespace CyberCore.Manager.Factions.Windows
         {
         }
 
-        public FactionListWindow(String fac = null, int page = 1) : base(MainForm.Faction_List_Window,
+        public FactionListWindow(CorePlayer cp ,String fac = null, int page = 1) : base(MainForm.Faction_List_Window,
             "Please Choose a faction to get more info about")
         {
             Content = $"Choose a faction to learn more info about that faction!";
@@ -54,6 +55,10 @@ namespace CyberCore.Manager.Factions.Windows
                     {
                         a += ChatColors.Red + "[P] ";
                     }
+                    else if (cp.getFaction().getName().equalsIgnoreCase(f.getName()))
+                    {
+                        a += ChatColors.LightPurple + "=> ";
+                    }
                     else
                     {
                         a += ChatColors.Green + "[O] ";
@@ -63,15 +68,15 @@ namespace CyberCore.Manager.Factions.Windows
                     addButton(a,
                         delegate(Player player, SimpleForm form)
                         {
-                            player.SendForm(new FactionInfoWindow(f, page, fac));
+                            player.SendForm(new FactionInfoWindow((CorePlayer)player,f, page, fac));
                         });
                 } 
                 if(hasextraa)
-                addButton("Next Page >",delegate(Player player, SimpleForm form) {
-                    player.SendForm(new FactionListWindow(fac,page+1));
-                  });
+                    addButton("Next Page >",delegate(Player player, SimpleForm form) {
+                        player.SendForm(new FactionListWindow((CorePlayer)player,fac,page+1));
+                      });
                 if(page >= 2)addButton("Previous Page <",delegate(Player player, SimpleForm form) {
-                    player.SendForm(new FactionListWindow(fac,page-1));
+                    player.SendForm(new FactionListWindow((CorePlayer)player,fac,page-1));
                   }); 
             }
             else
@@ -111,6 +116,10 @@ namespace CyberCore.Manager.Factions.Windows
                     {
                         a += ChatColors.Red + "[P] ";
                     }
+                    else if (cp.getFaction().getName().equalsIgnoreCase(f.getName()))
+                    {
+                        a += ChatColors.LightPurple + "=> ";
+                    }
                     else
                     {
                         a += ChatColors.Green + "[O] ";
@@ -120,14 +129,14 @@ namespace CyberCore.Manager.Factions.Windows
                     addButton(a,
                         delegate(Player player, SimpleForm form)
                         {
-                            player.SendForm(new FactionInfoWindow(f, page, fac));
+                            player.SendForm(new FactionInfoWindow((CorePlayer)player,f, page, fac));
                         });
                 } 
                 if(hasextra)addButton("Next Page >",delegate(Player player, SimpleForm form) {
-                    player.SendForm(new FactionListWindow(fac,page+1));
+                    player.SendForm(new FactionListWindow((CorePlayer)player,fac,page+1));
                 });
                 if(page >= 2)addButton("Previous Page <",delegate(Player player, SimpleForm form) {
-                    player.SendForm(new FactionListWindow(fac,page-1));
+                    player.SendForm(new FactionListWindow((CorePlayer)player,fac,page-1));
                 });
             }
         }

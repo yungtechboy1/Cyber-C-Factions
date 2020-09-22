@@ -124,8 +124,8 @@ namespace CyberCore.WorldGen
 
         public void Run(object o)
         {
-            Console.WriteLine("RE-ADDER RAN==============22222222===========================");
-            Console.WriteLine($"RE-ADDER RAN==============22222222==========================={_isInitialized} |||| {Level != null}");
+            // Console.WriteLine("RE-ADDER RAN==============22222222===========================");
+            // Console.WriteLine($"RE-ADDER RAN==============22222222==========================={_isInitialized} |||| {Level != null}");
             if (Level != null && _isInitialized)
             {
                 Log.Info("RE-ADDER RAN=========================================");
