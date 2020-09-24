@@ -40,15 +40,16 @@ namespace CyberCore.Manager.Factions.Windows
             Content = sb.ToString();
 
 
-            addButton("View All Players", delegate(Player player, SimpleForm form)
-            {
-                player.SendForm(new FIWAllPlayers(ffaction.getName()));
-                
-            });
-            addButton("View Allies", CommingSoon);
-            addButton("View Enemies", CommingSoon);
-            addButton("Open Inbox", CommingSoon);
-            addButton("Report Faction", CommingSoon);
+            addButton("View All Players",
+                delegate(Player player, SimpleForm form) { player.SendForm(new FIWAllPlayers(ffaction)); });
+            addButton("View Allies",
+                delegate(Player player, SimpleForm form) { player.SendForm(new FIWViewRelation(ffaction)); });
+            addButton("View Enemies",
+                delegate(Player player, SimpleForm form) { player.SendForm(new FIWViewRelation(ffaction,false)); });
+            addButton("Open Inbox",
+                delegate(Player player, SimpleForm form) { player.SendForm(new FactionInboxWindow((CorePlayer)player)); });
+            addButton("Report Faction",
+                delegate(Player player, SimpleForm form) { player.SendForm(new ReportFactionWindow(ffaction)); });
             if (listpage != -1)
                 addButton("Go Back To List",
                     delegate(Player player, SimpleForm form)
@@ -70,15 +71,46 @@ namespace CyberCore.Manager.Factions.Windows
 
     public class FIWAllPlayers : CyberFormSimple
     {
-        public FIWAllPlayers(MainForm ttype, List<Button> bl, string title = "") : base(ttype, bl, title)
-        {
-        }
-
-        public FIWAllPlayers(String fac) : base(MainForm.Faction_List_Window,
+        public FIWAllPlayers(Faction fac) : base(MainForm.Faction_List_Window,
             fac + "'s Faction Players")
         {
             Content = $"Below is all the players from this faction";
-            var f = plugin.FM.FFactory.getFaction(fac);
+            var f = fac;
+            addButton("View All Players",
+                delegate(Player player, SimpleForm form)
+                {
+                    player.SendForm(new FactionInfoWindow((CorePlayer) player, fac));
+                });
+            foreach (var a in f.PlayerRanks)
+            {
+                addButton($"{a.Value.getChatColor()}- [{a.Value.GetChatPrefix()}] {a.Key}");
+            }
+        }
+    }
+
+    public class FIWViewRelation : CyberFormSimple
+    {
+        public FIWViewRelation(Faction fac, bool allies = true) : base(MainForm.Faction_List_Window,
+            fac + "'s Faction Players")
+        {
+            Content = $"Below is all the players from this faction";
+            var f = fac;
+            foreach (var a in allies?f.GetAllies():f.GetEnemies())
+            {
+                var ff = fac.Main.FFactory.getFaction(a);
+                if (ff == null) continue;
+                addButton($" {ChatColors.DarkAqua}[{a}]",
+                    delegate(Player player, SimpleForm form)
+                    {
+                        player.SendForm(new FactionInfoWindow((CorePlayer) player, fac));
+                    });
+            }
+
+            addButton("View All Players",
+                delegate(Player player, SimpleForm form)
+                {
+                    player.SendForm(new FactionInfoWindow((CorePlayer) player, fac));
+                });
             foreach (var a in f.PlayerRanks)
             {
                 addButton($"{a.Value.getChatColor()}- [{a.Value.GetChatPrefix()}] {a.Key}");
