@@ -1,5 +1,7 @@
 ﻿// using MySqlX.XDevAPI;
+
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -934,8 +936,10 @@ namespace CyberCore
 
         public int getAttackTime()
         {
-            var b = getClassBuffList()[SwingSpeed];
-            var db = getClassDeBuffList()[SwingSpeed];
+            Buff b;
+            DeBuff db;
+            getClassBuffList().TryGetValue(SwingSpeed, out b);
+            getClassDeBuffList().TryGetValue(SwingSpeed, out db);
             if (b == null) b = new Buff(NULL, 1);
             if (db == null) db = new DeBuff(NULL, 1);
             return (int) (getBaseSwingSpeed() * b.getAmount() / db.getAmount());
@@ -2886,6 +2890,36 @@ namespace CyberCore
             {
                 return getTick(CombatTime);
             }
+        }
+
+        public Dictionary<String, object> getMeDict()
+        {
+            Dictionary<String, object> D = new Dictionary<string, object>();
+            D.Add($"Text Name", $"{Username}");
+            D.Add($"Display Name (To Others)", $"{DisplayName}");
+            D.Add($"Current Faction Name", $"{Faction != null}");
+            D.Add($"Faction Status Verified", $"{getFaction() != null}");
+            D.Add($"Faction Rank", $"{getFactionRank().getChatColor()}{getFactionRank().getName()}");
+            D.Add($"Money", $"{getMoney()}");
+            D.Add($"Health", $"{getHealth()}");
+            D.Add($"Max Health", $"{getMaxHealth()}");
+            D.Add($"Attack Time", $"{getAttackTime()}");
+            D.Add($"Buff List", $"{getBufflist().Count}");
+            D.Add($"Class Buff List", $"{getClassBuffList().Count}");
+            D.Add($"DeBuff List", $"{getDeBufflist().Count}");
+            D.Add($"Class DeBuff List", $"{getClassDeBuffList().Count}");
+            D.Add($"Fix Coins", $"{this.fixcoins}");
+            D.Add($"Kills", $"{this.kills}");
+            D.Add($"Rank", $"{this.rank.Name}");
+            D.Add($"Attack Time2", $"{this.attackTime}");
+            D.Add($"Max Homes", $"{this.MaxHomes}");
+            // D.Add($"Rank",$"{this.}");
+            // D.Add($"Rank",$"{this.}");
+            // D.Add($"Rank",$"{this.}");
+            // D.Add($"Rank",$"{this.}");
+
+
+            return D;
         }
     }
 }

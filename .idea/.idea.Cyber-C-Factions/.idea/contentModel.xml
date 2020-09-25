@@ -158,6 +158,7 @@
               <e p="FactionSettingsWindow.cs" t="Include" />
               <e p="HTP_0_Window.cs" t="Include" />
               <e p="InboxMessageWindow.cs" t="Include" />
+              <e p="MeWindow.cs" t="Include" />
               <e p="ReportFactionWindow.cs" t="Include" />
             </e>
           </e>

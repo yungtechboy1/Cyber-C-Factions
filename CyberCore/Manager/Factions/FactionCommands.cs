@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using CyberCore.Manager.Factions.Windows;
+using CyberCore.Manager.Forms;
 using CyberCore.Utils;
 using MiNET;
 using MiNET.Plugins;
@@ -199,6 +200,44 @@ namespace CyberCore.Manager.Factions
             Sender.showFormWindow(new FactionInviteChooseRank(Sender, invited));
         }
 
+        [Command(Name = "f inbox", Description = "View Faction Inbox")]
+        [FactionPermission(FactionRankEnum.Recruit)]
+        public void FInbox(CorePlayer Sender, Target invite)
+        {
+            // var Sender = (CorePlayer) Sende;
+            var invited = (CorePlayer) invite.getPlayer();
+            if (invited == null)
+            {
+                Sender.SendMessage(FactionErrorString.Error_CMD_Invite_UnableToFindPlayer.getMsg() +
+                                   "!@ S222UPER ERROR!!!@@@");
+                return;
+            }
+
+            if (null != Manager.getPlayerFaction(invited))
+            {
+                //TODO Allow Setting to ignore Faction messages
+                Sender.SendMessage(FactionErrorString.Error_CMD_Invite_PlayerInFaction.getMsg()+"1221");
+                return;
+            }
+
+
+            var fac = Sender.getFaction();
+            if (fac == null)
+            {
+                Sender.SendMessage(FactionErrorString.Error_NotInFaction.getMsg());
+                return;
+            }
+
+            if (!Sender.getFactionRank().hasPerm(fac.getPermSettings().AllowedToViewInbox))
+            {
+                Sender.SendMessage(FactionErrorString.Error_No_Permission.getMsg() +
+                                   $" You must be {fac.getPermSettings().AllowedToViewInbox.Id.ToString()}");
+                return;
+            }
+            Sender.showFormWindow(new FactionInviteChooseRank(Sender, invited));
+        }
+
+        
         private bool IsValid(string value)
         {
             return Regex.IsMatch(value, @"^[a-zA-Z0-9]*$");
@@ -373,6 +412,12 @@ namespace CyberCore.Manager.Factions
         public void fhome(CorePlayer Sender, int page = 1)
         {
             Sender.SendForm(new FactionHomesPage(Sender));
+        }
+
+        [Command(Name = "me", Description = "View All Faction Homes")]
+        public void Me(CorePlayer Sender, int page = 1)
+        {
+            Sender.SendForm(new MeWindow(Sender,MainForm.ME_Window));
         }
 
 

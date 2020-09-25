@@ -13,7 +13,7 @@ namespace CyberCore.WorldGen
         public WaterBiome() : base("Water", new BiomeQualifications(0, 2, 1, 1.75f, 0.25f, 0f
             , 30))
         {
-            BiomeQualifications.Baseheight = 30;
+            BiomeQualifications.Baseheight = Waterlevel;
             LocalId = 10;
         }
 
