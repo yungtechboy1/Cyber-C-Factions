@@ -38,6 +38,7 @@
         <e p="CyberCore.csproj" t="IncludeRecursive" />
         <e p="CyberCoreMain.cs" t="Include" />
         <e p="CyberPlayerFactory.cs" t="Include" />
+        <e p="FloatingText.json" t="Include" />
         <e p="Manager" t="Include">
           <e p="AuctionHouse" t="Include">
             <e p="AuctionFactory.cs" t="Include" />

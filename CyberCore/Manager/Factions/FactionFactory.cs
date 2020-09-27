@@ -1044,7 +1044,7 @@ namespace CyberCore.Manager.Factions
             String f = null;
             if (FacList.ContainsKey(p.Username.ToLower())) f = FacList[p.Username.ToLower()];
             if (f == null) f = GetFactionFromMember(p.Username);
-            Console.WriteLine("FACCCCC >>>>>>> " + f);
+            // Console.WriteLine("FACCCCC >>>>>>> " + f);
             if (string.IsNullOrEmpty(f))
             {
                 p.Faction = null;

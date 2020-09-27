@@ -49,6 +49,10 @@ namespace CyberCore
         [Command(Name = "ft add", Description = "Add floating text")]
         public void FtAdd(CorePlayer p, string text = null)
         {
+            if (null == text) text = "Floating Text 121 !";
+            p.SendMessage($"HI YOUR IN"+p.getFaction()+" Faction with "+p.Faction+" FROM FACTION"+p.KnownPosition.Clone());
+            p.SendMessage($"HI YOUR IN YOUR FROM "+p.KnownPosition.Clone());
+            if(((PlayerLocation)p.KnownPosition.Clone()).Z == 0 || ((PlayerLocation)p.KnownPosition.Clone()).X == 0 )Console.WriteLine($"ERORROROROROROOROROROOROROROROOR");
             FloatingTextFactory.AddFloatingText(new CyberGenericFloatingTextContainer(CCM.FTM, (PlayerLocation) p.KnownPosition.Clone(),p.Level, text), true);
             p.SendMessage(ChatColors.Green + "Floating Text Added!");
         }

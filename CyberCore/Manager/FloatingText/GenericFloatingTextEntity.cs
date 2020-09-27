@@ -39,7 +39,7 @@ namespace CyberCore.Manager.FloatingText
         {
 
             EntityId = generateEntityId();
-            KnownPosition = pos;
+            KnownPosition = (PlayerLocation) pos.Clone();
             LastSentPosition = pos;
             setFlags();
             FTF = ftf;

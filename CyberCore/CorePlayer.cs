@@ -759,9 +759,9 @@ namespace CyberCore
 
         public override void Disconnect(string reason, bool sendDisconnect = true)
         {
-            base.Disconnect(reason, sendDisconnect);
             //TODO Save Player Inv
             CyberCoreMain.GetInstance().ServerSQL.UnLoadPlayer(this);
+            base.Disconnect(reason, sendDisconnect);
         }
 
         public void CreateDefaultSettingsData(CorePlayer p)

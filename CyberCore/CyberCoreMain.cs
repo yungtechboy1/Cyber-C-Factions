@@ -171,6 +171,7 @@ namespace CyberCore
 
             Player trash;
             _players.TryRemove(player.Username, out trash);
+            FTM.removePlayer((CorePlayer) player);
 
             level.BroadcastMessage(
                 $"{ChatColors.Gold}[{ChatColors.Red}-{ChatColors.Gold}]{ChatFormatting.Reset} {player.Username} left the server");
