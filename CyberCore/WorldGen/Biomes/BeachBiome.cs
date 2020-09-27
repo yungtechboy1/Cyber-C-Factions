@@ -10,11 +10,10 @@ namespace CyberCore.WorldGen.Biomes
     {
 
 
-        public BeachBiome() : base("Beach", new BiomeQualifications(0, 2, 1, 1.75f, 0.25f, 0.5f
+        public BeachBiome() : base("Beach", new BiomeQualifications(0, 2, .159f, 1.75f, .24f, 0.5f
             , 10))
         {
-            BiomeQualifications.Baseheight = 83; //30
-            Waterlevel = 75;
+            BiomeQualifications.Baseheight = Waterlevel; //83
             LocalId = 11;
         }
 

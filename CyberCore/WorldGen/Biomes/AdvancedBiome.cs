@@ -21,7 +21,7 @@ namespace CyberCore.WorldGen.Biomes
             get;
             protected set;
         } = 255;
-        protected int Waterlevel = 75;
+        protected int Waterlevel = 75+20;
         private static readonly ILog Log = LogManager.GetLogger(typeof(AdvancedBiome));
 
         private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());

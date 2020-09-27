@@ -17,7 +17,7 @@ namespace CyberCore.WorldGen
 
         private static int N = 0;
         private static readonly Dictionary<int, AdvancedBiome> BiomeDict = new Dictionary<int, AdvancedBiome>();
-        private static AdvancedBiome TEST = new SnowyIcyChunk();
+        private static AdvancedBiome TEST = new DesertHills();
 
         public BiomeManager()
         {
@@ -33,7 +33,7 @@ namespace CyberCore.WorldGen
             AddBiome(new Plains());
             // AddBiome(new HighPlains());
             AddBiome(new WaterBiome());
-            // // AddBiome(new BeachBiome());
+            // AddBiome(new BeachBiome());
             AddBiome(new SnowForest());
             AddBiome(new SnowTundra());
             AddBiome(new TropicalRainForest());
@@ -92,13 +92,39 @@ namespace CyberCore.WorldGen
             tempnoise.SetFractalLacunarity(.25f);
             tempnoise.SetFractalGain(1);
 
-            float rain = rainnoise.GetNoise(chunk.X, chunk.Z) + .75f;
-            float temp = tempnoise.GetNoise(chunk.X, chunk.Z) + .75f;
-            float height = GetChunkHeightNoise(chunk.X, chunk.Z, 0.008f, 2);
-            ;
+            float rain = rainnoise.GetNoise(chunk.X, chunk.Z) + .77f;//Lowest value ~~= .25 R |  AST VA:IE WAS 
+            float temp = tempnoise.GetNoise(chunk.X, chunk.Z) + .77f;
+            float height = GetChunkHeightNoise(chunk.X, chunk.Z, 0.015f);
+            // if (height >= .5f)
+            // {
+            //     
+            // }
+            // ;
+            if (!TempList.Contains(chunk))
+            {
+                if (height <= .25) Console.WriteLine($"CHUNK Very COLD .25||||" + height);
+                else if (height <= .5) Console.WriteLine($"CHUNK COLD .5||||||||" + height);
+                else if (height <= 1) Console.WriteLine($"CHUNK MED 1||||||||||||" + height);
+                else if (height <= 1.25) Console.WriteLine($"CHUNK MED 1.25||||||||||||||||||||" + height);
+                else if (height <= 1.5) Console.WriteLine($"CHUNK MED 1.5||||||||||||||||||||||||||||" + height);
+                else if (height <= 1.75) Console.WriteLine($"CHUNK MED 1.75||||||||||||||||||||||||||||||||" + height);
+                else if (height <= 2)
+                    Console.WriteLine($"CHUNK MED 2||||||||||||||||||||||||||||||||||||||||||||" + height);
+                TempList.Add(new ChunkCoordinates(chunk));
+                TempList.Add(new ChunkCoordinates(chunk+new ChunkCoordinates(1,-1)));
+                TempList.Add(new ChunkCoordinates(chunk+new ChunkCoordinates(1,1)));
+                TempList.Add(new ChunkCoordinates(chunk+new ChunkCoordinates(1,0)));
+                TempList.Add(new ChunkCoordinates(chunk+new ChunkCoordinates(-1,-1)));
+                TempList.Add(new ChunkCoordinates(chunk+new ChunkCoordinates(-1,1)));
+                TempList.Add(new ChunkCoordinates(chunk+new ChunkCoordinates(-1,0)));
+                TempList.Add(new ChunkCoordinates(chunk+new ChunkCoordinates(0,-1)));
+                TempList.Add(new ChunkCoordinates(chunk+new ChunkCoordinates(0,0)));
+                TempList.Add(new ChunkCoordinates(chunk+new ChunkCoordinates(0,1)));
+            }
+
             return new[] {rain, temp, height};
         }
-
+        public static List<ChunkCoordinates> TempList = new List<ChunkCoordinates>();
         private static readonly OpenSimplexNoise OpenNoise = new OpenSimplexNoise("a-seed".GetHashCode());
 
 
@@ -110,7 +136,7 @@ namespace CyberCore.WorldGen
         /// <param name="scale"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        public static float GetChunkHeightNoise(int x, int z, float scale, int max)
+        public static float GetChunkHeightNoise(int x, int z, float scale, int max = 2)
         {
             //CALCULATE HEIGHT
             var heightnoise = new FastNoise(123123 + 2);
@@ -120,8 +146,8 @@ namespace CyberCore.WorldGen
             heightnoise.SetFractalOctaves(2);
             heightnoise.SetFractalLacunarity(2);
             heightnoise.SetFractalGain(.5f);
-
-            return (heightnoise.GetNoise(x, z) + .75f) * (max / 2f);
+//Value
+            return (heightnoise.GetNoise(x, z) + .65f);// * (max / 2f);
             return (float) (OpenNoise.Evaluate(x * scale, z * scale) + 1f) * (max / 2f);
         }
 

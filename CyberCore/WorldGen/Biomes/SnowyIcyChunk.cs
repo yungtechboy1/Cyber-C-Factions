@@ -9,7 +9,7 @@ namespace CyberCore.WorldGen.Biomes
 {
     public class SnowyIcyChunk : AdvancedBiome
     {
-        public SnowyIcyChunk() : base("SnowyIcyChunk", new BiomeQualifications(0, 2, 0, .5f, 0, .5f, 4))
+        public SnowyIcyChunk() : base("SnowyIcyChunk", new BiomeQualifications(.5f, 2, 0, .16f, 0, .25f, 4))
         {
             LocalId = 3;
         }
