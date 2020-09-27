@@ -88,7 +88,7 @@ namespace CyberCore
         }
 
         [Command(Name = "setspawn", Description = "Set a new spawn point")]
-        [ServerRankAttr(RankEnum.Administrative)]
+        // [ServerRankAttr(RankEnum.Administrative)]
         public void setspawn(CorePlayer p)
         {
             p.Level.SpawnPoint = (PlayerLocation) p.KnownPosition.Clone();

@@ -788,14 +788,34 @@ namespace CyberCore.Utils
         public static PlayerLocation Safe(this PlayerLocation l, Level lvl)
         {
             int h = lvl.GetHeight(new BlockCoordinates(l));
-            l.Y = h + 1;
-            for (int i = 255; i > 0; i--)
+            var b = lvl.GetBlock(new Vector3(l.X, h + 1, l.Z));
+            var bb = lvl.GetBlock(new Vector3(l.X, h + 1+1, l.Z));
+            var bbb = lvl.GetBlock(new Vector3(l.X, h + 1+2, l.Z));
+            if (b.Id == 0 & bb.Id == 0) return l; 
+            if (b.Id != 0 && bb.Id == 0 && bbb.Id == 0) return l; 
+             b = lvl.GetBlock(new Vector3(l.X, l.Y, l.Z));
+             bb = lvl.GetBlock(new Vector3(l.X, l.Y+1, l.Z));
+             bbb = lvl.GetBlock(new Vector3(l.X, l.Y+2, l.Z));
+             if (b.Id == 0 & bb.Id == 0) return l; 
+             if (b.Id != 0 && bb.Id == 0 && bbb.Id == 0) return l; 
+            //SAFE BUFFLE
+            //5x5x5
+            
+            for (int i = (int) l.Y; i < 255; i++)
             {
+                
                 var bid = lvl.GetBlock(new Vector3(l.X, i, l.Z));
-                if (bid.Id != 0)
+                var bid2 = lvl.GetBlock(new Vector3(l.X, i+1, l.Z));
+                var bid3 = lvl.GetBlock(new Vector3(l.X, i+2, l.Z));
+                if (bid.Id == 0 && bid2.Id == 0)
+                {
+                    l.Y = i;
+                    return l;
+                }
+                else if(bid.Id != 00 && bid2.Id == 0 && bid3.Id == 0)
                 {
                     l.Y = i + 1;
-                    break;
+                    return l;
                 }
             }
 
