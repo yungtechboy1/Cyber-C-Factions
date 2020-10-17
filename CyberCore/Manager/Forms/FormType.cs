@@ -79,7 +79,9 @@
         Faction_Inbox_Main,
         Inbox_Message_View,
         Rank_Window,
-        ME_Window
+        ME_Window,
+        Link_Confirm_Window,
+        Link_Window
     }
 
     public enum SubMenu

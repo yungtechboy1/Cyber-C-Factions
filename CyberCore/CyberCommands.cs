@@ -79,6 +79,25 @@ namespace CyberCore
             p.SendMessage(ChatColors.Green + "Teleproting to spawn in 5 secs!");
         }
 
+
+        [Command(Name = "link", Description = "Link your MC Account to Forums")]
+        public void link(CorePlayer p)
+        {
+            p.showFormWindow(new LinkConfirmWindow(p));
+        }
+
+        [Command(Name = "status", Description = "View Player Info and Status Information")]
+        public void status(CorePlayer p)
+        {
+            p.SendMessage($"{ChatColors.Aqua}Current Rank: {p.GetRank().getChat_prefix()+p.GetRank().display_name}\n" +
+                          $"Displayed Username: {p.DisplayName}\n" +
+                          $"Username: {p.Username}\n" +
+                          $"\n" +
+                          $"\n" +
+                          $"\n" +
+                          $"");
+        }
+
         public static readonly int WildMaxVal = 25000;
 
         [Command(Name = "wild", Description = "Teleport to random spot in the wild")]
