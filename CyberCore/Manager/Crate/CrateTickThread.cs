@@ -34,7 +34,7 @@ namespace CyberCore.Manager.Crate
         //    private HashMap<String, Long> eids = new HashMap<>();
         private readonly Vector3 Position;
 
-        public CratecurrenttickThread(string player, Level ll, List<Item> itemList, string crateName, Vector3 position)
+        public CrateTickThread(string player, Level ll, List<Item> itemList, string crateName, Vector3 position)
         {
             Level = ll;
             Player = player;

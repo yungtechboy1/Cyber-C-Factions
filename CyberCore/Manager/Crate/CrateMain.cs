@@ -84,6 +84,7 @@ namespace CyberCore.Manager.Crate
 //        CCM.getServer().getPluginManager().registerEvents(new CrateListener(CCM), CCM);
             CrateChestLocationsDataManager =
                 new CrateLocationDataManager(ccm).load<CrateLocationDataManager>();
+            Log.Info($"{CrateChestLocationsDataManager.LocData.Count} Locations have been loaded for crates!");
             crateKeyDataManager = new CrateKeyDataManager(ccm).load<CrateKeyDataManager>();
             CrateDataManager = new CrateDataManager(ccm).load<CrateDataManager>();
             if (CrateChestLocationsDataManager == null)

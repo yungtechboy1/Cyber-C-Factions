@@ -16,6 +16,10 @@ namespace CyberCore.Manager.Crate
         public int Max_Count{ get;  set; }
         public string NBT { get;  set; } = ""; //NBT_HEX
 
+        public ItemChanceData()
+        {
+            
+        }
         public ItemChanceData(Item i, int chance, int max_Count)
         {
             Console.WriteLine("ITEMCHANCEDATA FOR ITEM ID:"+i.Id);
