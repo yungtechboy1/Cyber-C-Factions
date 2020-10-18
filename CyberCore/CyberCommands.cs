@@ -85,7 +85,7 @@ namespace CyberCore
         public void link(CorePlayer p)
         {
             // p.showFormWindow(new LinkConfirmWindow());
-            p.SendForm2(new LinkConfirmWindow());
+            p.SendForm2(new LinkConfirmWindow(p));
             // p.SendForm(new LinkConfirmWindow());
         }
         [Command(Name = "howtoplay", Description = "Link your MC Account to Forums")]

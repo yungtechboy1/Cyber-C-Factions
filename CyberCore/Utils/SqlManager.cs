@@ -244,5 +244,11 @@ namespace CyberCore.Utils
                 // throw new NotImplementedException();
             }
         }
+
+        public bool CanSetAccountEmail(string email)
+        {
+            var a = executeSelect($"SELECT * FROM `PlayerSettings` WHERE `Email` LIKE '{email}'");
+            return a.Count == 0;
+        }
     }
 }

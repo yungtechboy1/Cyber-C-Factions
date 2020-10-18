@@ -30,18 +30,10 @@
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="Fixed RainForestBiome">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/CorePlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CorePlayer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/CyberCommands.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCommands.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCoreMain.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/LinkConfirmWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/LinkConfirmWindow.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/LinkWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/LinkWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionCommands.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionCommands.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormCustom.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormCustom.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormModal.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormModal.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormSimple.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormSimple.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Rank/RankFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Rank/RankFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/Data/UserSQL.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/Data/UserSQL.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
@@ -49,7 +41,6 @@
       <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Testing/obj/Debug/netcoreapp3.1/Testing.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Testing/obj/Debug/netcoreapp3.1/Testing.csprojAssemblyReference.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +48,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="75650" />
+    <option name="totalTimeSeconds" value="77503" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -381,7 +372,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/MapTestConsole/Main.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/StructureGenerartor.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/Generator/StructureGenerartor.cs" />
         <option value="$PROJECT_DIR$/CyberCore/WorldGen/Biomes/ForestMountain.cs" />
@@ -420,18 +410,19 @@
         <option value="$PROJECT_DIR$/CyberCore/Utils/Data/ServerSqlite.cs" />
         <option value="$PROJECT_DIR$/CyberCore/PlayerSettingsData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/FormType.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/LinkConfirmWindow.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionCommands.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormSimple.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormCustom.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Rank/RankFactory.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CyberCore.csproj" />
-        <option value="$PROJECT_DIR$/CyberCore/CyberCommands.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormModal.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CorePlayer.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/LinkWindow.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/Data/UserSQL.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/LinkConfirmWindow.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/CyberCommands.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/LinkWindow.cs" />
       </list>
     </option>
   </component>
@@ -691,7 +682,7 @@
       <workItem from="1602032068542" duration="1478000" />
       <workItem from="1602626148429" duration="2077000" />
       <workItem from="1602918896863" duration="9854000" />
-      <workItem from="1603005324065" duration="1664000" />
+      <workItem from="1603005324065" duration="3918000" />
     </task>
     <task id="LOCAL-00002" summary="CU-b2ju2f">
       <created>1597547215454</created>
@@ -831,26 +822,26 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="466" y="421" key="GitRewordDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597636017115" />
-    <state width="1234" height="308" key="GridCell.Tab.0.bottom" timestamp="1603006794878">
+    <state width="1533" height="308" key="GridCell.Tab.0.bottom" timestamp="1603009117546">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="900" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1234" height="308" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1603006794878" />
-    <state width="1234" height="308" key="GridCell.Tab.0.center" timestamp="1603006794877">
+    <state width="1533" height="308" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1603009117546" />
+    <state width="1533" height="308" key="GridCell.Tab.0.center" timestamp="1603009117546">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="900" height="260" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1234" height="308" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1603006794877" />
-    <state width="1234" height="308" key="GridCell.Tab.0.left" timestamp="1603006794876">
+    <state width="1533" height="308" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1603009117546" />
+    <state width="1533" height="308" key="GridCell.Tab.0.left" timestamp="1603009117546">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="900" height="260" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1234" height="308" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1603006794876" />
-    <state width="1234" height="308" key="GridCell.Tab.0.right" timestamp="1603006794878">
+    <state width="1533" height="308" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1603009117546" />
+    <state width="1533" height="308" key="GridCell.Tab.0.right" timestamp="1603009117546">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="900" height="260" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1234" height="308" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1603006794878" />
+    <state width="1533" height="308" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1603009117546" />
     <state width="1234" height="365" key="GridCell.Tab.1.bottom" timestamp="1602683600207">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -1035,6 +1026,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs</url>
+          <line>151</line>
+          <properties documentPath="F:\Projects\Cyber-C-Factions\CyberCore\Utils\SqlManager.cs" initialLine="151">
+            <startOffsets>
+              <option value="5319" />
+            </startOffsets>
+            <endOffsets>
+              <option value="5320" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
