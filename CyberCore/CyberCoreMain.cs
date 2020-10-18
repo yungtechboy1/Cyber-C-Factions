@@ -57,7 +57,7 @@ namespace CyberCore
         public CustomConfig MasterConfig { get; set; }
         public FactionsMain FM { get; private set; }
         public SqlManager SQL { get; private set; }
-        public SqlManager WebSQL { get; private set; }
+        public SqlManager ForumWebSQL { get; private set; }
         public ServerSqlite ServerSQL { get; set; }
         public WarpManager WarpManager { get; set; }
         public ClassFactory ClassFactory { get; set; }
@@ -105,7 +105,7 @@ namespace CyberCore
             MasterConfig = new CustomConfig(this, "Master");
             instance = this;
             SQL = new SqlManager(this);
-            WebSQL = new SqlManager(this,"web");
+            ForumWebSQL = new SqlManager(this,"web");
             RankFactory = new RankFactory(this);
             ServerSQL = new ServerSqlite(this);
             UserSQL = new UserSQL(this);

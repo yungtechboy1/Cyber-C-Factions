@@ -2036,6 +2036,23 @@ namespace CyberCore
             onUpdate(CyberUtils.getTick());
         }
 
+        public override void SendForm(Form form)
+        {
+            this.CurrentForm = form;
+            McpeModalFormRequest modalFormRequest = Packet<McpeModalFormRequest>.CreateObject();
+            modalFormRequest.formId = form.Id;
+            modalFormRequest.data = form.ToJsonStatic();
+            this.SendPacket((Packet) modalFormRequest);
+        }
+
+        public virtual void SendForm2(CyberFormModal form)
+        {
+            this.CurrentForm = form;
+            McpeModalFormRequest modalFormRequest = Packet<McpeModalFormRequest>.CreateObject();
+            modalFormRequest.formId = form.Id;
+            modalFormRequest.data = form.ToJSON2();
+            this.SendPacket((Packet) modalFormRequest);
+        }
         public void onUpdate(long currentTick)
         {
             tt++;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using CyberCore.Manager.Crate;
 using CyberCore.Manager.Crate.Form;
+using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
 using CyberCore.Manager.Shop;
@@ -83,7 +84,14 @@ namespace CyberCore
         [Command(Name = "link", Description = "Link your MC Account to Forums")]
         public void link(CorePlayer p)
         {
-            p.showFormWindow(new LinkConfirmWindow(p));
+            // p.showFormWindow(new LinkConfirmWindow());
+            p.SendForm2(new LinkConfirmWindow());
+            // p.SendForm(new LinkConfirmWindow());
+        }
+        [Command(Name = "howtoplay", Description = "Link your MC Account to Forums")]
+        public void htp(CorePlayer p)
+        {
+            p.showFormWindow(new HTP_0_Window());
         }
 
         [Command(Name = "status", Description = "View Player Info and Status Information")]

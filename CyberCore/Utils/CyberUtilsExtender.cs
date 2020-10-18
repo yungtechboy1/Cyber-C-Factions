@@ -18,6 +18,8 @@ using MiNET.Items;
 using MiNET.UI;
 using MiNET.Utils;
 using MiNET.Worlds;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using OpenAPI.Player;
 using Org.BouncyCastle.Asn1.X509;
 using Target = MiNET.Plugins.Target;
@@ -901,6 +903,21 @@ namespace CyberCore.Utils
         //     return -1;
         // }
 
+        public static String ToJsonStatic(this Form f)
+        {
+            Console.WriteLine($"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine($"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine($"==============================================");
+            return JsonConvert.SerializeObject(f, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Include,
+                MissingMemberHandling = MissingMemberHandling.Error,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented,
+                ContractResolver = (IContractResolver) new CamelCasePropertyNamesContractResolver()
+            });
+        }
         public static String NBTToString(this NbtCompound c)
         {
             if (c == null || c.Count == 0) return "";

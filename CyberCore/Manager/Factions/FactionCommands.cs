@@ -753,7 +753,7 @@ namespace CyberCore.Manager.Factions
         [Command(Name = "f info", Description = "Usage '/f info [faction]' | View your Faction Info or Others")]
         public void FInfo(CorePlayer Sender, string faction = null)
         {
-            Sender.SendForm(new FactionListWindow(Sender, faction));
+            Sender.SendForm(new FactionListWindow(Sender, faction.IsNullOrEmpty()? Sender.getFaction().getName() : faction));
         }
 
         private void CommingSoon(Player arg1, SimpleForm arg2)

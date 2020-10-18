@@ -1,15 +1,15 @@
 ﻿using System;
 using CyberCore.Manager.Factions;
-using log4net;
 using MiNET;
 using MiNET.UI;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace CyberCore.Manager.Forms
 {
     public class CyberFormModal : ModalForm
     {
-        [JsonIgnore] private static readonly ILog Log = LogManager.GetLogger(typeof(CyberFormModal));
+        // [JsonIgnore] private static readonly ILog Log = LogManager.GetLogger(typeof(CyberFormModal));
         [JsonIgnore] public MainForm AFT;
         [JsonIgnore] public Faction Fac = null;
         [JsonIgnore] public MainForm FT;
@@ -37,6 +37,20 @@ namespace CyberCore.Manager.Forms
 
         public new Action<Player, ModalForm, bool> ExecuteAction { get; set; }
 
+
+        public string ToJSON2()
+        {
+            return JsonConvert.SerializeObject(this, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Include,
+                MissingMemberHandling = MissingMemberHandling.Error,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented,
+                ContractResolver = (IContractResolver) new CamelCasePropertyNamesContractResolver()
+            });
+        }
+
         public void Execute(Player player, bool state)
         {
             var executeAction = ExecuteAction;
@@ -45,13 +59,13 @@ namespace CyberCore.Manager.Forms
 
         public override void FromJson(string json, Player player)
         {
-            JsonSerializerSettings settings = new JsonSerializerSettings()
+            var settings = new JsonSerializerSettings
             {
                 PreserveReferencesHandling = PreserveReferencesHandling.None,
                 Formatting = Formatting.Indented
             };
-            bool? nullable = JsonConvert.DeserializeObject<bool?>(json);
-            Log.Debug((object) ("Form JSON\n" + JsonConvert.SerializeObject((object) nullable, settings)));
+            var nullable = JsonConvert.DeserializeObject<bool?>(json);
+            Console.WriteLine((object) ("Form JSON\n" + JsonConvert.SerializeObject(nullable, settings)));
             if (nullable.HasValue && nullable.Value)
                 Execute(player, true);
             else

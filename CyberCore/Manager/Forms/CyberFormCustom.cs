@@ -14,13 +14,14 @@ namespace CyberCore.Manager.Forms
         [JsonIgnore] public CyberCoreMain plugin = CyberCoreMain.GetInstance();
         [JsonIgnore] public Faction Fac = null;
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(CyberFormCustom));
-        
-        public CyberFormCustom(MainForm ttype) 
+        // [JsonIgnore] private static readonly ILog Log = LogManager.GetLogger(typeof(CyberFormCustom));
+
+        public CyberFormCustom(MainForm ttype)
         {
             FT = ttype;
         }
-        public CyberFormCustom(MainForm ttype,  List<CustomElement> elements) 
+
+        public CyberFormCustom(MainForm ttype, List<CustomElement> elements)
         {
             FT = ttype;
             Content = elements;
@@ -30,7 +31,7 @@ namespace CyberCore.Manager.Forms
         {
             return ((Input) Content[k]).Value;
         }
-        
+
         public void addLabel(String txt)
         {
             addElement(new Label()
@@ -38,6 +39,7 @@ namespace CyberCore.Manager.Forms
                 Text = txt
             });
         }
+
         public void addToggle(String txt, bool def = false)
         {
             addElement(new Toggle()
@@ -46,7 +48,8 @@ namespace CyberCore.Manager.Forms
                 Value = def
             });
         }
-        public void addInput(String title,string placeholder = "",string defvalue = "")
+
+        public void addInput(String title, string placeholder = "", string defvalue = "")
         {
             addElement(new Input()
             {
@@ -55,13 +58,11 @@ namespace CyberCore.Manager.Forms
                 Value = defvalue
             });
         }
-        
+
         public void addElement(CustomElement e)
         {
-            if(Content == null)Content = new List<CustomElement>();
+            if (Content == null) Content = new List<CustomElement>();
             Content.Add(e);
         }
-        
-        
     }
 }

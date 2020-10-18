@@ -9,7 +9,7 @@ namespace CyberCore
 {
     public class LinkConfirmWindow: CyberFormModal
     {
-        public LinkConfirmWindow(CorePlayer player) : base(MainForm.Link_Confirm_Window,"Are you sure you want to link your account?","Yes, I want to Link my account!","No Cancel")
+        public LinkConfirmWindow() : base(MainForm.Link_Confirm_Window,"Are you sure you want to link your account?","Yes, I want to Link my account!","No Cancel")
         {
             // var ee = player.getPlayerSettingsData().isAccountLinked();
             // var e = player.getPlayerSettingsData().getLinkedAccount();
