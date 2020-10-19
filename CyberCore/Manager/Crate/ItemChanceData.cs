@@ -139,7 +139,7 @@ namespace CyberCore.Manager.Crate
             a.RootTag = item.ExtraData;
             // byte[] bytes = NBTCompressionSteamTool.NBTCompressedStreamTools.a(a);
             var aa = (new MemoryStream());
-            a.SaveToStream(aa, NbtCompression.AutoDetect);
+            a.SaveToStream(aa, NbtCompression.ZLib);
             var aaa = new StreamReader(aa).ReadToEnd();
 
             if (item.ExtraData.HasValue) fnt = aaa;

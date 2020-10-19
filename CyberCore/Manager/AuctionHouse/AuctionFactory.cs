@@ -738,7 +738,7 @@ namespace CyberCore.Manager.AuctionHouse
             a.RootTag = data.getItem().ExtraData;
             // byte[] bytes = NBTCompressionSteamTool.NBTCompressedStreamTools.a(a);
             var aa = (new MemoryStream());
-            a.SaveToStream(aa, NbtCompression.AutoDetect);
+            a.SaveToStream(aa, NbtCompression.ZLib);
             var aaa = new StreamReader(aa).ReadToEnd();
 
             if (data.getItem().ExtraData.HasValue) fnt = aaa;

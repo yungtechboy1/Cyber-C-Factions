@@ -240,6 +240,7 @@
           <e p="ExtraPlayerData.cs" t="Include" />
           <e p="FactionErrorString.cs" t="Include" />
           <e p="InternalPlayerSettings.cs" t="Include" />
+          <e p="JsonToNBT.cs" t="Include" />
           <e p="MessageFormater.cs" t="Include" />
           <e p="SqlManager.cs" t="Include" />
         </e>

@@ -41,9 +41,11 @@ namespace CyberCore.Utils
             _Inv.Clear();
             foreach (var i in Inv)
             {
-                if (i == null) continue;
+                if (i == null || i.Id == 0) continue;
                 Console.WriteLine("ADD AN ITEM================================================");
                 _Inv.Add(CorePlayerItemData.CreateObject(i));
+                Console.WriteLine($"------>>>> HAS NBT: " + (i.hasCompoundTag() ? "Yes" : "no"));
+                Console.WriteLine($"------>>>> HAS Custom Name: " + (i.hasCustomName() ? "Yes" : "no"));
             }
 
             _InvJSON = JsonConvert.SerializeObject(_Inv);
@@ -121,11 +123,11 @@ namespace CyberCore.Utils
             {
                 var i = d.toItem();
                 p.Inventory.AddItem(i, false);
-                Console.WriteLine("ADDING ITEM "+i.getName()+" || "+d.Id);
+                Console.WriteLine("ADDING ITEM " + i.getName() + " || " + d.Id);
             }
 
             p.SendPlayerInventory();
-            p.Teleport(Location.Safe(CyberCoreMain.GetInstance().getAPI().LevelManager.GetLevel(null,Level)));
+            p.Teleport(Location.Safe(CyberCoreMain.GetInstance().getAPI().LevelManager.GetLevel(null, Level)));
 
             Console.WriteLine($" {PlayerName} SHOULD BE LOADED AT {Location} AND {_Inv.Count}");
             // var l = CyberCoreMain.GetInstance().getAPI().LevelManager.GetLevel(null, Level);
