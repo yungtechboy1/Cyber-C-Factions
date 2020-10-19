@@ -13,49 +13,50 @@ namespace CyberCore.Custom
     {
         public bool AdminMode = false;
 
-        public event Action<Player, Inventory> InventoryJoin;
-        public event Action<Player, Inventory> InventoryLeave;
-
         public CyberInventory(int id, BlockEntity blockEntity, short inventorySize, NbtList slots) : base(id,
             blockEntity, inventorySize, slots)
         {
         }
-        
+
+        public event Action<Player, Inventory> InventoryJoin;
+        public event Action<Player, Inventory> InventoryLeave;
+
         public void SendInv(CorePlayer p)
         {
-            McpeInventoryContent containerSetContent = McpeInventoryContent.CreateObject();
+            var containerSetContent = McpeInventoryContent.CreateObject();
             containerSetContent.inventoryId = 10;
             containerSetContent.input = Slots;
             p.SendPacket(containerSetContent);
         }
-        
+
         private NbtList GetSlots2()
         {
-            NbtList nbtList = new NbtList("Items");
-            for (byte index = 0; (int) index < (int) this.Size; ++index)
+            var nbtList = new NbtList("Items");
+            for (byte index = 0; (int) index < (int) Size; ++index)
             {
-                Item slot = this.Slots[(int) index];
-                nbtList.Add((NbtTag) new NbtCompound()
+                var slot = Slots[index];
+                nbtList.Add(new NbtCompound
                 {
-                    (NbtTag) new NbtByte("Count", slot.Count),
-                    (NbtTag) new NbtByte("Slot", index),
-                    (NbtTag) new NbtShort("id", slot.Id),
-                    (NbtTag) new NbtShort("Damage", slot.Metadata)
+                    new NbtByte("Count", slot.Count),
+                    new NbtByte("Slot", index),
+                    new NbtShort("id", slot.Id),
+                    new NbtShort("Damage", slot.Metadata)
                 });
             }
+
             return nbtList;
         }
-        
+
         public void SetItem(byte slot, Item itemStack)
         {
-            this.Slots[(int) slot] = itemStack;
-            this.BlockEntity.GetCompound()["Items"] = (NbtTag) GetSlots2();
+            Slots[slot] = itemStack;
+            BlockEntity.GetCompound()["Items"] = GetSlots2();
             // this.OnInventoryChange(player, slot, itemStack);
         }
 
         protected virtual void PlayerJoin(Player player)
         {
-            Action<Player, Inventory> PJ = InventoryJoin;
+            var PJ = InventoryJoin;
             if (PJ == null)
                 return;
             PJ(player, this);
@@ -63,7 +64,7 @@ namespace CyberCore.Custom
 
         protected virtual void PlayerLeave(Player player)
         {
-            Action<Player, Inventory> PL = InventoryLeave;
+            var PL = InventoryLeave;
             if (PL == null)
                 return;
             PL(player, this);
@@ -98,7 +99,7 @@ namespace CyberCore.Custom
 
         public int getNextOpenSlot(Inventory i)
         {
-            for (int j = 0; j < Size; j++)
+            for (var j = 0; j < Size; j++)
             {
                 var itm = Slots[j];
                 if (itm == null || itm.Id == 0) return j;
@@ -117,8 +118,8 @@ namespace CyberCore.Custom
                 {
                     if (checkNBT)
                     {
-                        if (item.ExtraData != null && i.ExtraData != null && i.ExtraData.NBTToString()
-                            .equalsIgnoreCase(item.ExtraData.NBTToString())) return index;
+                        if (item.ExtraData != null && i.ExtraData != null && i.ExtraData.NBTToByteArray()
+                            != item.ExtraData.NBTToByteArray()) return index;
                         return -1;
                     }
 

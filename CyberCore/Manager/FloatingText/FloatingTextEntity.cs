@@ -14,9 +14,9 @@ using Org.BouncyCastle.Security;
 
 namespace CyberCore.Manager.FloatingText
 {
-    public class GenericFloatingTextEntity<T> : GenericFloatingTextEntity where T : GenericCyberFloatingTextContainerData
+    public class GenericFloatingTextEntity<T> : GenericFloatingTextEntity where T : GenericCyberFloatingTextContainerData, new()
     {
-        public T FTData;
+        public T FTData = new T();
 
 
         // public override T getFTData()
@@ -36,14 +36,21 @@ namespace CyberCore.Manager.FloatingText
             }
         }
 
-        public GenericFloatingTextEntity(FloatingTextFactory ftf, PlayerLocation pos, Level level, string syntax) : base(ftf,
+        public GenericFloatingTextEntity(FloatingTextFactory ftf, PlayerLocation pos, Level level, string syntax = null) : base(ftf,
             pos, level, syntax)
         {
+            // Console.WriteLine($"LOGGG 1");
+            Console.WriteLine(FTData.Syntax);
+            // Console.WriteLine($"LOGGG 11");
             FTData.Syntax = syntax;
+            // Console.WriteLine($"LOGGG 12");
             FTData.Lvl = level.LevelId;
+            // Console.WriteLine($"LOGGG 122");
             FTData.Cords[0] = (int) Math.Floor(KnownPosition.X);
             FTData.Cords[1] = (int) Math.Floor(KnownPosition.Y);
             FTData.Cords[2] = (int) Math.Floor(KnownPosition.Z);
+            // Console.WriteLine($"LOGGG 123");
+            
         }
 
         public virtual bool CheckKill(long t)
@@ -54,45 +61,59 @@ namespace CyberCore.Manager.FloatingText
                    FTData._CE_Done;
         }
 
-
+        //TODO intergrate with remv list
+public List<CorePlayer> LastSentTo = new List<CorePlayer>();
         public virtual List<Packet> encode(CorePlayer p)
         {
             var packets = new List<Packet>();
+            // var FM = FloatingTextFactory.getInstance();
 
-            // if (FTData.Active)
-            // {
-            //     var pk = McpeRemoveEntity.CreateObject();
-            //     pk.entityIdSelf = EntityId;
-            //
-            //     packets.Add(pk);
-            // }
-            var uuid = randomUUID();
-            NameTag = GetText(p, FTData.Vertical);
-            HideNameTag = false;
-            McpeAddPlayer mcpeAddPlayer = McpeAddPlayer.CreateObject();
-            mcpeAddPlayer.uuid = uuid;
-            mcpeAddPlayer.username = "";
-            mcpeAddPlayer.entityIdSelf = EntityId;
-            mcpeAddPlayer.runtimeEntityId = EntityId;
-            mcpeAddPlayer.x = KnownPosition.X;
-            mcpeAddPlayer.y = KnownPosition.Y;
-            mcpeAddPlayer.z = KnownPosition.Z;
-            mcpeAddPlayer.speedX = Velocity.X;
-            mcpeAddPlayer.speedY = Velocity.Y;
-            mcpeAddPlayer.speedZ = Velocity.Z;
-            mcpeAddPlayer.yaw = KnownPosition.Yaw;
-            mcpeAddPlayer.headYaw = KnownPosition.HeadYaw;
-            mcpeAddPlayer.pitch = KnownPosition.Pitch;
-            mcpeAddPlayer.metadata = GetMetadata();
-            mcpeAddPlayer.flags = GetAdventureFlags();
-            mcpeAddPlayer.commandPermission = (uint) (int) CommandPermission.Normal;
-            mcpeAddPlayer.actionPermissions = (uint) ActionPermissions.Default;
-            mcpeAddPlayer.permissionLevel = (uint) PermissionLevel.Operator;
-            mcpeAddPlayer.userId = -1;
-            mcpeAddPlayer.deviceId = "BOT";
-            mcpeAddPlayer.deviceOs = 5;
-            packets.Add(mcpeAddPlayer);
-
+            if (FTData.Active/* || FM.CheckIfSend(,p)*/)
+            {
+                // var pk = McpeRemoveEntity.CreateObject();
+                // pk.entityIdSelf = EntityId;
+                NameTag = GetText(p);
+                
+                BroadcastSetEntityData();
+                // McpeRemoveEntity pk = Packet<McpeRemoveEntity>.CreateObject();
+                // pk.entityIdSelf = EntityId;
+                // p.SendPacket(pk);
+                // packets.Add(pk);
+            }
+            else
+            {
+                if(LastSentTo.Contains(p)) {
+                    FTData.Active = true;
+                    return packets;
+                }
+                var uuid = randomUUID();
+                NameTag = GetText(p, FTData.Vertical);
+                HideNameTag = false;
+                McpeAddPlayer mcpeAddPlayer = McpeAddPlayer.CreateObject();
+                mcpeAddPlayer.uuid = uuid;
+                mcpeAddPlayer.username = "";
+                mcpeAddPlayer.entityIdSelf = EntityId;
+                mcpeAddPlayer.runtimeEntityId = EntityId;
+                mcpeAddPlayer.x = KnownPosition.X;
+                mcpeAddPlayer.y = KnownPosition.Y;
+                mcpeAddPlayer.z = KnownPosition.Z;
+                mcpeAddPlayer.speedX = Velocity.X;
+                mcpeAddPlayer.speedY = Velocity.Y;
+                mcpeAddPlayer.speedZ = Velocity.Z;
+                mcpeAddPlayer.yaw = KnownPosition.Yaw;
+                mcpeAddPlayer.headYaw = KnownPosition.HeadYaw;
+                mcpeAddPlayer.pitch = KnownPosition.Pitch;
+                mcpeAddPlayer.metadata = GetMetadata();
+                mcpeAddPlayer.flags = GetAdventureFlags();
+                mcpeAddPlayer.commandPermission = (uint) (int) CommandPermission.Normal;
+                mcpeAddPlayer.actionPermissions = (uint) ActionPermissions.Default;
+                mcpeAddPlayer.permissionLevel = (uint) PermissionLevel.Operator;
+                mcpeAddPlayer.userId = -1;
+                mcpeAddPlayer.deviceId = "BOT";
+                mcpeAddPlayer.deviceOs = 5;
+                LastSentTo.Add(p);
+                packets.Add(mcpeAddPlayer);
+            }
 
             // var addEntity = McpeAddEntity.CreateObject();
             // addEntity.entityType = "15";
@@ -129,6 +150,11 @@ namespace CyberCore.Manager.FloatingText
         public virtual void kill()
         {
             FTData._CE_Done = true;
+            IsInvisible = true;
+            IsAlwaysShowName = false;
+            HideNameTag = true;
+                
+            BroadcastSetEntityData();
         }
 
         public virtual bool isValid()
@@ -192,7 +218,7 @@ namespace CyberCore.Manager.FloatingText
 
         public virtual bool _CE_Dynamic()
         {
-            return FTData.Syntax.Contains("{name}");
+            return FTData.Syntax.Contains("{name}") || FTData.Syntax.Contains("{online-players}") || FTData.Syntax.Contains("{ticks}");
         }
 
         //Generate Flaoting Text for following players

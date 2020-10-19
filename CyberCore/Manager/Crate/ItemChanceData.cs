@@ -14,14 +14,18 @@ namespace CyberCore.Manager.Crate
         public short ItemID{ get;  set; }
         public short ItemMeta{ get;  set; }
         public int Max_Count{ get;  set; }
-        public string NBT { get;  set; } = ""; //NBT_HEX
+        public byte[] NBT { get;  set; } = new byte[0]; //NBT_HEX
 
+        public ItemChanceData()
+        {
+            
+        }
         public ItemChanceData(Item i, int chance, int max_Count)
         {
             Console.WriteLine("ITEMCHANCEDATA FOR ITEM ID:"+i.Id);
             ItemID = i.Id;
             ItemMeta = i.Metadata;
-            if(i.ExtraData != null)NBT = i.ExtraData.NBTToString();
+            if(i.ExtraData != null)NBT = i.ExtraData.NBTToByteArray();
             Max_Count = max_Count;
             Chance = chance;
         }
@@ -32,7 +36,7 @@ namespace CyberCore.Manager.Crate
         //     importcs(c);
         // }
 
-        public ItemChanceData(short itemID, short itemMeta, int chance, short max_count = 1, string NBT = null)
+        public ItemChanceData(short itemID, short itemMeta, int chance, short max_count = 1, byte[] NBT = null)
         {
             ItemID = itemID;
             ItemMeta = itemMeta;
@@ -48,9 +52,9 @@ namespace CyberCore.Manager.Crate
             {
                 i = ItemFactory.GetItem(ItemID, ItemMeta, 1);
                 // i.ExtraData = 
-                if (!NBT.IsNullOrEmpty())
+                if (NBT != null && NBT.Length != 0)
                 {
-                    var v = NBTToByte();
+                    var v = NBT;
                     var a = new NbtFile();
                     a.LoadFromBuffer(v, 0, v.Length, NbtCompression.ZLib);
                     i.ExtraData = (NbtCompound) a.RootTag;
@@ -68,12 +72,12 @@ namespace CyberCore.Manager.Crate
             return i;
         }
 
-
-        public byte[] NBTToByte()
-        {
-            if (string.IsNullOrEmpty(NBT)) return new byte[0];
-            return parseHexBinary(NBT);
-        }
+        //
+        // public byte[] NBTToByte()
+        // {
+        //     if (string.IsNullOrEmpty(NBT)) return new byte[0];
+        //     return parseHexBinary(NBT);
+        // }
 
 
         private static int hexToBin(char ch) {
@@ -128,18 +132,8 @@ namespace CyberCore.Manager.Crate
 
         public void updateDataFromItem(Item item)
         {
-            String fnt = "";
-            var a = new NbtFile();
-            a.BigEndian = false;
-            a.UseVarInt = true;
-            a.RootTag = item.ExtraData;
-            // byte[] bytes = NBTCompressionSteamTool.NBTCompressedStreamTools.a(a);
-            var aa = (new MemoryStream());
-            a.SaveToStream(aa, NbtCompression.AutoDetect);
-            var aaa = new StreamReader(aa).ReadToEnd();
-
-            if (item.ExtraData.HasValue) fnt = aaa;
-            NBT = fnt;
+            var a = new NbtFile {BigEndian = false, UseVarInt = true, RootTag = item.ExtraData};
+            NBT = a.SaveToBuffer(NbtCompression.None);
             ItemMeta = item.Metadata;
             ItemID = item.Id;
             

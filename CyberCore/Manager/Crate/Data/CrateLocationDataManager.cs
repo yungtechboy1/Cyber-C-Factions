@@ -10,7 +10,9 @@ namespace CyberCore.Manager.Crate.Data
     {
         [JsonIgnore]
         private CyberCoreMain CCM;
-        public Dictionary<String, CrateLocationData> LocData = new Dictionary<string, CrateLocationData>();
+
+        public Dictionary<String, CrateLocationData> LocData { get; set; } = new Dictionary<string, CrateLocationData>();
+
         public CrateLocationDataManager(CyberCoreMain ccm) : base("crate-locations")
         {
             CCM = ccm;

@@ -17,6 +17,7 @@ namespace CyberCore
         public int CreditLimit = 500;
         public int CreditScore;
         public string Name;
+        public string Email;
         public List<PlayerBanEvent> PlayerBans = new List<PlayerBanEvent>();
         public List<PlayerKickEvent> PlayerKicks = new List<PlayerKickEvent>();
         public List<PlayerTempBanEvent> PlayerTempBans = new List<PlayerTempBanEvent>();
@@ -75,11 +76,8 @@ namespace CyberCore
             CreditLimit = (int) a["CreditLimit"];
             UsedCredit = (int) a["UsedCredit"];
             BankBal = (int) a["BankBal"];
-            var ld = (string) a["LoanData"];
-            if (ld != "{}" && !ld.IsNullOrEmpty())
-                LoanData = JsonConvert.DeserializeObject<LoanDataObject>((string) a["LoanData"]);
-            // BankTime = (long) a["BankTime"];
-            if ((string) a["PlayerWarnings"] != "[]")
+            Email = (string) a["Email"];
+             if ((string) a["PlayerWarnings"] != "[]")
                 PlayerWarnings = JsonConvert.DeserializeObject<List<PlayerWarningEvent>>((string) a["PlayerWarnings"]);
             if ((string) a["PlayerTempBans"] != "[]")
                 PlayerTempBans = JsonConvert.DeserializeObject<List<PlayerTempBanEvent>>((string) a["PlayerTempBans"]);
@@ -265,6 +263,21 @@ namespace CyberCore
             LoanData = new LoanDataObject(price);
             Cash += price;
             return true;
+        }
+
+        public bool isAccountLinked()
+        {
+            if (Email.IsNullOrEmpty()) return false;
+            return true;
+        }
+        public String getLinkedAccount()
+        {
+            return Email;
+        }
+
+        public void save(CyberCoreMain ccm, CorePlayer p)
+        {
+            ccm.ServerSQL.SaveSettings(p);
         }
     }
 

@@ -51,7 +51,7 @@ namespace CyberCore.Manager.Crate
         {
             isinit = true;
             ftloaded = true;
-            ft = new CyberGenericFloatingTextContainer(CyberCoreMain.GetInstance().FTM, Location+new Vector3(.5f,.5f,.5f), Lvl,getDisplayText());
+            ft = new CyberGenericFloatingTextContainer(CyberCoreMain.GetInstance().FTM, Location+new Vector3(.5f,1.75f,.5f), Lvl,getDisplayText());
             FloatingTextFactory.AddFloatingText(ft);
 //        FloatingTextParticle
         }

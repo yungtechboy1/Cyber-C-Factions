@@ -46,9 +46,11 @@ namespace CyberCore.Manager.Rank
             addRank(new BuilderRank());
             addRank(new CitizenRank());
             addRank(new CitizenpRank());
-            addRank(new RepresentativeRank());
-            addRank(new SenatorRank());
+            addRank(new NobleManRank());
+            addRank(new KnightRank());
             addRank(new GeneralRank());
+            addRank(new DukeRank());
+            addRank(new KingRank());
             addRank(new JrServerModRank());
             addRank(new JrServerAdminRank());
             addRank(new ServerModeratorRank());
@@ -101,8 +103,11 @@ namespace CyberCore.Manager.Rank
         Builder = 11,
         Citizen = 12,
         Citizenp = 13,
-        Representative = 14,
-        Senator = 15,
+        Nobleman = 14,
+        Knight = 15,
+        Duke = 18,
+        Prince = 20,
+        King = 28,
         General = 16,
         JrServerMod = 8,
         JrServerAdmin = 6,
@@ -151,15 +156,15 @@ namespace CyberCore.Manager.Rank
             
         }
     }
-    public class RepresentativeRank : Rank2
+    public class NobleManRank : Rank2
     {
-        public RepresentativeRank() : base(Representative,"Representative",6){
+        public NobleManRank() : base(Nobleman,"NobleMan",6){
             
         }
     }
-    public class SenatorRank : Rank2
+    public class KnightRank : Rank2
     {
-        public SenatorRank() : base(Senator,"Senator",7){
+        public KnightRank() : base(Knight,"Senator",7){
             
         }
     }
@@ -169,34 +174,52 @@ namespace CyberCore.Manager.Rank
             
         }
     }
+    public class PrinceRank : Rank2
+    {
+        public PrinceRank() : base(Prince,"Prince",9){
+            
+        }
+    }
+    public class KingRank : Rank2
+    {
+        public KingRank() : base(King,"King",11){
+            
+        }
+    }
+    public class DukeRank : Rank2
+    {
+        public DukeRank() : base(Duke,"Duke",10){
+            
+        }
+    }
     public class JrServerModRank : Rank2
     {
-        public JrServerModRank() : base(JrServerMod," Jr Server Mod",9){
+        public JrServerModRank() : base(JrServerMod," Jr Server Mod",20){
             
         }
     }
     public class JrServerAdminRank : Rank2
     {
-        public JrServerAdminRank() : base(JrServerAdmin,"Jr Server Admin",10){
+        public JrServerAdminRank() : base(JrServerAdmin,"Jr Server Admin",21){
             
         }
 
     }
     public class ServerModeratorRank : Rank2
     {
-        public ServerModeratorRank() : base(ServerModerator,"Server Moderator",11){
+        public ServerModeratorRank() : base(ServerModerator,"Server Moderator",22){
             
         }
     }
     public class ServerAdminRank : Rank2
     {
-        public ServerAdminRank() : base(ServerAdmin,"Server Admin",12){
+        public ServerAdminRank() : base(ServerAdmin,"Server Admin",23){
             
         }
     }
     public class AdminRank : Rank2
     {
-        public AdminRank() : base(Administrative,"Administrative",13){
+        public AdminRank() : base(Administrative,"Administrative",23){
             
         }
     }

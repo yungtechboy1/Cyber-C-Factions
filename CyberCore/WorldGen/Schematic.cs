@@ -156,7 +156,7 @@ namespace CyberCore.WorldGen
 		public Schematic(Stream stream)
 		{
 			var schematicFile = new NbtFile();
-			schematicFile.LoadFromStream(stream, NbtCompression.AutoDetect);
+			schematicFile.LoadFromStream(stream, NbtCompression.ZLib);
 			stream.Close();
 
 			NbtCompound nbt = schematicFile.RootTag as NbtCompound;

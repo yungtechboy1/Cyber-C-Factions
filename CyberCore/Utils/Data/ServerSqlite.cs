@@ -168,7 +168,7 @@ namespace CyberCore.Utils.Data
 //            p.sendTip("Homes Saved!");
         }
 
-        private void SaveSettings(CorePlayer p)
+        public void SaveSettings(CorePlayer p)
         {
             UserSQL u = Plugin.UserSQL;
             CyberCoreMain.Log.Info("Starting SAVING FOR  " + p.getName() + "'s Server Data...Maybe");

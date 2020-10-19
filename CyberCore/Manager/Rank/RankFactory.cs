@@ -52,7 +52,7 @@ namespace CyberCore.Manager.Rank
         /// <returns>0 for No and any value above 1 for true</returns>
         public int getUserIDFromMCPEName(String name)
         {
-            var a = Main.WebSQL.executeSelect(
+            var a = Main.ForumWebSQL.executeSelect(
                 // $"SELECT * FROM `xf_user_field_value` WHERE `field_value` LIKE '{name}' AND `field_id` = CAST(6d6370656964 AS BINARY)");
                 $"SELECT * FROM `xf_user_field_value` WHERE `field_value` LIKE '{name}' AND `field_id` = 'mcpeid'");
             // CyberCoreMain.Log.Error("WHOAAAA WTF IS THIS!!!::" + a.Count);
@@ -69,7 +69,7 @@ namespace CyberCore.Manager.Rank
 
         public int getUserIDFromMCPEUUID(String uuid)
         {
-            var a = Main.WebSQL.executeSelect(
+            var a = Main.ForumWebSQL.executeSelect(
                 $"SELECT * FROM `xf_user_field_value` WHERE `field_value` LIKE '{uuid}' AND `field_id` = CAST(0x6d63706575756964 AS BINARY)");
             if (a.Count > 0)
             {
@@ -83,7 +83,7 @@ namespace CyberCore.Manager.Rank
         {
             var l = new List<int>();
             if (id == 0) return l;
-            var a = Main.WebSQL.executeSelect("SELECT * FROM `xf_user` WHERE `user_id` = " + id);
+            var a = Main.ForumWebSQL.executeSelect("SELECT * FROM `xf_user` WHERE `user_id` = " + id);
             if (a.Count != 0)
             {
                 l.Add(a.GetInt32("user_group_id"));

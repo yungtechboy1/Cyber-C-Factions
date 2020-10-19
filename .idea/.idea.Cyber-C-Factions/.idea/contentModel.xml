@@ -38,6 +38,9 @@
         <e p="CyberCore.csproj" t="IncludeRecursive" />
         <e p="CyberCoreMain.cs" t="Include" />
         <e p="CyberPlayerFactory.cs" t="Include" />
+        <e p="FloatingText.json" t="Include" />
+        <e p="LinkConfirmWindow.cs" t="Include" />
+        <e p="LinkWindow.cs" t="Include" />
         <e p="Manager" t="Include">
           <e p="AuctionHouse" t="Include">
             <e p="AuctionFactory.cs" t="Include" />
@@ -158,6 +161,8 @@
               <e p="FactionSettingsWindow.cs" t="Include" />
               <e p="HTP_0_Window.cs" t="Include" />
               <e p="InboxMessageWindow.cs" t="Include" />
+              <e p="MeWindow.cs" t="Include" />
+              <e p="ReportFactionWindow.cs" t="Include" />
             </e>
           </e>
           <e p="FloatingText" t="Include">
@@ -289,7 +294,19 @@
         </e>
       </e>
       <e p="MapTestConsole" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="LevelMap.cs" t="Include" />
+        <e p="LevelMapChunk.cs" t="Include" />
+        <e p="Main.cs" t="Include" />
         <e p="MapTestConsole.csproj" t="IncludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="MapTestConsole.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
       </e>
       <e p="packages" t="ExcludeRecursive" />
       <e p="Testing" t="IncludeRecursive">

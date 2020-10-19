@@ -59,7 +59,7 @@ namespace CyberCore.Utils.Data
             q = addToQuery(q, psd.Kills) + ",";
             q = addToQuery(q, psd.Deaths) + ",";
             q = addToQuery(q, psd.BankBal) + ",";
-            q = addToQuery(q, psd.LoanData?.toJson());
+            q = addToQuery(q, psd.Email);
             q += ");";
             CyberCoreMain.Log.Info("Saved Player With SQL:" + q);
             Main.SQL.Insert(q);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using CyberCore.Manager.Crate;
 using CyberCore.Manager.Crate.Form;
+using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.FloatingText;
 using CyberCore.Manager.Rank;
 using CyberCore.Manager.Shop;
@@ -49,6 +50,10 @@ namespace CyberCore
         [Command(Name = "ft add", Description = "Add floating text")]
         public void FtAdd(CorePlayer p, string text = null)
         {
+            if (null == text) text = "Floating Text 121 !";
+            p.SendMessage($"HI YOUR IN"+p.getFaction()+" Faction with "+p.Faction+" FROM FACTION"+p.KnownPosition.Clone());
+            p.SendMessage($"HI YOUR IN YOUR FROM "+p.KnownPosition.Clone());
+            if(((PlayerLocation)p.KnownPosition.Clone()).Z == 0 || ((PlayerLocation)p.KnownPosition.Clone()).X == 0 )Console.WriteLine($"ERORROROROROROOROROROOROROROROOR");
             FloatingTextFactory.AddFloatingText(new CyberGenericFloatingTextContainer(CCM.FTM, (PlayerLocation) p.KnownPosition.Clone(),p.Level, text), true);
             p.SendMessage(ChatColors.Green + "Floating Text Added!");
         }
@@ -75,6 +80,32 @@ namespace CyberCore
             p.SendMessage(ChatColors.Green + "Teleproting to spawn in 5 secs!");
         }
 
+
+        [Command(Name = "link", Description = "Link your MC Account to Forums")]
+        public void link(CorePlayer p)
+        {
+            // p.showFormWindow(new LinkConfirmWindow());
+            p.SendForm2(new LinkConfirmWindow(p));
+            // p.SendForm(new LinkConfirmWindow());
+        }
+        [Command(Name = "howtoplay", Description = "Link your MC Account to Forums")]
+        public void htp(CorePlayer p)
+        {
+            p.showFormWindow(new HTP_0_Window());
+        }
+
+        [Command(Name = "status", Description = "View Player Info and Status Information")]
+        public void status(CorePlayer p)
+        {
+            p.SendMessage($"{ChatColors.Aqua}Current Rank: {p.GetRank().getChat_prefix()+p.GetRank().display_name}\n" +
+                          $"Displayed Username: {p.DisplayName}\n" +
+                          $"Username: {p.Username}\n" +
+                          $"\n" +
+                          $"\n" +
+                          $"\n" +
+                          $"");
+        }
+
         public static readonly int WildMaxVal = 25000;
 
         [Command(Name = "wild", Description = "Teleport to random spot in the wild")]
@@ -88,7 +119,7 @@ namespace CyberCore
         }
 
         [Command(Name = "setspawn", Description = "Set a new spawn point")]
-        [ServerRankAttr(RankEnum.Administrative)]
+        // [ServerRankAttr(RankEnum.Administrative)]
         public void setspawn(CorePlayer p)
         {
             p.Level.SpawnPoint = (PlayerLocation) p.KnownPosition.Clone();

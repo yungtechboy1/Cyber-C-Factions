@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Xml.Schema;
 using CyberCore.Manager.Factions.Windows;
 using CyberCore.Manager.Forms;
-using CyberCore.Manager.Rank;
 using CyberCore.Utils;
 using MiNET;
 using MiNET.Plugins;
 using MiNET.Plugins.Attributes;
 using MiNET.UI;
 using MiNET.Utils;
-using Newtonsoft.Json.Serialization;
-using OpenAPI.Player;
 
 namespace CyberCore.Manager.Factions
 {
@@ -46,26 +40,25 @@ namespace CyberCore.Manager.Factions
         public void fpermsettings(CorePlayer p)
         {
             var fac = p.getFaction();
-            FactionRank nr = fac.getPermSettings().getAllowedToEditSettings();
-            FactionRank pr = fac.getPlayerRank(p);
-            if (pr.hasPerm(nr)) {
+            var nr = fac.getPermSettings().getAllowedToEditSettings();
+            var pr = fac.getPlayerRank(p);
+            if (pr.hasPerm(nr))
                 p.showFormWindow(new FactionPermSettingsWindow(fac));
-            } else {
+            else
                 p.SendMessage(FactionErrorString.Error_Settings_No_Permission.getMsg());
-            }
         }
+
         [Command(Name = "f settings", Description = "View your faction's power")]
         [FactionPermission(FactionRankEnum.Recruit)]
         public void fsettings(CorePlayer p)
         {
             var fac = p.getFaction();
-            FactionRank nr = fac.getPermSettings().getAllowedToEditSettings();
-            FactionRank pr = fac.getPlayerRank(p);
-            if (pr.hasPerm(nr)) {
+            var nr = fac.getPermSettings().getAllowedToEditSettings();
+            var pr = fac.getPlayerRank(p);
+            if (pr.hasPerm(nr))
                 p.showFormWindow(new FactionSettingsWindow(fac));
-            } else {
+            else
                 p.SendMessage(FactionErrorString.Error_Settings_No_Permission.getMsg());
-            }
         }
 
         [Command(Name = "f power", Description = "View your faction's power")]
@@ -73,7 +66,7 @@ namespace CyberCore.Manager.Factions
         public string fpower(CorePlayer p)
         {
             var f = p.getFaction();
-            return (FactionsMain.NAME+ChatColors.LightPurple + "Your Faction Has " + f.GetPower()+" Power!");
+            return FactionsMain.NAME + ChatColors.LightPurple + "Your Faction Has " + f.GetPower() + " Power!";
         }
 
         [Command(Name = "f neutral", Description = "Re-set faction relationship back to neutral")]
@@ -81,11 +74,10 @@ namespace CyberCore.Manager.Factions
         public void fneutral(CorePlayer p, string fac)
         {
             var f = p.getFaction();
-            if(f.getPlayerRank(p).hasPerm(f.getPermSettings().AllowedToAcceptAlly))p.SendForm(new FactionNeutralWindow(fac));
+            if (f.getPlayerRank(p).hasPerm(f.getPermSettings().AllowedToAcceptAlly))
+                p.SendForm(new FactionNeutralWindow(fac));
             else
-            {
                 p.SendMessage($"{ChatColors.Red} Error! You do not have permission to do this!");
-            }
         }
 
         [Command(Name = "f leave", Description = "Use the command to leave your current faction!")]
@@ -105,7 +97,7 @@ namespace CyberCore.Manager.Factions
         }
 
         [FactionPermission(FactionRankEnum.Recruit)]
-        [Command(Name = "f invites", Aliases = new String[]
+        [Command(Name = "f invites", Aliases = new[]
         {
             "f deny",
             "f accept"
@@ -130,13 +122,13 @@ namespace CyberCore.Manager.Factions
             var fac2 = newleader.getFaction();
             if (!fac1.getName().equalsIgnoreCase(fac2.getName()))
             {
-                currentleader.SendMessage(ChatColors.Red+"Error! You MUST BE IN THE SAME FACTION!");
+                currentleader.SendMessage(ChatColors.Red + "Error! You MUST BE IN THE SAME FACTION!");
                 return;
             }
-            
-                p.SendForm(new FactionChangeLeaderWindow(p,(CorePlayer) t.getPlayer()));
+
+            p.SendForm(new FactionChangeLeaderWindow(p, (CorePlayer) t.getPlayer()));
         }
-        
+
         [Command(Name = "f join", Description = "View Open Factions and Join One")]
         public void fjoin(CorePlayer p, string faction = null)
         {
@@ -146,24 +138,25 @@ namespace CyberCore.Manager.Factions
             }
             else
             {
-                List<string> fl = Manager.factionPartialNameList(faction);
+                var fl = Manager.factionPartialNameList(faction);
                 if (fl.Count == 0)
                 {
                     p.SendMessage($"{ChatColors.Red} Error! No factions found with the name '{faction}'");
-                    return;
-                }else if (fl.Count == 1)
+                }
+                else if (fl.Count == 1)
                 {
                     var tf = Manager.getFaction(fl[0]);
                     if (!tf.canJoin())
                     {
-                        p.SendMessage($"{ChatColors.Red} Error! The faction {tf.getDisplayName()}{ChatColors.Red} is a private faction or full! You can not join, you must be invited by someone within the faction!");
+                        p.SendMessage(
+                            $"{ChatColors.Red} Error! The faction {tf.getDisplayName()}{ChatColors.Red} is a private faction or full! You can not join, you must be invited by someone within the faction!");
                         return;
                     }
-                    p.SendForm(new FactionJoinConfirm(0,tf));
+
+                    p.SendForm(new FactionJoinConfirm(0, tf));
                 }
                 else
                 {
-                    
                     p.SendForm(new FactionJoinListWindow(fl));
                 }
             }
@@ -207,6 +200,44 @@ namespace CyberCore.Manager.Factions
             Sender.showFormWindow(new FactionInviteChooseRank(Sender, invited));
         }
 
+        [Command(Name = "f inbox", Description = "View Faction Inbox")]
+        [FactionPermission(FactionRankEnum.Recruit)]
+        public void FInbox(CorePlayer Sender, Target invite)
+        {
+            // var Sender = (CorePlayer) Sende;
+            var invited = (CorePlayer) invite.getPlayer();
+            if (invited == null)
+            {
+                Sender.SendMessage(FactionErrorString.Error_CMD_Invite_UnableToFindPlayer.getMsg() +
+                                   "!@ S222UPER ERROR!!!@@@");
+                return;
+            }
+
+            if (null != Manager.getPlayerFaction(invited))
+            {
+                //TODO Allow Setting to ignore Faction messages
+                Sender.SendMessage(FactionErrorString.Error_CMD_Invite_PlayerInFaction.getMsg()+"1221");
+                return;
+            }
+
+
+            var fac = Sender.getFaction();
+            if (fac == null)
+            {
+                Sender.SendMessage(FactionErrorString.Error_NotInFaction.getMsg());
+                return;
+            }
+
+            if (!Sender.getFactionRank().hasPerm(fac.getPermSettings().AllowedToViewInbox))
+            {
+                Sender.SendMessage(FactionErrorString.Error_No_Permission.getMsg() +
+                                   $" You must be {fac.getPermSettings().AllowedToViewInbox.Id.ToString()}");
+                return;
+            }
+            Sender.showFormWindow(new FactionInviteChooseRank(Sender, invited));
+        }
+
+        
         private bool IsValid(string value)
         {
             return Regex.IsMatch(value, @"^[a-zA-Z0-9]*$");
@@ -382,8 +413,14 @@ namespace CyberCore.Manager.Factions
         {
             Sender.SendForm(new FactionHomesPage(Sender));
         }
-        
-        
+
+        [Command(Name = "me", Description = "View All Faction Homes")]
+        public void Me(CorePlayer Sender, int page = 1)
+        {
+            Sender.SendForm(new MeWindow(Sender,MainForm.ME_Window));
+        }
+
+
         [Command(Name = "f delhome", Description = "Set a Faction Home")]
         [FactionCommand]
         public void fdelhome(CorePlayer Sender, string name)
@@ -400,14 +437,15 @@ namespace CyberCore.Manager.Factions
             var perm = f.getPermSettings().AllowedToSetHome;
             if (!f.getPlayerRank(Sender).hasPerm(perm))
             {
-                Sender.SendMessage($"{ChatColors.Red} Error! You do not have permission to set homes for your faction!");
+                Sender.SendMessage(
+                    $"{ChatColors.Red} Error! You do not have permission to set homes for your faction!");
                 return;
             }
 
             f.DelHome(v.HomeID);
         }
-        
-        
+
+
         [Command(Name = "f sethome", Description = "Set a Faction Home")]
         [FactionCommand]
         public void fsethome(CorePlayer Sender, string name)
@@ -417,14 +455,16 @@ namespace CyberCore.Manager.Factions
             var max = f.getSettings().getMaxHomes();
             if (a.Count >= max)
             {
-                Sender.SendMessage($"{ChatColors.Red} Error! You faction has set the max amount of homes allowed already!");
+                Sender.SendMessage(
+                    $"{ChatColors.Red} Error! You faction has set the max amount of homes allowed already!");
                 return;
             }
 
             var perm = f.getPermSettings().AllowedToSetHome;
             if (!f.getPlayerRank(Sender).hasPerm(perm))
             {
-                Sender.SendMessage($"{ChatColors.Red} Error! You do not have permission to set homes for your faction!");
+                Sender.SendMessage(
+                    $"{ChatColors.Red} Error! You do not have permission to set homes for your faction!");
                 return;
             }
 
@@ -433,9 +473,9 @@ namespace CyberCore.Manager.Factions
 
         [Command(Name = "f help", Description = "Get Help with all Faction Commands")]
         [FactionCommand]
-        public String fhelp(CorePlayer Sender, int page = 1)
+        public string fhelp(CorePlayer Sender, int page = 1)
         {
-            List<String> a = new List<String>();
+            var a = new List<string>();
             a.Add("/f accept - Accept Faction Invite");
             a.Add("/f admin - OP Only");
             a.Add("/f balance - Faction Balance");
@@ -472,16 +512,16 @@ namespace CyberCore.Manager.Factions
             a.Add("/f wartp - Teleport to the war zone");
             a.Add("/f withdraw - Take money from faction's balance");
 
-            int p = page;
-            int to = p * 5;
-            int from = to - 5;
+            var p = page;
+            var to = p * 5;
+            var from = to - 5;
             // 5 -> 0 ||| 10 -> 5
-            int x = 0;
-            String t = "";
+            var x = 0;
+            var t = "";
 
             t += ChatColors.Gray + "-----" + ChatColors.Gold + ".<[Faction Command List]>." + ChatColors.Gray +
                  "-----\n";
-            foreach (String value in a)
+            foreach (var value in a)
             {
                 // 0 < 5 && 0 >= 0
                 //   YES     YES
@@ -501,7 +541,7 @@ namespace CyberCore.Manager.Factions
             }
 
             t += "------------------------------";
-            return (t);
+            return t;
         }
 
         [Command(Name = "f kick", Description = "Deposit Money into Faction")]
@@ -579,6 +619,7 @@ namespace CyberCore.Manager.Factions
             fac.BroadcastMessage(FactionsMain.NAME + ChatColors.Green + Sender.getName() + " has deposited $" + money +
                                  " Money to the faction account!");
         }
+
         [Command(Name = "f withdraw", Description = "Deposit Money into Faction")]
         [FactionCommand]
         public void fwithdraw(CorePlayer Sender, int money)
@@ -596,7 +637,8 @@ namespace CyberCore.Manager.Factions
                 return;
             }
 
-            Sender.SendMessage(FactionsMain.NAME + ChatColors.Green + "$" + money + " Money Withdrawn from your Faction!");
+            Sender.SendMessage(FactionsMain.NAME + ChatColors.Green + "$" + money +
+                               " Money Withdrawn from your Faction!");
             fac.BroadcastMessage(FactionsMain.NAME + ChatColors.Green + Sender.getName() + " has Withdrawn $" + money +
                                  " Money to the faction account!");
         }
@@ -606,15 +648,15 @@ namespace CyberCore.Manager.Factions
         public void fdemote(CorePlayer Sender, Target player = null)
         {
             var fac = Sender.getFaction();
-            var pp = (CorePlayer)player.getPlayer();
+            var pp = (CorePlayer) player.getPlayer();
             if (pp == null)
             {
-                Sender.SendForm(new FactionPromoteDemoteWindow(false,Sender));
+                Sender.SendForm(new FactionPromoteDemoteWindow(false, Sender));
                 return;
             }
 
             var pf = pp.getFaction();
-            if (pf == null||!pf.getName().equalsIgnoreCase(fac.getName()))
+            if (pf == null || !pf.getName().equalsIgnoreCase(fac.getName()))
             {
                 Sender.SendMessage(FactionsMain.NAME + ChatColors.Red + "Target Player Not In Your Faction!");
                 return;
@@ -624,20 +666,21 @@ namespace CyberCore.Manager.Factions
             var fr = fac.getPermSettings().getAllowedToPromote();
             if (r.hasPerm(fr)) fac.DemotePlayer(pp);
         }
+
         [Command(Name = "f promote", Description = "Demote Player in Faction")]
         [FactionCommand]
         public void fpromote(CorePlayer Sender, Target player = null)
         {
             var fac = Sender.getFaction();
-            var pp = (CorePlayer)player.getPlayer();
+            var pp = (CorePlayer) player.getPlayer();
             if (pp == null)
             {
-                Sender.SendForm(new FactionPromoteDemoteWindow(true,Sender));
+                Sender.SendForm(new FactionPromoteDemoteWindow(true, Sender));
                 return;
             }
 
             var pf = pp.getFaction();
-            if (pf == null||!pf.getName().equalsIgnoreCase(fac.getName()))
+            if (pf == null || !pf.getName().equalsIgnoreCase(fac.getName()))
             {
                 Sender.SendMessage(FactionsMain.NAME + ChatColors.Red + "Target Player Not In Your Faction!");
                 return;
@@ -702,14 +745,15 @@ namespace CyberCore.Manager.Factions
         [Command(Name = "f list", Description = "Open Faction List")]
         public void fList(CorePlayer Sender, string faction = null)
         {
-        if(faction == null)
-            Sender.SendForm(new FactionListWindow());
+            if (faction == null)
+                Sender.SendForm(new FactionListWindow(Sender));
+            else Sender.SendMessage($"{ChatColors.Yellow} /f list <Name> is not released yet!");
         }
 
         [Command(Name = "f info", Description = "Usage '/f info [faction]' | View your Faction Info or Others")]
         public void FInfo(CorePlayer Sender, string faction = null)
         {
-            Sender.SendForm(new FactionListWindow(faction));
+            Sender.SendForm(new FactionListWindow(Sender, faction.IsNullOrEmpty()? Sender.getFaction().getName() : faction));
         }
 
         private void CommingSoon(Player arg1, SimpleForm arg2)

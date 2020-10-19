@@ -21,6 +21,7 @@ namespace CyberCore.Manager.Forms
         [JsonIgnore] 
         public Faction Fac = null;
         
+        [JsonIgnore] 
         private static readonly ILog Log = LogManager.GetLogger(typeof(CyberFormSimple));
 
 

@@ -1,0 +1,298 @@
+﻿[
+  {
+    "Frozen": false,
+    "Lifespan": 150,
+    "Created": -1,
+    "Updates": -1,
+    "Cords": [
+      464,
+      125,
+      2169
+    ],
+    "_CE_Done": false,
+    "_CE_Lock": false,
+    "Active": false,
+    "Formated": false,
+    "lastSyntax": null,
+    "LastUpdate": 1274735270490,
+    "Lvl": "OverworldCT",
+    "PlayerUnique": false,
+    "Range": 64,
+    "Syntax": "&&6=&&b&&k=asdasda==&&r&&6=&&e| &&aWelcome To Spawn! &&e|&&6=&&b&&k==asdasdas=&&r&&6=`
+    &&6===============|Current TPS {ticks}|==============`
+  &&6===============|Online Players {online-players}|==============",
+
+  "TYPE": 0,
+  "UpdateTicks": 1000,
+  "Vertical": false
+  },
+  {
+    "Frozen": false,
+    "Lifespan": 150,
+    "Created": -1,
+    "Updates": -1,
+    "Cords": [
+      457,
+      124,
+      2162
+    ],
+    "_CE_Done": false,
+    "_CE_Lock": false,
+    "Active": false,
+    "Formated": false,
+    "lastSyntax": null,
+    "LastUpdate": 1274735270490,
+    "Lvl": "OverworldCT",
+    "PlayerUnique": false,
+    "Range": 64,
+    "Syntax": "
+    ====WELCOME TEXT====|n
+    HELLO {name}!
+  Welcome to UnlimitedMC Network
+  We Hope you enjoy the beta
+  ==========WARNING========
+  THIS SERVER IS IN BETA
+  ==========WARNING=========",
+  "TYPE": 0,
+  "UpdateTicks": 20,
+  "Vertical": false
+  },
+  {
+    "Frozen": false,
+    "Lifespan": 150,
+    "Created": -1,
+    "Updates": -1,
+    "Cords": [
+      457,
+      124,
+      2174
+    ],
+    "_CE_Done": false,
+    "_CE_Lock": false,
+    "Active": false,
+    "Formated": false,
+    "lastSyntax": null,
+    "LastUpdate": 1274735270490,
+    "Lvl": "OverworldCT",
+    "PlayerUnique": false,
+    "Range": 64,
+    "Syntax": "=========ABOUT BETA TEST=========
+    This Server is a branch of an early MCPE Factions Server
+    Called CyberTech++.
+    Now we are bias but we think CyberTech++ was revolutionary!
+    It was PVP Focused, Fun, Fast, and Popular...
+    Then unstable and constantly change protocols cause me
+    to stop developing for MCPE/MCBE.
+    But on the side I was still working on this!
+    ================================================================
+    The Purpose of my project and this server is to be able
+    to host 150+ Faction player at a time with no lag!
+    This is exactly why I chose to use MiNet and OpenMiNet
+    to run my server.
+    PLEASE submit any suggestions you have to:
+  UnlimitedMC.Net
+    ",
+    "TYPE": 0,
+    "UpdateTicks": 20,
+    "Vertical": false
+  },
+  {
+    "Frozen": false,
+    "Lifespan": 150,
+    "Created": -1,
+    "Updates": -1,
+    "Cords": [
+      486,
+      124,
+      2191
+    ],
+    "_CE_Done": false,
+    "_CE_Lock": false,
+    "Active": false,
+    "Formated": false,
+    "lastSyntax": null,
+    "LastUpdate": 1274735270490,
+    "Lvl": "OverworldCT",
+    "PlayerUnique": false,
+    "Range": 64,
+    "Syntax": "=========FACTION LEADERBOARD========
+    ----------GRAND PRIZE WINNERS (VALUE)------------
+    ====| YOUR FACTION RANK : {fac-GPW-fac} |===
+    ===================TOP VALUE======================
+    =====| 1 |===| {fac-TV-1} ========
+  =====| 2 |===| {fac-TV-2} ========
+  =====| 3 |===| {fac-TV-3} ========
+  =====| 4 |===| {fac-TV-4} ========
+  =====| 5 |===| {fac-TV-5} ========
+  ===================TOP KILLS======================
+  =====| 1 |===| {fac-TK-1} ========
+  =====| 2 |===| {fac-TK-2} ========
+  =====| 3 |===| {fac-TK-3} ========
+  =====| 4 |===| {fac-TK-4} ========
+  =====| 5 |===| {fac-TK-5} ========
+  ===================TOP WEALTH======================
+  =====| 1 |===| {fac-TW-1} ========
+  =====| 2 |===| {fac-TW-2} ========
+  =====| 3 |===| {fac-TW-3} ========
+  =====| 4 |===| {fac-TW-4} ========
+  =====| 5 |===| {fac-TW-5} ========
+  ",
+  "TYPE": 0,
+  "UpdateTicks": 20,
+  "Vertical": false
+  },
+  {
+    "Frozen": false,
+    "Lifespan": 150,
+    "Created": -1,
+    "Updates": -1,
+    "Cords": [
+      469,
+      124,
+      2162
+    ],
+    "_CE_Done": false,
+    "_CE_Lock": false,
+    "Active": false,
+    "Formated": false,
+    "lastSyntax": null,
+    "LastUpdate": 1274735270490,
+    "Lvl": "OverworldCT",
+    "PlayerUnique": false,
+    "Range": 64,
+
+    "Syntax": "==HOW TO PLAY==
+    - Useful Commands
+    -- Use /Wild to teleport to the wild
+    -- Home commands are /home and /sethome, and you have 3 Free Homes
+    -- The Main factions command is /f
+    -- Create a faction using /f create <Name> Ex. /f create TESTFACTION
+    ---  Or Join an existing open faction using /f list, then selecting
+    ---  the faction you want and then clicking join faction.
+    -- Use /f invite <name> Ex. /f invite yuntech, to invite players to your faction.
+    -- Crates are how you can progress quickly, to open crates vote for the server
+    and in return recieve a crate key which can unlock amazing loot.
+    -- use /report to report any suspicious activity!
+    -- Use /help for any other question!
+    -- Good Luck!
+    ",
+    "TYPE": 0,
+    "UpdateTicks": 20,
+    "Vertical": false
+  },
+  {
+
+    "Frozen": false,
+    "Lifespan": 150,
+    "Created": -1,
+    "Updates": -1,
+    "Cords": [
+      486,
+      123,
+      2146
+    ],
+    "_CE_Done": false,
+    "_CE_Lock": false,
+    "Active": false,
+    "Formated": false,
+    "lastSyntax": null,
+    "LastUpdate": 1274735270490,
+    "Lvl": "OverworldCT",
+    "PlayerUnique": false,
+    "Range": 64,
+    "Syntax": "
+    ===============================================
+    ==============PRIZES AND BUYOUTS===============
+    ======|UMC Coins|==============================
+    ====|1500|====|- $10 Gift Card (Amazon/Itunes/PlayStore/Steam) -|=====
+    ====|3000|====|- $25 Gift Card (Amazon/Itunes/PlayStore/Steam) -|=====
+    ====|5500|====|- $50 Gift Card (Amazon/Itunes/PlayStore/Steam) -|=====
+    ====|800|====|- Citizen Rank (1Mo) -|======
+    ====|1600|====|- Citizen Rank (3Mo) -|=====
+    ====|2700|====|- Citizen Rank (6Mo) -|=====
+    ====|7000.00|====|- Call Of Duty (PC/Xbox/PS4) -|=====
+    ====|12000.00|====|- 2K (PC/Xbox/PS4) -|=====
+    ====|35000.00|====|- PS4 Slim 1 TB -|=====
+    ====|35000.00|====|- Xbox One 500 GB -|====
+    ====|35000.00|====|- Nintendo Switch -|====
+    ====|-----.00|====|--------------|=====
+    ===============================================
+
+    ",
+    "TYPE": 0,
+    "UpdateTicks": 20,
+    "Vertical": false
+  },
+  {
+    "Frozen": false,
+    "Lifespan": 150,
+    "Created": -1,
+    "Updates": -1,
+    "Cords": [
+      476,
+      123,
+      2181
+    ],
+    "_CE_Done": false,
+    "_CE_Lock": false,
+    "Active": false,
+    "Formated": false,
+    "lastSyntax": null,
+    "LastUpdate": 1274735270490,
+    "Lvl": "OverworldCT",
+    "PlayerUnique": false,
+    "Range": 64,
+    "Syntax": "Faction",
+    "TYPE": 0,
+    "UpdateTicks": 20,
+    "Vertical": false
+  },
+  {
+    "Frozen": false,
+    "Lifespan": 150,
+    "Created": -1,
+    "Updates": -1,
+    "Cords": [
+      450,
+      123,
+      2181
+    ],
+    "_CE_Done": false,
+    "_CE_Lock": false,
+    "Active": false,
+    "Formated": false,
+    "lastSyntax": null,
+    "LastUpdate": 1274735270490,
+    "Lvl": "OverworldCT",
+    "PlayerUnique": false,
+    "Range": 64,
+    "Syntax": "Faction",
+    "TYPE": 0,
+    "UpdateTicks": 20,
+    "Vertical": false
+  },
+  {
+    "Frozen": false,
+    "Lifespan": 150,
+    "Created": -1,
+    "Updates": -1,
+    "Cords": [
+      450,
+      123,
+      2155
+    ],
+    "_CE_Done": false,
+    "_CE_Lock": false,
+    "Active": false,
+    "Formated": false,
+    "lastSyntax": null,
+    "LastUpdate": 1274735270490,
+    "Lvl": "OverworldCT",
+    "PlayerUnique": false,
+    "Range": 64,
+    "Syntax": "Shop",
+    "TYPE": 0,
+    "UpdateTicks": 20,
+    "Vertical": false
+  }
+]

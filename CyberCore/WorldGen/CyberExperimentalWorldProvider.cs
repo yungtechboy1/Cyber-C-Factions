@@ -124,8 +124,8 @@ namespace CyberCore.WorldGen
 
         public void Run(object o)
         {
-            Console.WriteLine("RE-ADDER RAN==============22222222===========================");
-            Console.WriteLine($"RE-ADDER RAN==============22222222==========================={_isInitialized} |||| {Level != null}");
+            // Console.WriteLine("RE-ADDER RAN==============22222222===========================");
+            // Console.WriteLine($"RE-ADDER RAN==============22222222==========================={_isInitialized} |||| {Level != null}");
             if (Level != null && _isInitialized)
             {
                 Log.Info("RE-ADDER RAN=========================================");
@@ -354,10 +354,10 @@ namespace CyberCore.WorldGen
             chunk = new ChunkColumn();
             chunk.X = chunkCoordinates.X;
             chunk.Z = chunkCoordinates.Z;
-            var rth = getChunkRTH(chunk);
+            var rth = BiomeManager.getChunkRTH(chunkCoordinates);
 
             // Console.WriteLine("STARTING POPULATIOaN");
-            var b = BiomeManager.GetBiome(chunk);
+            var b = BiomeManager.GetBiome(chunkCoordinates);
             chunk = PopulateChunk(this, chunk, rth, b).Result;
 
             // if (smooth)

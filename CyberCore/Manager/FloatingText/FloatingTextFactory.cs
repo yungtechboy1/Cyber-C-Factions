@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using CyberCore.Utils;
+using LibNoise.Combiner;
 using log4net.Util.TypeConverters;
 using MiNET;
 using MiNET.Blocks;
@@ -35,6 +36,7 @@ namespace CyberCore.Manager.FloatingText
 
         public FloatingTextFactory(CyberCoreMain c, List<GenericFloatingTextEntity> al = null)
         {
+            instance = this;
             if (al == null) al = new List<GenericFloatingTextEntity>();
             ActiveFTList = al;
             CCM = c;
@@ -58,6 +60,8 @@ namespace CyberCore.Manager.FloatingText
                 JsonConvert.DeserializeObject<List<CyberFloatingTextContainerData>>(t);
             if (d != null)
             {
+                SavedFloatingText = new List<GenericFloatingTextEntity>();
+
                 foreach (var v in d)
                 {
                     var ln = v.Lvl;
@@ -90,10 +94,10 @@ namespace CyberCore.Manager.FloatingText
             foreach (var v in SavedFloatingText)
             {
                 if (v is PopupFT) continue;
-                ((CyberGenericFloatingTextContainer)v).FTData.PrepareForSave();
+                ((CyberGenericFloatingTextContainer) v).FTData.PrepareForSave();
 
                 // CyberCoreMain.Log.Error("SAVING FTM FOR "+v.FTData.Syntax);
-                d.Add(((CyberGenericFloatingTextContainer)v).FTData);
+                d.Add(((CyberGenericFloatingTextContainer) v).FTData);
             }
 
             var dd = JsonConvert.SerializeObject(d);
@@ -112,7 +116,7 @@ namespace CyberCore.Manager.FloatingText
             {
                 if (a is CyberGenericFloatingTextContainer aa)
                     aa.kill();
-                else if(a is PopupFT aaa)
+                else if (a is PopupFT aaa)
                     aaa.kill();
             }
 
@@ -123,7 +127,7 @@ namespace CyberCore.Manager.FloatingText
             }
         }
 
-        public List<GenericFloatingTextEntity> getLList()
+        public List<GenericFloatingTextEntity> GetMastListAndAddNewTexts()
         {
             List<GenericFloatingTextEntity> _l = new List<GenericFloatingTextEntity>();
             lock (llock)
@@ -200,27 +204,28 @@ namespace CyberCore.Manager.FloatingText
                 // CyberCoreMain.Log.Error("Was LOG ||"+"||||||||======");
                 lasttick = tick;
 //                Dictionary<String, PlayerLocation> ppss = GetPlayerPoss();
-                foreach (CyberGenericFloatingTextContainer a in getLList())
+                foreach (CyberGenericFloatingTextContainer gftc in GetMastListAndAddNewTexts())
                 {
-                    if (a == null)
+                    if (gftc == null)
                     {
-                        CyberCoreMain.Log.Error("FTF>> ERROR! Loading FT!!! " + a);
+                        CyberCoreMain.Log.Error("FTF>> ERROR! Loading FT!!! " + gftc);
                         continue;
                     }
 
-                    if (!a.CanTick(tick))
+                    if (!gftc.CanTick(tick))
                     {
-                        CyberCoreMain.Log.Error("FTF >>> ERROR! FT NOT READY TO TICK YET"+a);
+                        // CyberCoreMain.Log.Error("FTF >>> ERROR! FT NOT READY TO TICK YET"+a);
                         continue;
                     }
 
                     int aa = 0;
                     // CyberCoreMain.Log.Error("Was LOG ||"+"|||>||"+a.GetText(null));
                     //Create Blank array if not present!
-                    if (!FTLastSentToRmv.ContainsKey(a.EntityId)) FTLastSentToRmv.Add(a.EntityId, new List<String>());
+                    if (!FTLastSentToRmv.ContainsKey(gftc.EntityId))
+                        FTLastSentToRmv.Add(gftc.EntityId, new List<String>());
 
 //                    CyberCoreMain.Log.Error("Was LOG ||"+"OU");
-                    a.OnUpdate(tick);
+                    gftc.OnUpdate(tick);
 //                    CyberCoreMain.Log.Error("Was LOG ||"+"OU");
 //                    int ftlt = a.LastUpdate;
 // ?????????
@@ -234,18 +239,18 @@ namespace CyberCore.Manager.FloatingText
 //                    CyberCoreMain.Log.Error("Was LOG ||"+"ERroror >> "+a.Lvl);
 //                    CyberCoreMain.Log.Error("Was LOG ||"+"ERroror >> "+a.Syntax);
                     Level l = null;
-                    if (a.KnownPosition == null || a.FTData.Lvl == null)
+                    if (gftc.KnownPosition == null || gftc.FTData.Lvl == null)
                     {
                         if (l == null) CyberCoreMain.Log.Error("FTF > Level is nulel TOO");
                         CyberCoreMain.Log.Error(
-                            "FTF > Error!!! Floating Text Syntax: " + a.FTData.Syntax + "||" + a.ToString());
+                            "FTF > Error!!! Floating Text Syntax: " + gftc.FTData.Syntax + "||" + gftc.ToString());
                         continue;
                     }
 
                     // CyberCoreMain.Log.Error("Was LOG ||000" + aa++ +"|||||||||||"+a.FTData.Lvl);
                     try
                     {
-                        l = API.LevelManager.GetLevel(null, a.FTData.Lvl);
+                        l = API.LevelManager.GetLevel(null, gftc.FTData.Lvl);
                     }
                     catch (Exception e)
                     {
@@ -261,52 +266,43 @@ namespace CyberCore.Manager.FloatingText
 
                     // CyberCoreMain.Log.Error("Was LOG ||22222" + aa++);
 
-                    var pc = l.GetAllPlayers();
-                    if (pc == null || pc.Length == 0)
+                    var allPlayers = l.GetAllPlayers();
+                    if (allPlayers == null || allPlayers.Length == 0)
                     {
                         // CyberCoreMain.Log.Error("Was NO PLATERS NEAR");
                         continue;
                     }
 
                     // CyberCoreMain.Log.Error("Was LOG ||" + aa++);
-                    foreach (var p in pc)
+                    foreach (var p in allPlayers)
                     {
                         String player = p.getName();
 //                        CyberCoreMain.Log.Error("Was LOG ||"+"2222"+player);
                         PlayerLocation ppos = p.KnownPosition;
-                        if (a.KnownPosition.DistanceTo(ppos) > 200)
-                        {
-                            // CyberCoreMain.Log.Error("FT AND PLAYER TOO FAR");
-                            continue;
-                        }
-
+                        if (gftc.KnownPosition.DistanceTo(ppos) > 200) continue;
                         //TODO many implement a Quick Check?
                         //Check HERE If X is less that 100
                         //To Save resources
-                        if (!a.FTData.Lvl.equalsIgnoreCase(p.Level.LevelId))
-                        {
-                            CyberCoreMain.Log.Error("FT AND PLAYER NOT IN SAME LEVEL");
+                        if (!gftc.FTData.Lvl.equalsIgnoreCase(p.Level.LevelId))
                             continue; //Not same World & 100+ Blocks away
-                        }
-
                         ap.Add(player);
                         app.Add((CorePlayer) p);
 //                        CyberCoreMain.Log.Error("Was LOG ||"+"AP");
                         //Remove Player we just added cuz We dont need to remove the FT particle from them!
-                        if (FTLastSentToRmv[a.EntityId].Count > 0) FTLastSentToRmv[a.EntityId].Remove(player);
+                        if (FTLastSentToRmv[gftc.EntityId].Count > 0) FTLastSentToRmv[gftc.EntityId].Remove(player);
                     }
 
                     //TODO Alt - Chunk Packet!
 
                     // CyberCoreMain.Log.Error("Was LOG ||" + aa++);
-                    Console.WriteLine("CHECK IF DAT MF GOTTA GO >> "+a.FTData._CE_Done);
-                    if (a.FTData._CE_Done)
+                    // Console.WriteLine("CHECK IF DAT MF GOTTA GO >> "+gftc.FTData._CE_Done);
+                    if (gftc.FTData._CE_Done)
                     {
                         Console.WriteLine("Killin Time");
-                        FTLastSentToRmv[a.EntityId].AddRange(ap);
-                        KillUnnneded(FTLastSentToRmv[a.EntityId], a.EntityId, a.FTData.Lvl);
-                        ap.Clear();
-                        AddToRemoveList(a);
+                        FTLastSentToRmv[gftc.EntityId].AddRange(ap);
+                        KillUnnneded(FTLastSentToRmv[gftc.EntityId], gftc.EntityId, gftc.FTData.Lvl);
+                        // ap.Clear();
+                        AddToRemoveList(gftc);
                         CyberCoreMain.Log.Error("CE ISSSSSS DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                         continue;
                     }
@@ -324,10 +320,9 @@ namespace CyberCore.Manager.FloatingText
 
                     try
                     {
-                        KillUnnneded(FTLastSentToRmv[a.EntityId], a.EntityId, a.Level);
-                        // CyberCoreMain.Log.Error("3333333333333333333333333333DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-
-                        a.HaldleSendP(app);
+                        KillUnnneded(FTLastSentToRmv[gftc.EntityId], gftc.EntityId, gftc.Level);
+                        gftc.HaldleSendP(app);
+                        AddPlayersToFT(gftc, app);
                     }
                     catch (Exception e)
                     {
@@ -335,7 +330,7 @@ namespace CyberCore.Manager.FloatingText
                     }
 
                     //Add All Players who we sent the packet to the remove list just in case they walk away
-                    FTLastSentToRmv[a.EntityId].AddRange(ap);
+                    FTLastSentToRmv[gftc.EntityId].AddRange(ap);
                     // CyberCoreMain.Log.Error("DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                     //Should i send packes within the Thread?
                 }
@@ -351,6 +346,25 @@ namespace CyberCore.Manager.FloatingText
             // {
             //     //ignore
             // }
+        }
+
+        public Dictionary<CyberGenericFloatingTextContainer, List<String>> PlayersLoadedToFT =
+            new Dictionary<CyberGenericFloatingTextContainer, List<string>>();
+
+        private void AddPlayersToFT(CyberGenericFloatingTextContainer gftc, List<CorePlayer> app)
+        {
+            if (!PlayersLoadedToFT.ContainsKey(gftc)) PlayersLoadedToFT.Add(gftc, new List<string>());
+            var d = PlayersLoadedToFT[gftc];
+            foreach (var p in app)
+            {
+                var un = p.Username;
+                if (!d.Contains(un))
+                {
+                    d.Add(un);
+                }
+            }
+            PlayersLoadedToFT[gftc] = d;
+
         }
 
 
@@ -369,35 +383,35 @@ namespace CyberCore.Manager.FloatingText
 
         private void KillUnnneded(List<string> s, long eid, Level Lvl)
         {
-                // Console.WriteLine("STARTING KILL WIHT LVL");
-                foreach (var p in s)
+            // Console.WriteLine("STARTING KILL WIHT LVL");
+            foreach (var p in s)
+            {
+                // Console.WriteLine("STARTING KILL WIHT LVL TO PLAYER "+p);
+                Level l = Lvl;
+                if (l == null)
                 {
-                    // Console.WriteLine("STARTING KILL WIHT LVL TO PLAYER "+p);
-                    Level l = Lvl;
-                    if (l == null)
-                    {
-                        CyberCoreMain.Log.Error("FTF > Error LVL twas not foundets");
-                        continue;
-                    }
-
-                    OpenPlayer pp = null;
-                    if (!CCM.getAPI().PlayerManager.TryGetPlayer(p, out pp))
-                    {
-                        CyberCoreMain.Log.Error("FTF > Error Da Playea twas not foundets");
-                        continue;
-                    }
-
-                    kill(eid, pp);
+                    CyberCoreMain.Log.Error("FTF > Error LVL twas not foundets");
+                    continue;
                 }
-            }
 
-            public String FormatText(String text, CorePlayer player)
-            {
-                return FormatText(text, player, false);
-            }
+                OpenPlayer pp = null;
+                if (!CCM.getAPI().PlayerManager.TryGetPlayer(p, out pp))
+                {
+                    CyberCoreMain.Log.Error("FTF > Error Da Playea twas not foundets");
+                    continue;
+                }
 
-            public String FormatText(String text, CorePlayer player, bool vertical)
-            {
+                kill(eid, pp);
+            }
+        }
+
+        public String FormatText(String text, CorePlayer player)
+        {
+            return FormatText(text, player, false);
+        }
+
+        public String FormatText(String text, CorePlayer player, bool vertical)
+        {
 //        if(text == null)CyberCoreMain.Log.Error("Was LOG ||"+"----0");
 //        if(CCM == null)CyberCoreMain.Log.Error("Was LOG ||"+"----1");
 //        if(CCM.getServer() == null)CyberCoreMain.Log.Error("Was LOG ||"+"----2");
@@ -405,85 +419,96 @@ namespace CyberCore.Manager.FloatingText
 //        CyberCoreMain.Log.Error("Was LOG ||"+"----4"+CCM.getServer().getOnlinePlayers().size());
 //        CyberCoreMain.Log.Error("Was LOG ||"+"----5"+CCM.getServer().getTicksPerSecondAverage());
 //        CyberCoreMain.Log.Error("Was LOG ||"+"----6"+text);
-                text = text.Replace("{online-players}", "" + CCM.getAPI().PlayerManager.GetPlayers().Length)
-                    .Replace("{ticks}", CyberCoreMain.GetInstance().getTicksPerSecond() + "") //TODO
-                    .Replace("`", "\n")
-                    .Replace("{&}", ChatColors.LightPurple + "");
-                if (player != null) text = text.Replace("{name}", player.getName());
-                if (player != null)
+            text = text.Replace("{online-players}", "" + CCM.getAPI().PlayerManager.GetPlayers().Length)
+                .Replace("{ticks}", CyberCoreMain.GetInstance().getTicksPerSecond() + "") //TODO
+                .Replace("`", "\n")
+                .Replace("\r", "")
+                .Replace("&&", "§");
+            if (player != null) text = text.Replace("{name}", player.getName());
+            if (player != null)
+            {
+                //Faction
+
+                String pf = "No Faction";
+                if (CCM.FM != null)
                 {
-                    //Faction
+                    var ff = CCM.FM.FFactory.getPlayerFaction(player);
+                    if (ff != null) pf = ff.getDisplayName();
+                    if (pf == null) pf = "No Faction";
+                }
 
-                    String pf = "No Faction";
-                    if (CCM.FM != null)
-                    {
-                        var ff = CCM.FM.FFactory.getPlayerFaction(player);
-                        if (ff != null) pf = ff.getDisplayName();
-                        if (pf == null) pf = "No Faction";
-                    }
-
-                    //Kills
-                    Double kills = 0d; //Factions.GetKills(player.getName());
+                //Kills
+                Double kills = 0d; //Factions.GetKills(player.getName());
 //            if(KDConfig.exists(player.getName().toLowerCase())){
 //                kills = Double.parseDouble(((LinkedDictionary)KDConfig.get(player.getName().toLowerCase())).get("kills")+"");
 //            }
-                    //Deaths
-                    Double deaths = 0d; //Factions.GetDeaths(player.getName());
+                //Deaths
+                Double deaths = 0d; //Factions.GetDeaths(player.getName());
 //            if(KDConfig.exists(player.getName().toLowerCase())){
 //                deaths = Double.parseDouble(((LinkedDictionary)KDConfig.get(player.getName().toLowerCase())).get("deaths")+"");
 //            }
-                    //KDR
-                    Double kdr = kills / deaths; //Factions.GetKDR(player.getName());
-                    String rank = "Guest|";
-                    //DISABLED FOR NOW
-                    rank = CCM.getPlayerRank(player.getName()).display_name;
-                    if (rank == null) rank = "Guest";
+                //KDR
+                Double kdr = kills / deaths; //Factions.GetKDR(player.getName());
+                String rank = "Guest|";
+                //DISABLED FOR NOW
+                rank = CCM.getPlayerRank(player.getName()).display_name;
+                if (rank == null) rank = "Guest";
 
-                    String tps = "" + CCM.getTicksPerSecond();
-                    String players = "" + CCM.getOnlinePlayersCount();
-                    String max = "" + CCM.getAPI().ServerInfo.MaxNumberOfPlayers;
-                    // String max = "" + CCM.getAPI().ServerInfo.;
-                    String money = "0";
+                String tps = "" + CCM.getTicksPerSecond();
+                String players = "" + CCM.getOnlinePlayersCount();
+                String max = "" + CCM.getAPI().ServerInfo.MaxNumberOfPlayers;
+                // String max = "" + CCM.getAPI().ServerInfo.;
+                String money = "0";
 //            ArchEconMain AA = (ArchEconMain) CCM.getServer().getPluginManager().getPlugin("ArchEcon");
 //            if(AA != null){
 //                money = ""+AA.getMoney(player.getName());
 //            }
 
-                    text = text
-                            .Replace("{faction}", pf)
-                            .Replace("{kills}", kills + "")
-                            .Replace("{deaths}", deaths + "")
-                            .Replace("{kdr}", kdr + "")
-                            .Replace("{rank}", rank)
-                            .Replace("{tps}", tps)
-                            .Replace("{players}", players)
-                            .Replace("{max}", max)
-                            .Replace("{money}", money)
-                            .Replace("|n", "\n")
-                        ;
-                }
-                else
-                {
-                    text = text
-                        .Replace("{faction}", "No Faction")
-                        .Replace("{kills}", "N/A")
-                        .Replace("{deaths}", "N/A")
+                text = text
+                        .Replace("{faction}", pf)
+                        .Replace("{kills}", kills + "")
+                        .Replace("{deaths}", deaths + "")
+                        .Replace("{kdr}", kdr + "")
+                        .Replace("{rank}", rank)
+                        .Replace("{tps}", tps)
+                        .Replace("{players}", players)
+                        .Replace("{max}", max)
+                        .Replace("{money}", money)
                         .Replace("|n", "\n")
-                        .Replace("{kdr}", "N/A");
-                }
-
-                if (vertical) text = text.Replace("|n", "\n");
-//        CyberCoreMain.Log.Error("Was LOG ||"+text);
-                return text;
+                    ;
             }
-
-            public static void kill(long eid, Player p)
+            else
             {
-                if (p == null) return;
-                McpeRemoveEntity mcpeRemoveEntity = McpeRemoveEntity.CreateObject();
-                mcpeRemoveEntity.entityIdSelf = eid;
-                p.SendPacket(mcpeRemoveEntity);
-                // Level.RelayBroadcast(players, mcpeRemoveEntity);
+                text = text
+                    .Replace("{faction}", "No Faction")
+                    .Replace("{kills}", "N/A")
+                    .Replace("{deaths}", "N/A")
+                    .Replace("|n", "\n")
+                    .Replace("{kdr}", "N/A");
             }
+
+            if (vertical) text = text.Replace("|n", "\n");
+//        CyberCoreMain.Log.Error("Was LOG ||"+text);
+            return text;
+        }
+
+        public static void kill(long eid, Player p)
+        {
+            if (p == null) return;
+            McpeRemoveEntity mcpeRemoveEntity = McpeRemoveEntity.CreateObject();
+            mcpeRemoveEntity.entityIdSelf = eid;
+            p.SendPacket(mcpeRemoveEntity);
+            // Level.RelayBroadcast(players, mcpeRemoveEntity);
+        }
+
+        public void removePlayer(CorePlayer player)
+        {
+        }
+
+        private static FloatingTextFactory instance;
+        public static FloatingTextFactory getInstance()
+        {
+            return instance;
         }
     }
+}
