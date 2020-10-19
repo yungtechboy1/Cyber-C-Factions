@@ -439,8 +439,8 @@ namespace CyberCore.Utils
 
         public static bool CheckNbtSame(this NbtCompound i, NbtCompound ii)
         {
-            var i1 = i.NBTToString();
-            var ii1 = i.NBTToString();
+            var i1 = i.NBTToByteArray();
+            var ii1 = i.NBTToByteArray();
             return i1 == ii1;
         }
 
@@ -739,9 +739,9 @@ namespace CyberCore.Utils
 
                     if (checknbt)
                     {
-                        var n1 = si.getNamedTag().NBTToString();
-                        var n2 = itm.getNamedTag().NBTToString();
-                        if (!n1.equalsIgnoreCase(n2))
+                        var n1 = si.getNamedTag().NBTToByteArray();
+                        var n2 = itm.getNamedTag().NBTToByteArray();
+                        if (n1 != (n2))
                         {
                             continue;
                         }
@@ -769,9 +769,9 @@ namespace CyberCore.Utils
 
                     if (checknbt)
                     {
-                        var n1 = si.getNamedTag().NBTToString();
-                        var n2 = itm.getNamedTag().NBTToString();
-                        if (!n1.equalsIgnoreCase(n2))
+                        var n1 = si.getNamedTag().NBTToByteArray();
+                        var n2 = itm.getNamedTag().NBTToByteArray();
+                        if (n1 != (n2))
                         {
                             continue;
                         }
@@ -925,13 +925,34 @@ namespace CyberCore.Utils
             return Encoding.ASCII.GetBytes(s);
         }
 
-        // public static byte[] StringToNBTByte(this string s)
-        // {
-        //     return JsontoNBT(s);
-        // }
-        public static String NBTToString(this NbtCompound c)
+        public static NbtCompound BytesToCompound(this byte[] b)
         {
-            if (c == null || c.Count == 0) return "";
+            var r = new NbtCompound();
+            // var a = new NbtFile();
+            // a.BigEndian = false;
+            // a.UseVarInt = true;
+            // a.RootTag = c;
+            
+            var aa = (new MemoryStream());
+            aa.Write(b,0,b.Length);
+            var n = new NbtCompound();
+            var a = new NbtFile();
+            a.BigEndian = false;
+            a.UseVarInt = true;
+            a.LoadFromBuffer(b,0,b.Length,NbtCompression.None);
+            return (NbtCompound)a.RootTag;
+            // a.SaveToStream(aa, NbtCompression.ZLib);
+            // var aaaa = Encoding.ASCII.GetString(aa.ToArray());
+            // // var aaa = new StreamReader(aa).ReadToEnd();
+            // var aaa = aaaa;
+            //
+            // if (c.HasValue || true) fnt = aaa;
+            // else CyberCoreMain.Log.Error("NBTTOSTRING C NO VALUIE!!");
+            // return aa.ToArray();
+        }
+        public static byte[] NBTToByteArray(this NbtCompound c)
+        {
+            if (c == null || c.Count == 0) return new byte[0];
             // return c.ToString();
 
             String fnt = "";
@@ -940,15 +961,23 @@ namespace CyberCore.Utils
             a.UseVarInt = true;
             a.RootTag = c;
             
-            var aa = (new MemoryStream());
-            a.SaveToStream(aa, NbtCompression.ZLib);
-            var aaaa = Encoding.ASCII.GetString(aa.ToArray());
-            // var aaa = new StreamReader(aa).ReadToEnd();
-            var aaa = aaaa;
-
-            if (c.HasValue || true) fnt = aaa;
-            else CyberCoreMain.Log.Error("NBTTOSTRING C NO VALUIE!!");
-            return fnt;
+            // var aa = (new MemoryStream());
+            // return addByteToArray(a.SaveToBuffer(NbtCompression.ZLib),0x78);
+            return a.SaveToBuffer(NbtCompression.None);
+            // var aaaa = Encoding.ASCII.GetString(aa.ToArray());
+            // // var aaa = new StreamReader(aa).ReadToEnd();
+            // var aaa = aaaa;
+            //
+            // if (c.HasValue || true) fnt = aaa;
+            // else CyberCoreMain.Log.Error("NBTTOSTRING C NO VALUIE!!");
+             // aa.ToArray();
+        }
+        public static byte[] addByteToArray(byte[] bArray, byte newByte)
+        {
+            byte[] newArray = new byte[bArray.Length + 1];
+            bArray.CopyTo(newArray, 1);
+            newArray[0] = newByte;
+            return newArray;
         }
 
 

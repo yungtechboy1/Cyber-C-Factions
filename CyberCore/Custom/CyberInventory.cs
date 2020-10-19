@@ -20,7 +20,7 @@ namespace CyberCore.Custom
             blockEntity, inventorySize, slots)
         {
         }
-        
+
         public void SendInv(CorePlayer p)
         {
             McpeInventoryContent containerSetContent = McpeInventoryContent.CreateObject();
@@ -28,7 +28,7 @@ namespace CyberCore.Custom
             containerSetContent.input = Slots;
             p.SendPacket(containerSetContent);
         }
-        
+
         private NbtList GetSlots2()
         {
             NbtList nbtList = new NbtList("Items");
@@ -43,9 +43,10 @@ namespace CyberCore.Custom
                     (NbtTag) new NbtShort("Damage", slot.Metadata)
                 });
             }
+
             return nbtList;
         }
-        
+
         public void SetItem(byte slot, Item itemStack)
         {
             this.Slots[(int) slot] = itemStack;
@@ -117,8 +118,8 @@ namespace CyberCore.Custom
                 {
                     if (checkNBT)
                     {
-                        if (item.ExtraData != null && i.ExtraData != null && i.ExtraData.NBTToString()
-                            .equalsIgnoreCase(item.ExtraData.NBTToString())) return index;
+                        if (item.ExtraData != null && i.ExtraData != null && i.ExtraData.NBTToByteArray()
+                            != (item.ExtraData.NBTToByteArray())) return index;
                         return -1;
                     }
 
