@@ -1060,7 +1060,7 @@ namespace CyberCore.Manager.Factions
         {
             try
             {
-                Console.WriteLine("select * from `Master` where `player` LIKE '{faction}'");
+                // Console.WriteLine("select * from `Master` where `player` LIKE '{faction}'");
                 List<Dictionary<string, object>> r =
                     this.ExecuteQuerySQL($"select * from `Master` where `player` LIKE '{faction}'");
                 if (r == null) return null;

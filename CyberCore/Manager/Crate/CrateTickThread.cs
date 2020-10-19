@@ -52,10 +52,11 @@ namespace CyberCore.Manager.Crate
 
         public void run()
         {
+            ItemEntity itemEntity = null;
             var lifecurrentticks = 0;
             var ff = false;
             var slot = -1;
-            long lastcurrenttick = -1;
+            long lasttick = -1;
             var t = -1;
             var waittocurrenttick = -1;
             var nr = new Random();
@@ -65,14 +66,15 @@ namespace CyberCore.Manager.Crate
                 lifecurrentticks++;
                 var currenttick = CyberUtils.getTick();
                 Console.WriteLine("W|" + lifecurrentticks + "||" + currenttick);
-                if (currenttick > lastcurrenttick)
+                if (currenttick > lasttick)
                 {
                     Console.WriteLine("1|" + currenttick);
-                    lastcurrenttick = currenttick;
+                    lasttick = currenttick;
 
                     if (ItemList == null || ItemList.Count == 0)
                     {
-                        CyberCoreMain.Log.Info("CRATE currenttick ERROR!!!! AT currenttick NUMBER " + currenttick + " | No Items Sent!");
+                        CyberCoreMain.Log.Info("CRATE currenttick ERROR!!!! AT currenttick NUMBER " + currenttick +
+                                               " | No Items Sent!");
                         CTstop();
                         return;
                     }
@@ -99,7 +101,15 @@ namespace CyberCore.Manager.Crate
                     Console.WriteLine("5|||||");
                     //Send Items
                     var itm = ItemList[slot];
-                    var itemEntity = new ItemEntity(Level, itm)
+                    Player p = CyberCoreMain.GetInstance().getAPI().PlayerManager.getPlayer(Player);
+                    if (itemEntity != null)
+                    {
+                        McpeRemoveEntity mcpeRemoveEntity = McpeRemoveEntity.CreateObject();
+                        mcpeRemoveEntity.entityIdSelf = itemEntity.EntityId;
+                        p.SendPacket(mcpeRemoveEntity);
+                    }
+
+                    itemEntity = new ItemEntity(Level, itm)
                     {
                         KnownPosition =
                         {
@@ -136,7 +146,8 @@ namespace CyberCore.Manager.Crate
                         ChatFormatting.Obfuscated +
                         "§b|||||||||§r", 246);
                     var ft = new CustomFloatingTextParticle(
-                        new Vector3((float) (Position.X + .5), Position.Y + 3, (float) (Position.Z + 1.5)), Level, f1, f2);
+                        new Vector3((float) (Position.X + .5), Position.Y + 3, (float) (Position.Z + 1.5)), Level, f1,
+                        f2);
 
                     Console.WriteLine("9|||||||||");
 //        FloatingTextFactory.AddFloatingText(new CyberFloatingTextContainer(FTM, getServer().getLevelByName("world").getSafeSpawn().add(0, 5, 0), ChatColors.Green + "This is Spawn!"));
@@ -147,7 +158,6 @@ namespace CyberCore.Manager.Crate
 
                     Console.WriteLine("10|||||||||");
                     Console.WriteLine("11||||||||||");
-                    Player p = CyberCoreMain.GetInstance().getAPI().PlayerManager.getPlayer(Player);
                     Console.WriteLine("12|||||||||||");
                     if (p != null)
                     {
@@ -163,7 +173,8 @@ namespace CyberCore.Manager.Crate
                     //@TODO allow Config to choose break particle!
                     var aaa = new Web();
                     aaa.Coordinates =
-                        new BlockCoordinates(new Vector3((float) (.5 + Position.X), 1 + Position.Y, (float) (.5 + Position.Z)));
+                        new BlockCoordinates(new Vector3((float) (.5 + Position.X), 1 + Position.Y,
+                            (float) (.5 + Position.Z)));
 
                     var aa = new DestroyBlockParticle(Level, aaa);
                     aa.Spawn();
@@ -173,13 +184,13 @@ namespace CyberCore.Manager.Crate
                     if (!ff)
                     {
                         //Schedule Next
-                        var k = getDelayFromcurrenttick(currenttick);
-                        Console.WriteLine("15A|||||||||||||" + k + "|" + currenttick);
-                        if (currenttick >= MAX) ff = true;
+                        var k = getDelayFromcurrenttick(lifecurrentticks);
+                        Console.WriteLine("15A|||||||||||||" + k + "|" + currenttick + " |||\\| " + lifecurrentticks);
+                        if (lifecurrentticks >= MAX) ff = true;
 
                         currenttick += k;
                         Console.WriteLine("16A|||||||||||||" + currenttick);
-                        lastcurrenttick = currenttick + k;
+                        lasttick = currenttick + k;
                     }
                     else
                     {
@@ -192,15 +203,18 @@ namespace CyberCore.Manager.Crate
                         };
                         var e2 = new LegacyParticle(ParticleType.HugeExplode, Level)
                         {
-                            Position = new Vector3((float) (.5 + Position.X), 1 + Position.Y, (float) (1.5 + Position.Z))
+                            Position = new Vector3((float) (.5 + Position.X), 1 + Position.Y,
+                                (float) (1.5 + Position.Z))
                         };
                         var e3 = new LegacyParticle(ParticleType.HugeExplode, Level)
                         {
-                            Position = new Vector3((float) (1.5 + Position.X), 1 + Position.Y, (float) (1.5 + Position.Z))
+                            Position = new Vector3((float) (1.5 + Position.X), 1 + Position.Y,
+                                (float) (1.5 + Position.Z))
                         };
                         var e4 = new LegacyParticle(ParticleType.HugeExplode, Level)
                         {
-                            Position = new Vector3((float) (1.5 + Position.X), 1 + Position.Y, (float) (.5 + Position.Z))
+                            Position = new Vector3((float) (1.5 + Position.X), 1 + Position.Y,
+                                (float) (.5 + Position.Z))
                         };
                         var e5 = new LegacyParticle(ParticleType.HugeExplode, Level)
                         {
@@ -212,20 +226,33 @@ namespace CyberCore.Manager.Crate
                         e4.Spawn();
                         e5.Spawn();
                         Console.WriteLine("16B|||||||||||||");
+                        
+                        if (p == null)
+                        {
+                            CyberCoreMain.Log.Error("Error Could not find player to give crate reward to!!!");
+                        }
+                        else
+                        {
+                            p.Inventory.AddItem(itm, true);
+                            p.SendMessage("Item added!!!!");
+                        }
+                        
                         var zz = 5;
                         var zzz = 0;
-                        for (var z = 0; z < 100000; z++)
+                        
+                        for (var z = 0; z < 1000; z++)
                         {
                             var e = new LegacyParticle(ParticleType.HugeExplode, Level);
-                            e.Position = new Vector3((float) (.5 + Position.X), 1 + Position.Y, (float) (.5 + Position.Z));
-                            Thread.Sleep(zz * 50);
+                            e.Position = new Vector3((float) (.5 + Position.X), 1 + Position.Y,
+                                (float) (.5 + Position.Z));
+                            Thread.Sleep(250+zz+(zzz*30));
                             if (zz < 100)
                             {
                                 zz += 5;
                             }
                             else
                             {
-                                if (zzz > 4) break;
+                                if (zzz > 10) break;
                                 zzz++;
                             }
 
@@ -237,15 +264,7 @@ namespace CyberCore.Manager.Crate
 //                    Server.getInstance().getScheduler().scheduleDelayedTask(new SendItem(main, data), 20 * 5);
                         //Send items
                         //i
-                        if (p == null)
-                        {
-                            CyberCoreMain.Log.Error("Error Could not find player to give crate reward to!!!");
-                        }
-                        else
-                        {
-                            p.Inventory.AddItem(itm, true);
-                            p.SendMessage("Item added!!!!");
-                        }
+                       
 
                         var pk = new McpeRemoveEntity();
                         pk.entityIdSelf = eid2;
@@ -255,6 +274,7 @@ namespace CyberCore.Manager.Crate
                         p.SendPacket(pk2);
 
                         Console.WriteLine("18B|||||||||||||");
+                        // Thread.Sleep(1000*60);
                         CTstop();
                         return;
                     }
@@ -278,27 +298,27 @@ namespace CyberCore.Manager.Crate
             if (t < MAX / 16)
                 f = 2;
             else if (t < 2 * MAX / 16)
-                f = 3;
+                f = 2;
             else if (t < 3 * MAX / 16)
-                f = 3;
+                f = 2;
             else if (t < 4 * MAX / 16)
-                f = 4;
+                f = 3;
             else if (t < 5 * MAX / 16)
                 f = 4;
             else if (t < 6 * MAX / 16)
-                f = 5;
+                f = 4;
             else if (t < 7 * MAX / 16)
-                f = 6;
+                f = 4;
             else if (t < 8 * MAX / 16)
-                f = 7;
+                f = 5;
             else if (t < 30 * MAX / 64)
                 //9/16 > 18/32 > 36/64
-                f = 9;
+                f = 6;
             else if (t < 35 * MAX / 64)
-                f = 12;
+                f = 8;
             else if (t < 45 * MAX / 64)
                 //12/16 >
-                f = 15;
+                f = 13;
             else if (t < 55 * MAX / 64)
                 //13/16 > 56/
                 f = 17;
