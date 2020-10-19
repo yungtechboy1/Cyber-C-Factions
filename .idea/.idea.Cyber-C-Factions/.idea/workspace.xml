@@ -30,17 +30,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="Fixed RainForestBiome">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/CorePlayerItemData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CorePlayerItemData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Custom/CyberInventory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Custom/CyberInventory.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Crate/ItemChanceData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Crate/ItemChanceData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.pdb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +39,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="87806" />
+    <option name="totalTimeSeconds" value="88091" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -425,9 +416,9 @@
         <option value="$PROJECT_DIR$/CyberCore/Utils/CorePlayerData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/JsonToNBT.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Custom/CyberInventory.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/ItemChanceData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CorePlayerItemData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CyberUtilsExtender.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/ItemChanceData.cs" />
       </list>
     </option>
   </component>
@@ -689,7 +680,7 @@
       <workItem from="1602918896863" duration="9854000" />
       <workItem from="1603005324065" duration="7274000" />
       <workItem from="1603062464060" duration="5012000" />
-      <workItem from="1603071131944" duration="3537000" />
+      <workItem from="1603071131944" duration="3822000" />
     </task>
     <task id="LOCAL-00002" summary="CU-b2ju2f">
       <created>1597547215454</created>
@@ -829,26 +820,26 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="466" y="421" key="GitRewordDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597636017115" />
-    <state width="1234" height="408" key="GridCell.Tab.0.bottom" timestamp="1603074592884">
+    <state width="1234" height="408" key="GridCell.Tab.0.bottom" timestamp="1603074678466">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="900" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1234" height="408" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1603074592884" />
-    <state width="1234" height="408" key="GridCell.Tab.0.center" timestamp="1603074592884">
+    <state width="1234" height="408" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1603074678466" />
+    <state width="1234" height="408" key="GridCell.Tab.0.center" timestamp="1603074678466">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="900" height="260" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1234" height="408" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1603074592884" />
-    <state width="1234" height="408" key="GridCell.Tab.0.left" timestamp="1603074592883">
+    <state width="1234" height="408" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1603074678466" />
+    <state width="1234" height="408" key="GridCell.Tab.0.left" timestamp="1603074678466">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="900" height="260" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1234" height="408" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1603074592883" />
-    <state width="1234" height="408" key="GridCell.Tab.0.right" timestamp="1603074592884">
+    <state width="1234" height="408" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1603074678466" />
+    <state width="1234" height="408" key="GridCell.Tab.0.right" timestamp="1603074678466">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state width="900" height="260" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1234" height="408" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1603074592884" />
+    <state width="1234" height="408" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1603074678466" />
     <state width="1234" height="365" key="GridCell.Tab.1.bottom" timestamp="1602683600207">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>

@@ -132,18 +132,8 @@ namespace CyberCore.Manager.Crate
 
         public void updateDataFromItem(Item item)
         {
-            String fnt = "";
-            var a = new NbtFile();
-            a.BigEndian = false;
-            a.UseVarInt = true;
-            a.RootTag = item.ExtraData;
-            // byte[] bytes = NBTCompressionSteamTool.NBTCompressedStreamTools.a(a);
-            var aa = (new MemoryStream());
-            a.SaveToStream(aa, NbtCompression.ZLib);
-            var aaa = new StreamReader(aa).ReadToEnd();
-//TODO UPODATE NEW METHOD
-            if (item.ExtraData.HasValue) fnt = aaa;
-            NBT = aa.ToArray();
+            var a = new NbtFile {BigEndian = false, UseVarInt = true, RootTag = item.ExtraData};
+            NBT = a.SaveToBuffer(NbtCompression.None);
             ItemMeta = item.Metadata;
             ItemID = item.Id;
             
