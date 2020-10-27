@@ -1251,6 +1251,7 @@ namespace CyberCore.Manager.ClassFactory
             if (CanSetPlayerClass(corePlayer))
             {
                 initBuffs();
+                corePlayer.SendMessage($"{ChatColors.Green}Success! You class has now been set to "+getDisplayName()+"!");
                 P = corePlayer;
                 return this;
             }
