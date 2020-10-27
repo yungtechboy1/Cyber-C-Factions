@@ -150,6 +150,7 @@ namespace CyberCore.CustomEnums
     {
         private static readonly int a;
         public static readonly PowerEnum Unknown = new PowerEnum(a++, "Unknown");
+        public static readonly PowerEnum KnightSmash = new PowerEnum(a++, "KnightSmash");
         public static readonly PowerEnum MercenaryDoubleTake = new PowerEnum(a++, "MercenaryDoubleTake");
         public static readonly PowerEnum MercenaryRegeneration = new PowerEnum(a++, "MercenaryRegeneration");
         public static readonly PowerEnum HolyKnightHeal = new PowerEnum(a++, "HolyKnightHeal");

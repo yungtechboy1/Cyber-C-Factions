@@ -4,7 +4,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 {
     public class AdvancedStagePowerEnum : AdvancedPowerEnum
     {
-        public AdvancedStagePowerEnum(PowerEnum PE, StageEnum SE) :base(PE,SE) {
+        public AdvancedStagePowerEnum(PowerEnum pwrEnum, StageEnum currentStageEnum) :base(pwrEnum,currentStageEnum) {
         }
         
     }

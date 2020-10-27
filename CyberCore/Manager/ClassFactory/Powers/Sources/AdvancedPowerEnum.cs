@@ -8,30 +8,30 @@ namespace CyberCore.Manager.ClassFactory.Powers
 {
     public class AdvancedPowerEnum
     {
-        PowerEnum PE;
-        StageEnum SE = StageEnum.NA;
+        PowerEnum PwrEnum;
+        StageEnum CurrentStageEnum = StageEnum.NA;
         int XP = -1;
         LevelingType tt = None;
 
-        public AdvancedPowerEnum(PowerEnum PE)
+        public AdvancedPowerEnum(PowerEnum pwrEnum)
         {
-            this.PE = PE;
+            this.PwrEnum = pwrEnum;
         }
 
-        public AdvancedPowerEnum(PowerEnum PE, int XP)
+        public AdvancedPowerEnum(PowerEnum pwrEnum, int xp)
         {
-            this.PE = PE;
-            this.XP = XP;
+            this.PwrEnum = pwrEnum;
+            this.XP = xp;
             tt = XPLevel;
         }
 
-        public AdvancedPowerEnum(PowerEnum PE, StageEnum SE)
+        public AdvancedPowerEnum(PowerEnum pwrEnum, StageEnum currentStageEnum)
         {
-            if (SE.getValue() == StageEnum.NA.getValue())
+            if (currentStageEnum.getValue() == StageEnum.NA.getValue())
                 CyberCoreMain.Log.Error("APEEE>>>   Error! CAN NOT SEND NA!!!!");
 //            throw new Exception("Error! Can not pass StageEnum.NA to AdvancedPowerEnum Constructor!");
-            this.PE = PE;
-            this.SE = SE;
+            this.PwrEnum = pwrEnum;
+            this.CurrentStageEnum = currentStageEnum;
             tt = Stage;
         }
 
@@ -73,7 +73,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public void setSE(StageEnum SE)
         {
-            this.SE = SE;
+            this.CurrentStageEnum = SE;
         }
 
         public bool isStage()
@@ -84,12 +84,12 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public PowerEnum getPowerEnum()
         {
-            return PE;
+            return PwrEnum;
         }
 
         public StageEnum getStageEnum()
         {
-            return SE;
+            return CurrentStageEnum;
         }
 
         public int getXP()
@@ -108,7 +108,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             if (tt == XPLevel)
                 if (XP == -1)
                     return false;
-            if (tt == Stage) return SE.Level != StageEnum.NA.Level;
+            if (tt == Stage) return CurrentStageEnum.Level != StageEnum.NA.Level;
             return true;
         }
 

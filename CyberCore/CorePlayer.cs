@@ -1,7 +1,6 @@
 ﻿// using MySqlX.XDevAPI;
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -18,8 +17,8 @@ using CyberCore.Manager.Shop;
 using CyberCore.Manager.Shop.Spawner;
 using CyberCore.Utils;
 using CyberCore.Utils.Cooldowns;
+using log4net;
 using MiNET;
-using MiNET.Blocks;
 using MiNET.Effects;
 using MiNET.Entities;
 using MiNET.Entities.World;
@@ -55,6 +54,8 @@ namespace CyberCore
             Cursor = 124
         }
 
+        private static readonly ILog Log = LogManager.GetLogger(typeof(CorePlayer));
+
         private static bool CooldownLock;
         public static readonly float DEFAULT_SPEED = 0.1F;
 
@@ -81,6 +82,8 @@ namespace CyberCore
             };
 
         private readonly string Scoreboard_Class = "ScoreBoard";
+
+        private readonly CoolDown SwingCooldown = new CoolDown();
         public AuctionHouse AH = null;
 
         public int attackTime = 0;
@@ -149,8 +152,6 @@ namespace CyberCore
         // public ShopInv Shop = null;
         public SpawnerShop SpawnerShop = null;
 
-        private readonly CoolDown SwingCooldown = new CoolDown();
-
         // private CorePlayer TargetTeleporting;
         // private PlayerLocation TargetTeleportingLoc;
         // private int TeleportTick;
@@ -171,6 +172,7 @@ namespace CyberCore
         public CorePlayer(MiNetServer server, IPEndPoint endPoint, OpenApi api) : base(server, endPoint, api)
         {
             ItemStackInventoryManager = new CustomItmStkInvMgr(this);
+            Inventory = new CyberPlayerInventory(this);
         }
 
 
@@ -285,6 +287,33 @@ namespace CyberCore
             }
         }
 
+        // public override void HandleMcpeMobEquipment(McpeMobEquipment message)
+        // {
+        //     if (HealthManager.IsDead) return;
+        //
+        //     if (message.windowsId == 0)
+        //     {
+        //         var selectedHotbarSlot = message.selectedSlot;
+        //         if (selectedHotbarSlot > 8)
+        //         {
+        //             Log.Error(
+        //                 $"Player {Username} called set equipment with held hotbar slot {message.selectedSlot} with item {message.item}");
+        //             return;
+        //         }
+        //
+        //         if (Log.IsDebugEnabled)
+        //             Log.Debug(
+        //                 $"Player {Username} called set equipment with held hotbar slot {message.selectedSlot} with item {message.item}");
+        //
+        //         Inventory.SetHeldItemSlot(selectedHotbarSlot, false);
+        //         if (Log.IsDebugEnabled)
+        //             Log.Debug($"Player {Username} now holding {Inventory.GetItemInHand()}");
+        //         return;
+        //     }
+        //     else
+        //
+        //         base.HandleMcpeMobEquipment(message);
+        // }
 
         public override void HandleMcpeInventoryTransaction(McpeInventoryTransaction message)
         {
@@ -453,20 +482,20 @@ namespace CyberCore
         public void initClassDeBuffs()
         {
             //Class
-            foreach (var b in getClassDeBuffList().Values)
-                switch (b.getBt())
-                {
-                    case Movement:
-                        CustomMovementSpeed = DEFAULT_SPEED / b.getAmount();
-                        setMovementSpeed(CustomMovementSpeed, true);
-                        break;
-//                case SwingSpeed: NO NEED
-                    //COPY
-//                case SwingSpeed:
-//                    CustomMovementSpeed= (DEFAULT_SPEED / b.getAmount());
-//                    setMovementSpeed(CustomMovementSpeed,true);
-//                    break;
-                }
+//             foreach (var b in getClassDeBuffList().Values)
+//                 switch (b.getBt())
+//                 {
+//                     case Movement:
+//                         CustomMovementSpeed = DEFAULT_SPEED / b.getAmount();
+//                         setMovementSpeed(CustomMovementSpeed, true);
+//                         break;
+// //                case SwingSpeed: NO NEED
+//                     //COPY
+// //                case SwingSpeed:
+// //                    CustomMovementSpeed= (DEFAULT_SPEED / b.getAmount());
+// //                    setMovementSpeed(CustomMovementSpeed,true);
+// //                    break;
+//                 }
         }
 
         public void setMovementSpeed(float speed, bool send)
@@ -482,98 +511,98 @@ namespace CyberCore
 
         public void initClassBuffs()
         {
-            foreach (var b in getClassBuffList().Values)
-                switch (b.getBt())
-                {
-                    case Movement:
-                        CustomMovementSpeed = DEFAULT_SPEED * b.getAmount();
-                        setMovementSpeed(CustomMovementSpeed, true);
-                        break;
-                    case Health:
-                        CustomExtraHP = (int) b.getAmount();
-                        setMaxHealth(20 + CustomExtraHP);
-                        sendAttributes();
-                        break;
-                }
+            // foreach (var b in getClassBuffList().Values)
+            //     switch (b.getBt())
+            //     {
+            //         case Movement:
+            //             CustomMovementSpeed = DEFAULT_SPEED * b.getAmount();
+            //             setMovementSpeed(CustomMovementSpeed, true);
+            //             break;
+            //         case Health:
+            //             CustomExtraHP = (int) b.getAmount();
+            //             setMaxHealth(20 + CustomExtraHP);
+            //             sendAttributes();
+            //             break;
+            //     }
         }
 
         public void initBuffs()
         {
-            Console.WriteLine("Runing INITBUFFS BUFFFFFFFFFFFFFF");
-            var data = new Dictionary<BuffType, float>();
-            //BUFFS
-            var ab = new List<Buff>(getClassBuffList().Values);
-//        ab.addAll(getTempBuff().values());
-            foreach (var b in getClassBuffList().Values) data[b.getBt()] = b.getAmount();
-
-            foreach (var b in getClassDeBuffList().Values)
-                if (data.ContainsKey(b.getBt()))
-                {
-                    var f = data[b.getBt()];
-                    data[b.getBt()] = f / b.getAmount();
-                }
-                else
-                {
-                    data[b.getBt()] = 1 / b.getAmount();
-                }
-
-            //Temp Buffs  Everything!
-            if (getTempBuff().Count > 0)
-            {
-                Console.WriteLine("HAS TEMPPPPPPPPP BUFFFFFFFFFFFFFF");
-                foreach (var b in getTempBuff().Values) data[b.getBt()] = b.getAmount();
-            }
-
-            if (!data.ContainsKey(Health)) CustomExtraHP = 0;
-            if (!data.ContainsKey(Movement)) setMovementSpeed(DEFAULT_SPEED, true);
-            if (!areequal(data, lastdata))
-            {
-                foreach (var v in data)
-                {
-                    var key = v.Key;
-                    var value = v.Value;
-                    switch (key)
-                    {
-                        case Movement:
-                            setMovementSpeed(DEFAULT_SPEED * value, true);
-                            break;
-                        case NULL:
-                            break;
-                        case Health:
-                            CustomExtraHP = (int) value + 0;
-                            setMaxHealth(20 + CustomExtraHP);
-                            sendAttributes();
-                            break;
-                        case Armor:
-                            break;
-                        case DamageFromPlayer:
-                            break;
-                        case DamageToPlayer:
-                            break;
-                        case DamageToEntity:
-                            break;
-                        case DamageFromEntity:
-                            break;
-                        case Damage:
-                            break;
-                        case SwingSpeed:
-                            break;
-                        case Reach:
-                            break;
-                        case Healing:
-                            break;
-                        case SuperFoodHeartRegin:
-                            break;
-                        case Magic:
-                            break;
-                        case Jump:
-                            break;
-                    }
-                }
-
-                ;
-                lastdata = data;
-            }
+//             Console.WriteLine("Runing INITBUFFS BUFFFFFFFFFFFFFF");
+//             var data = new Dictionary<BuffType, float>();
+//             //BUFFS
+//             var ab = new List<Buff>(getClassBuffList().Values);
+// //        ab.addAll(getTempBuff().values());
+//             foreach (var b in getClassBuffList().Values) data[b.getBt()] = b.getAmount();
+//
+//             foreach (var b in getClassDeBuffList().Values)
+//                 if (data.ContainsKey(b.getBt()))
+//                 {
+//                     var f = data[b.getBt()];
+//                     data[b.getBt()] = f / b.getAmount();
+//                 }
+//                 else
+//                 {
+//                     data[b.getBt()] = 1 / b.getAmount();
+//                 }
+//
+//             //Temp Buffs  Everything!
+//             if (getTempBuff().Count > 0)
+//             {
+//                 Console.WriteLine("HAS TEMPPPPPPPPP BUFFFFFFFFFFFFFF");
+//                 foreach (var b in getTempBuff().Values) data[b.getBt()] = b.getAmount();
+//             }
+//
+//             if (!data.ContainsKey(Health)) CustomExtraHP = 0;
+//             if (!data.ContainsKey(Movement)) setMovementSpeed(DEFAULT_SPEED, true);
+//             if (!areequal(data, lastdata))
+//             {
+//                 foreach (var v in data)
+//                 {
+//                     var key = v.Key;
+//                     var value = v.Value;
+//                     switch (key)
+//                     {
+//                         case Movement:
+//                             setMovementSpeed(DEFAULT_SPEED * value, true);
+//                             break;
+//                         case NULL:
+//                             break;
+//                         case Health:
+//                             CustomExtraHP = (int) value + 0;
+//                             setMaxHealth(20 + CustomExtraHP);
+//                             sendAttributes();
+//                             break;
+//                         case Armor:
+//                             break;
+//                         case DamageFromPlayer:
+//                             break;
+//                         case DamageToPlayer:
+//                             break;
+//                         case DamageToEntity:
+//                             break;
+//                         case DamageFromEntity:
+//                             break;
+//                         case Damage:
+//                             break;
+//                         case SwingSpeed:
+//                             break;
+//                         case Reach:
+//                             break;
+//                         case Healing:
+//                             break;
+//                         case SuperFoodHeartRegin:
+//                             break;
+//                         case Magic:
+//                             break;
+//                         case Jump:
+//                             break;
+//                     }
+//                 }
+//
+//                 ;
+//                 lastdata = data;
+//             }
         }
 
         private bool areequal(Dictionary<BuffType, float> a, Dictionary<BuffType, float> b)
@@ -680,8 +709,7 @@ namespace CyberCore
 
         public void SetPlayerClass(BaseClass bc)
         {
-            PlayerClass = bc;
-            if (PlayerClass != null) PlayerClass.initBuffs();
+            PlayerClass = bc.setPlayerClass(this);
         }
 
         public BaseClass getPlayerClass()
@@ -938,8 +966,8 @@ namespace CyberCore
         {
             Buff b;
             DeBuff db;
-            getClassBuffList().TryGetValue(SwingSpeed, out b);
-            getClassDeBuffList().TryGetValue(SwingSpeed, out db);
+            getClassBuffList().TryGetValue(Swing, out b);
+            getClassDeBuffList().TryGetValue(Swing, out db);
             if (b == null) b = new Buff(NULL, 1);
             if (db == null) db = new DeBuff(NULL, 1);
             return (int) (getBaseSwingSpeed() * b.getAmount() / db.getAmount());
@@ -2038,21 +2066,22 @@ namespace CyberCore
 
         public override void SendForm(Form form)
         {
-            this.CurrentForm = form;
-            McpeModalFormRequest modalFormRequest = Packet<McpeModalFormRequest>.CreateObject();
+            CurrentForm = form;
+            var modalFormRequest = Packet<McpeModalFormRequest>.CreateObject();
             modalFormRequest.formId = form.Id;
             modalFormRequest.data = form.ToJsonStatic();
-            this.SendPacket((Packet) modalFormRequest);
+            SendPacket(modalFormRequest);
         }
 
         public virtual void SendForm2(CyberFormModal form)
         {
-            this.CurrentForm = form;
-            McpeModalFormRequest modalFormRequest = Packet<McpeModalFormRequest>.CreateObject();
+            CurrentForm = form;
+            var modalFormRequest = Packet<McpeModalFormRequest>.CreateObject();
             modalFormRequest.formId = form.Id;
             modalFormRequest.data = form.ToJSON2();
-            this.SendPacket((Packet) modalFormRequest);
+            SendPacket(modalFormRequest);
         }
+
         public void onUpdate(long currentTick)
         {
             tt++;
@@ -2888,6 +2917,36 @@ namespace CyberCore
             return f.getPlayerRank(this);
         }
 
+        public Dictionary<string, object> getMeDict()
+        {
+            var D = new Dictionary<string, object>();
+            D.Add("Text Name", $"{Username}");
+            D.Add("Display Name (To Others)", $"{DisplayName}");
+            D.Add("Current Faction Name", $"{Faction != null}");
+            D.Add("Faction Status Verified", $"{getFaction() != null}");
+            D.Add("Faction Rank", $"{getFactionRank().getChatColor()}{getFactionRank().getName()}");
+            D.Add("Money", $"{getMoney()}");
+            D.Add("Health", $"{getHealth()}");
+            D.Add("Max Health", $"{getMaxHealth()}");
+            D.Add("Attack Time", $"{getAttackTime()}");
+            D.Add("Buff List", $"{getBufflist().Count}");
+            D.Add("Class Buff List", $"{getClassBuffList().Count}");
+            D.Add("DeBuff List", $"{getDeBufflist().Count}");
+            D.Add("Class DeBuff List", $"{getClassDeBuffList().Count}");
+            D.Add("Fix Coins", $"{fixcoins}");
+            D.Add("Kills", $"{kills}");
+            D.Add("Rank", $"{rank.Name}");
+            D.Add("Attack Time2", $"{attackTime}");
+            D.Add("Max Homes", $"{MaxHomes}");
+            // D.Add($"Rank",$"{this.}");
+            // D.Add($"Rank",$"{this.}");
+            // D.Add($"Rank",$"{this.}");
+            // D.Add($"Rank",$"{this.}");
+
+
+            return D;
+        }
+
         public class CombatData
         {
             public readonly int CombatTime = 20 * 7; // 7 Secs
@@ -2907,36 +2966,6 @@ namespace CyberCore
             {
                 return getTick(CombatTime);
             }
-        }
-
-        public Dictionary<String, object> getMeDict()
-        {
-            Dictionary<String, object> D = new Dictionary<string, object>();
-            D.Add($"Text Name", $"{Username}");
-            D.Add($"Display Name (To Others)", $"{DisplayName}");
-            D.Add($"Current Faction Name", $"{Faction != null}");
-            D.Add($"Faction Status Verified", $"{getFaction() != null}");
-            D.Add($"Faction Rank", $"{getFactionRank().getChatColor()}{getFactionRank().getName()}");
-            D.Add($"Money", $"{getMoney()}");
-            D.Add($"Health", $"{getHealth()}");
-            D.Add($"Max Health", $"{getMaxHealth()}");
-            D.Add($"Attack Time", $"{getAttackTime()}");
-            D.Add($"Buff List", $"{getBufflist().Count}");
-            D.Add($"Class Buff List", $"{getClassBuffList().Count}");
-            D.Add($"DeBuff List", $"{getDeBufflist().Count}");
-            D.Add($"Class DeBuff List", $"{getClassDeBuffList().Count}");
-            D.Add($"Fix Coins", $"{this.fixcoins}");
-            D.Add($"Kills", $"{this.kills}");
-            D.Add($"Rank", $"{this.rank.Name}");
-            D.Add($"Attack Time2", $"{this.attackTime}");
-            D.Add($"Max Homes", $"{this.MaxHomes}");
-            // D.Add($"Rank",$"{this.}");
-            // D.Add($"Rank",$"{this.}");
-            // D.Add($"Rank",$"{this.}");
-            // D.Add($"Rank",$"{this.}");
-
-
-            return D;
         }
     }
 }

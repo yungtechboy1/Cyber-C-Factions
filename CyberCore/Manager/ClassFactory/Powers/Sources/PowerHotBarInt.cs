@@ -46,20 +46,20 @@ namespace CyberCore.Manager.ClassFactory.Powers
         }
 
 
-//    @Override
-//    public InventoryClickEvent InventoryClickEvent(InventoryClickEvent e) {
-//        getPlayer().sendMessage(ChatColors.RED + "Error! You can not change your Class Slot");
-//        if (e.getSlot() == LS.getSlot()) {
-//            if (e.getSourceItem().getNamedTag() != null && !e.getSourceItem().getNamedTag().contains(getPowerHotBarItemNamedTagKey)) {
-//                e.setCancelled();
-//                getPlayer().sendMessage(ChatColors.RED + "Error! You can not change your Class Slot");
-//            }else{
-//                getPlayer().sendMessage(ChatColors.YELLOW + "SAME SLOT THO!");
-//            }
-//        }
-//        return e;
-//
-//    }
+    // @Override
+    // public InventoryClickEvent InventoryClickEvent(InventoryClickEvent e) {
+    //     getPlayer().sendMessage(ChatColors.RED + "Error! You can not change your Class Slot");
+    //     if (e.getSlot() == LS.getSlot()) {
+    //         if (e.getSourceItem().getNamedTag() != null && !e.getSourceItem().getNamedTag().contains(getPowerHotBarItemNamedTagKey)) {
+    //             e.setCancelled();
+    //             getPlayer().sendMessage(ChatColors.RED + "Error! You can not change your Class Slot");
+    //         }else{
+    //             getPlayer().sendMessage(ChatColors.YELLOW + "SAME SLOT THO!");
+    //         }
+    //     }
+    //     return e;
+    //
+    // }
         bool canUpdateHotBar(int tick);
 
         public void updateHotbar(LockedSlot ls, CoolDownTick c, PowerAbstract p)
@@ -118,7 +118,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public void setPowerUnAvailable(PowerAbstract p)
         {
             p.getPlayer().Inventory.Slots[p.getLS().getSlot()] =
-                addNamedTag(p, getUnAvailableItem(), p.getSafeName(), "Idle");
+                addNamedTag(p, getUnActiveItem(), p.getSafeName(), "Idle");
         }
         public Item addNamedTag(PowerAbstract p, Item i, String key, String val)
         {
@@ -146,21 +146,12 @@ namespace CyberCore.Manager.ClassFactory.Powers
             i.ExtraData = ( ct.putString(key, val));
             return i;
         }
-        public Item getAvailableItem()
-        {
-            return new ItemApple();
-            // return new ItemSlimeBall();
-        }
         public Item getActiveItem()
         {
             return new ItemApple();
             // return new ItemSlimeBall(){Count = 5};
         }
         public Item getUnActiveItem()
-        {
-            return new ItemRedstone();
-        }
-        public Item getUnAvailableItem()
         {
             return new ItemRedstone();
         }

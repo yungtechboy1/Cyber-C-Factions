@@ -33,6 +33,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public PowerType MainPowerType = PowerType.Regular;
         public PowerType SecondaryPowerType = PowerType.None;
         protected long DeActivatedTick = -1;
+        public bool DefaultPower = false;
 
         LockedSlot LS = LockedSlot.NA;
 
@@ -290,9 +291,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //        onActivate();
         }
 
-        private void onAbilityActivate()
-        {
-        }
+        public abstract void onAbilityActivate();
 
         public long getDeActivatedTick()
         {

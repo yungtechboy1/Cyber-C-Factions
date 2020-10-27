@@ -38,6 +38,7 @@
         <e p="CyberCore.csproj" t="IncludeRecursive" />
         <e p="CyberCoreMain.cs" t="Include" />
         <e p="CyberPlayerFactory.cs" t="Include" />
+        <e p="CyberPlayerInventory.cs" t="Include" />
         <e p="FloatingText.json" t="Include" />
         <e p="LinkConfirmWindow.cs" t="Include" />
         <e p="LinkWindow.cs" t="Include" />
@@ -52,25 +53,38 @@
             <e p="Buff.cs" t="Include" />
             <e p="BuffOrigin.cs" t="Include" />
             <e p="BuffType.cs" t="Include" />
+            <e p="Classes" t="Include">
+              <e p="Knight.cs" t="Include" />
+            </e>
             <e p="ClassFactory.cs" t="Include" />
             <e p="ClassSettingsObj.cs" t="Include" />
             <e p="ClassType.cs" t="Include" />
+            <e p="Forms" t="Include">
+              <e p="ChooseClassWindow.cs" t="Include" />
+              <e p="ClassChooseWindow.cs" t="Include" />
+              <e p="ClassLeaveClassConfirm.cs" t="Include" />
+              <e p="ClassMainWindow.cs" t="Include" />
+              <e p="ConfirmClassWindow.cs" t="Include" />
+            </e>
             <e p="Leveling" t="Include">
               <e p="ClassLevelingManager.cs" t="Include" />
               <e p="ClassLevelingManagerStage.cs" t="Include" />
               <e p="ClassLevelingManagerXPLevel.cs" t="Include" />
             </e>
             <e p="Powers" t="Include">
-              <e p="AdvancedPowerEnum.cs" t="Include" />
-              <e p="AdvancedXPPowerEnum.cs" t="Include" />
-              <e p="PowerAbstract.cs" t="Include" />
-              <e p="PowerData.cs" t="Include" />
-              <e p="PowerHotBarInt.cs" t="Include" />
-              <e p="PowerManager.cs" t="Include" />
-              <e p="PowerSettings.cs" t="Include" />
-              <e p="Stage" t="Include">
-                <e p="AdvancedStagePowerEnum.cs" t="Include" />
-                <e p="StagePowerAbstract.cs" t="Include" />
+              <e p="KnightSmashPower.cs" t="Include" />
+              <e p="Sources" t="Include">
+                <e p="AdvancedPowerEnum.cs" t="Include" />
+                <e p="AdvancedXPPowerEnum.cs" t="Include" />
+                <e p="PowerAbstract.cs" t="Include" />
+                <e p="PowerData.cs" t="Include" />
+                <e p="PowerHotBarInt.cs" t="Include" />
+                <e p="PowerManager.cs" t="Include" />
+                <e p="PowerSettings.cs" t="Include" />
+                <e p="Stage" t="Include">
+                  <e p="AdvancedStagePowerEnum.cs" t="Include" />
+                  <e p="StagePowerAbstract.cs" t="Include" />
+                </e>
               </e>
             </e>
             <e p="Window" t="Include">

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using CyberCore.CustomEnums;
+using CyberCore.Manager.ClassFactory.Classes;
 using CyberCore.Utils;
 using MiNET;
 using MiNET.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using static CyberCore.Manager.ClassFactory.ClassType;
 
 namespace CyberCore.Manager.ClassFactory
@@ -23,20 +21,45 @@ namespace CyberCore.Manager.ClassFactory
             {PowerEnum.FireBox, 10} //XP Cost
         };
 
-        private CyberCoreMain CCM;
+        private readonly CyberCoreMain CCM;
 
 
         public Dictionary<string, object> MMOSave = new Dictionary<string, object>();
 
         public Dictionary<string, object> PlayerLearnedPowers = new Dictionary<string, object>();
+
+
+        private List<BaseClass> RegisteredClasses = new List<BaseClass>();
+        
 //    private Dictionary<String, BaseClass> ClassList = new Dictionary<>();
+
+        public List<BaseClass> getRegisteredClasses()
+        {
+            return RegisteredClasses;
+        }
 
         public ClassFactory(CyberCoreMain main)
         {
             CCM = main;
+            loadDefaultClasses();
             // MMOSave = new Config(new File(CCM.getDataFolder(), "MMOSave.yml"), Config.YAML);
             // PlayerLearnedPowers = new Config(new File(CCM.getDataFolder(), "PlayerLearnedPowers.yml"), Config.YAML);
-//        CCM.getServer().getScheduler().scheduleDelayedRepeatingTask(new LumberJackTreeCheckerTask(main), 20 * 60, 20 * 60);//Every Min
+        // CCM.getServer().getScheduler().scheduleDelayedRepeatingTask(new LumberJackTreeCheckerTask(main), 20 * 60, 20 * 60);//Every Min
+        }
+
+        public void loadDefaultClasses()
+        {
+            RegisterClass(new Knight(CCM));
+        }
+
+        public void RegisterClass(BaseClass bc)
+        {
+            RegisteredClasses.Add(bc);
+        }
+
+        public void UnRegisterClass(BaseClass bc)
+        {
+            RegisteredClasses.Remove(bc);
         }
 
 
@@ -70,32 +93,24 @@ namespace CyberCore.Manager.ClassFactory
         //    handelEvent(event, cp);
         public PowerEnum[] getRegisteredPowers(CorePlayer p)
         {
-            List<PowerEnum> pe = new List<PowerEnum>();
+            var pe = new List<PowerEnum>();
             if (!PlayerLearnedPowers.ContainsKey(p.getName().ToLower())) return new PowerEnum[0];
-            Dictionary<string, object> c = (Dictionary<String, Object>) PlayerLearnedPowers[p.getName().ToLower()];
+            var c = (Dictionary<string, object>) PlayerLearnedPowers[p.getName().ToLower()];
             var a = new PowerEnum();
-            foreach (Object v in c.Values)
-            {
+            foreach (var v in c.Values)
                 if (v is int)
-                {
                     pe.Add(PowerEnum.fromint((int) v, a));
-                }
                 else
-                {
                     Console.WriteLine("EEEEEEEEQweqweqwe qwe qwe qweqwqe qweqweqqqqqqqqq!");
-                }
-            }
 
             return pe.ToArray();
         }
 
         public void registerPowerToPlayer(CorePlayer p, PowerEnum e)
         {
-            Dictionary<String, Object> c = new Dictionary<String, Object>();
+            var c = new Dictionary<string, object>();
             if (PlayerLearnedPowers.ContainsKey(p.getName().ToLower()))
-            {
                 c = (Dictionary<string, object>) PlayerLearnedPowers[p.getName().ToLower()];
-            }
 
             c[e.Name] = e.ID;
             PlayerLearnedPowers[p.getName().ToLower()] = c;
@@ -122,15 +137,12 @@ namespace CyberCore.Manager.ClassFactory
                 return null;
             }
 
-            if (p.getPlayerClass() != null && !force)
-            {
-                return p.getPlayerClass();
-            }
+            if (p.getPlayerClass() != null && !force) return p.getPlayerClass();
 
             if (MMOSave.ContainsKey(p.getName().ToLower()))
             {
-                Dictionary<string, object> o = (Dictionary<string, object>) MMOSave[p.getName().ToLower()];
-                int a = (int) (o["TYPE"]);
+                var o = (Dictionary<string, object>) MMOSave[p.getName().ToLower()];
+                var a = (int) o["TYPE"];
                 BaseClass data = null; //new BaseClass(CCM, p, (Dictionary<String,Object>) o);
                 switch (ClassTypeExtender.fromInt(a))
                 {
@@ -191,7 +203,7 @@ namespace CyberCore.Manager.ClassFactory
 
         public void SaveClassToFile(CorePlayer p)
         {
-            BaseClass bc = p.getPlayerClass();
+            var bc = p.getPlayerClass();
             if (bc != null)
             {
                 MMOSave[p.getName().ToLower()] = p.getPlayerClass().export();
@@ -299,7 +311,7 @@ namespace CyberCore.Manager.ClassFactory
             CyberCoreMain.Log.Info("SAving All Classes!");
             foreach (Player p in CCM.getAPI().PlayerManager.GetPlayers())
             {
-                CorePlayer cp = p as CorePlayer;
+                var cp = p as CorePlayer;
                 if (cp?.getPlayerClass() == null) continue;
                 save(cp, false);
             }

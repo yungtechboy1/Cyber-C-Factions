@@ -32,6 +32,7 @@ namespace CyberCore.Manager.ClassFactory
         //    public List<PowerEnum> DefaultPowers = new List<>();
         public Dictionary<PowerEnum, PowerAbstract> PossiblePowerList = new Dictionary<PowerEnum, PowerAbstract>();
         public List<AdvancedPowerEnum> DefaultPowers1 = new List<AdvancedPowerEnum>();
+        public List<PowerAbstract> ClassPowers = new List<PowerAbstract>();
         public CyberCoreMain CCM;
         protected int MainID = 0;
 
@@ -92,6 +93,11 @@ namespace CyberCore.Manager.ClassFactory
         private double PowerSourceCount = 0;
         private ClassSettingsObj ClassSettings = null; //new ClassSettingsObj(this);
 
+
+        public virtual void AddClassPowers()
+        {
+        }
+
         //Get all the Powers that the player has Learned
         //Next Filter By the Class Currently Choosen
         //Then Add all aplicable Powers
@@ -101,7 +107,7 @@ namespace CyberCore.Manager.ClassFactory
 
 //        MainID = mid;
             P = player;
-
+            AddClassPowers();
 //        TYPE = rank;
 //        LVL = XPToLevel(XP);
             ClassSettings = new ClassSettingsObj(this);
@@ -168,6 +174,7 @@ namespace CyberCore.Manager.ClassFactory
         {
             CCM = main;
             ClassSettings = new ClassSettingsObj(this);
+            AddClassPowers();
 //        MainID = mid;
 //        P = player;
 //        TYPE = rank;
@@ -474,9 +481,11 @@ namespace CyberCore.Manager.ClassFactory
         public List<PowerAbstract> getActivePowers()
         {
             List<PowerAbstract> pp = new List<PowerAbstract>();
-            foreach (PowerEnum pe in getEnabledPowersList()) {
+            foreach (PowerEnum pe in getEnabledPowersList())
+            {
                 pp.Add(getPossiblePower(pe));
             }
+
             return pp;
         }
 
@@ -601,7 +610,7 @@ namespace CyberCore.Manager.ClassFactory
         private void addActivePower(PowerAbstract p)
         {
             addActivePower(p.getType());
-            addPossiblePower(p);
+            AddPossiblePower(p);
         }
 
         private void addActivePower(PowerEnum p)
@@ -635,7 +644,7 @@ namespace CyberCore.Manager.ClassFactory
             if (getClassSettings().getPreferedSlot9().Equals(p)) getClassSettings().clearSlot9();
         }
 
-        public void addPossiblePower(PowerAbstract power)
+        public void AddPossiblePower(PowerAbstract power)
         {
             PowerSettings ps = power.getPowerSettings();
             if (ps == null)
@@ -655,7 +664,8 @@ namespace CyberCore.Manager.ClassFactory
                 return;
             }
 
-            if (ClassSettings.getEnabledPowers().Count == 0 || !ClassSettings.getEnabledPowers().Contains(power.getType()))
+            if (ClassSettings.getEnabledPowers().Count == 0 ||
+                !ClassSettings.getEnabledPowers().Contains(power.getType()))
             {
                 getPlayer().SendMessage("Error! Could not Add non enabled Power to Possible Power " +
                                         power.getDispalyName() +
@@ -730,11 +740,11 @@ namespace CyberCore.Manager.ClassFactory
         {
             var a = new Dictionary<String, Object>()
             {
-                    {"COOLDOWNS", getCOOLDOWNStoConfig()},
-                    {"PowerSourceCount", PowerSourceCount},
-                    
-                    {"XP", getXP()},
-                    {"TYPE", (int) getTYPE()},
+                {"COOLDOWNS", getCOOLDOWNStoConfig()},
+                {"PowerSourceCount", PowerSourceCount},
+
+                {"XP", getXP()},
+                {"TYPE", (int) getTYPE()},
             };
             if (getClassSettings() != null) a["CS"] = getClassSettings().export();
             else a["CS"] = "{}";
@@ -744,10 +754,12 @@ namespace CyberCore.Manager.ClassFactory
         public Dictionary<String, Object> getCOOLDOWNStoConfig()
         {
             Dictionary<String, Object> conf = new Dictionary<String, Object>();
-            foreach (CoolDown c in getCOOLDOWNS()) {
+            foreach (CoolDown c in getCOOLDOWNS())
+            {
                 CyberCoreMain.Log.Error("Was LOG ||" + c.toString() + "|||| AND " + c.isValid());
                 if (c.isValid()) conf[c.getKey()] = c.getTime();
             }
+
             return conf;
         }
 
@@ -812,13 +824,15 @@ namespace CyberCore.Manager.ClassFactory
             if (!HasCooldown(perk)) return;
 
             CoolDown cr = null;
-            foreach (CoolDown c in COOLDOWNS) {
+            foreach (CoolDown c in COOLDOWNS)
+            {
                 if (c.getKey().equalsIgnoreCase(perk))
                 {
                     cr = c;
                     break;
                 }
             }
+
             if (cr != null)
             {
                 COOLDOWNS.Remove(cr);
@@ -834,13 +848,15 @@ namespace CyberCore.Manager.ClassFactory
             if (!HasCooldown(perk)) return;
 
             CoolDown cr = null;
-            foreach (CoolDown c in COOLDOWNS) {
+            foreach (CoolDown c in COOLDOWNS)
+            {
                 if (c.getKey().equalsIgnoreCase(perk))
                 {
                     cr = c;
                     break;
                 }
             }
+
             if (cr != null)
             {
                 COOLDOWNS.Remove(cr);
@@ -855,18 +871,21 @@ namespace CyberCore.Manager.ClassFactory
         public CoolDown GetCooldown(String key)
         {
             if (!HasCooldown(key)) return null;
-            foreach (CoolDown c in COOLDOWNS) {
+            foreach (CoolDown c in COOLDOWNS)
+            {
                 if (c.getKey().equalsIgnoreCase(key))
                 {
                     return c;
                 }
             }
+
             return null;
         }
 
         public bool HasCooldown(String perk)
         {
-            foreach (CoolDown c in (List<CoolDown>) COOLDOWNS) {
+            foreach (CoolDown c in (List<CoolDown>) COOLDOWNS)
+            {
                 if (c.getKey().equalsIgnoreCase(perk))
                 {
                     if (!c.isValid())
@@ -878,6 +897,7 @@ namespace CyberCore.Manager.ClassFactory
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -891,10 +911,12 @@ namespace CyberCore.Manager.ClassFactory
             }
 
 //        Event ee = e;
-            foreach (PowerAbstract p in getActivePowers()) {
+            foreach (PowerAbstract p in getActivePowers())
+            {
                 //TODO
                 // p.handelEvent(e);
             }
+
             return e;
         }
 
@@ -1070,7 +1092,8 @@ namespace CyberCore.Manager.ClassFactory
         {
 //        CyberCoreMain.Log.Error("Was LOG ||"+"Tring to TICKING POWER "+getActivePowers().size());
 //        CyberCoreMain.Log.Error("Was LOG ||"+"Tring to TICKING POWER "+getActivePowers());
-            foreach (PowerAbstract p in getActivePowers()) {
+            foreach (PowerAbstract p in getActivePowers())
+            {
 //            CyberCoreMain.Log.Error("Was LOG ||"+"TICKING POWER " + p.getName());
                 try
                 {
@@ -1079,7 +1102,7 @@ namespace CyberCore.Manager.ClassFactory
                 }
                 catch (Exception e)
                 {
-                    CyberCoreMain.Log.Error("ERror in BC 33es: ",e);
+                    CyberCoreMain.Log.Error("ERror in BC 33es: ", e);
                 }
             }
         }
@@ -1124,7 +1147,7 @@ namespace CyberCore.Manager.ClassFactory
         public CyberFormSimple getClassMerchantWindow()
         {
             // return new CyberFormSimpleClassMerchant(this);
-        return null;
+            return null;
         }
 
         /**
@@ -1148,15 +1171,17 @@ namespace CyberCore.Manager.ClassFactory
 
         public List<AdvancedPowerEnum> getLearnedPowers()
         {
-            return  new List<AdvancedPowerEnum>(getClassSettings().getLearnedPowers());
+            return new List<AdvancedPowerEnum>(getClassSettings().getLearnedPowers());
         }
 
         public List<PowerAbstract> getLearnedPowersAbstract()
         {
             List<PowerAbstract> pa = new List<PowerAbstract>();
-            foreach (AdvancedPowerEnum e in getClassSettings().getLearnedPowers()) {
+            foreach (AdvancedPowerEnum e in getClassSettings().getLearnedPowers())
+            {
                 pa.Add(PowerManager.getPowerfromAPE(e, this));
             }
+
             return pa;
         }
 
@@ -1179,6 +1204,58 @@ namespace CyberCore.Manager.ClassFactory
             Class8,
             Class9,
             Class10
+        }
+
+        public bool CanSwitchHotbar(int to, int from)
+        {
+            //TODO CHECK FOR ACTIVE HOTBAR POWERS
+            return true;
+        }
+
+        public string getConfirmWindowMessage()
+        {
+            String t =
+                $"{ChatColors.Yellow}{ChatFormatting.Bold} Are you sure you want to change classes to {getDisplayName()} ?{ChatFormatting.Reset}\n" +
+                $"===========================================\n" +
+                $"Class Powers:\n";
+            foreach (PowerAbstract cpa in ClassPowers)
+            {
+                t += cpa.getDispalyName();
+                if (cpa.DefaultPower) t += " {Starting Power}";
+                t += ChatFormatting.Reset + "\n";
+            }
+
+            t += "Buffs\n";
+            foreach (KeyValuePair<BuffType, Buff> a in getBuffs())
+            {
+                t += a.Key + " > + " + a.Value.getAmount() + "\n";
+            }
+
+            t += "DeBuffs\n";
+
+            foreach (KeyValuePair<BuffType, DeBuff> a in getDeBuffs())
+            {
+                t += a.Key + " > - " + a.Value.getAmount() + "\n";
+            }
+
+            return t;
+        }
+
+        public virtual bool CanSetPlayerClass(CorePlayer player)
+        {
+            return true;
+        }
+
+        public virtual BaseClass setPlayerClass(CorePlayer corePlayer)
+        {
+            if (CanSetPlayerClass(corePlayer))
+            {
+                initBuffs();
+                P = corePlayer;
+                return this;
+            }
+            else
+                return null;
         }
     }
 }
