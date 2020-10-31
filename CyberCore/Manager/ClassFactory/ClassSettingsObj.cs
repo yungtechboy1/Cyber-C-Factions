@@ -221,7 +221,7 @@ namespace CyberCore.Manager.ClassFactory
                 Console.WriteLine("ERRROO3333333R!!! "+pd.getPowerID());
                 return;
             }
-            BC.addPossiblePower(pd.getPA());
+            BC.AddPossiblePower(pd.getPA());
 //            BC.enablePower(pd);
 //            PowerAbstract pa = pd.getPA();
 //            if(pa != null){

@@ -37,7 +37,7 @@ namespace CyberCore.Manager.ClassFactory.Window
                     (p, form) =>
                     {
                         var b = (CorePlayer) p;
-                        b?.SendForm(b.getPlayerClass().getHowToUseClassWindow());
+                        b?.SendForm(b.GetPlayerClass().getHowToUseClassWindow());
                     }
             });
             addButton(new Button()
@@ -46,7 +46,7 @@ namespace CyberCore.Manager.ClassFactory.Window
                     (p, form) =>
                     {
                         var b = (CorePlayer) p;
-                        b?.SendForm(b.getPlayerClass().getClassMerchantWindow());
+                        b?.SendForm(b.GetPlayerClass().getClassMerchantWindow());
                     }
             });
             addButton(new Button()
@@ -64,7 +64,7 @@ namespace CyberCore.Manager.ClassFactory.Window
                     (p, form) =>
                     {
                         var b = (CorePlayer) p;
-                        b?.SendForm(b.getPlayerClass().getHowToUseClassWindow());
+                        b?.SendForm(b.GetPlayerClass().getHowToUseClassWindow());
                     }
             });
             addButton(new Button()
@@ -73,7 +73,7 @@ namespace CyberCore.Manager.ClassFactory.Window
                     (p, form) =>
                     {
                         var b = (CorePlayer) p;
-                        b?.SendForm(new MainClassSettingsWindowActivePowers(b.getPlayerClass()));
+                        b?.SendForm(new MainClassSettingsWindowActivePowers(b.GetPlayerClass()));
                     }
             });
             addButton(new Button()
@@ -82,7 +82,7 @@ namespace CyberCore.Manager.ClassFactory.Window
                     (p, form) =>
                     {
                         var b = (CorePlayer) p;
-                        b?.SendForm(new MainClassSettingsWindowChooseLockedSlot(b.getPlayerClass(), LockedSlot.SLOT_9));
+                        b?.SendForm(new MainClassSettingsWindowChooseLockedSlot(b.GetPlayerClass(), LockedSlot.SLOT_9));
                     }
             });
             addButton(new Button()
@@ -91,7 +91,7 @@ namespace CyberCore.Manager.ClassFactory.Window
                     (p, form) =>
                     {
                         var b = (CorePlayer) p;
-                        b?.SendForm(new MainClassSettingsWindowChooseLockedSlot(b.getPlayerClass(), LockedSlot.SLOT_8));
+                        b?.SendForm(new MainClassSettingsWindowChooseLockedSlot(b.GetPlayerClass(), LockedSlot.SLOT_8));
                     }
             });
             addButton(new Button()
@@ -100,7 +100,7 @@ namespace CyberCore.Manager.ClassFactory.Window
                     (p, form) =>
                     {
                         var b = (CorePlayer) p;
-                        b?.SendForm(new MainClassSettingsWindowChooseLockedSlot(b.getPlayerClass(), LockedSlot.SLOT_7));
+                        b?.SendForm(new MainClassSettingsWindowChooseLockedSlot(b.GetPlayerClass(), LockedSlot.SLOT_7));
                     }
             });
             addButton(new Button()
@@ -116,7 +116,7 @@ namespace CyberCore.Manager.ClassFactory.Window
                 (p, form) =>
                 {
                     var b = (CorePlayer) p;
-                    b?.SendForm(new MainClassWindowLearnedPowers(b.getPlayerClass()));
+                    b?.SendForm(new MainClassWindowLearnedPowers(b.GetPlayerClass()));
                 }
             });
             //Plugin Callback

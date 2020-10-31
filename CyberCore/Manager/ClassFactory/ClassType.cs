@@ -5,6 +5,7 @@ namespace CyberCore.Manager.ClassFactory
     public enum ClassType : int
     {
         Unknown = 0,
+        Class_Knight = 1,
         Class_Miner_TNT_Specialist = 1,
         Class_Miner_MineLife = 2,
         Class_Offense_Mercenary = 3,

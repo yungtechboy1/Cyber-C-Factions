@@ -22,7 +22,7 @@ namespace CyberCore.Manager.ClassFactory.Window
         public void onRun(Player player, SimpleForm simpleForm)
         {
             CorePlayer p = (CorePlayer) player;
-            player.SendForm(p.getPlayerClass().getSettingsWindow());
+            player.SendForm(p.GetPlayerClass().getSettingsWindow());
         }
     }
 }

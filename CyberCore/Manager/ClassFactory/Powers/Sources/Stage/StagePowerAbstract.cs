@@ -20,11 +20,11 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public abstract StageEnum getMaxStage();
 
         public void setMaxStage(StageEnum s){
-            if(getStageLevelManager() == null){
+            if(!(XPManager is ClassLevelingManagerStage)){
                 CyberCoreMain.Log.Error("SPA>>> ERRORORORO RWTF HOW IS THIS NULLLLL!!!");
                 return;
             }
-            getStageLevelManager().setMaxStage(s);
+            XPManager.setMaxStage(s);
         }
     }
 }

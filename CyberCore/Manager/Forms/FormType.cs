@@ -81,7 +81,10 @@
         Rank_Window,
         ME_Window,
         Link_Confirm_Window,
-        Link_Window
+        Link_Window,
+        Class_Choose_Class,
+        Class_Choose_Class_Confirm,
+        Class_Leave_Confirm
     }
 
     public enum SubMenu

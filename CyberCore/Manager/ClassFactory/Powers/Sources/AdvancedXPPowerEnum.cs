@@ -4,7 +4,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 {
     public class AdvancedXPPowerEnum : AdvancedPowerEnum
     {
-        public AdvancedXPPowerEnum(PowerEnum PE, int XP) : base(PE, XP)
+        public AdvancedXPPowerEnum(PowerEnum pwrEnum, int XP) : base(pwrEnum, XP)
         {
         }
     }

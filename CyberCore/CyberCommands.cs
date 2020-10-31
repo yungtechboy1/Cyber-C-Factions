@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using CyberCore.Manager.ClassFactory.Forms;
 using CyberCore.Manager.Crate;
 using CyberCore.Manager.Crate.Form;
 using CyberCore.Manager.Factions.Windows;
@@ -18,13 +19,13 @@ using MiNET.Utils;
 using MiNET.Worlds;
 using Level = MiNET.Worlds.Level;
 using Target = MiNET.Plugins.Target;
+
 // ReSharper disable InconsistentNaming
 
 namespace CyberCore
 {
     public class CyberCommands
     {
-       
         public readonly CyberCoreMain CCM;
 
         public CyberCommands(CyberCoreMain cyberCoreMain)
@@ -35,7 +36,6 @@ namespace CyberCore
         [Command(Name = "ah", Description = "Auction House")]
         public void AH(CorePlayer p)
         {
-            
         }
 
         [Command(Name = "rank", Description = "Rank Options")]
@@ -51,10 +51,14 @@ namespace CyberCore
         public void FtAdd(CorePlayer p, string text = null)
         {
             if (null == text) text = "Floating Text 121 !";
-            p.SendMessage($"HI YOUR IN"+p.getFaction()+" Faction with "+p.Faction+" FROM FACTION"+p.KnownPosition.Clone());
-            p.SendMessage($"HI YOUR IN YOUR FROM "+p.KnownPosition.Clone());
-            if(((PlayerLocation)p.KnownPosition.Clone()).Z == 0 || ((PlayerLocation)p.KnownPosition.Clone()).X == 0 )Console.WriteLine($"ERORROROROROROOROROROOROROROROOR");
-            FloatingTextFactory.AddFloatingText(new CyberGenericFloatingTextContainer(CCM.FTM, (PlayerLocation) p.KnownPosition.Clone(),p.Level, text), true);
+            p.SendMessage($"HI YOUR IN" + p.getFaction() + " Faction with " + p.Faction + " FROM FACTION" +
+                          p.KnownPosition.Clone());
+            p.SendMessage($"HI YOUR IN YOUR FROM " + p.KnownPosition.Clone());
+            if (((PlayerLocation) p.KnownPosition.Clone()).Z == 0 || ((PlayerLocation) p.KnownPosition.Clone()).X == 0)
+                Console.WriteLine($"ERORROROROROROOROROROOROROROROOR");
+            FloatingTextFactory.AddFloatingText(
+                new CyberGenericFloatingTextContainer(CCM.FTM, (PlayerLocation) p.KnownPosition.Clone(), p.Level, text),
+                true);
             p.SendMessage(ChatColors.Green + "Floating Text Added!");
         }
 
@@ -88,6 +92,7 @@ namespace CyberCore
             p.SendForm2(new LinkConfirmWindow(p));
             // p.SendForm(new LinkConfirmWindow());
         }
+
         [Command(Name = "howtoplay", Description = "Link your MC Account to Forums")]
         public void htp(CorePlayer p)
         {
@@ -97,13 +102,14 @@ namespace CyberCore
         [Command(Name = "status", Description = "View Player Info and Status Information")]
         public void status(CorePlayer p)
         {
-            p.SendMessage($"{ChatColors.Aqua}Current Rank: {p.GetRank().getChat_prefix()+p.GetRank().display_name}\n" +
-                          $"Displayed Username: {p.DisplayName}\n" +
-                          $"Username: {p.Username}\n" +
-                          $"\n" +
-                          $"\n" +
-                          $"\n" +
-                          $"");
+            p.SendMessage(
+                $"{ChatColors.Aqua}Current Rank: {p.GetRank().getChat_prefix() + p.GetRank().display_name}\n" +
+                $"Displayed Username: {p.DisplayName}\n" +
+                $"Username: {p.Username}\n" +
+                $"\n" +
+                $"\n" +
+                $"\n" +
+                $"");
         }
 
         public static readonly int WildMaxVal = 25000;
@@ -307,18 +313,20 @@ namespace CyberCore
         }
 
         [Command(Name = "shop", Description = "Buy / Sell Items")]
-        public void Shop(CorePlayer p, int amt)
+        public void Shop(CorePlayer p)
         {
             var a = new ShopFactory(CCM);
-            a.OpenShop(p,1);
+            a.OpenShop(p, 1);
         }
+
         [Command(Name = "gamemode", Description = "Set Gamemode")]
         public void gm(CorePlayer p, int mode)
         {
             if (mode == 0)
             {
                 p.SetGamemode(GameMode.Survival);
-            }else if (mode == 1)
+            }
+            else if (mode == 1)
             {
                 p.SetGamemode(GameMode.Creative);
             }
@@ -371,16 +379,19 @@ namespace CyberCore
             CCM.CrateMain.addPrimedPlayer(p.getName().ToLower(), CrateMain.CrateAction.AddItemToCrate);
             p.SendMessage(
                 $"{ChatColors.Green}[CRATE] Please hold the item and tap a chest to add the item to the crate.");
-        } [Command(Name = "crate create", Description = "Add a new Item to a Crate")]
+        }
+
+        [Command(Name = "crate create", Description = "Add a new Item to a Crate")]
         public void CC(CorePlayer p)
         {
-            
             p.SendMessage(
                 $"{ChatColors.Green}[CRATE] Please hold the item and tap a chest to add the item to the crate.");
             CCM.CrateMain.addPrimedPlayer(p.getName().ToLower(), CrateMain.CrateAction.AddCrate);
             p.SendMessage(
                 $"{ChatColors.Green}[CRATE] Please tap a chest to convert to a crate.");
-        }[Command(Name = "crate admin", Description = "View Crate Main Menu")]
+        }
+
+        [Command(Name = "crate admin", Description = "View Crate Main Menu")]
         public void CA(CorePlayer p)
         {
             p.SendForm(new AdminCrateMainMenu());
@@ -455,6 +466,22 @@ namespace CyberCore
             inventoryContent.inventoryId = inventory.WindowsId;
             inventoryContent.input = inventory.Slots;
             player.SendPacket(inventoryContent);
+        }
+
+        [Command(Name = "class", Description = "Manage and/or Choose your class!")]
+        public void playerclass(CorePlayer p)
+        {
+            // var pc =  p.getPlayerClass();
+            // if (pc != null)
+            // {
+            //     //Has Class
+            //     
+            // }
+            // else
+            // {
+            //     //No Class
+            p.SendForm(new ClassMainWindow(p));
+            // }
         }
 
         //

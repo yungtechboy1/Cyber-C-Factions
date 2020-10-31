@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using CyberCore.Custom.Items;
 using CyberCore.CustomEnums;
 using CyberCore.Utils;
@@ -9,7 +10,10 @@ using MiNET.Utils;
 
 namespace CyberCore.Manager.ClassFactory.Powers
 {
-    public interface PowerHotBarInt
+    /***
+     * @Deprecated DO NO USE ANY MORE
+     */
+    public abstract class PowerHotBarInt : PowerAbstract
     {
         public static String getPowerHotBarItemNamedTagKey = "PowerHotBarItem";
 
@@ -46,26 +50,41 @@ namespace CyberCore.Manager.ClassFactory.Powers
         }
 
 
-//    @Override
-//    public InventoryClickEvent InventoryClickEvent(InventoryClickEvent e) {
-//        getPlayer().sendMessage(ChatColors.RED + "Error! You can not change your Class Slot");
-//        if (e.getSlot() == LS.getSlot()) {
-//            if (e.getSourceItem().getNamedTag() != null && !e.getSourceItem().getNamedTag().contains(getPowerHotBarItemNamedTagKey)) {
-//                e.setCancelled();
-//                getPlayer().sendMessage(ChatColors.RED + "Error! You can not change your Class Slot");
-//            }else{
-//                getPlayer().sendMessage(ChatColors.YELLOW + "SAME SLOT THO!");
-//            }
-//        }
-//        return e;
-//
-//    }
-        bool canUpdateHotBar(int tick);
+    // @Override
+    // public InventoryClickEvent InventoryClickEvent(InventoryClickEvent e) {
+    //     getPlayer().sendMessage(ChatColors.RED + "Error! You can not change your Class Slot");
+    //     if (e.getSlot() == LS.getSlot()) {
+    //         if (e.getSourceItem().getNamedTag() != null && !e.getSourceItem().getNamedTag().contains(getPowerHotBarItemNamedTagKey)) {
+    //             e.setCancelled();
+    //             getPlayer().sendMessage(ChatColors.RED + "Error! You can not change your Class Slot");
+    //         }else{
+    //             getPlayer().sendMessage(ChatColors.YELLOW + "SAME SLOT THO!");
+    //         }
+    //     }
+    //     return e;
+    //
+    // }
+    private long LastHotBarCheck = 0;
+    private long LastHotBarApproved = 0;
+    public virtual bool CanUpdateHotBar(long tick = -1)
+    {
+        //Get Tick if not set
+        
+        if (tick == -1)
+        {
+            tick = CyberUtils.getTick();
+        }
+        Item i = getHotbarItem_Cooldown();
+        if ((LastHotBarCheck + (10)) > tick) return false;
+        LastHotBarCheck = tick;
+        LastHotBarApproved = tick;
+        return true;
+    }
 
-        public void updateHotbar(LockedSlot ls, CoolDownTick c, PowerAbstract p)
+        public void updateHotbar(LockedSlot ls, CoolDown c, PowerAbstract p)
         {
             if (ls.Equals(LockedSlot.NA)) return;
-            if (c == null || !c.isValid())
+            if (c == null || c.isValid(true))
             {
                 setPowerAvailable(p);
                 Console.WriteLine("ACTIVE POWER");
@@ -118,7 +137,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public void setPowerUnAvailable(PowerAbstract p)
         {
             p.getPlayer().Inventory.Slots[p.getLS().getSlot()] =
-                addNamedTag(p, getUnAvailableItem(), p.getSafeName(), "Idle");
+                addNamedTag(p, getUnActiveItem(), p.getSafeName(), "Idle");
         }
         public Item addNamedTag(PowerAbstract p, Item i, String key, String val)
         {
@@ -146,11 +165,6 @@ namespace CyberCore.Manager.ClassFactory.Powers
             i.ExtraData = ( ct.putString(key, val));
             return i;
         }
-        public Item getAvailableItem()
-        {
-            return new ItemApple();
-            // return new ItemSlimeBall();
-        }
         public Item getActiveItem()
         {
             return new ItemApple();
@@ -160,9 +174,25 @@ namespace CyberCore.Manager.ClassFactory.Powers
         {
             return new ItemRedstone();
         }
-        public Item getUnAvailableItem()
+
+        protected PowerHotBarInt(AdvancedPowerEnum ape, ClassLevelingManager xpm = null) : base(ape, xpm)
         {
-            return new ItemRedstone();
+        }
+
+        protected PowerHotBarInt(BaseClass b, AdvancedPowerEnum ape, PowerSettings ps) : base(b, ape, ps)
+        {
+        }
+
+        protected PowerHotBarInt(BaseClass b, AdvancedPowerEnum ape) : base(b, ape)
+        {
+        }
+
+        protected PowerHotBarInt(BaseClass b) : base(b)
+        {
+        }
+
+        protected PowerHotBarInt(BaseClass b, StageEnum stageEnum) : base(b, stageEnum)
+        {
         }
     }
 }

@@ -1007,7 +1007,7 @@ namespace CyberCore
             CorePlayerData.SaveToFile(new CorePlayerData(p));
             if (p != null)
             {
-                if (p.getPlayerClass() != null) plugin.ClassFactory.save(p);
+                if (p.GetPlayerClass() != null) plugin.ClassFactory.save(p);
                 if (p.EPD != null)
                 {
                     p.EPD.upload();
