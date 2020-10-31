@@ -21,7 +21,7 @@ namespace CyberCore.Utils.Cooldowns
          * @param name
          * @param secs
          */
-        public CoolDown(String name, long secs, int mins = 0, int hrs=0)
+        public CoolDown(String name, long secs, int mins = 0, int hrs = 0)
         {
 //        t = tick;
             Key = name;
@@ -71,9 +71,9 @@ namespace CyberCore.Utils.Cooldowns
             Key = key;
         }
 
-        public bool isValid()
+        public bool isValid(bool update = false)
         {
-            return isValidTime();
+            return isValidTime(update);
         }
 
         public String toString()
@@ -84,11 +84,15 @@ namespace CyberCore.Utils.Cooldowns
                    '}';
         }
 
-        private bool isValidTime()
+        private bool isValidTime(bool update)
         {
             long ct = CyberUtils.getLongTime();
+
 //        CyberCoreMain.Log.Error("Was LOG ||"+ct+" > "+Time);
-            return ct < Time;
+            if (ct < Time)
+                return false;
+            if (update) Time = ct;
+            return true;
         }
     }
 }

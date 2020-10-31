@@ -48,6 +48,11 @@ namespace CyberCore.Manager.ClassFactory
             MaxStage = maxStage;
         }
 
+        public override int getXP()
+        {
+            return XP;
+        }
+
         public override StageEnum getStage()
         {
 //        if (getLT() == LevelingType.Stage) return StageEnum.getStageFromInt(Stage);

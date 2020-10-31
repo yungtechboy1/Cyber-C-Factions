@@ -9,7 +9,7 @@ namespace CyberCore.Manager.ClassFactory.Forms
         public ClassMainWindow(CorePlayer player) : base(MainForm.Main_Class_Settings_Window, "UnlimitedMC Factions")
         {
             Content = "Welcome to the Main Class Page! Here you can manage, upgrade, or change your class.";
-            if (player.getPlayerClass() == null)
+            if (player.GetPlayerClass() == null)
             {
                 addButton("Choose A New Class",
                     delegate(Player player, SimpleForm form)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CyberCore.CustomEnums;
+using MiNET.Utils;
 
 namespace CyberCore.Manager.ClassFactory.Classes
 {
@@ -15,9 +16,19 @@ namespace CyberCore.Manager.ClassFactory.Classes
             
         }
 
+
+        public override List<PowerEnum> getDefaultPowers()
+        {
+            return new List<PowerEnum>()
+            {
+                PowerEnum.KnightSmash
+            };
+        }
+
+
         public override void AddClassPowers()
         {
-            ClassPowers.Add(new KnightSmashPower());
+            UsaeableClassPowersList.Add(PowerEnum.KnightSmash, new KnightSmashPower());
         }
         //
         // public void RegisterWithMain()
@@ -41,7 +52,7 @@ namespace CyberCore.Manager.ClassFactory.Classes
             AddPossiblePower(new KnightSmashPower());
         }
 
-        public override void initBuffs()
+        public override void AddStartingBuffs()
         {
             addBuff(new Buff(BuffType.Health, 2));
             addBuff(new Buff(BuffType.Damage, 1));
@@ -65,5 +76,15 @@ namespace CyberCore.Manager.ClassFactory.Classes
         {
             return "Knight";
         }
+
+        protected override BaseClass NewClassForPlayer(CorePlayer corePlayer)
+        {
+           return new Knight(CCM,corePlayer);
+        }
+
+        // public override void PlayerAddedToClass(CorePlayer p)
+        // {
+        //     p.SendMessage($"{ChatColors.LightPurple}[Lead Knight] {ChatColors.Blue}Sir. John : {ChatColors.Green}  Welcome to the {ChatColors.Gray}Knight Order {ChatColors.Green}new comer!");
+        // }
     }
 }

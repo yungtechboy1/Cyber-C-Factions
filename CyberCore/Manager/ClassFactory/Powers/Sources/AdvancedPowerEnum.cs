@@ -11,7 +11,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         PowerEnum PwrEnum;
         StageEnum CurrentStageEnum = StageEnum.NA;
         int XP = -1;
-        LevelingType tt = None;
+        LevelingType LT = None;
 
         public AdvancedPowerEnum(PowerEnum pwrEnum)
         {
@@ -22,7 +22,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         {
             this.PwrEnum = pwrEnum;
             this.XP = xp;
-            tt = XPLevel;
+            LT = XPLevel;
         }
 
         public AdvancedPowerEnum(PowerEnum pwrEnum, StageEnum currentStageEnum)
@@ -32,7 +32,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //            throw new Exception("Error! Can not pass StageEnum.NA to AdvancedPowerEnum Constructor!");
             this.PwrEnum = pwrEnum;
             this.CurrentStageEnum = currentStageEnum;
-            tt = Stage;
+            LT = Stage;
         }
 
         //0    1            2  3
@@ -99,23 +99,23 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public LevelingType getTt()
         {
-            return tt;
+            return LT;
         }
 
         public bool isValid()
         {
-            if (tt == None) return false;
-            if (tt == XPLevel)
+            if (LT == None) return false;
+            if (LT == XPLevel)
                 if (XP == -1)
                     return false;
-            if (tt == Stage) return CurrentStageEnum.Level != StageEnum.NA.Level;
+            if (LT == Stage) return CurrentStageEnum.Level != StageEnum.NA.Level;
             return true;
         }
 
         public String toString()
         {
             String s = "APE|" + getPowerEnum() + "|";
-            switch (tt)
+            switch (LT)
             {
                 case XPLevel:
                     s += "XP|" + getXP();
@@ -143,7 +143,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public String getValue()
         {
-            switch (tt)
+            switch (LT)
             {
                 case XPLevel:
                     return "XP =" + getXP();
@@ -162,7 +162,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public String getLore2()
         {
-            switch (tt)
+            switch (LT)
             {
                 case XPLevel:
                     return "XP =" + getXP();

@@ -118,7 +118,7 @@ namespace CyberCore.Manager.ClassFactory
 
         public void leaveClass(CorePlayer p)
         {
-            p.getPlayerClass().onLeaveClass();
+            p.GetPlayerClass().onLeaveClass();
             MMOSave.Remove(p.getName().ToLower());
             p.SetPlayerClass(null);
             p.SendMessage(ChatColors.Green + "You left your class!");
@@ -137,7 +137,7 @@ namespace CyberCore.Manager.ClassFactory
                 return null;
             }
 
-            if (p.getPlayerClass() != null && !force) return p.getPlayerClass();
+            if (p.GetPlayerClass() != null && !force) return p.GetPlayerClass();
 
             if (MMOSave.ContainsKey(p.getName().ToLower()))
             {
@@ -203,10 +203,10 @@ namespace CyberCore.Manager.ClassFactory
 
         public void SaveClassToFile(CorePlayer p)
         {
-            var bc = p.getPlayerClass();
+            var bc = p.GetPlayerClass();
             if (bc != null)
             {
-                MMOSave[p.getName().ToLower()] = p.getPlayerClass().export();
+                MMOSave[p.getName().ToLower()] = p.GetPlayerClass().export();
                 Console.WriteLine("SAVEEE");
             }
             else
@@ -312,7 +312,7 @@ namespace CyberCore.Manager.ClassFactory
             foreach (Player p in CCM.getAPI().PlayerManager.GetPlayers())
             {
                 var cp = p as CorePlayer;
-                if (cp?.getPlayerClass() == null) continue;
+                if (cp?.GetPlayerClass() == null) continue;
                 save(cp, false);
             }
 
@@ -323,7 +323,7 @@ namespace CyberCore.Manager.ClassFactory
 
         public void save(CorePlayer cp, bool savefile = true)
         {
-            MMOSave[cp.getName().ToLower()] = cp.getPlayerClass().export();
+            MMOSave[cp.getName().ToLower()] = cp.GetPlayerClass().export();
             //TODO
             // if (savefile) MMOSave.save();
         }

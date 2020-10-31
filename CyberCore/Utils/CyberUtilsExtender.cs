@@ -11,6 +11,7 @@ using JetBrains.Annotations;
 using MiNET;
 using MiNET.Blocks;
 using MiNET.Effects;
+using MiNET.Entities;
 using MiNET.Items;
 using MiNET.UI;
 using MiNET.Utils;
@@ -920,6 +921,32 @@ namespace CyberCore.Utils
             a.LoadFromBuffer(b, 0, b.Length, NbtCompression.None);
             return (NbtCompound) a.RootTag;
         }
+
+        public static Vector3 toVector3(this Entity.Direction c)
+        {
+            if (c == Entity.Direction.North)
+            {
+                return new Vector3(1, 0, 0);
+            }
+
+            if (c == Entity.Direction.East)
+            {
+                return new Vector3(1, 0, 0);
+            }
+
+            if (c == Entity.Direction.South)
+            {
+                return new Vector3(1, 0, 0);
+            }
+
+            if (c == Entity.Direction.West)
+            {
+                return new Vector3(1, 0, 0);
+            }
+
+            throw new Exception("uummmmmm");
+        }
+
 
         public static byte[] NBTToByteArray(this NbtCompound c)
         {

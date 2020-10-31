@@ -1,13 +1,17 @@
-﻿using CyberCore.CustomEnums;
+﻿using System.Numerics;
+using System.Threading;
+using CyberCore.CustomEnums;
 using CyberCore.Manager.ClassFactory.Powers;
+using CyberCore.Utils;
+using MiNET.Entities;
 
 namespace CyberCore.Manager.ClassFactory.Classes
 {
-    public class KnightSmashPower : PowerAbstract,PowerHotBarInt
+    public class KnightSmashPower : PowerHotBarInt
     {
         public KnightSmashPower() : base(new AdvancedPowerEnum(PowerEnum.KnightSmash))
         {
-            DefaultPower = true;
+            isDefaultPower = true;
         }
 
         // public KnightSmashPower(BaseClass b, AdvancedPowerEnum ape, PowerSettings ps) : base(b, ape, ps)
@@ -27,14 +31,42 @@ namespace CyberCore.Manager.ClassFactory.Classes
         //     
         // }
 
+        private long starttick = 0;
+
+        protected override ClassLevelingManager getDefaultClassLevelingManager()
+        {
+            return new ClassLevelingManagerXPLevel();
+        }
+
         public override void onAbilityActivate()
         {
             // getPlayer().Velocity.Y;
             // getPlayer().SendMovePlayer();
-            var a = getPlayer().Velocity;
-            a.Y+=20f;
-            getPlayer().Velocity = a;
+            Entity.Direction d = getPlayer().GetDirectionEmum();
+            Vector3 a = getPlayer().Velocity;
+            var aa = d.toVector3()*1.3f;
+            getPlayer().Velocity = aa;
+            starttick = CyberUtils.getTick();
+            long max = starttick + (20 * 60); //60 secs max
+            while (true)
+            {
+                if (WhileAbilityRunning())
+                {
+                    PlayerClass.P.SendMessage("BOW YOU LANDED!!!!!!");
+                    return;
+                }
+                if (max >= CyberUtils.getTick()) return;
+                Thread.Sleep(250);
+            }
+        }
 
+        private bool WhileAbilityRunning()
+        {
+            if (PlayerClass.P.IsOnGround) return true;
+            var pos = PlayerClass.P.KnownPosition + new Vector3(0,-1,0);
+            var b = PlayerClass.P.Level.GetBlock(pos);
+            if (b.Id == 0) return true;
+            return false;
         }
 
         public override PowerEnum getType()
@@ -47,9 +79,5 @@ namespace CyberCore.Manager.ClassFactory.Classes
             return "Smash";
         }
 
-        public bool canUpdateHotBar(int tick)
-        {
-            return true;
-        }
     }
 }

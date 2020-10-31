@@ -18,7 +18,7 @@ namespace CyberCore
 
         private bool CanSwitchHotBar( int selectedHotbarSlot,  int inHandSlot)
         {
-            return CP.getPlayerClass().CanSwitchHotbar(selectedHotbarSlot, inHandSlot);
+            return CP.GetPlayerClass().CanSwitchHotbar(selectedHotbarSlot, inHandSlot);
         }
     }
 }

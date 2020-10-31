@@ -58,7 +58,7 @@ namespace CyberCore.Utils
                     MSC.Open();
                     CheckMSQLState();
                     // executeSelect("SELECT *");
-                    if (Active) Log.Info("MySQL MySqlConnection to" + Host + " was successful!");
+                    if (Active) Log.Info($"MySQL MySqlConnection to {Username}@{Host}:{Database} was successful!");
                 }
                 catch (Exception e)
                 {

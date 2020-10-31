@@ -16,7 +16,7 @@ namespace CyberCore.Manager.ClassFactory.Forms
 
             foreach (var bc in CyberCoreMain.GetInstance().ClassFactory.getRegisteredClasses())
             {
-                addButton(bc.getDisplayName(),delegate(Player player, SimpleForm form) { player.SendForm(new ConfirmClassWindow(bc)); });
+                addButton(bc.getDisplayName(),delegate(Player player, SimpleForm form) { player.SendForm(new ClassConfirmWindow(bc)); });
             }
         }
     }

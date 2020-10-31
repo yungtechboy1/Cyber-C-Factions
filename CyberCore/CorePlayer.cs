@@ -287,33 +287,33 @@ namespace CyberCore
             }
         }
 
-        // public override void HandleMcpeMobEquipment(McpeMobEquipment message)
-        // {
-        //     if (HealthManager.IsDead) return;
-        //
-        //     if (message.windowsId == 0)
-        //     {
-        //         var selectedHotbarSlot = message.selectedSlot;
-        //         if (selectedHotbarSlot > 8)
-        //         {
-        //             Log.Error(
-        //                 $"Player {Username} called set equipment with held hotbar slot {message.selectedSlot} with item {message.item}");
-        //             return;
-        //         }
-        //
-        //         if (Log.IsDebugEnabled)
-        //             Log.Debug(
-        //                 $"Player {Username} called set equipment with held hotbar slot {message.selectedSlot} with item {message.item}");
-        //
-        //         Inventory.SetHeldItemSlot(selectedHotbarSlot, false);
-        //         if (Log.IsDebugEnabled)
-        //             Log.Debug($"Player {Username} now holding {Inventory.GetItemInHand()}");
-        //         return;
-        //     }
-        //     else
-        //
-        //         base.HandleMcpeMobEquipment(message);
-        // }
+        public override void HandleMcpeMobEquipment(McpeMobEquipment message)
+        {
+            if (HealthManager.IsDead) return;
+        
+            if (message.windowsId == 0)
+            {
+                var selectedHotbarSlot = message.selectedSlot;
+                if (selectedHotbarSlot > 8)
+                {
+                    Log.Error(
+                        $"Player {Username} called set equipment with held hotbar slot {message.selectedSlot} with item {message.item}");
+                    return;
+                }
+        
+                if (Log.IsDebugEnabled)
+                    Log.Debug(
+                        $"Player {Username} called set equipment with held hotbar slot {message.selectedSlot} with item {message.item}");
+        
+                Inventory.SetHeldItemSlot(selectedHotbarSlot, false);
+                if (Log.IsDebugEnabled)
+                    Log.Debug($"Player {Username} now holding {Inventory.GetItemInHand()}");
+                return;
+            }
+            else
+        
+                base.HandleMcpeMobEquipment(message);
+        }
 
         public override void HandleMcpeInventoryTransaction(McpeInventoryTransaction message)
         {
@@ -709,16 +709,16 @@ namespace CyberCore
 
         public void SetPlayerClass(BaseClass bc)
         {
-            PlayerClass = bc.setPlayerClass(this);
+            PlayerClass = bc.getsettablePlayerClass(this);
         }
 
-        public BaseClass getPlayerClass()
+        public BaseClass GetPlayerClass()
         {
             return PlayerClass;
         }
 
 
-        public void sendAttributes()
+        public void SendAttributes()
         {
             SendUpdateAttributes();
         }
@@ -2169,7 +2169,7 @@ namespace CyberCore
                     {
 //                    CyberCoreMain.Log.info("RUNNNING CLASS CHECK IN CP" + CDL.size()+"||"+ getPlayerClass());
                         AddCoolDown(Cooldown_Class, 5);
-                        var bc = getPlayerClass();
+                        var bc = GetPlayerClass();
                         if (bc != null) bc.onUpdate(currentTick);
                         initAllClassBuffs();
                     }

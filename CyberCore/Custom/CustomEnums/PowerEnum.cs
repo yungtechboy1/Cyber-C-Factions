@@ -122,7 +122,7 @@ namespace CyberCore.CustomEnums
             Slot = slt;
         }
 
-        
+
         public override bool Equals(Object obj)
         {
             if (obj is LockedSlot)
@@ -143,6 +143,24 @@ namespace CyberCore.CustomEnums
         public bool Equals(LockedSlot obj)
         {
             return (Slot == obj.Slot);
+        }
+
+        public static LockedSlot FromInt(in int to)
+        {
+            if (to == 7)
+            {
+                return LockedSlot.SLOT_7;
+            }
+            else if (to == 8)
+            {
+                return LockedSlot.SLOT_8;
+            }
+            else if (to == 9)
+            {
+                return LockedSlot.SLOT_9;
+            }
+
+            return LockedSlot.NA;
         }
     }
 

@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace CyberCore.Manager.ClassFactory
 {
+    // ReSharper disable once InconsistentNaming
     public class ClassLevelingManagerXPLevel : ClassLevelingManager
     {
            private int XP = 0;
@@ -37,7 +38,7 @@ namespace CyberCore.Manager.ClassFactory
 
     public override StageEnum getStage() {
 //        if (getLT() == LevelingType.Stage) return StageEnum.getStageFromInt(Stage);
-        return StageEnum.getStageFromInt(1 + (getLevel() / 20));
+        return StageEnum.getStageFromInt(1 + (GetLevel() / 20));
     }
 
     protected int XPNeededToLevelUp(int CurrentLevel) {
@@ -53,7 +54,7 @@ namespace CyberCore.Manager.ClassFactory
         }
     }
 
-    public int getLevel() {
+    public int GetLevel() {
         int x = getXP();
         int l = 0;
         while (true) {
@@ -68,12 +69,12 @@ namespace CyberCore.Manager.ClassFactory
         return l;
     }
 
-    public int getXP() {
+    public override int getXP() {
         return XP;
     }
 
     protected int getDisplayXP() {
-        return XP - XPNeededToLevelUp(getLevel());
+        return XP - XPNeededToLevelUp(GetLevel());
     }
 
     protected void addXP(int a) {

@@ -5,11 +5,11 @@ using Newtonsoft.Json;
 
 namespace CyberCore.Manager.ClassFactory.Forms
 {
-    public class ConfirmClassWindow : CyberFormModal
+    public class ClassConfirmWindow : CyberFormModal
 
     {
         [JsonIgnore] public BaseClass C;
-        public ConfirmClassWindow(BaseClass c) : base(MainForm.Class_Choose_Class_Confirm, "Class Change Confirmation - ", "Accept Class - ", "< Go Back", "")
+        public ClassConfirmWindow(BaseClass c) : base(MainForm.Class_Choose_Class_Confirm, "Class Change Confirmation - ", "Accept Class - ", "< Go Back", "")
         {
             C = c;
             Content = c.getConfirmWindowMessage();
