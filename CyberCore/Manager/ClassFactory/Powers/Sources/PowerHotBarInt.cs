@@ -66,6 +66,14 @@ namespace CyberCore.Manager.ClassFactory.Powers
     // }
     private long LastHotBarCheck = 0;
     private long LastHotBarApproved = 0;
+
+    public void initHotbar(CorePlayer cp)
+    {
+        if (getLS().Slot != LockedSlot.NA.Slot)
+        {
+            RemoveAnyItemsInSlot(cp,getLS());
+        }
+    }
     public virtual bool CanUpdateHotBar(long tick = -1)
     {
         //Get Tick if not set

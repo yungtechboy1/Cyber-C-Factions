@@ -955,6 +955,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
                 setLS(l);
                 var h = (PowerHotBarInt) this;
+                h.initHotbar(PlayerClass.P);
                 h.updateHotbar(getLS(),Cooldown,this);
             }
 
