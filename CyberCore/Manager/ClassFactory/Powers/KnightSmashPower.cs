@@ -12,6 +12,7 @@ namespace CyberCore.Manager.ClassFactory.Classes
         public KnightSmashPower() : base(new AdvancedPowerEnum(PowerEnum.KnightSmash))
         {
             isDefaultPower = true;
+            MainPowerType = PowerType.Ability;
         }
 
         // public KnightSmashPower(BaseClass b, AdvancedPowerEnum ape, PowerSettings ps) : base(b, ape, ps)
@@ -33,7 +34,7 @@ namespace CyberCore.Manager.ClassFactory.Classes
 
         private long starttick = 0;
 
-        protected override ClassLevelingManager getDefaultClassLevelingManager()
+        protected override ClassLevelingManagerXPLevel getDefaultClassLevelingManager()
         {
             return new ClassLevelingManagerXPLevel();
         }

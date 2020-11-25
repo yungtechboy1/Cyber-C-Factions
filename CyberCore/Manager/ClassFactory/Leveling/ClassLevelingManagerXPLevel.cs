@@ -9,119 +9,123 @@ using Newtonsoft.Json.Linq;
 namespace CyberCore.Manager.ClassFactory
 {
     // ReSharper disable once InconsistentNaming
-    public class ClassLevelingManagerXPLevel : ClassLevelingManager
+    public class ClassLevelingManagerXPLevel
     {
-           private int XP = 0;
-    private int MaxLevel = 100;
+        public int MaxLevel = 100;
+        public int XP = -1;
+        public int NextLevelXP = -1;
+        public bool ContinusXP = false;
 
-    public ClassLevelingManagerXPLevel(int XP, int maxLevel) {
-        this.XP = XP;
-        MaxLevel = maxLevel;
-    }
 
-    public ClassLevelingManagerXPLevel(int XP = 0) {
-        this.XP = XP;
-    }
+        public ClassLevelingManagerXPLevel(int XP, int maxLevel)
+        {
+            this.XP = XP;
+            MaxLevel = maxLevel;
+        }
 
-    public int getMaxLevel() {
-        return MaxLevel;
-    }
+        public ClassLevelingManagerXPLevel(int XP = 0)
+        {
+            this.XP = XP;
+        }
 
-    public void setMaxLevel(int maxLevel) {
-        MaxLevel = maxLevel;
-    }
+        public int getMaxLevel()
+        {
+            return MaxLevel;
+        }
 
-//    
-//    public PowerAbstract.StageEnum getStage() {
-//        return PowerAbstract.StageEnum.getStageFromInt();
-//    }
+        public void setMaxLevel(int maxLevel)
+        {
+            MaxLevel = maxLevel;
+        }
 
-    public override StageEnum getStage() {
-//        if (getLT() == LevelingType.Stage) return StageEnum.getStageFromInt(Stage);
-        return StageEnum.getStageFromInt(1 + (GetLevel() / 20));
-    }
 
-    protected int XPNeededToLevelUp(int CurrentLevel) {
+        protected int XPNeededToLevelUp(int CurrentLevel)
+        {
 //        if(CurrentLevel == 0)return 0;
 //        int cl = NextLevel - 1;
-        int cl = CurrentLevel;
-        if (cl <= 15) {
-            return 2 * (cl) + 7;
-        } else if (cl <= 30) {
-            return 5 * (cl) - 38;
-        } else {
-            return 9 * (cl) - 158;
-        }
-    }
-
-    public int GetLevel() {
-        int x = getXP();
-        int l = 0;
-        while (true) {
-            int a = XPNeededToLevelUp(l);
-            if (a < x) {
-                x -= a;
-                l++;
-            } else {
-                break;
+            int cl = CurrentLevel;
+            if (cl <= 15)
+            {
+                return 2 * (cl) + 7;
+            }
+            else if (cl <= 30)
+            {
+                return 5 * (cl) - 38;
+            }
+            else
+            {
+                return 9 * (cl) - 158;
             }
         }
-        return l;
-    }
 
-    public override int getXP() {
-        return XP;
-    }
-
-    protected int getDisplayXP() {
-        return XP - XPNeededToLevelUp(GetLevel());
-    }
-
-    protected void addXP(int a) {
-        XP += Math.Abs(a);
-        //TOdo Check to sese if Level Up is inorder!
-//        if(XP > XPNeededToLevelUp(getLevel()));
-    }
-
-    protected void takeXP(int a) {
-        XP -= Math.Abs(a);
-    }
-
-    
-    public override string exportConfig()
-    {
-        var sb = new StringBuilder();
-        var sw = new StringWriter(sb);
-
-        using (JsonWriter writer = new JsonTextWriter(sw))
+        public int GetLevel()
         {
-            writer.Formatting = Formatting.Indented;
+            int x = getXP();
+            int l = 0;
+            while (true)
+            {
+                int a = XPNeededToLevelUp(l);
+                if (a < x)
+                {
+                    x -= a;
+                    l++;
+                }
+                else
+                {
+                    break;
+                }
+            }
 
-            writer.WriteStartObject();
-            writer.WritePropertyName("XP");
-            writer.WriteValue(getXP());
-            writer.WriteEnd();
-            writer.WriteEndObject();
+            return l;
         }
 
-        return sb.ToString();
-    }
+        public int getXP()
+        {
+            return XP;
+        }
 
-    public override void importConfig(string cs)
-    {
-        JObject o = JObject.Parse(@cs);
-        var a = (int) o["XP"];
-        addXP(a);
-    }
+        protected int getDisplayXP()
+        {
+            return XP - XPNeededToLevelUp(GetLevel());
+        }
+
+        protected void addXP(int a)
+        {
+            XP += Math.Abs(a);
+            //TOdo Check to sese if Level Up is inorder!
+//        if(XP > XPNeededToLevelUp(getLevel()));
+        }
+
+        protected void takeXP(int a)
+        {
+            XP -= Math.Abs(a);
+        }
 
 
-    public override LevelingType getType() {
-        return LevelingType.XPLevel;
-    }
+        public string exportConfig()
+        {
+            var sb = new StringBuilder();
+            var sw = new StringWriter(sb);
 
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                writer.Formatting = Formatting.Indented;
 
-    public override void setMaxStage(StageEnum stage) {
+                writer.WriteStartObject();
+                writer.WritePropertyName("XP");
+                writer.WriteValue(getXP());
+                writer.WriteEnd();
+                writer.WriteEndObject();
+            }
 
-    }
+            return sb.ToString();
+        }
+
+        public void importConfig(string cs)
+        {
+            JObject o = JObject.Parse(@cs);
+            var a = (int) o["XP"];
+            addXP(a);
+        }
     }
 }

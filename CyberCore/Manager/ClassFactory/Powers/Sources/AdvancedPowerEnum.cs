@@ -2,38 +2,21 @@
 using CyberCore.CustomEnums;
 using CyberCore.Manager.TypeFactory.Powers;
 using CyberCore.Utils;
-using static CyberCore.CustomEnums.LevelingType;
 
 namespace CyberCore.Manager.ClassFactory.Powers
 {
     public class AdvancedPowerEnum
     {
         PowerEnum PwrEnum;
-        StageEnum CurrentStageEnum = StageEnum.NA;
         int XP = -1;
-        LevelingType LT = None;
 
-        public AdvancedPowerEnum(PowerEnum pwrEnum)
-        {
-            this.PwrEnum = pwrEnum;
-        }
 
         public AdvancedPowerEnum(PowerEnum pwrEnum, int xp)
         {
             this.PwrEnum = pwrEnum;
             this.XP = xp;
-            LT = XPLevel;
         }
 
-        public AdvancedPowerEnum(PowerEnum pwrEnum, StageEnum currentStageEnum)
-        {
-            if (currentStageEnum.getValue() == StageEnum.NA.getValue())
-                CyberCoreMain.Log.Error("APEEE>>>   Error! CAN NOT SEND NA!!!!");
-//            throw new Exception("Error! Can not pass StageEnum.NA to AdvancedPowerEnum Constructor!");
-            this.PwrEnum = pwrEnum;
-            this.CurrentStageEnum = currentStageEnum;
-            LT = Stage;
-        }
 
         //0    1            2  3
         //APE|DragonJumper|XP|100
@@ -55,31 +38,10 @@ namespace CyberCore.Manager.ClassFactory.Powers
             }
 
             if (ss[2].equalsIgnoreCase("xp"))
-                return new AdvancedXPPowerEnum(pe, int.Parse(ss[3]));
-            if (ss[2].equalsIgnoreCase("stage"))
-                try
-                {
-                    return new AdvancedStagePowerEnum(pe,
-                        StageEnum.getStageFromInt(int.Parse(ss[3])));
-                }
-                catch (Exception e)
-                {
-                    CyberCoreMain.Log.Error("APEEE>>>>>>>> ", e);
-                }
+                return new AdvancedPowerEnum(pe, int.Parse(ss[3]));
 
             CyberCoreMain.Log.Error("Was LOG ||" + "Error! Why did this go all the way!?!?!? E110393");
             return null;
-        }
-
-        public void setSE(StageEnum SE)
-        {
-            this.CurrentStageEnum = SE;
-        }
-
-        public bool isStage()
-        {
-            //Something so Simple low key caused 2 hours of work! >:(
-            return getStageEnum().Level != StageEnum.NA.Level;
         }
 
         public PowerEnum getPowerEnum()
@@ -87,47 +49,23 @@ namespace CyberCore.Manager.ClassFactory.Powers
             return PwrEnum;
         }
 
-        public StageEnum getStageEnum()
-        {
-            return CurrentStageEnum;
-        }
-
         public int getXP()
         {
             return XP;
         }
 
-        public LevelingType getTt()
-        {
-            return LT;
-        }
 
         public bool isValid()
         {
-            if (LT == None) return false;
-            if (LT == XPLevel)
-                if (XP == -1)
-                    return false;
-            if (LT == Stage) return CurrentStageEnum.Level != StageEnum.NA.Level;
+            if (XP == -1)
+                return false;
             return true;
         }
 
         public String toString()
         {
-            String s = "APE|" + getPowerEnum() + "|";
-            switch (LT)
-            {
-                case XPLevel:
-                    s += "XP|" + getXP();
-                    break;
-                case Stage:
-                    s += "Stage|" + getStageEnum().Level;
-                    break;
-                default:
-                    s += "None";
-                    break;
-            }
-
+            String s = "APE|" + getPowerEnum() + "|XP|" + getXP();
+            ;
             return s;
         }
 
@@ -143,16 +81,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public String getValue()
         {
-            switch (LT)
-            {
-                case XPLevel:
-                    return "XP =" + getXP();
-                case Stage:
-                    return "Stage = " + getStageEnum().Level;
-                case None:
-                default:
-                    return "Unknown Data!";
-            }
+            return "XP =" + getXP();
         }
 
         public String getLore1()
@@ -162,16 +91,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public String getLore2()
         {
-            switch (LT)
-            {
-                case XPLevel:
-                    return "XP =" + getXP();
-                case Stage:
-                    return "Stage = " + getStageEnum().Level;
-                case None:
-                default:
-                    return "------------";
-            }
+            return "XP =" + getXP();
         }
 
         public String getLore3()

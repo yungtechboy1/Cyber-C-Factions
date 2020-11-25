@@ -67,15 +67,12 @@
               <e p="ClassMainWindow.cs" t="Include" />
             </e>
             <e p="Leveling" t="Include">
-              <e p="ClassLevelingManager.cs" t="Include" />
-              <e p="ClassLevelingManagerStage.cs" t="Include" />
               <e p="ClassLevelingManagerXPLevel.cs" t="Include" />
             </e>
             <e p="Powers" t="Include">
               <e p="KnightSmashPower.cs" t="Include" />
               <e p="Sources" t="Include">
                 <e p="AdvancedPowerEnum.cs" t="Include" />
-                <e p="AdvancedXPPowerEnum.cs" t="Include" />
                 <e p="PowerAbstract" t="Include">
                   <e p="PowerAbstract.cs" t="Include" />
                 </e>
@@ -83,10 +80,6 @@
                 <e p="PowerHotBarInt.cs" t="Include" />
                 <e p="PowerManager.cs" t="Include" />
                 <e p="PowerSettings.cs" t="Include" />
-                <e p="Stage" t="Include">
-                  <e p="AdvancedStagePowerEnum.cs" t="Include" />
-                  <e p="StagePowerAbstract.cs" t="Include" />
-                </e>
               </e>
             </e>
             <e p="Window" t="Include">

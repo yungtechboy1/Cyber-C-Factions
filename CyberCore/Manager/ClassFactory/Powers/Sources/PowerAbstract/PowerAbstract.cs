@@ -45,44 +45,27 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public bool TakePowerOnFail = false;
         // private ClassLevelingManagerXPLevel XLM;
         // public ClassLevelingManager XPManager;
-        public ClassLevelingManager XPManager;
+        public ClassLevelingManagerXPLevel XPManager;
 
-        public PowerAbstract(AdvancedPowerEnum ape, ClassLevelingManager xpm = null)
+        public PowerAbstract(PowerEnum ape, ClassLevelingManagerXPLevel xpm = null)
         {
             XPManager = xpm ?? getDefaultClassLevelingManager();
-            if (ape == null) ape = getAPE();
-            if (!ape.isValid())
+            // if (ape == null) ape = getAPE();
+            if (XPManager == null)
             {
-                CyberCoreMain.Log.Error("Was LOG ||" + "Error! 2APE is not valid!");
-//            if(this instanceof StagePowerAbstract){
-                try
-                {
-                    if (GetType() == typeof(StagePowerAbstract))
-                    {
-                        CyberCoreMain.Log.Error("Was LOG ||" + "IS STAGE ABSTRACT!!!!!");
-                        ape = new AdvancedPowerEnum(ape.getPowerEnum(), StageEnum.STAGE_1);
-                    }
-                    else
-                    {
-                        ape = new AdvancedPowerEnum(ape.getPowerEnum(), 0);
-                    }
-                }
-                catch (Exception e)
-                {
-                    CyberCoreMain.Log.Error("Was LOG ||" + "Error!eeeeeeeeeeeeeeeeeeee", e);
-                    return;
-                }
+                CyberCoreMain.Log.Error("Was LOG ||" + "Error! NO XP MANAGER");
+                XPManager = new ClassLevelingManagerXPLevel();
 
 //            }else return;
             }
 
-            if (ape.isStage())
-                loadLevelManager(new ClassLevelingManagerStage(ape.getStageEnum()));
-            else
-                loadLevelManager(new ClassLevelingManagerXPLevel(ape.getXP()));
+            loadXPManager(XPManager);
         }
 
-        protected abstract ClassLevelingManager getDefaultClassLevelingManager();
+        protected virtual ClassLevelingManagerXPLevel getDefaultClassLevelingManager()
+        {
+            return new ClassLevelingManagerXPLevel();
+        }
 
 
         public PowerAbstract(BaseClass b, AdvancedPowerEnum ape, PowerSettings ps)
@@ -93,11 +76,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
                 return;
             }
 
-            PlayerClass = b;
-            if (ape.isStage())
-                loadLevelManager(new ClassLevelingManagerStage(ape.getStageEnum()));
-            else
-                loadLevelManager(new ClassLevelingManagerXPLevel(ape.getXP()));
+            loadXPManager(new ClassLevelingManagerXPLevel(ape.getXP()));
 
             if (ps != null)
                 setPowerSettings(ps);
@@ -141,9 +120,9 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
             PlayerClass = b;
             if (ape.isStage())
-                loadLevelManager(new ClassLevelingManagerStage(ape.getStageEnum()));
+                loadXPManager(new ClassLevelingManagerStage(ape.getStageEnum()));
             else
-                loadLevelManager(new ClassLevelingManagerXPLevel(ape.getXP()));
+                loadXPManager(new ClassLevelingManagerXPLevel(ape.getXP()));
 
             if (getPowerSettings() == null)
                 CyberCoreMain.Log.Warn("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
@@ -168,7 +147,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public PowerAbstract(BaseClass b)
         {
             PlayerClass = b;
-            loadLevelManager(new ClassLevelingManagerXPLevel());
+            loadXPManager(new ClassLevelingManagerXPLevel());
             if (getPowerSettings() == null)
                 CyberCoreMain.Log.Warn("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
             initStages();
@@ -193,7 +172,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public PowerAbstract(BaseClass b, StageEnum stageEnum)
         {
             PlayerClass = b;
-            loadLevelManager(new ClassLevelingManagerStage(stageEnum));
+            loadXPManager(new ClassLevelingManagerStage(stageEnum));
             if (getPowerSettings() == null)
                 CyberCoreMain.Log.Warn("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
             initStages();
@@ -294,7 +273,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             DeActivatedTick = deActivatedTick;
         }
 
-        public void loadLevelManager(ClassLevelingManager lm)
+        public void loadXPManager(ClassLevelingManagerXPLevel lm)
         {
             if (lm == null) return;
             XPManager = lm;
@@ -390,18 +369,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public AdvancedPowerEnum getAPE()
         {
-            if (XPManager != null)
-                try
-                {
-                    return new AdvancedXPPowerEnum(getType(), getXP());
-                }
-                catch (Exception e)
-                {
-                    CyberCoreMain.Log.Error("Was LOG ||" + "ERRORR ###@@@ " + this + " || " + GetType().Name, e);
-                    return null;
-                }
-
-            return new AdvancedPowerEnum(getType(), XPManager.getXP());
+                return new AdvancedXPPowerEnum(getType(), getXP());
         }
 
         private int getXP()
@@ -543,18 +511,14 @@ namespace CyberCore.Manager.ClassFactory.Powers
             setActive(true);
         }
 
-        public StageEnum getStage()
+        public int getLevel()
         {
-            if (XPManager is ClassLevelingManagerStage)
-                return ((ClassLevelingManagerStage)XPManager).getStage();
-            return StageEnum.NA;
+            if (XPManager != null)
+                return XPManager.getXP();
+            return -1;
         }
 
-        public StageEnum formatLeveltoStage(int lvl)
-        {
-            return StageEnum.getStageFromInt(1 + lvl / 20);
-        }
-
+      
         public void onActivate()
         {
         }

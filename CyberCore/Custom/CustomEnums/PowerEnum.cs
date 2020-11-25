@@ -11,6 +11,7 @@ namespace CyberCore.CustomEnums
         None,
         Regular,
         Ability,
+        AbilityHotbar,
         Hotbar
     }
 
@@ -33,80 +34,13 @@ namespace CyberCore.CustomEnums
     public enum PowerState
     {
         Idle,
+        StartRunning,
+        Running,
+        StopRunning,
         Fail
     }
 
-    public enum LevelingType
-    {
-        None,
-        XPLevel,
-        Stage
-    }
-
-    public struct StageEnum
-    {
-        public static readonly StageEnum NA = new StageEnum(-1);
-        public static readonly StageEnum STAGE_1 = new StageEnum(1);
-        public static readonly StageEnum STAGE_2 = new StageEnum(2);
-        public static readonly StageEnum STAGE_3 = new StageEnum(3);
-        public static readonly StageEnum STAGE_4 = new StageEnum(4);
-        public static readonly StageEnum STAGE_5 = new StageEnum(5);
-        public static readonly StageEnum STAGE_6 = new StageEnum(6);
-        public static readonly StageEnum STAGE_7 = new StageEnum(7);
-        public static readonly StageEnum STAGE_8 = new StageEnum(8);
-        public static readonly StageEnum STAGE_9 = new StageEnum(9);
-        public static readonly StageEnum STAGE_10 = new StageEnum(10);
-
-        public int Level;
-        public string Name;
-
-        public StageEnum(int lvl)
-        {
-            Level = lvl;
-            var nme = lvl == -1 ? "NA" : "Stage " + lvl;
-            Name = nme;
-        }
-
-        public static StageEnum getStageFromInt(int i)
-        {
-            switch (i)
-            {
-                case 1:
-                    return STAGE_1;
-                case 2:
-                    return STAGE_2;
-                case 3:
-                    return STAGE_3;
-                case 4:
-                    return STAGE_4;
-                case 5:
-                    return STAGE_5;
-                case 6:
-                    return STAGE_6;
-                case 7:
-                    return STAGE_7;
-                case 8:
-                    return STAGE_8;
-                case 9:
-                    return STAGE_9;
-                case 10:
-                    return STAGE_10;
-                default:
-                    return NA;
-            }
-        }
-
-        public int getValue()
-        {
-            return Level;
-        }
-
-        public string getDisplayName()
-        {
-            return Name;
-        }
-    }
-
+    
 
     public struct LockedSlot
     {
@@ -242,7 +176,7 @@ namespace CyberCore.CustomEnums
 
         public string Name;
 
-        private PowerEnum(int id, string nm)
+        private PowerEnum(int id = -1, string nm = "NO NAME")
         {
             ID = id;
             chat_prefix = "&7";

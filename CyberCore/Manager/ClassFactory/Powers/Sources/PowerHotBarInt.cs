@@ -183,7 +183,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             return new ItemRedstone();
         }
 
-        protected PowerHotBarInt(AdvancedPowerEnum ape, ClassLevelingManager xpm = null) : base(ape, xpm)
+        protected PowerHotBarInt(AdvancedPowerEnum ape, ClassLevelingManagerXPLevel xpm = null) : base(ape, xpm)
         {
         }
 
@@ -199,8 +199,6 @@ namespace CyberCore.Manager.ClassFactory.Powers
         {
         }
 
-        protected PowerHotBarInt(BaseClass b, StageEnum stageEnum) : base(b, stageEnum)
-        {
-        }
+    
     }
 }
