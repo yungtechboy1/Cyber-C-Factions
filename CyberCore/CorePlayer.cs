@@ -2091,7 +2091,8 @@ namespace CyberCore
             if (ShowHTP)
             {
                 ShowHTP = false;
-                SendForm(new HTP_0_Window());
+                //TODO POPUP
+                // SendForm(new HTP_0_Window());
             }
 
             //Check for Faction!

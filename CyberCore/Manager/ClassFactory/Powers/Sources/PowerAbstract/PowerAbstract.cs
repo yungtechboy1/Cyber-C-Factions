@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using CyberCore.Custom.Events;
 using CyberCore.CustomEnums;
@@ -39,7 +40,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public BaseClass PlayerClass;
         public bool PlayerToggleable = true;
         private double PowerSourceCost;
-        public PowerSettings PS;
+        private PowerSettings PS;
         public PowerType SecondaryPowerType = PowerType.None;
         // private ClassLevelingManagerStage SLM;
         public bool TakePowerOnFail = false;
@@ -68,7 +69,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         }
 
 
-        public PowerAbstract(BaseClass b, AdvancedPowerEnum ape, PowerSettings ps)
+        public PowerAbstract( AdvancedPowerEnum ape, PowerSettings ps,BaseClass b = null)
         {
             if (!ape.isValid())
             {
@@ -81,7 +82,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             if (ps != null)
                 setPowerSettings(ps);
             else
-                CyberCoreMain.Log.Warn("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
+                CyberCoreMain.Log.Warn("Error! No Power Setting was set for : " + getName()+" When the Class was being created!");
 
 //        Level = lvl;
 //        Level = b.getLVL();
@@ -98,15 +99,15 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //            if(this instanceof StagePowerAbstract){
                 try
                 {
-                    if (GetType() == typeof(StagePowerAbstract))
-                    {
-                        CyberCoreMain.Log.Error("Was LOG ||" + "IS STAGE ABSTRACT!!!!!");
-                        ape = new AdvancedPowerEnum(ape.getPowerEnum(), StageEnum.STAGE_1);
-                    }
-                    else
-                    {
+                    // if (GetType() == typeof(StagePowerAbstract))
+                    // {
+                    //     CyberCoreMain.Log.Error("Was LOG ||" + "IS STAGE ABSTRACT!!!!!");
+                    //     ape = new AdvancedPowerEnum(ape.getPowerEnum(), StageEnum.STAGE_1);
+                    // }
+                    // else
+                    // {
                         ape = new AdvancedPowerEnum(ape.getPowerEnum(), 0);
-                    }
+                    // }
                 }
                 catch (Exception e)
                 {
@@ -119,13 +120,13 @@ namespace CyberCore.Manager.ClassFactory.Powers
             }
 
             PlayerClass = b;
-            if (ape.isStage())
-                loadXPManager(new ClassLevelingManagerStage(ape.getStageEnum()));
-            else
+            // if (ape.isStage())
+            //     loadXPManager(new ClassLevelingManagerStage(ape.getStageEnum()));
+            // else
                 loadXPManager(new ClassLevelingManagerXPLevel(ape.getXP()));
 
             if (getPowerSettings() == null)
-                CyberCoreMain.Log.Warn("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
+                CyberCoreMain.Log.Warn("WARNING! POWER SETTING STILL NOT SET FOR : " + getName());
 //        Level = lvl;
 //        Level = b.getLVL();
             initStages();
@@ -149,12 +150,13 @@ namespace CyberCore.Manager.ClassFactory.Powers
             PlayerClass = b;
             loadXPManager(new ClassLevelingManagerXPLevel());
             if (getPowerSettings() == null)
-                CyberCoreMain.Log.Warn("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
+                CyberCoreMain.Log.Warn("Power Setting Not Set! " + getName());
             initStages();
             initAfterCreation();
         }
 
-//    public PowerAbstract(BaseClass b, Integer xp, PowerSettings ps, int psc, double cost) {
+
+        //    public PowerAbstract(BaseClass b, Integer xp, PowerSettings ps, int psc, double cost) {
 ////        PowerSuccessChance = psc;
 //        PlayerClass = b;
 //        loadLevelManager(new ClassLevelingManagerXPLevel(xp));
@@ -169,15 +171,15 @@ namespace CyberCore.Manager.ClassFactory.Powers
 //        PowerSourceCost = cost;
 //    }
 
-        public PowerAbstract(BaseClass b, StageEnum stageEnum)
-        {
-            PlayerClass = b;
-            loadXPManager(new ClassLevelingManagerStage(stageEnum));
-            if (getPowerSettings() == null)
-                CyberCoreMain.Log.Warn("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
-            initStages();
-            initAfterCreation();
-        }
+        // public PowerAbstract(BaseClass b, StageEnum stageEnum)
+        // {
+        //     PlayerClass = b;
+        //     loadXPManager(new ClassLevelingManagerStage(stageEnum));
+        //     if (getPowerSettings() == null)
+        //         CyberCoreMain.Log.Warn("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
+        //     initStages();
+        //     initAfterCreation();
+        // }
 
         public bool Loaded { get; set; }
         public Reqs Requirement { get; set; }
@@ -198,7 +200,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public int getTickUpdate()
         {
             if (isAbility()) return 20;
-            if (isHotbarPower()) return 20 * 5;
+            if (IsHotbarPower()) return 20 * 5;
             return -1;
         }
 
@@ -235,7 +237,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public PowerSettings getPowerSettings()
         {
             if (PS == null)
-                CyberCoreMain.Log.Error("POWER ABSTRACT ERROR! NO POWER SOURCE ASSIGNED FOR " + getName());
+                CyberCoreMain.Log.Error("Error! No PowerSetting Set for " + getName());
             return PS;
         }
 
@@ -369,16 +371,12 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public AdvancedPowerEnum getAPE()
         {
-                return new AdvancedXPPowerEnum(getType(), getXP());
+                return new AdvancedPowerEnum(getType(), getXP());
         }
 
         private int getXP()
         {
-            if (XPManager is ClassLevelingManagerXPLevel)
-            {
                 return XPManager.getXP();
-            }
-            return XPManager.getStage().Level;
         }
 
         public void onEnable()
@@ -503,7 +501,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public int getRunTimeTick()
         {
-            return getStage().getValue() * 20; //1-5 Secs
+            return 2 * 20; //1-5 Secs
         }
 
         public void setActive()
@@ -530,7 +528,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public void setLS(LockedSlot ls)
         {
-            CyberCoreMain.Log.Error("Was LOG ||" + "LOCKEDSLOT SET FOR " + GetType().Name);
+            CyberCoreMain.Log.Error("Was LOG ||" + ls.Slot + " LOCKEDSLOT SET FOR " + GetType().Name);
             PlayerClass.HotBarPowers[ls] = this;
             LS = ls;
         }
@@ -674,23 +672,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public AdvancedPowerEnum getAdvancedPowerEnum()
         {
-            if (XPManager is ClassLevelingManagerStage)
-                try
-                {
-                    var s = getStage();
-                    if (s.Level == StageEnum.NA.Level)
-                        return null;
-                    return new AdvancedStagePowerEnum(getType(), s);
-                }
-                catch (Exception e)
-                {
-                    CyberCoreMain.Log.Error("PA>>> Err", e);
-                    return null;
-                }
-
-            if (XPManager is ClassLevelingManagerXPLevel)
-                return new AdvancedXPPowerEnum(getType(), XPManager.getXP());
-            return new AdvancedPowerEnum(getType());
+            return new AdvancedPowerEnum(getType(), XPManager.getXP());
         }
 
         public abstract PowerEnum getType();
@@ -823,7 +805,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public void onTick(long tick)
         {
-            if (isHotbarPower())
+            if (IsHotbarPower())
                 if (!isLSNull())
                     sendHotbarItemToLS(getCurrentHotbarStatus());
 
@@ -899,43 +881,56 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
         public void importAPE(AdvancedPowerEnum pe)
         {
-            if (pe.isStage())
-            {
-            }
+         
         }
 
-        public virtual bool PowerLoad()
+        public bool ProcessLoading()
         {
-            if (isHotbarPower())
+            Console.WriteLine("1111111");
+            if (IsHotbarPower())
             {
+                Console.WriteLine("111111122222");
                 var l = PlayerClass.ClaimFirstOpenPowerSlot();
                 if (l.Slot == LockedSlot.NA.Slot)
                 {
+                    Console.WriteLine("11111112222233333");
                     //No Free Slots
                     PlayerClass.P.SendMessage($"{ChatColors.Yellow} Error! There was no free Hotbar Power Slot for " +
                                               getDispalyName());
                     return false;
                 }
-
+                Console.WriteLine($"CALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL ");
                 setLS(l);
                 var h = (PowerHotBarInt) this;
-                h.initHotbar(PlayerClass.P);
-                h.updateHotbar(getLS(),Cooldown,this);
+                try
+                {
+                    h.initHotbar(PlayerClass.P);
+                    h.updateHotbar(getLS(), Cooldown, this);
+                    Console.WriteLine($"ERROR22222222222222222OROOROASODosaosgqwf ");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"ERROROROOROASODosao sdoad oasodas o doasdf mwerguierbgjinfjiahjwdgawhnjgfwrg ewgwrhryjyje gqwf ");
+                    
+                }
             }
 
             return true;
         }
 
-        public bool isHotbarPower()
+        public bool IsHotbarPower()
         {
             return this is PowerHotBarInt;
         }
 
-        public bool Load()
+        public bool StartLoading(BaseClass baseClass)
         {
-            if (!PowerLoad()) return false;
+
+            PlayerClass = baseClass;
+            Console.WriteLine($"{getDispalyName()} is being prepared to be loaded.");
+            if (!ProcessLoading()) return false;
                 Loaded = true;
-                PlayerClass.UsaeableClassPowersList.Add(getType(),this);
+                PlayerClass.USEABLEClassPowersList.Add(getType(),this);
                 return true;
         }
 

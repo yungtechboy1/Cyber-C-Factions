@@ -248,7 +248,7 @@ namespace CyberCore.Manager.ClassFactory
     public void learnNewPower(AdvancedPowerEnum advancedPowerEnum, bool silentfail) {
         if(!canLearnNewPower(advancedPowerEnum) && !silentfail)BC.getPlayer().SendMessage(ChatColors.Yellow+"ClassSettings > WARNING > Can not re-learn"+advancedPowerEnum.getPowerEnum()+" Power has already been learned!");
         LearnedPowers.Add(advancedPowerEnum);
-        BC.getPlayer().SendMessage(ChatColors.Green+"ClassSettings > "+advancedPowerEnum.getPowerEnum()+" Power has now been learned!");
+        BC.getPlayer().SendMessage(ChatColors.Green+"ClassSettings > "+advancedPowerEnum.getPowerEnum().Name+" Power has now been learned!");
     }
 
     public void delLearnedPower(PowerEnum pe) {

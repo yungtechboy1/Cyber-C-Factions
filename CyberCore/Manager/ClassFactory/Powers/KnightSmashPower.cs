@@ -9,7 +9,7 @@ namespace CyberCore.Manager.ClassFactory.Classes
 {
     public class KnightSmashPower : PowerHotBarInt
     {
-        public KnightSmashPower() : base(new AdvancedPowerEnum(PowerEnum.KnightSmash))
+        public KnightSmashPower() : base(new AdvancedPowerEnum(PowerEnum.KnightSmash),new PowerSettings(false,true,true,true))
         {
             isDefaultPower = true;
             MainPowerType = PowerType.Ability;
@@ -74,7 +74,7 @@ namespace CyberCore.Manager.ClassFactory.Classes
         {
             return PowerEnum.KnightSmash;
         }
-
+        
         public override string getName()
         {
             return "Smash";

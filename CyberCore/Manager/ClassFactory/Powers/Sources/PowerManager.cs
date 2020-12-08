@@ -38,44 +38,9 @@ namespace CyberCore.Manager.TypeFactory.Powers
                 CyberCoreMain.Log.Info("WAS LOG" + "NONE IN POWER LIST!!!" + pe);
                 return null;
             }
-
-            if (cpa.BaseType == typeof(StagePowerAbstract))
-            {
-                if (b == null)
-                {
-                    CyberCoreMain.Log.Info("WAS LOG" + "BASECLASS IS NULL!!!!!!!!!" + cpa.Name);
-                    //Stage
-                    StagePowerAbstract o = (StagePowerAbstract) Activator.CreateInstance(cpa, pe);
-
-
-                    if (o == null)
-                    {
-                        CyberCoreMain.Log.Error("WAS LOG" + "ERRORROOORROR C2  +++++=====  NUUULLLLLL");
-                        return null;
-                    }
-
-                    return o;
-                }
-                else
-                {
-                    CyberCoreMain.Log.Info("WAS LOG" + "BASECLASS IS NULL!!!!!!!!!" + cpa.Name);
-                    //Stage
-                    var o = (StagePowerAbstract) Activator.CreateInstance(cpa, b, pe);
-                    if (o == null)
-                    {
-                        CyberCoreMain.Log.Error("WAS LOG" + "ERRORROOORROR44444444 C2  +++++=====  NUUULLLLLL");
-                        return null;
-                    }
-
-                    return o;
-                }
-
-//        }else if(cpa.isAssignableFrom()){
-            }
-            else
-            {
+            
                 CyberCoreMain.Log.Info("WAS LOG" + "ERROR! " + cpa.Name + "|| " + cpa);
-            }
+            
 
 //        return cpa;
             return null;

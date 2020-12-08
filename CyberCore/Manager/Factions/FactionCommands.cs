@@ -162,7 +162,7 @@ namespace CyberCore.Manager.Factions
             }
         }
 
-        [Command(Name = "f invite", Description = "Create a new faction")]
+        [Command(Name = "f invite", Description = "Invite player to a faction")]
         [FactionPermission(FactionRankEnum.Recruit)]
         public void FInvite(CorePlayer Sender, Target invite)
         {
@@ -414,7 +414,7 @@ namespace CyberCore.Manager.Factions
             Sender.SendForm(new FactionHomesPage(Sender));
         }
 
-        [Command(Name = "me", Description = "View All Faction Homes")]
+        [Command(Name = "me", Description = "View Player Stats")]
         public void Me(CorePlayer Sender, int page = 1)
         {
             Sender.SendForm(new MeWindow(Sender,MainForm.ME_Window));

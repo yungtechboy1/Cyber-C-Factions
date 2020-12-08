@@ -10,7 +10,8 @@ using CyberCore.Utils;
 using log4net;
 using MiNET;
 using MiNET.Utils;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
+// using MySql.Data.MySqlClient;
 using OpenAPI;
 using OpenAPI.Player;
 

@@ -11,7 +11,7 @@ using log4net;
 using MiNET;
 using MiNET.Utils;
 using MiNET.Worlds;
-using MySql.Data.MySqlClient;
+// using MySqlConnector.Data.MySqlClient;
 using OpenAPI.Events.Block;
 using OpenAPI.Events.Entity;
 using OpenAPI.Player;

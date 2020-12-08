@@ -29,26 +29,44 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8facb87a-fc67-4dff-85d7-4fe1bb13cf47" name="Default Changelist" comment="Fixed RainForestBiome">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Cyber-C-Factions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Custom/CustomEnums/PowerEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Custom/CustomEnums/PowerEnum.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Leveling/ClassLevelingManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Leveling/ClassLevelingManagerStage.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/CorePlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CorePlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/CyberCommands.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCommands.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/CyberCore.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberCore.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/CyberPlayerInventory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/CyberPlayerInventory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/AuctionHouse/AuctionFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/AuctionHouse/AuctionFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassSettingsObj.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassSettingsObj.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Classes/Knight.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Classes/Knight.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Leveling/ClassLevelingManagerXPLevel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Leveling/ClassLevelingManagerXPLevel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/KnightSmashPower.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/KnightSmashPower.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/AdvancedPowerEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/AdvancedPowerEnum.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/AdvancedXPPowerEnum.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerAbstract/PowerAbstract.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerAbstract/PowerAbstract.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerHotBarInt.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerHotBarInt.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/Stage/AdvancedStagePowerEnum.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/Stage/StagePowerAbstract.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerSettings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Window/MainClassSettingsWindowChooseLockedSlot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Window/MainClassSettingsWindowChooseLockedSlot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionCommands.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionCommands.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Manager/Factions/PlotManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Manager/Factions/PlotManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/CyberCore.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.deps.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MapTestConsole.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MiNET.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/bin/Debug/netcoreapp3.1/MiNET.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.csprojAssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/Debug/netcoreapp3.1/MapTestConsole.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/MapTestConsole.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/MapTestConsole.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MapTestConsole/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MapTestConsole/obj/project.nuget.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +74,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="5905" />
+    <option name="totalTimeSeconds" value="27886" />
     <option name="gitIntegration" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -197,6 +215,7 @@
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/Data/ShopStaticItems.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/Cooldowns/CoolDown.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Utils/Cooldowns/CoolDownTick.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/B4B7DC52-33A6-4D2A-B360-0AF384A3689B/9/MySqlConnection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Custom/CyberInventory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Custom/CyberGUIInventory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CyberCore/Custom/Items/PoisionousPotato.cs" root0="FORCE_HIGHLIGHTING" />
@@ -389,19 +408,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/CyberCore/CyberCore.csproj" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/CyberFormModal.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Utils/Data/UserSQL.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/LinkConfirmWindow.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/LinkWindow.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/Data/CrateLocationDataManager.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateMain.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/CorePlayerData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Utils/JsonToNBT.cs" />
         <option value="$PROJECT_DIR$/CyberCore/CorePlayerItemData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/ItemChanceData.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Custom/CyberInventory.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateObject.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Crate/CrateTickThread.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassType.cs" />
@@ -411,12 +422,10 @@
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/PowerAbstract.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Classes/KnightSmashPower.cs" />
         <option value="$PROJECT_DIR$/CyberCore/MasterListener.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/CyberPlayerInventory.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassFactory.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Forms/ChooseClassWindow.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/Forms/FormType.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Forms/ClassLeaveClassConfirm.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/CyberCommands.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Forms/ClassMainWindow.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Forms/ChooseClassWindow2222.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Forms/ConfirmClassWindow.cs" />
@@ -425,21 +434,31 @@
         <option value="$PROJECT_DIR$/CyberCore/Utils/Cooldowns/CoolDown.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Window/MainClassSettingsWindowChooseLockedSlot.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerAbstract.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/CorePlayer.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Classes/Knight.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/KnightSmashPower.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Leveling/ClassLevelingManagerStage.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/AdvancedXPPowerEnum.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/AdvancedPowerEnum.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Leveling/ClassLevelingManager.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Leveling/ClassLevelingManagerXPLevel.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Custom/CustomEnums/PowerEnum.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerAbstract/PowerAbstract.cs" />
-        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerHotBarInt.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/Stage/AdvancedStagePowerEnum.cs" />
         <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/Stage/StagePowerAbstract.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/AdvancedPowerEnum.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerManager.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionCommands.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerSettings.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/Faction.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/AuctionHouse/AuctionFactory.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/PlotManager.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/Factions/FactionFactory.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/ClassSettingsObj.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/CorePlayer.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerAbstract/PowerAbstract.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Classes/Knight.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/KnightSmashPower.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Leveling/ClassLevelingManagerXPLevel.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/Powers/Sources/PowerHotBarInt.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/Manager/ClassFactory/BaseClass.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/CyberPlayerInventory.cs" />
+        <option value="$PROJECT_DIR$/CyberCore/CyberCommands.cs" />
       </list>
     </option>
   </component>
@@ -461,8 +480,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.34995845" />
-    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.30008313" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.35009927" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.29980147" />
     <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
     <property name="Rider.SolutionExplorerActivator" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -706,6 +725,13 @@
       <workItem from="1603163136428" duration="2154000" />
       <workItem from="1603575044411" duration="51316000" />
       <workItem from="1604353946308" duration="10563000" />
+      <workItem from="1606345221466" duration="3651000" />
+      <workItem from="1606432393505" duration="2775000" />
+      <workItem from="1606536749355" duration="600000" />
+      <workItem from="1606587743739" duration="6259000" />
+      <workItem from="1606678575708" duration="13166000" />
+      <workItem from="1606859564414" duration="2879000" />
+      <workItem from="1607032844816" duration="19960000" />
     </task>
     <task id="LOCAL-00002" summary="CU-b2ju2f">
       <created>1597547215454</created>
@@ -830,115 +856,98 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1670" y="344" key="#Notifications/0.0.2560.1040@0.0.2560.1040" timestamp="1602918980254" />
-    <state x="164" y="244" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600531251561">
+    <state x="1051" y="209" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607033746376">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="404" y="197" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1595797437856" />
-    <state x="164" y="244" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1600531251561" />
-    <state x="632" y="152" width="718" height="816" key="#com.intellij.ide.fileTemplates.ui.ConfigureTemplatesDialog" timestamp="1597507436587">
-      <screen x="0" y="0" width="2560" height="1040" />
-    </state>
-    <state x="632" y="152" width="718" height="816" key="#com.intellij.ide.fileTemplates.ui.ConfigureTemplatesDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597507436587" />
+    <state x="1051" y="209" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1607033746376" />
     <state x="459" y="133" key="#com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog" timestamp="1600223844041">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="459" y="133" key="#com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1600223844041" />
-    <state x="1094" y="463" width="458" height="510" key="#com.intellij.tools.ToolEditorDialog" timestamp="1597331240930">
-      <screen x="0" y="0" width="2560" height="1040" />
-    </state>
-    <state x="1094" y="463" width="458" height="510" key="#com.intellij.tools.ToolEditorDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597331240930" />
     <state x="1373" y="100" width="1094" height="847" key="DiffContextDialog" timestamp="1601141842537">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1373" y="100" width="1094" height="847" key="DiffContextDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1601141842537" />
-    <state x="466" y="421" key="GitRewordDialog" timestamp="1597636017115">
+    <state width="1602" height="321" key="GridCell.Tab.0.bottom" timestamp="1607390951485">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="466" y="421" key="GitRewordDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597636017115" />
-    <state width="1512" height="476" key="GridCell.Tab.0.bottom" timestamp="1604520705563">
+    <state width="1602" height="321" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1607390951485" />
+    <state width="1602" height="321" key="GridCell.Tab.0.center" timestamp="1607390951485">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="900" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1512" height="476" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1604520705563" />
-    <state width="1512" height="476" key="GridCell.Tab.0.center" timestamp="1604520705563">
+    <state width="1602" height="321" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1607390951485" />
+    <state width="1602" height="321" key="GridCell.Tab.0.left" timestamp="1607390951485">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="900" height="260" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1512" height="476" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1604520705563" />
-    <state width="1512" height="476" key="GridCell.Tab.0.left" timestamp="1604520705563">
+    <state width="1602" height="321" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1607390951485" />
+    <state width="1602" height="321" key="GridCell.Tab.0.right" timestamp="1607390951485">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="900" height="260" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1512" height="476" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1604520705563" />
-    <state width="1512" height="476" key="GridCell.Tab.0.right" timestamp="1604520705563">
+    <state width="1602" height="321" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1607390951485" />
+    <state width="1542" height="362" key="GridCell.Tab.1.bottom" timestamp="1607034600238">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="900" height="260" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597102176791" />
-    <state width="1512" height="476" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1604520705563" />
-    <state width="1234" height="365" key="GridCell.Tab.1.bottom" timestamp="1602683600207">
+    <state width="1542" height="362" key="GridCell.Tab.1.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600238" />
+    <state width="1542" height="362" key="GridCell.Tab.1.center" timestamp="1607034600238">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.1.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600207" />
-    <state width="1234" height="365" key="GridCell.Tab.1.center" timestamp="1602683600207">
+    <state width="1542" height="362" key="GridCell.Tab.1.center/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600238" />
+    <state width="1542" height="362" key="GridCell.Tab.1.left" timestamp="1607034600238">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.1.center/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600207" />
-    <state width="1234" height="365" key="GridCell.Tab.1.left" timestamp="1602683600207">
+    <state width="1542" height="362" key="GridCell.Tab.1.left/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600238" />
+    <state width="1542" height="362" key="GridCell.Tab.1.right" timestamp="1607034600238">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.1.left/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600207" />
-    <state width="1234" height="365" key="GridCell.Tab.1.right" timestamp="1602683600207">
+    <state width="1542" height="362" key="GridCell.Tab.1.right/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600238" />
+    <state width="1542" height="362" key="GridCell.Tab.2.bottom" timestamp="1607034600238">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.1.right/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600207" />
-    <state width="1234" height="365" key="GridCell.Tab.2.bottom" timestamp="1602683600207">
+    <state width="1542" height="362" key="GridCell.Tab.2.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600238" />
+    <state width="1542" height="362" key="GridCell.Tab.2.center" timestamp="1607034600238">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.2.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600207" />
-    <state width="1234" height="365" key="GridCell.Tab.2.center" timestamp="1602683600207">
+    <state width="1542" height="362" key="GridCell.Tab.2.center/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600238" />
+    <state width="1542" height="362" key="GridCell.Tab.2.left" timestamp="1607034600238">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.2.center/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600207" />
-    <state width="1234" height="365" key="GridCell.Tab.2.left" timestamp="1602683600207">
+    <state width="1542" height="362" key="GridCell.Tab.2.left/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600238" />
+    <state width="1542" height="362" key="GridCell.Tab.2.right" timestamp="1607034600238">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.2.left/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600207" />
-    <state width="1234" height="365" key="GridCell.Tab.2.right" timestamp="1602683600207">
+    <state width="1542" height="362" key="GridCell.Tab.2.right/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600238" />
+    <state width="1542" height="362" key="GridCell.Tab.3.bottom" timestamp="1607034600239">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.2.right/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600207" />
-    <state width="1234" height="365" key="GridCell.Tab.3.bottom" timestamp="1602683600208">
+    <state width="1542" height="362" key="GridCell.Tab.3.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600239" />
+    <state width="1542" height="362" key="GridCell.Tab.3.center" timestamp="1607034600238">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.3.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600208" />
-    <state width="1234" height="365" key="GridCell.Tab.3.center" timestamp="1602683600208">
+    <state width="1542" height="362" key="GridCell.Tab.3.center/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600238" />
+    <state width="1542" height="362" key="GridCell.Tab.3.left" timestamp="1607034600238">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.3.center/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600208" />
-    <state width="1234" height="365" key="GridCell.Tab.3.left" timestamp="1602683600208">
+    <state width="1542" height="362" key="GridCell.Tab.3.left/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600238" />
+    <state width="1542" height="362" key="GridCell.Tab.3.right" timestamp="1607034600239">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.3.left/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600208" />
-    <state width="1234" height="365" key="GridCell.Tab.3.right" timestamp="1602683600208">
+    <state width="1542" height="362" key="GridCell.Tab.3.right/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600239" />
+    <state width="1542" height="362" key="GridCell.Tab.4.bottom" timestamp="1607034600239">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.3.right/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600208" />
-    <state width="1234" height="365" key="GridCell.Tab.4.bottom" timestamp="1602683600208">
+    <state width="1542" height="362" key="GridCell.Tab.4.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600239" />
+    <state width="1542" height="362" key="GridCell.Tab.4.center" timestamp="1607034600239">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.4.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600208" />
-    <state width="1234" height="365" key="GridCell.Tab.4.center" timestamp="1602683600208">
+    <state width="1542" height="362" key="GridCell.Tab.4.center/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600239" />
+    <state width="1542" height="362" key="GridCell.Tab.4.left" timestamp="1607034600239">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.4.center/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600208" />
-    <state width="1234" height="365" key="GridCell.Tab.4.left" timestamp="1602683600208">
+    <state width="1542" height="362" key="GridCell.Tab.4.left/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600239" />
+    <state width="1542" height="362" key="GridCell.Tab.4.right" timestamp="1607034600239">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1234" height="365" key="GridCell.Tab.4.left/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600208" />
-    <state width="1234" height="365" key="GridCell.Tab.4.right" timestamp="1602683600208">
-      <screen x="0" y="0" width="2560" height="1040" />
-    </state>
-    <state width="1234" height="365" key="GridCell.Tab.4.right/0.0.2560.1040@0.0.2560.1040" timestamp="1602683600208" />
+    <state width="1542" height="362" key="GridCell.Tab.4.right/0.0.2560.1040@0.0.2560.1040" timestamp="1607034600239" />
     <state x="1500" y="258" key="IDE.errors.dialog" timestamp="1600117162418">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -958,12 +967,7 @@
     <state x="123" y="92" width="2315" height="856" key="VCS.FileHistoryDialog" timestamp="1604070749910">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="92" y="92" width="1736" height="856" key="VCS.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1596939993888" />
     <state x="123" y="92" width="2315" height="856" key="VCS.FileHistoryDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1604070749910" />
-    <state x="232" y="234" key="Vcs.Push.Dialog.v2" timestamp="1598236308128">
-      <screen x="0" y="0" width="2560" height="1040" />
-    </state>
-    <state x="232" y="234" key="Vcs.Push.Dialog.v2/0.0.2560.1040@0.0.2560.1040" timestamp="1598236308128" />
     <state x="1286" y="-20" width="1094" height="847" maximized="true" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1603671047728">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -972,63 +976,48 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1737" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1040@0.0.2560.1040" timestamp="1601191779419" />
-    <state x="1216" y="288" key="com.intellij.tools.ToolSelectDialog.dimensionServiceKey" timestamp="1597331242093">
-      <screen x="0" y="0" width="2560" height="1040" />
-    </state>
-    <state x="1216" y="288" key="com.intellij.tools.ToolSelectDialog.dimensionServiceKey/0.0.2560.1040@0.0.2560.1040" timestamp="1597331242092" />
     <state x="1267" y="0" width="1080" height="900" key="dock-window-1" timestamp="1604419746129">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="0" y="0" width="960" height="1040" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1597098705627" />
     <state x="1267" y="0" width="1080" height="900" key="dock-window-1/0.0.2560.1040@0.0.2560.1040" timestamp="1604419746129" />
-    <state x="1154" y="0" width="1063" height="710" key="dock-window-2" timestamp="1598319734606">
+    <state x="193" y="70" width="936" height="624" key="find.popup" timestamp="1607390633002">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="1154" y="0" width="1063" height="710" key="dock-window-2/0.0.2560.1040@0.0.2560.1040" timestamp="1598319734606" />
-    <state x="193" y="70" width="936" height="624" key="find.popup" timestamp="1604520400737">
-      <screen x="0" y="0" width="2560" height="1040" />
-    </state>
-    <state x="1039" y="216" width="881" height="817" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596945440994" />
-    <state x="193" y="70" width="936" height="624" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1604520400737" />
+    <state x="193" y="70" width="936" height="624" key="find.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1607390633002" />
     <state x="1461" y="244" width="672" height="677" key="run.anything.popup" timestamp="1604086155939">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1461" y="244" width="672" height="677" key="run.anything.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1604086155939" />
-    <state x="420" y="324" key="save.file.as.template.dialog" timestamp="1597507512558">
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1607037395740">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="420" y="324" key="save.file.as.template.dialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597507512558" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup" timestamp="1603993866512">
-      <screen x="0" y="0" width="2560" height="1040" />
-    </state>
-    <state x="645" y="226" width="1008" height="637" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1597032171204" />
-    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1603993866512" />
+    <state x="859" y="227" width="896" height="635" key="search.everywhere.popup/0.0.2560.1040@0.0.2560.1040" timestamp="1607037395740" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/CyberCore/CyberCommands.cs</url>
-          <line>55</line>
+          <line>61</line>
           <properties documentPath="F:\Projects\Cyber-C-Factions\CyberCore\CyberCommands.cs" initialLine="53">
             <startOffsets>
-              <option value="1784" />
+              <option value="1975" />
             </startOffsets>
             <endOffsets>
-              <option value="1930" />
+              <option value="2121" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/CyberCore/Utils/SqlManager.cs</url>
-          <line>151</line>
+          <line>161</line>
           <properties documentPath="F:\Projects\Cyber-C-Factions\CyberCore\Utils\SqlManager.cs" initialLine="151">
             <startOffsets>
-              <option value="5337" />
+              <option value="5812" />
             </startOffsets>
             <endOffsets>
-              <option value="5338" />
+              <option value="5813" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="5" />

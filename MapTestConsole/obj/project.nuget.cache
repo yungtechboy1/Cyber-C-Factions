@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "y552cFkhzps2yPOeRVeGSViEAIJ6jjOcPJL4so2TOgM+0g/Vzxd8v9BMMWLoKVSsS8wwT/KCHat+43u0AXnSmg==",
+  "dgSpecHash": "9hbkiGanqgLS6I/Hd0IN4/h3yiQ2Qdo6Ww17R7lepTdl7adkd2uIp2FLoeEPggLuyUDH43OnODtLo2ZRtB7/NQ==",
   "success": true,
   "projectFilePath": "F:\\Projects\\Cyber-C-Factions\\MapTestConsole\\MapTestConsole.csproj",
   "expectedPackageFiles": [
@@ -16,7 +16,7 @@
     "C:\\Users\\carlt\\.nuget\\packages\\microsoft.win32.primitives\\4.0.1\\microsoft.win32.primitives.4.0.1.nupkg.sha512",
     "C:\\Users\\carlt\\.nuget\\packages\\microsoft.win32.registry\\4.0.0\\microsoft.win32.registry.4.0.0.nupkg.sha512",
     "C:\\Users\\carlt\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
-    "C:\\Users\\carlt\\.nuget\\packages\\minet\\1.0.2159\\minet.1.0.2159.nupkg.sha512",
+    "C:\\Users\\carlt\\.nuget\\packages\\minet\\1.0.2191\\minet.1.0.2191.nupkg.sha512",
     "C:\\Users\\carlt\\.nuget\\packages\\minet.astar\\1.0.14\\minet.astar.1.0.14.nupkg.sha512",
     "C:\\Users\\carlt\\.nuget\\packages\\minet.fnbt\\1.0.22\\minet.fnbt.1.0.22.nupkg.sha512",
     "C:\\Users\\carlt\\.nuget\\packages\\minet.leveldb\\1.0.36\\minet.leveldb.1.0.36.nupkg.sha512",

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CyberCore.CustomEnums;
 using MiNET.Utils;
 
@@ -8,7 +9,7 @@ namespace CyberCore.Manager.ClassFactory.Classes
     {
         public Knight(CyberCoreMain main, CorePlayer player, Dictionary<string, object> data = null) : base(main, player, data)
         {
-
+            
         }
 
         public Knight(CyberCoreMain main) : base(main)
@@ -17,7 +18,7 @@ namespace CyberCore.Manager.ClassFactory.Classes
         }
 
 
-        public override List<PowerEnum> getDefaultPowers()
+        public override List<PowerEnum> GetDefaultPowers()
         {
             return new List<PowerEnum>()
             {
@@ -28,7 +29,9 @@ namespace CyberCore.Manager.ClassFactory.Classes
 
         public override void AddClassPowers()
         {
-            UsaeableClassPowersList.Add(PowerEnum.KnightSmash, new KnightSmashPower());
+            Console.WriteLine("Adding powers!!!!");
+            PossibleClassPowerList.Add(PowerEnum.KnightSmash, new KnightSmashPower());
+            Console.WriteLine("Adding powers2!!!!"+PossibleClassPowerList.Count);
         }
         //
         // public void RegisterWithMain()

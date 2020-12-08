@@ -37,6 +37,12 @@ namespace CyberCore
         public void AH(CorePlayer p)
         {
         }
+        [Command(Name = "ci", Description = "Clear Inventory")]
+        public void CI(CorePlayer p)
+        {
+            p.Inventory.Clear();
+            p.SendPlayerInventory();
+        }
 
         [Command(Name = "rank", Description = "Rank Options")]
         public void rank(CorePlayer p)

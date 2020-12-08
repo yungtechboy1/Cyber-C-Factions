@@ -14,6 +14,7 @@ namespace CyberCore
         public override void SetHeldItemSlot(int selectedHotbarSlot, bool sendToPlayer = true)
         {
             if (CanSwitchHotBar(selectedHotbarSlot, InHandSlot)) base.SetHeldItemSlot(selectedHotbarSlot, sendToPlayer);
+            // CP.SendPlayerInventory();
         }
 
         private bool CanSwitchHotBar( int selectedHotbarSlot,  int inHandSlot)

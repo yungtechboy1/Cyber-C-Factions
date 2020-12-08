@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using CyberCore.Custom.Items;
 using CyberCore.CustomEnums;
@@ -22,6 +24,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
             Item i = cp.Inventory.Slots[ls.getSlot()];
             if (i != null)
             {
+                Console.WriteLine($"ITEM IS IN SLOT {ls.getSlot()}");
                 //i.getNamedTag() != null
                 if (i.getNamedTag() == null || !i.getNamedTag().Contains(getPowerHotBarItemNamedTagKey))
                 {
@@ -47,6 +50,8 @@ namespace CyberCore.Manager.ClassFactory.Powers
             }
 
             cp.Inventory.clear(ls.getSlot());
+            
+            cp.SendPlayerInventory();
         }
 
 
@@ -69,6 +74,9 @@ namespace CyberCore.Manager.ClassFactory.Powers
 
     public void initHotbar(CorePlayer cp)
     {
+        Console.WriteLine("============================================STARTING INTI PROCESS ===============================");
+        Console.WriteLine("============================================STARTING INTI PROCESS ===============================");
+        Console.WriteLine($"============================================STARTING INTI PROCESS{getLS().Slot} ===============================");
         if (getLS().Slot != LockedSlot.NA.Slot)
         {
             RemoveAnyItemsInSlot(cp,getLS());
@@ -89,9 +97,14 @@ namespace CyberCore.Manager.ClassFactory.Powers
         return true;
     }
 
-        public void updateHotbar(LockedSlot ls, CoolDown c, PowerAbstract p)
+    /**
+     * Returns a True only if HotBar Should be Changed Back
+     */
+        public bool updateHotbar(LockedSlot ls, CoolDown c, PowerAbstract p)
         {
-            if (ls.Equals(LockedSlot.NA)) return;
+            Console.WriteLine($"============================================UPDATING HOTBAR {ls.getSlot()} ===============================");
+
+            if (ls.Equals(LockedSlot.NA)) return false;
             if (c == null || c.isValid(true))
             {
                 setPowerAvailable(p);
@@ -102,6 +115,8 @@ namespace CyberCore.Manager.ClassFactory.Powers
                 Console.WriteLine("UNNNNNNNNACTIVE POWER");
                 setPowerUnAvailable(p);
             }
+            getPlayer().SendPlayerInventory();
+            return true;
         }
         public void antiSpamCheck(PowerAbstract p)
         {
@@ -139,13 +154,13 @@ namespace CyberCore.Manager.ClassFactory.Powers
         public void setPowerAvailable(PowerAbstract p)
         {
             p.getPlayer().Inventory.Slots[p.getLS().getSlot()] =
-                addNamedTag(p, getActiveItem(), p.getSafeName(), "Active");
+                addNamedTag(p, FormatActiveItemLore(getActiveItem()), p.getSafeName(), "Active");
 //        getPlayer().getInventory().setHeldItemIndex(LS.getSlot());
         }
         public void setPowerUnAvailable(PowerAbstract p)
         {
             p.getPlayer().Inventory.Slots[p.getLS().getSlot()] =
-                addNamedTag(p, getUnActiveItem(), p.getSafeName(), "Idle");
+                addNamedTag(p, FormatUnActiveItemLore(getUnActiveItem()), p.getSafeName(), "Idle");
         }
         public Item addNamedTag(PowerAbstract p, Item i, String key, String val)
         {
@@ -173,21 +188,50 @@ namespace CyberCore.Manager.ClassFactory.Powers
             i.ExtraData = ( ct.putString(key, val));
             return i;
         }
-        public Item getActiveItem()
+
+        public virtual string[] GetActiveTextFormatSyntax()
+        {
+            var a = new List<String>();
+            a.Add($"{ChatColors.Green} {getDispalyName()}{ChatColors.Green} is ready to be used now!");
+            a.Add($" Current XP: {XPManager.getDisplayXP()} of {XPManager.getXP()-XPManager.getNextLevelXP()}");
+            a.Add($" Current Level: {XPManager.getLevel()} of {XPManager.getMaxLevel()}");
+            return a.ToArray();
+        }
+        public virtual string[] GetUnActiveTextFormatSyntax()
+        {
+            var a = new List<String>();
+            a.Add($"{ChatColors.Green} {getDispalyName()}{ChatColors.Green} is ready to be used now!");
+            a.Add($" Current XP: {XPManager.getDisplayXP()} of {XPManager.getXP()-XPManager.getNextLevelXP()}");
+            a.Add($" Current Level: {XPManager.getLevel()} of {XPManager.getMaxLevel()}");
+            return a.ToArray();
+        }
+
+        public virtual Item FormatActiveItemLore(Item i)
+        {
+            i.addLore(GetActiveTextFormatSyntax());
+            return i;
+        }
+        public virtual Item FormatUnActiveItemLore(Item i)
+        {
+            i.addLore(GetUnActiveTextFormatSyntax());
+            return i;
+        }
+        
+        public virtual Item getActiveItem()
         {
             return new ItemApple();
             // return new ItemSlimeBall(){Count = 5};
         }
-        public Item getUnActiveItem()
+        public virtual  Item getUnActiveItem()
         {
             return new ItemRedstone();
         }
 
-        protected PowerHotBarInt(AdvancedPowerEnum ape, ClassLevelingManagerXPLevel xpm = null) : base(ape, xpm)
+        protected PowerHotBarInt(AdvancedPowerEnum ape, BaseClass b, PowerSettings ps = null ) : base(ape, ps, b)
         {
+            
         }
-
-        protected PowerHotBarInt(BaseClass b, AdvancedPowerEnum ape, PowerSettings ps) : base(b, ape, ps)
+        protected PowerHotBarInt( AdvancedPowerEnum ape, PowerSettings ps = null) : base( ape, ps)
         {
         }
 
@@ -195,6 +239,9 @@ namespace CyberCore.Manager.ClassFactory.Powers
         {
         }
 
+        /**
+         * DEPRECEATED
+         */
         protected PowerHotBarInt(BaseClass b) : base(b)
         {
         }

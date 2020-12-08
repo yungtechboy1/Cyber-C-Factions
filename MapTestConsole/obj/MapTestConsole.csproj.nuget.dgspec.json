@@ -38,7 +38,7 @@
           "dependencies": {
             "MiNET": {
               "target": "Package",
-              "version": "[1.0.2159, )"
+              "version": "[1.0.2191, )"
             },
             "MySqlConnector": {
               "target": "Package",

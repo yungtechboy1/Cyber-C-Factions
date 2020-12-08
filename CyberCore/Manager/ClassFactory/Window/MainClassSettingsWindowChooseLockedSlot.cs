@@ -43,7 +43,7 @@ namespace CyberCore.Manager.ClassFactory.Window
             {
                 k++;
                 PowerEnum pe = pa.getType();
-                if (!pa.isHotbarPower())
+                if (!pa.IsHotbarPower())
                 {
                     Console.WriteLine(pe + " NO LOCKED SLOT!!!");
                     continue; //Can not Enable NOT LockedSlot Powers here
@@ -100,7 +100,7 @@ namespace CyberCore.Manager.ClassFactory.Window
                 foreach (var pa in _BC.getLearnedPowersAbstract())
                 {
                     kk++;
-                    if (!pa.isHotbarPower())
+                    if (!pa.IsHotbarPower())
                     {
                         Console.WriteLine(pa.getType() + " NO22222 LOCKED SLOT!!!");
                         continue; //Can not Enable NOT LockedSlot Powers here

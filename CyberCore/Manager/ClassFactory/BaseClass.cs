@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using CyberCore.Custom.Events;
 using CyberCore.CustomEnums;
@@ -9,6 +10,7 @@ using CyberCore.Manager.Forms;
 using CyberCore.Manager.TypeFactory.Powers;
 using CyberCore.Utils;
 using CyberCore.Utils.Cooldowns;
+using log4net.Util.TypeConverters;
 using MiNET;
 using MiNET.Blocks;
 using MiNET.Items;
@@ -32,7 +34,7 @@ namespace CyberCore.Manager.ClassFactory
         //    public List<PowerEnum> DefaultPowers = new List<>();
         public Dictionary<PowerEnum, PowerAbstract> PossibleClassPowerList = new Dictionary<PowerEnum, PowerAbstract>();
         public List<AdvancedPowerEnum> DefaultPowers1 = new List<AdvancedPowerEnum>();
-        public Dictionary<PowerEnum, PowerAbstract> UsaeableClassPowersList = new Dictionary<PowerEnum, PowerAbstract>();
+        public Dictionary<PowerEnum, PowerAbstract> USEABLEClassPowersList = new Dictionary<PowerEnum, PowerAbstract>();
         public Dictionary<LockedSlot, PowerAbstract> HotBarPowers = new Dictionary<LockedSlot, PowerAbstract>();
         public CyberCoreMain CCM;
         protected int MainID = 0;
@@ -90,12 +92,14 @@ namespace CyberCore.Manager.ClassFactory
         // private Ability ActiveAbility;
         private Dictionary<BuffType, Buff> Buffs = new Dictionary<BuffType, Buff>();
         private Dictionary<BuffType, DeBuff> DeBuffs = new Dictionary<BuffType, DeBuff>();
-        private List<LockedSlot> LockedSlots = new List<LockedSlot>();
+        // internal List<LockedSlot> LockedSlots = new List<LockedSlot>();
         private double PowerSourceCount = 0;
         private ClassSettingsObj ClassSettings = null; //new ClassSettingsObj(this);
 
 
-        public abstract void AddClassPowers();
+        public virtual void AddClassPowers()
+        {
+        }
 
 
         //Get all the Powers that the player has Learned
@@ -107,13 +111,11 @@ namespace CyberCore.Manager.ClassFactory
 
 //        MainID = mid;
             P = player;
-            // ReSharper disable once VirtualMemberCallInConstructor
-            AddClassPowers();
 //        TYPE = rank;
 //        LVL = XPToLevel(XP);
             ClassSettings = new ClassSettingsObj(this);
             SetBuffs();
-            startSetPowers();
+            // startSetPowers();
 
 
             if (data != null)
@@ -166,9 +168,27 @@ namespace CyberCore.Manager.ClassFactory
                 ClassSettings = new ClassSettingsObj(this);
             }
 
-            learnPlayerDefaultPowers();
+            try
+            {
+                AddClassPowers();
+                Console.WriteLine($"Adding Powers to : {getName()} => {PossibleClassPowerList.Count}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Oh they dont have an Add Class Virtural metod for Player Class: {getName()}");
+            }
+
+            LearnDefaultPowers();
             SetBuffs();
+            ActivatePossiblePower();
             startSetPowers();
+        }
+
+        private void ActivatePossiblePower()
+        {
+            foreach (var a in getClassSettings().getLearnedPowers())
+            {
+            }
         }
 
         /***
@@ -241,9 +261,9 @@ namespace CyberCore.Manager.ClassFactory
             }
         }
 
-        public void learnPlayerDefaultPowers()
+        public void LearnDefaultPowers()
         {
-            foreach (PowerEnum pe in getDefaultPowers())
+            foreach (PowerEnum pe in GetDefaultPowers())
             {
                 if (!getClassSettings().isPowerLearned(pe))
                 {
@@ -255,14 +275,17 @@ namespace CyberCore.Manager.ClassFactory
 
         private void startSetPowers(bool activateall = false)
         {
+            Console.WriteLine($"Starting to set Powers!2222333344445 > {PossibleClassPowerList.Count}");
             foreach (KeyValuePair<PowerEnum, PowerAbstract> a in PossibleClassPowerList)
             {
                 var k = a.Key;
                 var v = a.Value;
+                Console.WriteLine($"Checking Power: {k.Name}");
                 if (v.isDefaultPower || v.Requirement.Pass(this) || activateall)
                 {
-                    //Activate
-                    v.Load();
+                    //Activate;
+                    Console.WriteLine($"Activating Power: {k.Name}");
+                    v.StartLoading(this);
                 }
             }
 
@@ -272,19 +295,19 @@ namespace CyberCore.Manager.ClassFactory
 
         public List<LockedSlot> getLockedSlots()
         {
-            return LockedSlots;
+            return HotBarPowers.Keys.ToList();
         }
 
         public void onLeaveClass()
         {
-            if (this is PowerHotBarInt)
-            {
-                if (getLockedSlots().Count > 0)
-                {
-                    foreach (LockedSlot ls in getLockedSlots()) getPlayer().Inventory.clear(ls.getSlot());
-                    LockedSlots.Clear();
-                }
-            }
+            // if (this is PowerHotBarInt)
+            // {
+            //     if (getLockedSlots().Count > 0)
+            //     {
+            //         foreach (LockedSlot ls in getLockedSlots()) getPlayer().Inventory.clear(ls.getSlot());
+            //         LockedSlots.Clear();
+            //     }
+            // }
         }
 
         public PlayerInventory getPlayerInventory()
@@ -324,7 +347,7 @@ namespace CyberCore.Manager.ClassFactory
             }
         }
 
-        public virtual List<PowerEnum> getDefaultPowers()
+        public virtual List<PowerEnum> GetDefaultPowers()
         {
             return new List<PowerEnum>();
         }
@@ -515,7 +538,7 @@ namespace CyberCore.Manager.ClassFactory
         public PowerAbstract getPossiblePower(PowerEnum key, bool active)
         {
 //        if(active)return ActivePowers.get(key);
-            return UsaeableClassPowersList[key];
+            return USEABLEClassPowersList[key];
         }
 
         public PowerAbstract getPossiblePower(PowerEnum key)
@@ -567,7 +590,7 @@ namespace CyberCore.Manager.ClassFactory
                 return;
             }
 
-            if (p.isHotbarPower())
+            if (p.IsHotbarPower())
             {
                 if (ls.Equals(LockedSlot.NA))
                 {
@@ -1121,7 +1144,7 @@ namespace CyberCore.Manager.ClassFactory
                 try
                 {
                     //No Need to tick Disabled Or Non Ticking Powers
-                    if (p.getTickUpdate() != -1 && p.isActive() || p.isHotbarPower()) p.handleTick(tick);
+                    if (p.getTickUpdate() != -1 && p.isActive() || p.IsHotbarPower()) p.handleTick(tick);
                 }
                 catch (Exception e)
                 {
@@ -1231,20 +1254,17 @@ namespace CyberCore.Manager.ClassFactory
 
         public bool CanSwitchHotbar(int to, int from)
         {
-            if (LockedSlots.Contains(LockedSlot.FromInt(to)))
+            var tls = LockedSlot.FromInt(to+1);
+            Console.WriteLine($"Switching from  {from} to {to}");
+            if (HotBarPowers.Keys.Contains(tls))
             {
                 //TO Slot is a LOCKED Slot!
                 //A Hotbar Power might be tring to run 
+                var p = HotBarPowers[tls];
+                PowerHotBarInt pp = (PowerHotBarInt) p;
+                pp.updateHotbar(p.getLS(), p.Cooldown, p);
             }
 
-            foreach (PowerAbstract p in UsaeableClassPowersList.Values)
-            {
-                if (p is PowerHotBarInt)
-                {
-                    PowerHotBarInt pp = (PowerHotBarInt) p;
-                    pp.updateHotbar(p.getLS(), p.Cooldown, p);
-                }
-            }
 
             //TODO CHECK FOR ACTIVE HOTBAR POWERS
             return true;
@@ -1256,7 +1276,7 @@ namespace CyberCore.Manager.ClassFactory
                 $"{ChatColors.Yellow}{ChatFormatting.Bold} Are you sure you want to change classes to {getDisplayName()} ?{ChatFormatting.Reset}\n" +
                 $"===========================================\n" +
                 $"Class Powers:\n";
-            foreach (PowerAbstract cpa in UsaeableClassPowersList.Values)
+            foreach (PowerAbstract cpa in USEABLEClassPowersList.Values)
             {
                 t += " -> " + cpa.getDispalyName();
                 if (cpa.isDefaultPower) t += " {Starting Power}";
@@ -1291,7 +1311,8 @@ namespace CyberCore.Manager.ClassFactory
             if (CanSetPlayerClass(corePlayer))
             {
                 ActivateBuffs = true;
-                corePlayer.SendMessage($"{ChatColors.Green}Success! You class has now been set to{getDisplayName()}{ChatColors.Green}!");
+                corePlayer.SendMessage(
+                    $"{ChatColors.Green}Success! Your class has now been set to {getDisplayName()}{ChatColors.Green}!");
                 // P = corePlayer;
                 // PlayerAddedToClass(P);
                 return NewClassForPlayer(corePlayer);
@@ -1306,26 +1327,33 @@ namespace CyberCore.Manager.ClassFactory
 
         public LockedSlot ClaimFirstOpenPowerSlot()
         {
+            Console.WriteLine("AAAAA");
             var aa = new List<LockedSlot>();
             foreach (var a in HotBarPowers)
             {
+                Console.WriteLine("AA21222AAA");
+
                 var v = a.Value;
                 var k = a.Key;
                 aa.Add(k);
+                Console.WriteLine("AAAAccccccccA");
             }
+
+            Console.WriteLine("AAAdddddddddddddddddddddddddddddddddAA");
 
             bool s7 = false;
             bool s8 = false;
             bool s9 = false;
+            Console.WriteLine("AAAzzzzzzzazzzzzAA");
+
             if (aa.Contains(LockedSlot.SLOT_7)) s7 = true;
             if (aa.Contains(LockedSlot.SLOT_8)) s8 = true;
             if (aa.Contains(LockedSlot.SLOT_9)) s9 = true;
-            s7 = !s7;
-            s8 = !s8;
-            s9 = !s9;
-            if(s7)return LockedSlot.SLOT_7;
-            if(s8)return LockedSlot.SLOT_8;
-            if(s9)return LockedSlot.SLOT_9;
+            Console.WriteLine("AAA555555555555555555555555AA");
+
+            if (!s7) return LockedSlot.SLOT_7;
+            if (!s8) return LockedSlot.SLOT_8;
+            if (!s9) return LockedSlot.SLOT_9;
             return LockedSlot.NA;
         }
     }

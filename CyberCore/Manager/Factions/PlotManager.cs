@@ -4,7 +4,7 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using CyberCore.Utils;
 using log4net;
-using MySql.Data.MySqlClient;
+// using MySql.Data.MySqlClient;
 
 
 namespace CyberCore.Manager.Factions

@@ -4,7 +4,9 @@ using System.Data;
 using System.Threading.Tasks;
 using CyberCore.Manager.Forms;
 using log4net;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
+
+// using MySql.Data.MySqlClient;
 
 namespace CyberCore.Utils
 {
@@ -16,7 +18,7 @@ namespace CyberCore.Utils
 
         public SqlManager(CyberCoreMain ccm, String key = "")
         {
-                CCM = ccm;
+            CCM = ccm;
             try
             {
                 if (key.Length != 0) key += "-";
@@ -34,43 +36,51 @@ namespace CyberCore.Utils
             }
         }
 
-        public SqlManager(CyberCoreMain ccm, String host,String username,String password,String db, int port = 3360)
-        {
-            Host = host;
-            Username = username;
-            Password = password;
-            Database = db;
-            Port = port;
-            CCM = ccm;
-            init();
-        }
+        // public SqlManager(CyberCoreMain ccm, String host,String username,String password,String db, int port = 3360)
+        // {
+        //     Host = host;
+        //     Username = username;
+        //     Password = password;
+        //     Database = db;
+        //     Port = port;
+        //     CCM = ccm;
+        //     init();
+        // }
 
-        public void init()
+        public async void init()
         {
-            ConnectionString = $"SERVER={Host};port={Port};DATABASE={Database};user id={Username};PASSWORD={Password};";
+            ConnectionString = $"Server={Host};User ID={Username};Password={Password};Database={Database}";
             try
             {
                 // System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-                using var connection = new MySqlConnection(ConnectionString);
-                MSC = connection;
-                try
+                using (var con = new MySqlConnection(ConnectionString))
                 {
-                    MSC.Open();
-                    CheckMSQLState();
+                    await con.OpenAsync();
+                    // try
+                    // {
+                    Active = false;
+                    CheckMSQLState(con);
                     // executeSelect("SELECT *");
+                    Console.WriteLine("f SNDNASDN ASND nasd nasnd ad");
                     if (Active) Log.Info($"MySQL MySqlConnection to {Username}@{Host}:{Database} was successful!");
+                    // }
+                    // catch (Exception e)
+                    // {
+                    //     Log.Error(
+                    //         "Error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaa:" + Host + "|" + Database + "|" + Username +
+                    //         "|" + Password, e);
+                    // }
                 }
-                catch (Exception e)
-                {
-                    Log.Error("Error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaa:"+Host+"|"+Database+"|"+Username+"|"+Password, e);
-                }
+
+                // MSC = new MySqlConnection(ConnectionString);
+                // MSC = connection;
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                Log.Error(e + "!1\n\n\n!!!!!1111");
             }
         }
-        
+
         public string Host { get; set; }
         public int Port { get; set; }
         public string Username { get; set; }
@@ -80,24 +90,24 @@ namespace CyberCore.Utils
 
         public CyberCoreMain CCM { get; }
 
-        private MySqlConnection MSC { get; set; }
+        // private MySqlConnection MSC { get; set; }
 
         public MySqlConnection GetMySqlConnection()
         {
             return new MySqlConnection(ConnectionString);
         }
 
-        public void CheckMSQLState()
+        public void CheckMSQLState(MySqlConnection mySqlConnection)
         {
-            if (MSC != null)
+            if (mySqlConnection != null)
             {
-                if (MSC.State == ConnectionState.Open)
+                if (mySqlConnection.State == ConnectionState.Open)
                 {
                     Active = true;
                     return;
                 }
 
-                Log.Warn("MySQL is Connected but is in state: " + MSC.State);
+                Log.Warn("MySQL is Connected but is in state: " + mySqlConnection.State);
                 Log.Warn("Please look at ConnectionState.cs for more info!");
             }
 
@@ -188,6 +198,7 @@ namespace CyberCore.Utils
                     }
                 }
             }
+
             var stop = DateTime.Now.Ticks;
             var final = stop - startt;
             // CyberCoreMain.Log.Info($"IT TOOK {final/500000} OR {final/10000000} Secs OR {final/100000} OR {final/1000} orr {final/10} TICKS TO EXECUTE SQL COMMAND : "+query);

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="MySQL - cyber@198.199.70.100" uuid="ac844a75-b6ab-4cbc-a26b-423ac4d82dc5">
+    <data-source source="LOCAL" name="MySQL - cyber@basdasd" uuid="ac844a75-b6ab-4cbc-a26b-423ac4d82dc5">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://198.199.70.100:3306/cyber</jdbc-url>
+      <jdbc-url>jdbc:mysql://144.217.73.217:3306/cyber</jdbc-url>
+      <driver-properties>
+        <property name="serverTimezone" value="UTC" />
+      </driver-properties>
     </data-source>
     <data-source source="LOCAL" name="umc" uuid="ff95ff58-51f2-4d33-bda6-115309e3bbd7">
       <driver-ref>mysql.8</driver-ref>

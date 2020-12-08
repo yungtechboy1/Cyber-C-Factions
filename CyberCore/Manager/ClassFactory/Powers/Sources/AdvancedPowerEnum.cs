@@ -11,7 +11,7 @@ namespace CyberCore.Manager.ClassFactory.Powers
         int XP = -1;
 
 
-        public AdvancedPowerEnum(PowerEnum pwrEnum, int xp)
+        public AdvancedPowerEnum(PowerEnum pwrEnum, int xp = 0)
         {
             this.PwrEnum = pwrEnum;
             this.XP = xp;

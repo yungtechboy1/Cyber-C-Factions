@@ -12,7 +12,7 @@ using MiNET.Blocks;
 using MiNET.Items;
 using MiNET.Net;
 using MiNET.Utils;
-using MySql.Data.MySqlClient;
+// using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
