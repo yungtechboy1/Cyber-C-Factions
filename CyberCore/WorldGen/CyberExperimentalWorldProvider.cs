@@ -357,7 +357,10 @@ namespace CyberCore.WorldGen
             var rth = getChunkRTH(chunk);
 
             // Console.WriteLine("STARTING POPULATIOaN");
-            var b = BiomeManager.GetBiome(chunk);
+            // var b = BiomeManager.GetBiome(chunk);
+            var b = BiomeManager.GetBiome(chunkCoordinates);
+            var ccchnk = b.GenerateChunkColumnObject(this, chunkCoordinates);
+            if (ccchnk != null) chunk = ccchnk;
             chunk = PopulateChunk(this, chunk, rth, b).Result;
 
             // if (smooth)
@@ -370,7 +373,7 @@ namespace CyberCore.WorldGen
             //     Console.WriteLine($"{chunkCoordinates} WAS NOT SMOOTH BUT WAS BORDER CHUNK");
             // }
             chunk = PreGenerateSurfaceItems(this, chunk, null).Result;
-            StackTrace stackTrace = new StackTrace(); 
+            // StackTrace stackTrace = new StackTrace(); 
 // Get calling method name
             // Console.WriteLine(stackTrace.GetFrame(1).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(1).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(1).GetMethod().Name);
             // Console.WriteLine(stackTrace.GetFrame(2).GetMethod().ReflectedType.Namespace+"."+stackTrace.GetFrame(2).GetMethod().ReflectedType.Name+"."+stackTrace.GetFrame(2).GetMethod().Name);
